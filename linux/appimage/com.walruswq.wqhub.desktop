@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Name=WeiqiHub
+Exec=wqhub %u
+Icon=wqhub
+StartupNotify=true
+StartupWMClass=com.walruswq.wqhub
+Categories=Game;
