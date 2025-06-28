@@ -1,0 +1,2 @@
+/home/ale/src/wqhub/android/app/.cxx/Debug/696b572e/x86/CMakeFiles/edit_cache.dir
+/home/ale/src/wqhub/android/app/.cxx/Debug/696b572e/x86/CMakeFiles/rebuild_cache.dir

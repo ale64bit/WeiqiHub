@@ -32,5 +32,4 @@ doc/api/
 out/
 
 # Flutter platform-specific dirs
-android/
 web/

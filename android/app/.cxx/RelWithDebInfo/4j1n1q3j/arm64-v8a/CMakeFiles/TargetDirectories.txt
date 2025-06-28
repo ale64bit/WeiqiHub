@@ -1,0 +1,2 @@
+/home/ale/src/wqhub/android/app/.cxx/RelWithDebInfo/4j1n1q3j/arm64-v8a/CMakeFiles/edit_cache.dir
+/home/ale/src/wqhub/android/app/.cxx/RelWithDebInfo/4j1n1q3j/arm64-v8a/CMakeFiles/rebuild_cache.dir
