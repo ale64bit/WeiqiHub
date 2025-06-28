@@ -1,4 +1,12 @@
-# WeiqiHub
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/ale64bit/WeiqiHub/blob/main/doc/header_dark.png">
+    <img alt="WeiqiHub" src="./doc/header_light.png">
+  </picture>
+</h1>
+
+[![Build Linux](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_linux.yaml/badge.svg)](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_linux.yaml)
+[![Build Windows](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_windows.yaml/badge.svg)](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_windows.yaml)
 
 WeiqiHub is a unified client to multiple Go servers and offline puzzle solving.
 
@@ -13,3 +21,7 @@ WeiqiHub is a unified client to multiple Go servers and offline puzzle solving.
   * Ranked Mode: solve problems without a time limit. Difficulty increases the more/faster you solve.
   * Collections: solve classic curated collections of problems without a time limit to improve your reading strength.
 - Keep track of your solve stats and mistakes
+
+## Development
+
+A working installation of Flutter is needed. To run the app in debug mode, use `flutter run` or the Run button in VSCode.

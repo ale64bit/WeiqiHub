@@ -1,8 +1,8 @@
-name: Build
+name: Build Linux
 on: [push]
 jobs:
-  build_linux:
-    name: "Build Linux"
+  build:
+    name: "Build"
     runs-on: ubuntu-22.04
     steps:
       - name: Check out repository code
@@ -48,40 +48,4 @@ jobs:
         with:
           name: debug-symbols-linux
           path: out/linux
-          retention-days: 7
-  build_windows:
-    name: "Build Windows"
-    runs-on: windows-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          flutter-version: 3.27.4
-      - name: Install Flutter dependencies
-        run: flutter pub get
-      - name: Create debug symbols directory
-        run: mkdir -p out/windows
-      - name: Run tests
-        run: flutter test
-      - name: Build
-        run: flutter build windows --obfuscate --split-debug-info=out/windows
-      - name: Copy setup description file
-        run: cp windows/setup.iss build/windows/
-      - name: Create setup
-        run: ISCC /O"out" "build/windows/setup.iss"
-      - name: Upload Windows setup
-        uses: actions/upload-artifact@v4
-        with:
-          name: WeiqiHubSetup.exe
-          path: out/mysetup.exe
-          compression-level: 0
-          retention-days: 7
-      - name: Upload debug symbols
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-symbols-windows
-          path: out/windows
           retention-days: 7
