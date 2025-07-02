@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wqhub/game_client/test_game_client.dart';
+import 'package:wqhub/game_client/game_client_list.dart';
 import 'package:wqhub/main_page_bottom_navigation_bar.dart';
 import 'package:wqhub/main_page_navigation_rail.dart';
 import 'package:wqhub/play/server_card.dart';
@@ -133,7 +132,8 @@ class _Play extends StatelessWidget {
     return Center(
       child: Column(
         children: <Widget>[
-          if (kDebugMode) ServerCard(gameClient: TestGameClient()),
+          for (final gameClient in gameClients)
+            ServerCard(gameClient: gameClient),
         ],
       ),
     );
