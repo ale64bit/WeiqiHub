@@ -7,6 +7,22 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+      - name: Find VC Redist Path
+        id: find_vcredist
+        shell: pwsh
+        run: |
+          $allPaths = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -find "VC\Redist\MSVC\**\x64\Microsoft.VC143.CRT\msvcp140.dll"
+          $standardPath = $allPaths | Where-Object { 
+              $_ -like "*\x64\Microsoft.VC143.CRT\*" -and 
+              $_ -notlike "*\spectre\*" -and 
+              $_ -notlike "*\onecore\*" 
+          } | Select-Object -First 1
+          if (-not $standardPath) {
+              $standardPath = $allPaths | Select-Object -First 1
+          }
+          $dir = [System.IO.Path]::GetDirectoryName($standardPath)
+          echo "VCRedistPath=$dir" >> $env:GITHUB_OUTPUT
+          echo "VC Redist dir: $dir"
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -23,7 +39,7 @@ jobs:
       - name: Copy setup description file
         run: cp windows/setup.iss build/windows/
       - name: Create setup
-        run: ISCC /O"out" "build/windows/setup.iss"
+        run: ISCC /DVCRedistPath="${{ steps.find_vcredist.outputs.VCRedistPath }}" /O"out" "build/windows/setup.iss"
       - name: Upload Windows setup
         uses: actions/upload-artifact@v4
         with:

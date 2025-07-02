@@ -24,9 +24,9 @@ end;
 Source: "x64/runner/Release/wqhub.exe"; DestDir: "{app}"; DestName: "WeiqiHub.exe"
 Source: "x64/runner/Release/*.dll"; DestDir: "{app}"
 Source: "x64/runner/Release/data/*"; DestDir: "{app}/data"; Flags: recursesubdirs
-Source: "{code:GetVCRedistDir}\x64\Microsoft.VC143.CRT\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{code:GetVCRedistDir}\x64\Microsoft.VC143.CRT\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{code:GetVCRedistDir}\x64\Microsoft.VC143.CRT\vcruntime140_1.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#VCRedistPath}\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#VCRedistPath}\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#VCRedistPath}\vcruntime140_1.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\WeiqiHub"; Filename: "{app}\WeiqiHub.exe"
