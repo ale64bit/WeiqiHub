@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/endgame_exam_page.dart';
 import 'package:wqhub/train/endgame_exam_ranks.dart';
-import 'package:wqhub/train/grading_exam_rank_card.dart';
+import 'package:wqhub/train/exam_rank_card.dart';
+import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
+import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -45,8 +47,8 @@ class _EndgameExamSelectionPageState
             crossAxisSpacing: 16,
             children: <Widget>[
               for (final rank in endgameExamRanks)
-                GradingExamRankCard(
-                  rank: rank,
+                ExamRankCard(
+                  rankRange: RankRange.single(rank),
                   passCount: stats[rank]?.pass ?? 0,
                   failCount: stats[rank]?.fail ?? 0,
                   isActive: (rank == Rank.k15) ||

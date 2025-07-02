@@ -1,35 +1,34 @@
-import 'dart:math';
-
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/exam_rank_card.dart';
-import 'package:wqhub/train/grading_exam_page.dart';
-import 'package:wqhub/train/grading_exam_ranks.dart';
-import 'package:wqhub/train/grading_exam_task_types.dart';
 import 'package:wqhub/train/rank_range.dart';
+import 'package:wqhub/train/tag_exam_page.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
+import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/window_class_aware_state.dart';
-import 'package:wqhub/wq/rank.dart';
 
-class GradingExamSelectionPage extends StatefulWidget {
-  const GradingExamSelectionPage({super.key});
+class SubtagRankSelectionPage extends StatefulWidget {
+  final TaskTag subtag;
+
+  const SubtagRankSelectionPage({super.key, required this.subtag});
 
   @override
-  State<GradingExamSelectionPage> createState() =>
-      _GradingExamSelectionPageState();
+  State<SubtagRankSelectionPage> createState() =>
+      _SubtagRankSelectionPageState();
 }
 
-class _GradingExamSelectionPageState
-    extends WindowClassAwareState<GradingExamSelectionPage> {
+class _SubtagRankSelectionPageState
+    extends WindowClassAwareState<SubtagRankSelectionPage> {
   @override
   Widget build(BuildContext context) {
-    final stats = loadStats();
+    final rankRanges = widget.subtag.ranks();
+    final stats = loadStats(rankRanges);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Grading exam'),
+        title: Text(widget.subtag.toString()),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -46,35 +45,32 @@ class _GradingExamSelectionPageState
             mainAxisSpacing: 16,
             crossAxisSpacing: 16,
             children: <Widget>[
-              for (final rank in gradingExamRanks)
+              for (final (i, rankRange) in rankRanges.indexed)
                 ExamRankCard(
-                  rankRange: RankRange.single(rank),
-                  passCount: stats[rank]?.pass ?? 0,
-                  failCount: stats[rank]?.fail ?? 0,
-                  isActive: (rank == Rank.k15) ||
-                      ((stats[Rank.values[max(Rank.k15.index, rank.index - 1)]]
-                                  ?.pass ??
-                              0) >
-                          0),
+                  rankRange: rankRange,
+                  passCount: stats[rankRange]?.pass ?? 0,
+                  failCount: stats[rankRange]?.fail ?? 0,
+                  isActive: i == 0 || (stats[rankRanges[i - 1]]?.pass ?? 0) > 0,
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => PopScope(
                           canPop: false,
-                          child: GradingExamPage(
-                              rank: rank,
+                          child: TagExamPage(
+                              tag: widget.subtag,
+                              rankRange: rankRange,
                               taskSource: BlackToPlaySource(
                                 source: ConstTaskSource(
-                                    tasks: TaskRepository()
-                                        .read(rank, gradingExamTaskTypes, 10)),
+                                    tasks: TaskRepository().readByTag(
+                                        widget.subtag, rankRange, 10)),
                                 blackToPlay: context.settings.alwaysBlackToPlay,
                               )),
                         ),
                       ),
                     );
                   },
-                ),
+                )
             ],
           ),
         ),
@@ -82,11 +78,12 @@ class _GradingExamSelectionPageState
     );
   }
 
-  IMap<Rank, ({int pass, int fail})> loadStats() {
-    final entries = gradingExamRanks.map((rank) {
-      final pass = context.stats.getGradingExamPassCount(rank);
-      final fail = context.stats.getGradingExamFailCount(rank);
-      return (rank, (pass: pass, fail: fail));
+  IMap<RankRange, ({int pass, int fail})> loadStats(
+      IList<RankRange> rankRanges) {
+    final entries = rankRanges.map((rankRange) {
+      final pass = context.stats.getTagExamPassCount(widget.subtag, rankRange);
+      final fail = context.stats.getTagExamFailCount(widget.subtag, rankRange);
+      return (rankRange, (pass: pass, fail: fail));
     });
     return IMap.fromIterable(
       entries,

@@ -10,12 +10,13 @@ import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/stats/stats_db.dart';
+import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/response_delay.dart';
 import 'package:wqhub/train/solve_status_notifier.dart';
 import 'package:wqhub/train/task_action_bar.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
-import 'package:wqhub/train/task_type.dart';
+import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/turn_icon.dart';
 import 'package:wqhub/wq/annotated_game_tree.dart';
 import 'package:wqhub/board/board.dart';
@@ -24,24 +25,26 @@ import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/time_display.dart';
 import 'package:wqhub/train/variation_tree.dart';
-import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
-class EndgameExamPage extends StatefulWidget {
-  const EndgameExamPage(
-      {super.key, required this.rank, required this.taskSource});
+class TagExamPage extends StatefulWidget {
+  const TagExamPage(
+      {super.key,
+      required this.tag,
+      required this.rankRange,
+      required this.taskSource});
 
-  final Rank rank;
+  final TaskTag tag;
+  final RankRange rankRange;
   final TaskSource taskSource;
 
   @override
-  State<EndgameExamPage> createState() => _EndgameExamPageState();
+  State<TagExamPage> createState() => _TagExamPageState();
 }
 
-const _timePerTask = Duration(seconds: 45);
+const _timePerTask = Duration(seconds: 300);
 
-class _EndgameExamPageState extends State<EndgameExamPage>
-    with SolveStatusNotifier {
+class _TagExamPageState extends State<TagExamPage> with SolveStatusNotifier {
   final _timeDisplayKey = GlobalKey(debugLabel: 'time-display');
   final _stopwatch = Stopwatch();
   VariationTreeIterator? _vtreeIt;
@@ -148,7 +151,8 @@ class _EndgameExamPageState extends State<EndgameExamPage>
                 onReplay: _onReplay,
                 onNext: _onNext,
                 onCancelExam: () {
-                  context.stats.incrementEndgameExamFailCount(widget.rank);
+                  context.stats
+                      .incrementTagExamFailCount(widget.tag, widget.rankRange);
                   Navigator.popUntil(context, (route) => route.isFirst);
                 },
                 timeDisplay: timeDisplay,
@@ -177,9 +181,10 @@ class _EndgameExamPageState extends State<EndgameExamPage>
                   builder: (context) => ConfirmDialog(
                     title: 'Confirm',
                     content:
-                        'Are you sure that you want to stop the Endgame Exam?',
+                        'Are you sure that you want to stop the Topic Exam?',
                     onYes: () {
-                      context.stats.incrementEndgameExamFailCount(widget.rank);
+                      context.stats.incrementTagExamFailCount(
+                          widget.tag, widget.rankRange);
                       Navigator.popUntil(context, (route) => route.isFirst);
                     },
                     onNo: () {
@@ -217,9 +222,9 @@ class _EndgameExamPageState extends State<EndgameExamPage>
   void _onNext() {
     if (_taskNumber == 10) {
       if (_mistakeCount <= 2) {
-        context.stats.incrementEndgameExamPassCount(widget.rank);
+        context.stats.incrementTagExamPassCount(widget.tag, widget.rankRange);
       } else {
-        context.stats.incrementEndgameExamFailCount(widget.rank);
+        context.stats.incrementTagExamFailCount(widget.tag, widget.rankRange);
       }
       showDialog(
         context: context,
@@ -234,36 +239,18 @@ class _EndgameExamPageState extends State<EndgameExamPage>
               MaterialPageRoute(
                 builder: (context) => PopScope(
                   canPop: false,
-                  child: EndgameExamPage(
-                    rank: widget.rank,
+                  child: TagExamPage(
+                    tag: widget.tag,
+                    rankRange: widget.rankRange,
                     taskSource: ConstTaskSource(
-                        tasks: TaskRepository().read(widget.rank,
-                            const ISetConst({TaskType.endgame}), 10)),
+                        tasks: TaskRepository()
+                            .readByTag(widget.tag, widget.rankRange, 10)),
                   ),
                 ),
               ),
             );
           },
-          onNext: _mistakeCount <= 2
-              ? () {
-                  final nextRank =
-                      Rank.values[min(widget.rank.index + 1, Rank.p10.index)];
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PopScope(
-                        canPop: false,
-                        child: EndgameExamPage(
-                          rank: nextRank,
-                          taskSource: ConstTaskSource(
-                              tasks: TaskRepository().read(nextRank,
-                                  const ISetConst({TaskType.endgame}), 10)),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-              : null,
+          onNext: null,
         ),
       );
       return;
@@ -352,10 +339,10 @@ class _EndgameExamPageState extends State<EndgameExamPage>
           status == VariationStatus.correct);
       if (status == VariationStatus.correct) {
         if (context.settings.sound) AudioController().correct();
-        context.stats.incrementTotalPassCount(widget.rank);
+        context.stats.incrementTotalPassCount(curTask.rank);
       } else {
         if (context.settings.sound) AudioController().wrong();
-        context.stats.incrementTotalFailCount(widget.rank);
+        context.stats.incrementTotalFailCount(curTask.rank);
         _mistakeCount++;
       }
       _stopwatch.stop();
@@ -456,7 +443,7 @@ class _SideBar extends StatelessWidget {
                       builder: (context) => ConfirmDialog(
                         title: 'Confirm',
                         content:
-                            'Are you sure that you want to stop the Endgame Exam?',
+                            'Are you sure that you want to stop the Topic Exam?',
                         onYes: onCancelExam,
                         onNo: () {
                           Navigator.pop(context);

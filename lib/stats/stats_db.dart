@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
 @immutable

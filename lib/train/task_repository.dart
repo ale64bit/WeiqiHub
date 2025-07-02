@@ -4,37 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:wqhub/random_util.dart';
+import 'package:wqhub/train/rank_range.dart';
+import 'package:wqhub/train/task_tag.dart';
+import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/rank.dart' as wq;
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
-
-enum TaskType {
-  lifeAndDeath,
-  tesuji,
-  capture,
-  captureRace,
-  opening,
-  joseki,
-  middlegame,
-  endgame,
-  theory,
-  appreciation;
-
-  @override
-  String toString() => switch (this) {
-        TaskType.lifeAndDeath => 'Life & death',
-        TaskType.tesuji => 'Tesuji',
-        TaskType.capture => 'Capture stones',
-        TaskType.captureRace => 'Capture race',
-        TaskType.opening => 'Opening',
-        TaskType.joseki => 'Joseki',
-        TaskType.middlegame => 'Middlegame',
-        TaskType.endgame => 'Endgame',
-        TaskType.theory => 'Theory',
-        TaskType.appreciation => 'Appreciation'
-      };
-}
 
 @immutable
 class TaskRef {
@@ -242,6 +218,63 @@ class _TaskBucket {
   }
 }
 
+class _TagBucket {
+  final List<(TaskType, int)> tasks;
+  var cur = 0;
+
+  _TagBucket({required this.tasks});
+
+  (TaskType, int) next() {
+    final ret = cur;
+    cur++;
+    if (cur == tasks.length) cur = 0;
+    return tasks[ret];
+  }
+}
+
+class TaskTags {
+  final Map<(wq.Rank, TaskTag), _TagBucket> tasks;
+
+  static Future<TaskTags> loadFromRes(String resName) async {
+    final data = await rootBundle.load(resName);
+    return _parseTags(data);
+  }
+
+  static TaskTags _parseTags(ByteData data) {
+    final tasks = Map<(wq.Rank, TaskTag), _TagBucket>.new();
+    var offset = 0;
+    var size = data.getUint16(offset);
+    offset += 2;
+    while (size > 0) {
+      final tagId = data.getUint8(offset);
+      offset++;
+      final rank = data.getUint8(offset);
+      offset++;
+      final taskEntries = <(TaskType, int)>[];
+      for (int i = 0; i < size; ++i) {
+        final type = TaskType.values[data.getUint8(offset)];
+        offset++;
+        final tid = data.getUint32(offset);
+        offset += 4;
+        taskEntries.add((type, tid));
+      }
+      taskEntries.shuffle();
+      final key = (
+        wq.Rank.values[rank],
+        TaskTag.values.firstWhere((t) => t.index == tagId)
+      );
+      assert(taskEntries.isNotEmpty);
+      tasks[key] = _TagBucket(tasks: taskEntries);
+
+      size = data.getUint16(offset);
+      offset += 2;
+    }
+    return TaskTags(tasks: tasks);
+  }
+
+  const TaskTags({required this.tasks});
+}
+
 class TaskCollection {
   final int id;
   final String title;
@@ -356,10 +389,11 @@ class TaskRepository {
     };
     final collections =
         await TaskCollection.loadFromRes('assets/tasks/col.bin');
-    _db = TaskRepository._(buckets, collections);
+    final tags = await TaskTags.loadFromRes('assets/tasks/tag.bin');
+    _db = TaskRepository._(buckets, collections, tags);
   }
 
-  TaskRepository._(this._buckets, this._collectionRoot)
+  TaskRepository._(this._buckets, this._collectionRoot, this._tags)
       : _collectionTreeNode =
             TreeNode<TaskCollection>.root(data: _collectionRoot) {
     _populateCollectionTreeNode(_collectionRoot, _collectionTreeNode);
@@ -367,12 +401,14 @@ class TaskRepository {
         '${_buckets.values.sumBy((b) => b.size)} tasks loaded from ${_buckets.length} buckets');
     _log.fine(
         '${_collectionRoot.children.length} collections loaded: ${_collectionRoot.taskCount} tasks');
+    _log.fine('${_tags.tasks.length} tag buckets loaded');
   }
 
   final _log = Logger('TaskRepository');
   final Map<(wq.Rank, TaskType), _TaskBucket> _buckets;
   final TaskCollection _collectionRoot;
   final TreeNode<TaskCollection> _collectionTreeNode;
+  final TaskTags _tags;
 
   Task? readOne(wq.Rank rank, TaskType type) {
     return _buckets[(rank, type)]?.readOne();
@@ -408,6 +444,20 @@ class TaskRepository {
     } catch (_) {
       return null;
     }
+  }
+
+  IList<Task> readByTag(TaskTag tag, RankRange rankRange, int n) {
+    final bucketDist = [
+      for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
+        (i, _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0)
+    ];
+    final tasks = <Task>[];
+    for (int i = 0; i < n; ++i) {
+      final rank = Rank.values[randomDist(bucketDist)];
+      final (type, id) = _tags.tasks[(rank, tag)]!.next();
+      tasks.add(readById(rank, type, id)!);
+    }
+    return IList(tasks);
   }
 
   TaskCollection collections() => _collectionRoot;

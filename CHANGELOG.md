@@ -2,6 +2,7 @@
 
 ## 0.1.8
 - add file picker dialog to save games on desktop
+- add task topics
 
 ## 0.1.7
 - hotfix for Windows game downloads

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
+import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/rank.dart';
 

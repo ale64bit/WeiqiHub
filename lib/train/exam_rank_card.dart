@@ -1,19 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:wqhub/wq/rank.dart';
+import 'package:wqhub/train/rank_range.dart';
 import 'package:intl/intl.dart';
 
-class GradingExamRankCard extends StatelessWidget {
-  final Rank rank;
+class ExamRankCard extends StatelessWidget {
+  final RankRange rankRange;
   final int passCount;
   final int failCount;
   final bool isActive;
   final Function()? onTap;
 
-  const GradingExamRankCard(
+  const ExamRankCard(
       {super.key,
-      required this.rank,
+      required this.rankRange,
       required this.passCount,
       required this.failCount,
       required this.isActive,
@@ -46,7 +46,7 @@ class GradingExamRankCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    rank.toString(),
+                    rankRange.toString(),
                     style: textTheme.titleLarge,
                   ),
                   Row(
