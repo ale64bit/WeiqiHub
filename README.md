@@ -6,6 +6,7 @@
 </h1>
 
 [![Build Linux](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_linux.yaml/badge.svg)](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_linux.yaml)
+[![Build MacOS](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_macos.yaml/badge.svg)](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_macos.yaml)
 [![Build Windows](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_windows.yaml/badge.svg)](https://github.com/ale64bit/WeiqiHub/actions/workflows/build_windows.yaml)
 
 WeiqiHub is a unified client to multiple Go servers and offline puzzle solving.
