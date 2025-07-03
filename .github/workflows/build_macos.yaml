@@ -1,0 +1,45 @@
+name: Build MacOS
+on: 
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    name: "Build"
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.WQHUB_TOKEN }}
+          submodules: 'recursive'
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.27.4
+      - name: Install Flutter dependencies
+        run: flutter pub get
+      - name: Create debug symbols directory
+        run: mkdir -p out/macos
+      - name: Patch game client
+        run: |
+          rm lib/game_client/game_client_list.dart
+          mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
+      - name: Run tests
+        run: flutter test
+      - name: Build
+        run: flutter build macos --obfuscate --split-debug-info=out/macos
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: WeiqiHub-macos.app
+          path: build/macos/Build/Products/Release/wqhub.app
+          retention-days: 7
+      - name: Upload debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-symbols-macos
+          path: out/macos
+          retention-days: 7
