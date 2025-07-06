@@ -7,10 +7,6 @@ import 'package:wqhub/train/endgame_exam_page.dart';
 import 'package:wqhub/train/endgame_exam_ranks.dart';
 import 'package:wqhub/train/exam_rank_card.dart';
 import 'package:wqhub/train/rank_range.dart';
-import 'package:wqhub/train/task_repository.dart';
-import 'package:wqhub/train/task_source/black_to_play_source.dart';
-import 'package:wqhub/train/task_source/const_task_source.dart';
-import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -62,16 +58,7 @@ class _EndgameExamSelectionPageState
                       MaterialPageRoute(
                         builder: (context) => PopScope(
                           canPop: false,
-                          child: EndgameExamPage(
-                            rank: rank,
-                            taskSource: BlackToPlaySource(
-                              source: ConstTaskSource(
-                                tasks: TaskRepository().read(rank,
-                                    const ISetConst({TaskType.endgame}), 10),
-                              ),
-                              blackToPlay: context.settings.alwaysBlackToPlay,
-                            ),
-                          ),
+                          child: EndgameExamPage(rank: rank),
                         ),
                       ),
                     );
