@@ -4,9 +4,6 @@ import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/exam_rank_card.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/tag_exam_page.dart';
-import 'package:wqhub/train/task_repository.dart';
-import 'package:wqhub/train/task_source/black_to_play_source.dart';
-import 'package:wqhub/train/task_source/const_task_source.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 
@@ -58,14 +55,9 @@ class _SubtagRankSelectionPageState
                         builder: (context) => PopScope(
                           canPop: false,
                           child: TagExamPage(
-                              tag: widget.subtag,
-                              rankRange: rankRange,
-                              taskSource: BlackToPlaySource(
-                                source: ConstTaskSource(
-                                    tasks: TaskRepository().readByTag(
-                                        widget.subtag, rankRange, 10)),
-                                blackToPlay: context.settings.alwaysBlackToPlay,
-                              )),
+                            tag: widget.subtag,
+                            rankRange: rankRange,
+                          ),
                         ),
                       ),
                     );

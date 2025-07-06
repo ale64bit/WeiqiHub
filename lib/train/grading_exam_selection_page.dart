@@ -6,11 +6,7 @@ import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/exam_rank_card.dart';
 import 'package:wqhub/train/grading_exam_page.dart';
 import 'package:wqhub/train/grading_exam_ranks.dart';
-import 'package:wqhub/train/grading_exam_task_types.dart';
 import 'package:wqhub/train/rank_range.dart';
-import 'package:wqhub/train/task_repository.dart';
-import 'package:wqhub/train/task_source/black_to_play_source.dart';
-import 'package:wqhub/train/task_source/const_task_source.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -62,14 +58,7 @@ class _GradingExamSelectionPageState
                       MaterialPageRoute(
                         builder: (context) => PopScope(
                           canPop: false,
-                          child: GradingExamPage(
-                              rank: rank,
-                              taskSource: BlackToPlaySource(
-                                source: ConstTaskSource(
-                                    tasks: TaskRepository()
-                                        .read(rank, gradingExamTaskTypes, 10)),
-                                blackToPlay: context.settings.alwaysBlackToPlay,
-                              )),
+                          child: GradingExamPage(rank: rank),
                         ),
                       ),
                     );
