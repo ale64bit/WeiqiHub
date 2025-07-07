@@ -117,7 +117,7 @@ class _CollectionTileState extends WindowClassAwareState<_CollectionTile> {
     onContinue();
   }
 
-  onContinue() {
+  onContinue() async {
     final activeSession =
         StatsDB().collectionActiveSession(widget.collection.id) ??
             CollectionActiveSession(
@@ -127,7 +127,7 @@ class _CollectionTileState extends WindowClassAwareState<_CollectionTile> {
               duration: Duration.zero,
             );
     final currentTask = activeSession.correctCount + activeSession.wrongCount;
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => PopScope(
@@ -144,6 +144,7 @@ class _CollectionTileState extends WindowClassAwareState<_CollectionTile> {
         ),
       ),
     );
+    setState(() {});
   }
 
   String collectionSubtitle() =>
