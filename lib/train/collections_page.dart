@@ -2,6 +2,7 @@ import 'package:animated_tree_view/tree_view/tree_node.dart';
 import 'package:animated_tree_view/tree_view/tree_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/collection_page.dart';
@@ -99,7 +100,20 @@ class _CollectionTileState extends WindowClassAwareState<_CollectionTile> {
   }
 
   onStart() {
-    StatsDB().resetCollectionActiveSession(widget.collection.id);
+    if (StatsDB().collectionActiveSession(widget.collection.id) != null) {
+      showDialog(
+          context: context,
+          builder: (context) => ConfirmDialog(
+              title: 'Confirm',
+              content: 'Are you sure you want to delete previous attempt?',
+              onYes: () {
+                Navigator.pop(context);
+                StatsDB().resetCollectionActiveSession(widget.collection.id);
+                onContinue();
+              },
+              onNo: () => Navigator.pop(context)));
+      return;
+    }
     onContinue();
   }
 
