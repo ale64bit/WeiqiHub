@@ -6,6 +6,7 @@ import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/settings/appearance_settings_list.dart';
+import 'package:wqhub/settings/confirm_moves.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -74,7 +75,7 @@ class _AppearanceSettingsPageState
               ),
             ]),
           }),
-          confirmTap: false,
+          confirmTap: ConfirmMoves.disable.value,
         );
       },
     );

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
+import 'package:wqhub/settings/confirm_moves.dart';
 import 'package:wqhub/train/response_delay.dart';
 
 class Settings {
@@ -47,12 +48,12 @@ class Settings {
       prefs.setInt(_boardEdgeLine, edgeLine.index);
 
   // Behaviour
-  bool get confirmMoves =>
-      prefs.getBool('$_behaviourKeyPrefix.confirm_moves') ??
-      (Platform.isAndroid || Platform.isIOS);
+  String get confirmMoves =>
+      prefs.getString('$_behaviourKeyPrefix.confirm_moves') ??
+      ConfirmMoves.disable.value;
 
-  set confirmMoves(bool val) =>
-      prefs.setBool('$_behaviourKeyPrefix.confirm_moves', val);
+  set confirmMoves(String val) =>
+      prefs.setString('$_behaviourKeyPrefix.confirm_moves', val);
 
   ResponseDelay get responseDelay => ResponseDelay.values[
       prefs.getInt('$_behaviourKeyPrefix.response_delay') ??

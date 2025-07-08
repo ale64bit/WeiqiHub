@@ -9,6 +9,7 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_geometry.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/board/positioned_point.dart';
+import 'package:wqhub/settings/confirm_moves.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class Board extends StatefulWidget with BoardGeometry {
@@ -35,7 +36,7 @@ class Board extends StatefulWidget with BoardGeometry {
   final IMap<wq.Point, wq.Color> stones;
   final IMapOfSets<wq.Point, Annotation> annotations;
   final wq.Color? turn;
-  final bool confirmTap;
+  final String confirmTap;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -264,7 +265,7 @@ class _BoardState extends State<Board> {
     if (event.buttons != kPrimaryButton) return;
     final wq.Point? p = widget.offsetPoint(event.localPosition);
     if (p == null) return;
-    if (widget.confirmTap && boardIsLarge()) {
+    if (boardIsLarge()) {
       if (widget.stones.containsKey(p)) {
         setState(() {
           confirmPoint = null;
@@ -290,7 +291,17 @@ class _BoardState extends State<Board> {
     }
   }
 
-  bool boardIsLarge() => widget.settings.visibleSize > 13;
+  bool boardIsLarge() {
+    if (widget.confirmTap == ConfirmMoves.disable) {
+      return false;
+    }
+
+    final int confirmMoveSize = int.parse(widget.confirmTap.split("x")[0]);
+    if (widget.settings.visibleSize >= confirmMoveSize) {
+      return true;
+    }
+    return false;
+  }
 
   void _onPointerHover(PointerHoverEvent event) {
     final p = widget.offsetPoint(event.localPosition);
