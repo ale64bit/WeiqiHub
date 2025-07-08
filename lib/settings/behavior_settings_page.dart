@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/board/board_sizes.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/response_delay.dart';
 
@@ -15,7 +16,7 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Behaviour')),
       body: ListView(
-        children: <ListTile>[
+        children: <Widget>[
           ListTile(
             title: const Text('Confirm moves'),
             subtitle: const Text(
@@ -26,6 +27,31 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
                 context.settings.confirmMoves = value;
                 setState(() {});
               },
+            ),
+          ),
+          Visibility(
+            visible: context.settings.confirmMoves,
+            child: ListTile(
+              title: const Text('Select board size'),
+              subtitle: const Text(
+                  'Select board size equal or greater to double-tap'),
+              trailing: DropdownButton<String>(
+                value: context.settings.confirmMovesBoardSize,
+                items: BoardSizes.values.map((boardSize) {
+                  return DropdownMenuItem<String>(
+                    value: boardSize.value,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(boardSize.value),
+                    ),
+                  );
+                }).toList(),
+                borderRadius: BorderRadius.circular(8),
+                onChanged: (String? boardSize) {
+                  context.settings.confirmMovesBoardSize = boardSize.toString();
+                  setState(() {});
+                },
+              ),
             ),
           ),
           ListTile(
