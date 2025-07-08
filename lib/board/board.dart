@@ -292,7 +292,7 @@ class _BoardState extends State<Board> {
   }
 
   bool boardIsLarge() {
-    if (widget.confirmTap == ConfirmMoves.disable) {
+    if (widget.confirmTap == ConfirmMoves.disable.value) {
       return false;
     }
 
