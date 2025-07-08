@@ -20,7 +20,7 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
           ListTile(
             title: const Text('Confirm moves'),
             subtitle: const Text(
-                'Double-tap to confirm moves on boards equal or bigger than select to avoid misclicks'),
+                'Double-tap to confirm moves on boards equal or bigger than selected to avoid misclicks'),
             trailing: DropdownButton<String>(
               value: context.settings.confirmMoves,
               items: ConfirmMoves.values.map((boardSize) {
