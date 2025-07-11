@@ -7,6 +7,7 @@ import 'package:wqhub/settings/settings_button.dart';
 import 'package:wqhub/settings/settings_page.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/collections_page.dart';
+import 'package:wqhub/train/custom_exam_selection_page.dart';
 import 'package:wqhub/train/endgame_exam_selection_page.dart';
 import 'package:wqhub/train/my_mistakes_page.dart';
 import 'package:wqhub/train/ranked_mode_page.dart';
@@ -254,6 +255,19 @@ class _Train extends StatelessWidget {
               },
               icon: Icon(Icons.category),
               label: const Text('Topics'),
+            ),
+            FloatingActionButton.extended(
+              heroTag: null,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustomExamSelectionPage(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.tune),
+              label: const Text('Custom exam'),
             ),
             FloatingActionButton.extended(
               heroTag: null,

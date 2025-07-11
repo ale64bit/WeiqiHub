@@ -32,7 +32,7 @@ class GradingExamPage extends StatelessWidget {
       taskCount: taskCount,
       taskSource: BlackToPlaySource(
         source: ConstTaskSource(
-            tasks: TaskRepository().read(rank, taskTypes, taskCount)),
+            tasks: TaskRepository().readByTypes(rank, taskTypes, taskCount)),
         blackToPlay: context.settings.alwaysBlackToPlay,
       ),
       timePerTask: timePerTask,

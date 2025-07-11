@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
+import 'package:wqhub/train/rank_range.dart';
+import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -118,6 +120,8 @@ class StatsDB {
   final PreparedStatement _ignoreTaskMistake;
   final PreparedStatement _mistakesByMostRecent;
   final PreparedStatement _mistakesBySuccessRate;
+  final PreparedStatement _countMistakesByRange;
+  final PreparedStatement _getMistakesByRange;
   final PreparedStatement _collectionStat;
   final PreparedStatement _collectionActiveSession;
   final PreparedStatement _updateCollectionActiveSession;
@@ -217,6 +221,16 @@ class StatsDB {
               wrong_count DESC
             LIMIT ?;
         ''', persistent: true),
+        _countMistakesByRange = db.prepare('''
+          SELECT count(1) FROM task_stats 
+            WHERE rank BETWEEN ? AND ?;
+        ''', persistent: true),
+        _getMistakesByRange = db.prepare('''
+          SELECT rank, type, id FROM task_stats 
+            WHERE rank BETWEEN ? AND ?
+            ORDER BY RANDOM()
+            LIMIT ?;
+        ''', persistent: true),
         _collectionStat = db.prepare('''
           SELECT id, correct_count, wrong_count, duration_sec, completed FROM collection_stats
             WHERE id = ?;
@@ -277,6 +291,25 @@ class StatsDB {
   List<TaskStatEntry> mistakesBySuccessRate({int maxResults = 1000}) {
     final resultSet = _mistakesBySuccessRate.select([maxResults]);
     return _entriesFromResultSet(resultSet);
+  }
+
+  int countMistakesByRange(RankRange rankRange) {
+    final result = _countMistakesByRange
+        .select([rankRange.from.index, rankRange.to.index]);
+    return result.first.values.first! as int;
+  }
+
+  List<TaskRef> getMistakesByRange(RankRange rankRange, int n) {
+    final resultSet = _getMistakesByRange
+        .select([rankRange.from.index, rankRange.to.index, n]);
+    return [
+      for (final row in resultSet)
+        TaskRef(
+          rank: Rank.values[row['rank'] as int],
+          type: TaskType.values[row['type'] as int],
+          id: row['id'] as int,
+        )
+    ];
   }
 
   List<TaskStatEntry> _entriesFromResultSet(ResultSet resultSet) => [

@@ -20,7 +20,7 @@ final class RankedModeTaskSource extends TaskSource {
   RankedModeTaskSource(double rank)
       : _rank = rank,
         _cur = TaskRepository()
-            .read(Rank.values[rank.toInt()], _taskTypes, 1)
+            .readByTypes(Rank.values[rank.toInt()], _taskTypes, 1)
             .first;
 
   @override
@@ -32,8 +32,9 @@ final class RankedModeTaskSource extends TaskSource {
         _rank = max(_rank - _rankDec(prevSolveTime), Rank.k15.index.toDouble());
     }
     onRankChanged?.call(_rank);
-    _cur =
-        TaskRepository().read(Rank.values[_rank.toInt()], _taskTypes, 1).first;
+    _cur = TaskRepository()
+        .readByTypes(Rank.values[_rank.toInt()], _taskTypes, 1)
+        .first;
     return true;
   }
 
