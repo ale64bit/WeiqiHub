@@ -23,9 +23,9 @@ class ExamPage extends StatefulWidget {
     super.key,
     required this.title,
     required this.taskCount,
-    required this.taskSource,
     required this.timePerTask,
     required this.maxMistakes,
+    required this.createTaskSource,
     required this.onPass,
     required this.onFail,
     required this.buildRedoPage,
@@ -35,9 +35,9 @@ class ExamPage extends StatefulWidget {
 
   final String title;
   final int taskCount;
-  final TaskSource taskSource;
   final Duration timePerTask;
   final int maxMistakes;
+  final TaskSource Function(BuildContext) createTaskSource;
   final Function() onPass;
   final Function() onFail;
   final Widget Function() buildRedoPage;
@@ -51,6 +51,7 @@ class ExamPage extends StatefulWidget {
 class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
   final _timeDisplayKey = GlobalKey(debugLabel: 'time-display');
   final _stopwatch = Stopwatch();
+  late final _taskSource = widget.createTaskSource(context);
   var _taskNumber = 1;
   var _totalTime = Duration.zero;
   var _mistakeCount = 0;
@@ -87,10 +88,10 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
         : null;
 
     final boardSettings = BoardSettings(
-      size: widget.taskSource.task.boardSize,
+      size: _taskSource.task.boardSize,
       subBoard: SubBoard(
-        topLeft: widget.taskSource.task.topLeft,
-        size: widget.taskSource.task.subBoardSize,
+        topLeft: _taskSource.task.topLeft,
+        size: _taskSource.task.subBoardSize,
       ),
       theme: context.settings.boardTheme,
       edgeLine: context.settings.edgeLine,
@@ -115,7 +116,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
     );
 
     final taskTitle =
-        '[${widget.taskSource.task.rank.toString()}] ${widget.taskSource.task.type.toString()}';
+        '[${_taskSource.task.rank.toString()}] ${_taskSource.task.type.toString()}';
 
     final timeDisplay = TimeDisplay(
       key: _timeDisplayKey,
@@ -143,7 +144,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                 taskTitle: taskTitle,
                 taskNumber: _taskNumber,
                 taskCount: widget.taskCount,
-                color: widget.taskSource.task.first,
+                color: _taskSource.task.first,
                 status: solveStatus,
                 upsolveMode: upsolveMode,
                 onShowSolution: onShowContinuations,
@@ -170,7 +171,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
           title: Row(
             spacing: 4,
             children: <Widget>[
-              TurnIcon(color: widget.taskSource.task.first),
+              TurnIcon(color: _taskSource.task.first),
               Text(taskTitle),
             ],
           ),
@@ -220,7 +221,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
   }
 
   @override
-  Task get currentTask => widget.taskSource.task;
+  Task get currentTask => _taskSource.task;
 
   @override
   void onSolveStatus(VariationStatus status) {
@@ -287,8 +288,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
       );
       return;
     }
-    widget.taskSource
-        .next(solveStatus ?? VariationStatus.wrong, _stopwatch.elapsed);
+    _taskSource.next(solveStatus ?? VariationStatus.wrong, _stopwatch.elapsed);
     _taskNumber++;
     solveStatus = null;
     setState(() {
