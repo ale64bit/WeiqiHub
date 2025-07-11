@@ -30,6 +30,7 @@ class ExamPage extends StatefulWidget {
     required this.onFail,
     required this.buildRedoPage,
     this.buildNextPage,
+    this.collectStats = true,
   });
 
   final String title;
@@ -41,6 +42,7 @@ class ExamPage extends StatefulWidget {
   final Function() onFail;
   final Widget Function() buildRedoPage;
   final Widget Function()? buildNextPage;
+  final bool collectStats;
 
   @override
   State<ExamPage> createState() => _ExamPageState();
@@ -224,13 +226,16 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
   void onSolveStatus(VariationStatus status) {
     _stopwatch.stop();
     _totalTime += _stopwatch.elapsed;
-    StatsDB().addTaskAttempt(currentTask.rank, currentTask.type, currentTask.id,
-        status == VariationStatus.correct);
-    if (status == VariationStatus.correct) {
-      context.stats.incrementTotalPassCount(currentTask.rank);
-    } else {
-      _mistakeCount++;
-      context.stats.incrementTotalFailCount(currentTask.rank);
+    if (status != VariationStatus.correct) _mistakeCount++;
+
+    if (widget.collectStats) {
+      StatsDB().addTaskAttempt(currentTask.rank, currentTask.type,
+          currentTask.id, status == VariationStatus.correct);
+      if (status == VariationStatus.correct) {
+        context.stats.incrementTotalPassCount(currentTask.rank);
+      } else {
+        context.stats.incrementTotalFailCount(currentTask.rank);
+      }
     }
   }
 

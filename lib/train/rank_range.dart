@@ -12,6 +12,8 @@ class RankRange {
 
   bool isSingle() => from == to;
 
+  bool isInside(RankRange that) => that.from <= from && to <= that.to;
+
   @override
   String toString() =>
       from == to ? from.toString() : '${from.toString()}-${to.toString()}';

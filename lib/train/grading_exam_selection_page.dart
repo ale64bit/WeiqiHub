@@ -25,7 +25,7 @@ class _GradingExamSelectionPageState
     final stats = loadStats();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Grading exam'),
+        title: const Text('Grading exam'),
       ),
       body: Center(
         child: ConstrainedBox(
