@@ -9,6 +9,7 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_geometry.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/board/positioned_point.dart';
+import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class Board extends StatefulWidget with BoardGeometry {
@@ -290,7 +291,12 @@ class _BoardState extends State<Board> {
     }
   }
 
-  bool boardIsLarge() => widget.settings.visibleSize > 13;
+  bool boardIsLarge() {
+    final int confirmMoveboardSize =
+        int.parse(context.settings.confirmMovesBoardSize.split("x")[0]);
+    final int currentBoardSize = widget.settings.visibleSize;
+    return confirmMoveboardSize <= currentBoardSize;
+  }
 
   void _onPointerHover(PointerHoverEvent event) {
     final p = widget.offsetPoint(event.localPosition);
