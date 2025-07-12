@@ -12,6 +12,7 @@ import 'package:wqhub/settings/settings.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/version_patch.dart';
 import 'package:wqhub/weiqi_hub_app.dart';
 
 Future<void> main() async {
@@ -23,18 +24,27 @@ Future<void> main() async {
   }
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
+
     final sharedPreferences = await SharedPreferencesWithCache.create(
         cacheOptions: const SharedPreferencesWithCacheOptions());
+    final settings = Settings(sharedPreferences);
+
+    // Set default save directory
     final downloadsDir = await getDownloadsDirectory();
     final appDocsDir = await getApplicationDocumentsDirectory();
-    sharedPreferences.setString(
-        Settings.defaultSaveDirKey, downloadsDir?.path ?? appDocsDir.path);
+    settings.defaultSaveDirectory = downloadsDir?.path ?? appDocsDir.path;
+
+    // Initialize singletons
     await Future.wait(<Future>[
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),
       AudioController.init(),
       TaskRepository.init(),
       StatsDB.init(),
     ]);
+
+    // Apply version patches
+    applyVersionPatch(settings);
+
     runApp(
       SharedPreferencesInheritedWidget(
         sharedPreferences: sharedPreferences,

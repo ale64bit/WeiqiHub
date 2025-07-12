@@ -22,6 +22,19 @@ class TaskRef {
 
   const TaskRef({required this.rank, required this.type, required this.id});
 
+  factory TaskRef.ofUri(String link) {
+    final uri = Uri.parse(link);
+    if (uri.scheme != 'wqhub') {
+      throw FormatException('unrecognized scheme: ${uri.scheme}');
+    }
+    final p = uri.pathSegments.last;
+    return TaskRef(
+      rank: Rank.values[int.parse(p.substring(0, 2), radix: 16)],
+      type: TaskType.values[int.parse(p.substring(2, 4), radix: 16)],
+      id: int.parse(p.substring(4), radix: 16),
+    );
+  }
+
   @override
   int get hashCode => Object.hash(rank, type, id);
 
