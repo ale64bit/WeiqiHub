@@ -312,6 +312,17 @@ class StatsDB {
     ];
   }
 
+  void deleteMistakes(Iterable<TaskRef> refs) {
+    final entries = refs
+        .map((ref) => '(${ref.rank.index},${ref.type.index},${ref.id})')
+        .join(',');
+    _db.execute('''
+      BEGIN TRANSACTION;
+        DELETE FROM task_stats WHERE (rank, type, id) IN ($entries);
+      COMMIT;
+    ''');
+  }
+
   List<TaskStatEntry> _entriesFromResultSet(ResultSet resultSet) => [
         for (final row in resultSet)
           TaskStatEntry(
