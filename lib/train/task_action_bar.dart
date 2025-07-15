@@ -1,22 +1,76 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/train/upsolve_mode.dart';
 
 class TaskActionBar extends StatelessWidget {
-  final Function()? onShowSolution;
-  final Function()? onShare;
-  final Function()? onReplay;
-  final Function()? onNext;
+  static const fastMoveNavCount = 5;
 
-  const TaskActionBar(
-      {super.key,
-      this.onShowSolution,
-      this.onShare,
-      this.onReplay,
-      this.onNext});
+  final UpsolveMode upsolveMode;
+  final Function()? onShowSolution;
+  final Function()? onShareTask;
+  final Function()? onResetTask;
+  final Function()? onNextTask;
+  final Function() onPreviousMove;
+  final Function() onNextMove;
+  final Function(UpsolveMode) onUpdateUpsolveMode;
+
+  const TaskActionBar({
+    super.key,
+    required this.upsolveMode,
+    this.onShowSolution,
+    this.onShareTask,
+    this.onResetTask,
+    this.onNextTask,
+    required this.onPreviousMove,
+    required this.onNextMove,
+    required this.onUpdateUpsolveMode,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    final backButton = Expanded(
+      child: IconButton(
+        icon: Icon(Icons.undo),
+        onPressed: () => onUpdateUpsolveMode(UpsolveMode.auto),
+      ),
+    );
+    final menuButton = Expanded(
+      child: PopupMenuButton(
+        icon: Icon(Icons.menu),
+        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+          PopupMenuItem(
+            onTap: onShareTask,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 8.0,
+              children: <Widget>[
+                Icon(Icons.share),
+                const Text('Copy task link'),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            onTap: () => onUpdateUpsolveMode(UpsolveMode.manual),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 8.0,
+              children: switch (upsolveMode) {
+                UpsolveMode.auto => <Widget>[
+                    Icon(Icons.touch_app),
+                    const Text('Try custom moves'),
+                  ],
+                UpsolveMode.manual => <Widget>[
+                    Icon(Icons.touch_app),
+                    const Text('Exit try mode'),
+                  ],
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+    final mainBar = Row(
       children: [
+        if (upsolveMode == UpsolveMode.auto) menuButton else backButton,
         Expanded(
           child: IconButton(
             icon: Icon(Icons.lightbulb),
@@ -25,23 +79,61 @@ class TaskActionBar extends StatelessWidget {
         ),
         Expanded(
           child: IconButton(
-            icon: Icon(Icons.share),
-            onPressed: onShare,
-          ),
-        ),
-        Expanded(
-          child: IconButton(
             icon: Icon(Icons.replay),
-            onPressed: onReplay,
+            onPressed: onResetTask,
           ),
         ),
-        if (onNext != null)
+        if (onNextTask != null)
           Expanded(
             child: IconButton(
               icon: Icon(Icons.navigate_next),
-              onPressed: onNext,
+              onPressed: onNextTask,
             ),
           ),
+      ],
+    );
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        if (upsolveMode == UpsolveMode.manual)
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: IconButton(
+                  icon: Icon(Icons.fast_rewind),
+                  onPressed: () {
+                    for (int i = 0; i < fastMoveNavCount; ++i) onPreviousMove();
+                  },
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  icon: Transform.flip(
+                    flipX: true,
+                    child: Icon(Icons.play_arrow),
+                  ),
+                  onPressed: onPreviousMove,
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  icon: Icon(Icons.play_arrow),
+                  onPressed: onNextMove,
+                ),
+              ),
+              Expanded(
+                child: IconButton(
+                  icon: Icon(Icons.fast_forward),
+                  onPressed: () {
+                    for (int i = 0; i < fastMoveNavCount; ++i) onNextMove();
+                  },
+                ),
+              ),
+            ],
+          ),
+        if (upsolveMode == UpsolveMode.manual) Divider(height: 8.0),
+        mainBar,
       ],
     );
   }

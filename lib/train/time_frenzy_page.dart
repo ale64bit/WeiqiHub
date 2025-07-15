@@ -1,14 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/time_display.dart';
 import 'package:wqhub/confirm_dialog.dart';
-import 'package:wqhub/train/solve_status_notifier.dart';
+import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_solving_state_mixin.dart';
 import 'package:wqhub/turn_icon.dart';
-import 'package:wqhub/wq/annotated_game_tree.dart';
 import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
@@ -29,12 +28,9 @@ class TimeFrenzyPage extends StatefulWidget {
 const _sessionLength = Duration(minutes: 3);
 
 class _TimeFrenzyPageState extends State<TimeFrenzyPage>
-    with SolveStatusNotifier {
+    with TaskSolvingStateMixin {
   final _timeDisplayKey = GlobalKey(debugLabel: 'time-display');
   final _stopwatch = Stopwatch();
-  VariationTreeIterator? _vtreeIt;
-  var _gameTree = AnnotatedGameTree(19);
-  var _turn = wq.Color.black;
   var _taskNumber = 1;
   var _mistakeCount = 0;
   var _solveCount = 0;
@@ -43,7 +39,6 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
   @override
   void initState() {
     super.initState();
-    _restartCurrentTask();
     _stopwatch.start();
   }
 
@@ -92,10 +87,10 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
         return Board(
           size: boardSize,
           settings: boardSettings,
-          onPointClicked: (p) => _onPointClicked(p, wideLayout),
-          turn: _turn,
-          stones: _gameTree.stones,
-          annotations: _gameTree.annotations,
+          onPointClicked: (p) => onMove(p, wideLayout),
+          turn: turn,
+          stones: gameTree.stones,
+          annotations: gameTree.annotations,
           confirmTap: context.settings.confirmMoves,
         );
       },
@@ -175,41 +170,15 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     }
   }
 
-  void _onPointClicked(wq.Point p, bool wideLayout) {
-    if (_gameTree.moveAnnotated((col: _turn, p: p),
-            mode: AnnotationMode.variation) !=
-        null) {
-      if (context.settings.sound) {
-        AudioController().playForNode(_gameTree.curNode);
-      }
-      final status = _vtreeIt!.move(p);
-      _turn = _turn.opposite;
-      if (status != null) {
-        _setSolveStatus(status, wideLayout);
-      } else {
-        final resp = _vtreeIt!.genMove();
-        _gameTree.moveAnnotated((col: _turn, p: resp),
-            mode: AnnotationMode.variation);
-        _turn = _turn.opposite;
-        final status = _vtreeIt!.move(resp);
-        if (status != null) {
-          _setSolveStatus(status, wideLayout);
-        }
-      }
-      setState(() {/* Update board */});
-    }
-  }
+  @override
+  Task get currentTask => widget.taskSource.task;
 
-  void _setSolveStatus(VariationStatus status, bool wideLayout) {
-    notifySolveStatus(status, wideLayout);
+  @override
+  void onSolveStatus(VariationStatus status) {
     if (status == VariationStatus.correct) {
-      if (context.settings.sound) AudioController().correct();
       _solveCount++;
-      context.stats.incrementTotalPassCount(widget.taskSource.task.rank);
     } else {
-      if (context.settings.sound) AudioController().wrong();
       _mistakeCount++;
-      context.stats.incrementTotalFailCount(widget.taskSource.task.rank);
       if (_mistakeCount == 3) {
         _endRun();
         return;
@@ -220,8 +189,9 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     if (widget.taskSource.task.rank.index > _maxRank.index) {
       _maxRank = widget.taskSource.task.rank;
     }
-    _restartCurrentTask();
+    setupCurrentTask();
     _stopwatch.reset();
+    solveStatus = null;
   }
 
   void _endRun() {
@@ -235,19 +205,6 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     );
     context.stats.updateTimeFrenzyHighScore(_solveCount);
     setState(() {/* Stop the timer */});
-  }
-
-  void _restartCurrentTask() {
-    _vtreeIt =
-        VariationTreeIterator(tree: widget.taskSource.task.variationTree);
-    _gameTree = AnnotatedGameTree(widget.taskSource.task.boardSize);
-    for (final entry in widget.taskSource.task.initialStones.entries) {
-      for (final p in entry.value) {
-        _gameTree
-            .moveAnnotated((col: entry.key, p: p), mode: AnnotationMode.none);
-      }
-    }
-    _turn = widget.taskSource.task.first;
   }
 }
 

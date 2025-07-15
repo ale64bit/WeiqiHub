@@ -19,7 +19,7 @@ final class TimeFrenzyTaskSource extends TaskSource {
   int _mistakeCount = 0;
 
   TimeFrenzyTaskSource()
-      : _cur = TaskRepository().read(Rank.k15, _taskTypes, 1).first;
+      : _cur = TaskRepository().readByTypes(Rank.k15, _taskTypes, 1).first;
 
   @override
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {
@@ -31,8 +31,9 @@ final class TimeFrenzyTaskSource extends TaskSource {
         _rank = max(_rank - _mistakeCount, Rank.k15.index.toDouble());
     }
     onRankChanged?.call(_rank);
-    _cur =
-        TaskRepository().read(Rank.values[_rank.toInt()], _taskTypes, 1).first;
+    _cur = TaskRepository()
+        .readByTypes(Rank.values[_rank.toInt()], _taskTypes, 1)
+        .first;
     return true;
   }
 

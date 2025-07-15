@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
 import 'package:wqhub/random_util.dart';
 import 'package:wqhub/train/rank_range.dart';
+import 'package:wqhub/train/task_source/distribution_task_source.dart';
+import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
@@ -19,6 +21,19 @@ class TaskRef {
   final int id;
 
   const TaskRef({required this.rank, required this.type, required this.id});
+
+  factory TaskRef.ofUri(String link) {
+    final uri = Uri.parse(link);
+    if (uri.scheme != 'wqhub') {
+      throw FormatException('unrecognized scheme: ${uri.scheme}');
+    }
+    final p = uri.pathSegments.last;
+    return TaskRef(
+      rank: Rank.values[int.parse(p.substring(0, 2), radix: 16)],
+      type: TaskType.values[int.parse(p.substring(2, 4), radix: 16)],
+      id: int.parse(p.substring(4), radix: 16),
+    );
+  }
 
   @override
   int get hashCode => Object.hash(rank, type, id);
@@ -414,7 +429,7 @@ class TaskRepository {
     return _buckets[(rank, type)]?.readOne();
   }
 
-  IList<Task> read(wq.Rank rank, ISet<TaskType> types, int n) {
+  IList<Task> readByTypes(Rank rank, ISet<TaskType> types, int n) {
     assert(types.isNotEmpty);
     final bucketDist = types
         .mapNotNull((t) => _buckets[(rank, t)])
@@ -458,6 +473,56 @@ class TaskRepository {
       tasks.add(readById(rank, type, id)!);
     }
     return IList(tasks);
+  }
+
+  TaskSource taskSourceByTypes(RankRange rankRange, ISet<TaskType> taskTypes) {
+    final buckets = [
+      for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
+        for (final taskType in taskTypes)
+          if (_buckets[(Rank.values[i], taskType)] != null)
+            (
+              _buckets[(Rank.values[i], taskType)]!,
+              _buckets[(Rank.values[i], taskType)]!.size,
+            )
+    ];
+    return DistributionTaskSource(
+      buckets: buckets,
+      nextTask: (_TaskBucket bucket) => bucket.readOne(),
+    );
+  }
+
+  TaskSource taskSourceByTag(RankRange rankRange, TaskTag tag) {
+    final buckets = [
+      for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
+        if (_tags.tasks[(Rank.values[i], tag)] != null)
+          (
+            (Rank.values[i], _tags.tasks[(Rank.values[i], tag)]!),
+            _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0
+          )
+    ];
+    return DistributionTaskSource(
+      buckets: buckets,
+      nextTask: ((Rank, _TagBucket) bucket) {
+        final (rank, tagBucket) = bucket;
+        final (type, id) = tagBucket.next();
+        return readById(rank, type, id)!;
+      },
+    );
+  }
+
+  int countByTypes(RankRange rankRange, ISet<TaskType> types) {
+    var total = 0;
+    for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
+      for (final type in types)
+        total += _buckets[(Rank.values[i], type)]?.size ?? 0;
+    return total;
+  }
+
+  int countByTag(RankRange rankRange, TaskTag tag) {
+    var total = 0;
+    for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
+      total += _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0;
+    return total;
   }
 
   TaskCollection collections() => _collectionRoot;
