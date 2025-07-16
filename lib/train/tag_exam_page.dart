@@ -20,6 +20,12 @@ class TagExamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ranks = tag.ranks();
+    final currentIndex = ranks.indexWhere((rank) => 
+      rank.from == rankRange.from && rank.to == rankRange.to
+    );
+    final hasNextRank = currentIndex != -1 && currentIndex + 1 < ranks.length;
+
     return ExamPage(
       title: "Topic Exam",
       taskCount: taskCount,
@@ -29,6 +35,9 @@ class TagExamPage extends StatelessWidget {
       onPass: () => context.stats.incrementTagExamPassCount(tag, rankRange),
       onFail: () => context.stats.incrementTagExamFailCount(tag, rankRange),
       buildRedoPage: () => TagExamPage(tag: tag, rankRange: rankRange),
+      buildNextPage: hasNextRank 
+        ? () => TagExamPage(tag: tag, rankRange: ranks[currentIndex + 1])
+        : null,
     );
   }
 
