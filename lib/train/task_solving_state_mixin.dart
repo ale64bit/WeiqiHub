@@ -27,8 +27,8 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   void onSolveStatus(VariationStatus status);
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     setupCurrentTask();
   }
 
