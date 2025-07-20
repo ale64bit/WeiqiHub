@@ -1,8 +1,16 @@
 # Changelog
 
+## 0.1.9
+- add Next button for topic exams 
+
 ## 0.1.8
 - add file picker dialog to save games on desktop
 - add task topics
+- fix: starting a collection warns about ongoing sessions
+- fix: collections page refreshes after exiting current session
+- add mode to try custom moves in tasks
+- add Custom Exam mode
+- fix several broken tasks
 
 ## 0.1.7
 - hotfix for Windows game downloads

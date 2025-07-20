@@ -7,6 +7,7 @@ import 'package:wqhub/train/exam_page.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
+import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -30,13 +31,9 @@ class GradingExamPage extends StatelessWidget {
     return ExamPage(
       title: "Grading Exam",
       taskCount: taskCount,
-      taskSource: BlackToPlaySource(
-        source: ConstTaskSource(
-            tasks: TaskRepository().read(rank, taskTypes, taskCount)),
-        blackToPlay: context.settings.alwaysBlackToPlay,
-      ),
       timePerTask: timePerTask,
       maxMistakes: maxMistakes,
+      createTaskSource: createTaskSource,
       onPass: () => context.stats.incrementGradingExamPassCount(rank),
       onFail: () => context.stats.incrementGradingExamFailCount(rank),
       buildRedoPage: () => GradingExamPage(rank: rank),
@@ -44,6 +41,14 @@ class GradingExamPage extends StatelessWidget {
         final nextRank = Rank.values[min(rank.index + 1, Rank.p10.index)];
         return GradingExamPage(rank: nextRank);
       },
+    );
+  }
+
+  TaskSource createTaskSource(BuildContext context) {
+    return BlackToPlaySource(
+      source: ConstTaskSource(
+          tasks: TaskRepository().readByTypes(rank, taskTypes, taskCount)),
+      blackToPlay: context.settings.alwaysBlackToPlay,
     );
   }
 }

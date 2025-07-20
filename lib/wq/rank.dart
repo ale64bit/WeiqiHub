@@ -1,4 +1,4 @@
-enum Rank {
+enum Rank implements Comparable<Rank> {
   k30,
   k29,
   k28,
@@ -71,4 +71,14 @@ enum Rank {
     }
     return '${(index - d10.index + frac).toStringAsFixed(1)}P';
   }
+
+  @override
+  int compareTo(Rank other) => index - other.index;
+}
+
+extension RankComparisonOperators on Rank {
+  bool operator <(Rank other) => compareTo(other) < 0;
+  bool operator <=(Rank other) => compareTo(other) <= 0;
+  bool operator >(Rank other) => compareTo(other) > 0;
+  bool operator >=(Rank other) => compareTo(other) >= 0;
 }

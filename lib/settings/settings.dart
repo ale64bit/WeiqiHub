@@ -12,7 +12,8 @@ class Settings {
 
   const Settings(this.prefs);
 
-  static const defaultSaveDirKey = 'default.save_dir';
+  static const _versionPatch = 'internal.version_patch';
+  static const _defaultSaveDirKey = 'default.save_dir';
   static const _themeKey = 'settings.theme';
   static const _behaviourKeyPrefix = 'settings.behaviour';
   static const _soundKey = 'settings.sound';
@@ -24,8 +25,14 @@ class Settings {
   static const _saveDirectory = 'settings.save_dir';
 
   // Internal preferences
+  bool getVersionPatchStatus(String version) =>
+      prefs.getBool('$_versionPatch.$version.status') ?? false;
+  void setVersionPatchStatus(String version, bool status) =>
+      prefs.setBool('$_versionPatch.$version.status', status);
+  set defaultSaveDirectory(String dir) =>
+      prefs.setString(_defaultSaveDirKey, dir);
   String get saveDirectory =>
-      prefs.getString(_saveDirectory) ?? prefs.getString(defaultSaveDirKey)!;
+      prefs.getString(_saveDirectory) ?? prefs.getString(_defaultSaveDirKey)!;
   set saveDirectory(String dir) => prefs.setString(_saveDirectory, dir);
 
   // General

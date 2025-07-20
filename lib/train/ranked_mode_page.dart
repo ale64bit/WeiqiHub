@@ -1,18 +1,13 @@
 import 'dart:math';
 
-import 'package:extension_type_unions/extension_type_unions.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:wqhub/audio/audio_controller.dart';
-import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
-import 'package:wqhub/train/response_delay.dart';
-import 'package:wqhub/train/solve_status_notifier.dart';
 import 'package:wqhub/train/task_action_bar.dart';
+import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_solving_state_mixin.dart';
+import 'package:wqhub/train/upsolve_mode.dart';
 import 'package:wqhub/turn_icon.dart';
-import 'package:wqhub/wq/annotated_game_tree.dart';
 import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
@@ -31,21 +26,14 @@ class RankedModePage extends StatefulWidget {
 }
 
 class _RankedModePageState extends State<RankedModePage>
-    with SolveStatusNotifier {
+    with TaskSolvingStateMixin {
   final _stopwatch = Stopwatch();
-  VariationTreeIterator? _vtreeIt;
-  var _gameTree = AnnotatedGameTree(19);
-  var _turn = wq.Color.black;
   var _taskNumber = 1;
-  VariationStatus? _solveStatus;
-  bool _solveStatusNotified = false;
-  IMapOfSets<wq.Point, Annotation>? _continuationAnnotations;
 
   @override
   void initState() {
     super.initState();
     _stopwatch.start();
-    _setupCurrentTask();
   }
 
   @override
@@ -92,10 +80,10 @@ class _RankedModePageState extends State<RankedModePage>
         return Board(
           size: boardSize,
           settings: boardSettings,
-          onPointClicked: (p) => _onPointClicked(p, wideLayout),
-          turn: _turn,
-          stones: _gameTree.stones,
-          annotations: _continuationAnnotations ?? _gameTree.annotations,
+          onPointClicked: (p) => onMove(p, wideLayout),
+          turn: turn,
+          stones: gameTree.stones,
+          annotations: continuationAnnotations ?? gameTree.annotations,
           confirmTap: context.settings.confirmMoves,
         );
       },
@@ -118,11 +106,15 @@ class _RankedModePageState extends State<RankedModePage>
                 taskTitle: taskTitle,
                 taskNumber: _taskNumber,
                 color: widget.taskSource.task.first,
-                status: _solveStatus,
-                onShowSolution: _onShowContinuations,
-                onShare: _onShare,
-                onReplay: _onReplay,
-                onNext: _onNext,
+                status: solveStatus,
+                upsolveMode: upsolveMode,
+                onShowSolution: onShowContinuations,
+                onShareTask: onShareTask,
+                onResetTask: onResetTask,
+                onNextTask: onNextTask,
+                onPreviousMove: onPreviousMove,
+                onNextMove: onNextMove,
+                onUpdateUpsolveMode: onUpdateUpsolveMode,
                 timeDisplay: rankDisplay,
               ),
             ],
@@ -153,146 +145,49 @@ class _RankedModePageState extends State<RankedModePage>
           child: board,
         ),
         bottomNavigationBar: BottomAppBar(
-          child: (_solveStatus == null)
+          child: (solveStatus == null)
               ? Center(child: rankDisplay)
               : TaskActionBar(
-                  onShowSolution: _onShowContinuations,
-                  onShare: _onShare,
-                  onReplay: _onReplay,
-                  onNext: _onNext,
+                  upsolveMode: upsolveMode,
+                  onShowSolution: onShowContinuations,
+                  onShareTask: onShareTask,
+                  onResetTask: onResetTask,
+                  onNextTask: onNextTask,
+                  onPreviousMove: onPreviousMove,
+                  onNextMove: onNextMove,
+                  onUpdateUpsolveMode: onUpdateUpsolveMode,
                 ),
         ),
       );
     }
   }
 
-  void _onReplay() {
-    setState(() {
-      _setupCurrentTask();
-    });
+  @override
+  Task get currentTask => widget.taskSource.task;
+
+  @override
+  void onSolveStatus(VariationStatus status) {
+    _stopwatch.stop();
+    StatsDB().addTaskAttempt(currentTask.rank, currentTask.type, currentTask.id,
+        status == VariationStatus.correct);
+    if (status == VariationStatus.correct) {
+      context.stats.incrementTotalPassCount(currentTask.rank);
+    } else {
+      context.stats.incrementTotalFailCount(currentTask.rank);
+    }
   }
 
-  void _onNext() {
+  void onNextTask() {
     widget.taskSource.next(
-        _solveStatus ?? VariationStatus.wrong, _stopwatch.elapsed,
+        solveStatus ?? VariationStatus.wrong, _stopwatch.elapsed,
         onRankChanged: context.stats.updateRankedModeRank);
     _taskNumber++;
-    _solveStatus = null;
+    solveStatus = null;
     setState(() {
-      _setupCurrentTask();
+      setupCurrentTask();
     });
     _stopwatch.reset();
     _stopwatch.start();
-  }
-
-  void _setupCurrentTask() {
-    _continuationAnnotations = null;
-    _vtreeIt =
-        VariationTreeIterator(tree: widget.taskSource.task.variationTree);
-    _gameTree = AnnotatedGameTree(widget.taskSource.task.boardSize);
-    for (final entry in widget.taskSource.task.initialStones.entries) {
-      for (final p in entry.value) {
-        _gameTree
-            .moveAnnotated((col: entry.key, p: p), mode: AnnotationMode.none);
-      }
-    }
-    _turn = widget.taskSource.task.first;
-    _solveStatusNotified = false;
-  }
-
-  void _onPointClicked(wq.Point p, bool wideLayout) {
-    if (!(_solveStatusNotified || _turn == widget.taskSource.task.first)) {
-      return;
-    }
-
-    if (_gameTree.moveAnnotated((col: _turn, p: p),
-            mode: AnnotationMode.variation) !=
-        null) {
-      if (context.settings.sound) {
-        AudioController().playForNode(_gameTree.curNode);
-      }
-      _continuationAnnotations = null;
-      final status = _vtreeIt!.move(p);
-      _turn = _turn.opposite;
-      if (status != null) {
-        _setSolveStatus(status, wideLayout);
-      } else {
-        switch (context.settings.responseDelay) {
-          case ResponseDelay.none:
-            _generateResponseMove(wideLayout);
-          default:
-            Future.delayed(context.settings.responseDelay.duration, () {
-              _generateResponseMove(wideLayout);
-            });
-        }
-      }
-      setState(() {/* Update board */});
-    }
-  }
-
-  void _generateResponseMove(bool wideLayout) {
-    if (_solveStatusNotified) return;
-
-    final resp = _vtreeIt!.genMove();
-    _gameTree
-        .moveAnnotated((col: _turn, p: resp), mode: AnnotationMode.variation);
-    _turn = _turn.opposite;
-    final status = _vtreeIt!.move(resp);
-    if (status != null) {
-      _setSolveStatus(status, wideLayout);
-    }
-    setState(() {/* Update board */});
-  }
-
-  void _setSolveStatus(VariationStatus status, bool wideLayout) {
-    setState(() {
-      _continuationAnnotations = null;
-    });
-    if (!_solveStatusNotified) {
-      notifySolveStatus(status, wideLayout);
-      _solveStatusNotified = true;
-    }
-    if (_solveStatus == null) {
-      _stopwatch.stop();
-      _solveStatus = status;
-
-      final curTask = widget.taskSource.task;
-      StatsDB().addTaskAttempt(curTask.rank, curTask.type, curTask.id,
-          status == VariationStatus.correct);
-      if (status == VariationStatus.correct) {
-        if (context.settings.sound) AudioController().correct();
-        context.stats.incrementTotalPassCount(curTask.rank);
-      } else {
-        if (context.settings.sound) AudioController().wrong();
-        context.stats.incrementTotalFailCount(curTask.rank);
-      }
-    }
-  }
-
-  _onShowContinuations() {
-    _continuationAnnotations = IMapOfSets.empty();
-    for (final (p, st)
-        in _vtreeIt?.continuations() ?? <(wq.Point, VariationStatus)>[]) {
-      _continuationAnnotations = _continuationAnnotations?.add(p, (
-        type: AnnotationShape.dot.u21,
-        color: switch (st) {
-          VariationStatus.correct => Colors.green,
-          VariationStatus.wrong => Colors.red,
-        },
-      ));
-    }
-    if (_continuationAnnotations?.isNotEmpty ?? false) {
-      setState(() {
-        // Update board annotations
-      });
-    }
-  }
-
-  _onShare() {
-    final link = widget.taskSource.task.deepLink();
-    Clipboard.setData(ClipboardData(text: link)).then((void _) {
-      if (context.mounted) notifyTaskLinkCopied();
-    });
   }
 }
 
@@ -301,10 +196,14 @@ class _SideBar extends StatelessWidget {
   final int taskNumber;
   final wq.Color color;
   final VariationStatus? status;
+  final UpsolveMode upsolveMode;
   final Function()? onShowSolution;
-  final Function()? onShare;
-  final Function()? onReplay;
-  final Function()? onNext;
+  final Function()? onShareTask;
+  final Function()? onResetTask;
+  final Function()? onNextTask;
+  final Function() onPreviousMove;
+  final Function() onNextMove;
+  final Function(UpsolveMode) onUpdateUpsolveMode;
   final Widget timeDisplay;
 
   const _SideBar({
@@ -312,10 +211,14 @@ class _SideBar extends StatelessWidget {
     required this.taskNumber,
     required this.color,
     this.status,
+    required this.upsolveMode,
     required this.onShowSolution,
-    required this.onShare,
-    required this.onReplay,
-    required this.onNext,
+    required this.onShareTask,
+    required this.onResetTask,
+    required this.onNextTask,
+    required this.onPreviousMove,
+    required this.onNextMove,
+    required this.onUpdateUpsolveMode,
     required this.timeDisplay,
   });
 
@@ -360,10 +263,14 @@ class _SideBar extends StatelessWidget {
                     child: timeDisplay,
                   )
                 : TaskActionBar(
+                    upsolveMode: upsolveMode,
                     onShowSolution: onShowSolution,
-                    onShare: onShare,
-                    onNext: onNext,
-                    onReplay: onReplay,
+                    onShareTask: onShareTask,
+                    onNextTask: onNextTask,
+                    onResetTask: onResetTask,
+                    onPreviousMove: onPreviousMove,
+                    onNextMove: onNextMove,
+                    onUpdateUpsolveMode: onUpdateUpsolveMode,
                   ),
           ],
         ),

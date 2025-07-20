@@ -5,6 +5,7 @@ import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
+import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/task_tag.dart';
 
 class TagExamPage extends StatelessWidget {
@@ -19,19 +20,32 @@ class TagExamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ranks = tag.ranks();
+    final currentIndex = ranks.indexWhere((rank) => 
+      rank.from == rankRange.from && rank.to == rankRange.to
+    );
+    final hasNextRank = currentIndex != -1 && currentIndex + 1 < ranks.length;
+
     return ExamPage(
       title: "Topic Exam",
       taskCount: taskCount,
-      taskSource: BlackToPlaySource(
-        source: ConstTaskSource(
-            tasks: TaskRepository().readByTag(tag, rankRange, taskCount)),
-        blackToPlay: context.settings.alwaysBlackToPlay,
-      ),
       timePerTask: timePerTask,
       maxMistakes: maxMistakes,
+      createTaskSource: createTaskSource,
       onPass: () => context.stats.incrementTagExamPassCount(tag, rankRange),
       onFail: () => context.stats.incrementTagExamFailCount(tag, rankRange),
       buildRedoPage: () => TagExamPage(tag: tag, rankRange: rankRange),
+      buildNextPage: hasNextRank 
+        ? () => TagExamPage(tag: tag, rankRange: ranks[currentIndex + 1])
+        : null,
+    );
+  }
+
+  TaskSource createTaskSource(BuildContext context) {
+    return BlackToPlaySource(
+      source: ConstTaskSource(
+          tasks: TaskRepository().readByTag(tag, rankRange, taskCount)),
+      blackToPlay: context.settings.alwaysBlackToPlay,
     );
   }
 }
