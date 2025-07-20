@@ -29,31 +29,29 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
               },
             ),
           ),
-          Visibility(
-            visible: context.settings.confirmMoves,
-            child: ListTile(
+          if (context.settings.confirmMoves)
+            ListTile(
               title: const Text('Select board size'),
               subtitle: const Text(
                   'Select board size equal or greater to double-tap'),
-              trailing: DropdownButton<String>(
+              trailing: DropdownButton<int>(
                 value: context.settings.confirmMovesBoardSize,
                 items: BoardSizes.values.map((boardSize) {
-                  return DropdownMenuItem<String>(
+                  return DropdownMenuItem<int>(
                     value: boardSize.value,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(boardSize.value),
+                      child: Text('${boardSize.value}x${boardSize.value}'),
                     ),
                   );
                 }).toList(),
                 borderRadius: BorderRadius.circular(8),
-                onChanged: (String? boardSize) {
-                  context.settings.confirmMovesBoardSize = boardSize.toString();
+                onChanged: (int? boardSize) {
+                  context.settings.confirmMovesBoardSize = boardSize ?? BoardSizes.size_9.value;
                   setState(() {});
                 },
               ),
             ),
-          ),
           ListTile(
             title: const Text('Response delay'),
             subtitle: const Text(

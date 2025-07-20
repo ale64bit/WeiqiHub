@@ -1,8 +1,8 @@
 enum BoardSizes {
-  board_9x9("9x9"),
-  board_13x13("13x13"),
-  board_19x19("19x19");
+  size_9(9),
+  size_13(13),
+  size_19(19);
 
-  final String value;
+  final int value;
   const BoardSizes(this.value);
 }

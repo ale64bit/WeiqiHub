@@ -292,8 +292,7 @@ class _BoardState extends State<Board> {
   }
 
   bool boardIsLarge() {
-    final int confirmMoveboardSize =
-        int.parse(context.settings.confirmMovesBoardSize.split("x")[0]);
+    final int confirmMoveboardSize = context.settings.confirmMovesBoardSize;
     final int currentBoardSize = widget.settings.visibleSize;
     return confirmMoveboardSize <= currentBoardSize;
   }

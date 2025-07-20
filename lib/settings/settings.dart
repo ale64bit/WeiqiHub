@@ -55,11 +55,11 @@ class Settings {
   set confirmMoves(bool val) =>
       prefs.setBool('$_behaviourKeyPrefix.confirm_moves', val);
 
-  String get confirmMovesBoardSize =>
-      prefs.getString('$_behaviourKeyPrefix.confirm_moves_board_size') ??
-      BoardSizes.board_9x9.value;
+  int get confirmMovesBoardSize =>
+      prefs.getInt('$_behaviourKeyPrefix.confirm_moves_board_size') ??
+      BoardSizes.size_9.value;
 
-  set confirmMovesBoardSize(String boardSize) => prefs.setString(
+  set confirmMovesBoardSize(int boardSize) => prefs.setInt(
       '$_behaviourKeyPrefix.confirm_moves_board_size', boardSize);
 
   ResponseDelay get responseDelay => ResponseDelay.values[
