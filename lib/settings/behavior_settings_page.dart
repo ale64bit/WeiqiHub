@@ -16,7 +16,7 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Behaviour')),
       body: ListView(
-        children: <Widget>[
+        children: <ListTile>[
           ListTile(
             title: const Text('Confirm moves'),
             subtitle: const Text(
