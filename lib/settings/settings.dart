@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
+import 'package:wqhub/board/board_sizes.dart';
 import 'package:wqhub/train/response_delay.dart';
 
 class Settings {
@@ -60,6 +61,13 @@ class Settings {
 
   set confirmMoves(bool val) =>
       prefs.setBool('$_behaviourKeyPrefix.confirm_moves', val);
+
+  int get confirmMovesBoardSize =>
+      prefs.getInt('$_behaviourKeyPrefix.confirm_moves_board_size') ??
+      BoardSizes.size_9.value;
+
+  set confirmMovesBoardSize(int boardSize) => prefs.setInt(
+      '$_behaviourKeyPrefix.confirm_moves_board_size', boardSize);
 
   ResponseDelay get responseDelay => ResponseDelay.values[
       prefs.getInt('$_behaviourKeyPrefix.response_delay') ??
