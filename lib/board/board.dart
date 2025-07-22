@@ -316,7 +316,7 @@ class _BoardState extends State<Board> {
   void pointerHoverUpdate(PointerEvent event) {
     final p = widget.offsetPoint(event.localPosition);
 
-    if(confirmPoint != null){
+    if (confirmPoint != null) {
       setState(() {
         lastHoverPoint = null;
       });
@@ -343,10 +343,9 @@ class _BoardState extends State<Board> {
 
   void _onPointerHover(PointerHoverEvent event) {
     final p = widget.offsetPoint(event.localPosition);
-    if( p == confirmPoint){
+    if (p == confirmPoint) {
       lastHoverPoint = null;
-    } else if (p == lastHoverPoint || lastPointPressed != null)
-      return;
+    } else if (p == lastHoverPoint || lastPointPressed != null) return;
     pointerHoverUpdate(event);
   }
 
