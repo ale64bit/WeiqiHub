@@ -2,6 +2,8 @@
 
 ## 0.1.9
 - add Next button for topic exams 
+- fix: redo button bug on custom exams
+- fix many broken tasks
 
 ## 0.1.8
 - add file picker dialog to save games on desktop
