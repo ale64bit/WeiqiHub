@@ -49,6 +49,8 @@ class CustomExamPage extends StatelessWidget {
         rankRange: rankRange,
         maxMistakes: maxMistakes,
         taskSourceType: taskSourceType,
+        taskTypes: taskTypes,
+        taskTag: taskTag,
         collectStats: collectStats,
       ),
       collectStats: collectStats,
