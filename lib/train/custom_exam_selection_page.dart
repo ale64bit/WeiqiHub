@@ -32,6 +32,8 @@ class _CustomExamSelectionPageState extends State<CustomExamSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final taskCount = availableTasks();
+    final availableTasksText = Text('$taskCount tasks available');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Custom exam'),
@@ -137,8 +139,7 @@ class _CustomExamSelectionPageState extends State<CustomExamSelectionPage> {
                                 )
                             ],
                           ),
-                          Text(
-                              '${TaskRepository().countByTypes(_rankRange, ISet(_selectedTaskTypes))} tasks available'),
+                          availableTasksText,
                         ],
                       TaskSourceType.fromTaskTag => <Widget>[
                           DropdownButtonFormField<TaskTag>(
@@ -187,12 +188,10 @@ class _CustomExamSelectionPageState extends State<CustomExamSelectionPage> {
                               }
                             },
                           ),
-                          Text(
-                              '${TaskRepository().countByTag(_rankRange, _subtag)} tasks available'),
+                          availableTasksText,
                         ],
                       TaskSourceType.fromMistakes => <Widget>[
-                          Text(
-                              '${StatsDB().countMistakesByRange(_rankRange)} tasks available'),
+                          availableTasksText,
                         ],
                     },
                     CheckboxListTile(
@@ -222,36 +221,38 @@ class _CustomExamSelectionPageState extends State<CustomExamSelectionPage> {
                 Expanded(
                   child: FilledButton(
                     child: const Text('Start'),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PopScope(
-                              canPop: false,
-                              child: CustomExamPage(
-                                taskCount: _taskCount,
-                                timePerTask: _timePerTask,
-                                rankRange: _rankRange,
-                                maxMistakes: _maxMistakes,
-                                taskSourceType: _taskSourceType,
-                                taskTypes: ISet(_selectedTaskTypes),
-                                taskTag: _subtag,
-                                collectStats: _collectStats,
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text(
-                                'Invalid exam settings. Please fix the errors.'),
-                            showCloseIcon: true,
-                          ),
-                        );
-                      }
-                    },
+                    onPressed: taskCount == 0
+                        ? null
+                        : () {
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PopScope(
+                                    canPop: false,
+                                    child: CustomExamPage(
+                                      taskCount: _taskCount,
+                                      timePerTask: _timePerTask,
+                                      rankRange: _rankRange,
+                                      maxMistakes: _maxMistakes,
+                                      taskSourceType: _taskSourceType,
+                                      taskTypes: ISet(_selectedTaskTypes),
+                                      taskTag: _subtag,
+                                      collectStats: _collectStats,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text(
+                                      'Invalid exam settings. Please fix the errors.'),
+                                  showCloseIcon: true,
+                                ),
+                              );
+                            }
+                          },
                   ),
                 ),
               ],
@@ -261,4 +262,13 @@ class _CustomExamSelectionPageState extends State<CustomExamSelectionPage> {
       ),
     );
   }
+
+  int availableTasks() => switch (_taskSourceType) {
+        TaskSourceType.fromTaskTypes =>
+          TaskRepository().countByTypes(_rankRange, ISet(_selectedTaskTypes)),
+        TaskSourceType.fromTaskTag =>
+          TaskRepository().countByTag(_rankRange, _subtag),
+        TaskSourceType.fromMistakes =>
+          StatsDB().countMistakesByRange(_rankRange),
+      };
 }
