@@ -3,6 +3,7 @@
 ## 0.1.9
 - add Next button for topic exams 
 - fix: redo button bug on custom exams
+- fix: disable start custom exam if there are no tasks available
 - fix many broken tasks
 
 ## 0.1.8
