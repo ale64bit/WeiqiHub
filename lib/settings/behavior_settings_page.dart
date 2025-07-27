@@ -31,9 +31,9 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
           ),
           if (context.settings.confirmMoves)
             ListTile(
-              title: const Text('Select board size'),
+              title: const Text('Confirm board size'),
               subtitle: const Text(
-                  'Select board size equal or greater to double-tap'),
+                  'Boards of this size or larger require move confirmation'),
               trailing: DropdownButton<int>(
                 value: context.settings.confirmMovesBoardSize,
                 items: BoardSizes.values.map((boardSize) {
@@ -41,13 +41,14 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
                     value: boardSize.value,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('${boardSize.value}x${boardSize.value}'),
+                      child: Text('${boardSize.value}×${boardSize.value}'),
                     ),
                   );
                 }).toList(),
                 borderRadius: BorderRadius.circular(8),
                 onChanged: (int? boardSize) {
-                  context.settings.confirmMovesBoardSize = boardSize ?? BoardSizes.size_9.value;
+                  context.settings.confirmMovesBoardSize =
+                      boardSize ?? BoardSizes.size_9.value;
                   setState(() {});
                 },
               ),
@@ -76,8 +77,8 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
           ),
           ListTile(
             title: const Text('Always black-to-play'),
-            subtitle: const Text(
-                'Set all tasks as black-to-play to avoid confusion.'),
+            subtitle:
+                const Text('Set all tasks as black-to-play to avoid confusion'),
             trailing: Switch(
               value: context.settings.alwaysBlackToPlay,
               onChanged: (value) {
