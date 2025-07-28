@@ -70,14 +70,23 @@ enum GameState {
   over,
 }
 
+abstract class GameListener {
+  void onSetup(Game game);
+  void onPass(String gid);
+  void onMove(String gid, wq.Move move);
+  void onResult(String gid, GameResult result);
+}
+
 class GamePage extends StatefulWidget {
   final ServerFeatures serverFeatures;
   final Game game;
+  final GameListener? gameListener;
 
   const GamePage({
     super.key,
     required this.serverFeatures,
     required this.game,
+    this.gameListener,
   });
 
   @override
@@ -112,13 +121,26 @@ class _GamePageState extends State<GamePage> {
       _turn = mv.col.opposite;
     }
 
-    widget.game.moves().forEach((mv) => mv == null ? onPass() : onMove(mv));
-    widget.game.result().then(onGameResult, onError: onGameError);
+    widget.game.moves().forEach((mv) {
+      if (mv == null) {
+        onPass();
+        widget.gameListener?.onPass(widget.game.id);
+      } else {
+        onMove(mv);
+        widget.gameListener?.onMove(widget.game.id, mv);
+      }
+    });
+    widget.game.result().then((res) {
+      onGameResult(res);
+      widget.gameListener?.onResult(widget.game.id, res);
+    }, onError: onGameError);
     widget.game
         .automaticCountingResponses()
         .forEach(onAgreeToAutomaticCounting);
     widget.game.countingResultResponses().forEach(onAcceptCountingResult);
     widget.game.countingResults().forEach(onCountingResult);
+
+    widget.gameListener?.onSetup(widget.game);
   }
 
   @override
