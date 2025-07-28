@@ -167,6 +167,7 @@ class _CollectionPageState extends State<CollectionPage>
           child: board,
         ),
         bottomNavigationBar: BottomAppBar(
+          height: upsolveMode == UpsolveMode.auto ? 80.0 : 160.0,
           child: (solveStatus == null)
               ? Center(child: timeDisplay)
               : TaskActionBar(

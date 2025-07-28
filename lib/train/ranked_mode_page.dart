@@ -145,6 +145,7 @@ class _RankedModePageState extends State<RankedModePage>
           child: board,
         ),
         bottomNavigationBar: BottomAppBar(
+          height: upsolveMode == UpsolveMode.auto ? 80.0 : 160.0,
           child: (solveStatus == null)
               ? Center(child: rankDisplay)
               : TaskActionBar(
