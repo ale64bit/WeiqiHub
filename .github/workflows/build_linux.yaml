@@ -28,7 +28,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.27.4
       - name: Install Flutter dependencies
         run: flutter pub get
       - name: Create debug symbols directory
