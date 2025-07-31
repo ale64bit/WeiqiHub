@@ -30,6 +30,24 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
+abstract class GameListener {
+  void onSetup(Game game);
+  void onPass(String gid);
+  void onMove(String gid, wq.Move move);
+  void onResult(String gid, GameResult result);
+}
+
+class GameRouteArguments {
+  final ServerFeatures serverFeatures;
+  final Game game;
+  final GameListener? gameListener;
+
+  const GameRouteArguments(
+      {required this.serverFeatures,
+      required this.game,
+      required this.gameListener});
+}
+
 /*
 State machine for the GamePage
 ================================================================================
@@ -70,14 +88,9 @@ enum GameState {
   over,
 }
 
-abstract class GameListener {
-  void onSetup(Game game);
-  void onPass(String gid);
-  void onMove(String gid, wq.Move move);
-  void onResult(String gid, GameResult result);
-}
-
 class GamePage extends StatefulWidget {
+  static const routeName = '/play/game';
+
   final ServerFeatures serverFeatures;
   final Game game;
   final GameListener? gameListener;

@@ -4,7 +4,15 @@ import 'package:wqhub/play/login_form.dart';
 import 'package:wqhub/play/server_lobby_page.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
+class ServerLoginRouteArguments {
+  final GameClient gameClient;
+
+  const ServerLoginRouteArguments({required this.gameClient});
+}
+
 class ServerLoginPage extends StatefulWidget {
+  static const routeName = '/play/login';
+
   const ServerLoginPage({super.key, required this.gameClient});
 
   final GameClient gameClient;
@@ -66,12 +74,10 @@ class _ServerLoginPageState extends State<ServerLoginPage> {
       if (context.mounted) {
         context.settings.setUsername(widget.gameClient.serverInfo.id, username);
         context.settings.setPassword(widget.gameClient.serverInfo.id, password);
-        Navigator.pushReplacement(
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) =>
-                ServerLobbyPage(gameClient: widget.gameClient),
-          ),
+          ServerLobbyPage.routeName,
+          arguments: ServerLobbyRouteArguments(gameClient: widget.gameClient),
         );
       }
     }, onError: (err) {

@@ -28,8 +28,10 @@ class ExamPage extends StatefulWidget {
     required this.createTaskSource,
     required this.onPass,
     required this.onFail,
-    required this.buildRedoPage,
-    this.buildNextPage,
+    required this.baseRoute,
+    required this.exitRoute,
+    required this.redoRouteArguments,
+    this.nextRouteArguments,
     this.collectStats = true,
   });
 
@@ -40,8 +42,10 @@ class ExamPage extends StatefulWidget {
   final TaskSource Function(BuildContext) createTaskSource;
   final Function() onPass;
   final Function() onFail;
-  final Widget Function() buildRedoPage;
-  final Widget Function()? buildNextPage;
+  final String baseRoute;
+  final String exitRoute;
+  final dynamic redoRouteArguments;
+  final dynamic nextRouteArguments;
   final bool collectStats;
 
   @override
@@ -153,7 +157,8 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                 onNextTask: _onNext,
                 onCancelExam: () {
                   widget.onFail();
-                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.popUntil(
+                      context, ModalRoute.withName(widget.exitRoute));
                 },
                 onPreviousMove: onPreviousMove,
                 onNextMove: onNextMove,
@@ -187,7 +192,8 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                         'Are you sure that you want to stop the ${widget.title}?',
                     onYes: () {
                       widget.onFail();
-                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(widget.exitRoute));
                     },
                     onNo: () {
                       Navigator.pop(context);
@@ -256,31 +262,24 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
           passed: passed,
           mistakeCount: _mistakeCount,
           taskCount: widget.taskCount,
-          onExit: () => Navigator.popUntil(context, (route) => route.isFirst),
+          onExit: () => Navigator.popUntil(
+              context, ModalRoute.withName(widget.exitRoute)),
           onRedo: () {
             Navigator.pop(context);
-            Navigator.pushReplacement(
+            Navigator.pushReplacementNamed(
               context,
-              MaterialPageRoute(
-                builder: (context) => PopScope(
-                  canPop: false,
-                  child: widget.buildRedoPage(),
-                ),
-              ),
+              widget.baseRoute,
+              arguments: widget.redoRouteArguments,
             );
           },
           onNext: _mistakeCount <= widget.maxMistakes &&
-                  widget.buildNextPage != null
+                  widget.nextRouteArguments != null
               ? () {
                   Navigator.pop(context);
-                  Navigator.pushReplacement(
+                  Navigator.pushReplacementNamed(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => PopScope(
-                        canPop: false,
-                        child: widget.buildNextPage!(),
-                      ),
-                    ),
+                    widget.baseRoute,
+                    arguments: widget.nextRouteArguments,
                   );
                 }
               : null,

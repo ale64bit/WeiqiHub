@@ -13,7 +13,15 @@ import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
+class SingleTaskRouteArguments {
+  final Task task;
+
+  const SingleTaskRouteArguments({required this.task});
+}
+
 class SingleTaskPage extends StatefulWidget {
+  static const routeName = '/task';
+
   const SingleTaskPage({super.key, required this.task});
 
   final Task task;

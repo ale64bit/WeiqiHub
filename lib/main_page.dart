@@ -5,6 +5,7 @@ import 'package:wqhub/main_page_navigation_rail.dart';
 import 'package:wqhub/play/server_card.dart';
 import 'package:wqhub/settings/settings_button.dart';
 import 'package:wqhub/settings/settings_page.dart';
+import 'package:wqhub/settings/settings_route_arguments.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/collections_page.dart';
 import 'package:wqhub/train/custom_exam_selection_page.dart';
@@ -25,17 +26,27 @@ import 'package:wqhub/window_class_aware_state.dart';
 
 enum MainPageDestination { home, play, train }
 
-class MainPage extends StatefulWidget {
+class MainRouteArguments {
+  final MainPageDestination destination;
   final Function() reloadAppTheme;
 
-  const MainPage({super.key, required this.reloadAppTheme});
+  const MainRouteArguments(
+      {required this.destination, required this.reloadAppTheme});
+}
+
+class MainPage extends StatefulWidget {
+  final MainPageDestination destination;
+  final Function() reloadAppTheme;
+
+  const MainPage(
+      {super.key, required this.destination, required this.reloadAppTheme});
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends WindowClassAwareState<MainPage> {
-  MainPageDestination _selectedDestination = MainPageDestination.home;
+  late MainPageDestination _selectedDestination = widget.destination;
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +82,11 @@ class _MainPageState extends WindowClassAwareState<MainPage> {
               heroTag: null,
               child: Icon(Icons.settings),
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        SettingsPage(reloadAppTheme: widget.reloadAppTheme),
-                  ),
+                  SettingsPage.routeName,
+                  arguments: SettingsRouteArguments(
+                      reloadAppTheme: widget.reloadAppTheme),
                 );
               },
             ),
@@ -111,12 +121,7 @@ class _Home extends StatelessWidget {
     return Center(
       child: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const LocalBoardPage(),
-            ),
-          );
+          Navigator.pushNamed(context, LocalBoardPage.routeName);
         },
         icon: Icon(Icons.grid_on),
         label: const Text('Board'),
@@ -164,12 +169,8 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GradingExamSelectionPage(),
-                  ),
-                );
+                Navigator.pushNamed(
+                    context, GradingExamSelectionPage.routeName);
               },
               icon: Icon(Icons.verified),
               label: const Text('Grading exam'),
@@ -177,12 +178,8 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EndgameExamSelectionPage(),
-                  ),
-                );
+                Navigator.pushNamed(
+                    context, EndgameExamSelectionPage.routeName);
               },
               icon: Icon(Icons.verified),
               label: const Text('Endgame exam'),
@@ -190,17 +187,13 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => PopScope(
-                      canPop: false,
-                      child: TimeFrenzyPage(
-                        taskSource: BlackToPlaySource(
-                          source: TimeFrenzyTaskSource(),
-                          blackToPlay: context.settings.alwaysBlackToPlay,
-                        ),
-                      ),
+                  TimeFrenzyPage.routeName,
+                  arguments: TimeFrenzyRouteArguments(
+                    taskSource: BlackToPlaySource(
+                      source: TimeFrenzyTaskSource(),
+                      blackToPlay: context.settings.alwaysBlackToPlay,
                     ),
                   ),
                 );
@@ -211,18 +204,14 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => PopScope(
-                      canPop: false,
-                      child: RankedModePage(
-                        taskSource: BlackToPlaySource(
-                          source: RankedModeTaskSource(
-                              context.stats.rankedModeRank),
-                          blackToPlay: context.settings.alwaysBlackToPlay,
-                        ),
-                      ),
+                  RankedModePage.routeName,
+                  arguments: RankedModeRouteArguments(
+                    taskSource: BlackToPlaySource(
+                      source:
+                          RankedModeTaskSource(context.stats.rankedModeRank),
+                      blackToPlay: context.settings.alwaysBlackToPlay,
                     ),
                   ),
                 );
@@ -233,12 +222,7 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CollectionsPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, CollectionsPage.routeName);
               },
               icon: Icon(Icons.book),
               label: const Text('Collections'),
@@ -246,12 +230,7 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TagsPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, TagsPage.routeName);
               },
               icon: Icon(Icons.category),
               label: const Text('Topics'),
@@ -259,12 +238,7 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CustomExamSelectionPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, CustomExamSelectionPage.routeName);
               },
               icon: Icon(Icons.tune),
               label: const Text('Custom exam'),
@@ -281,13 +255,14 @@ class _Train extends StatelessWidget {
                     if (dismissed) return;
                     if (task != null) {
                       if (context.mounted) {
-                        Navigator.push(
+                        Navigator.pushNamed(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => SingleTaskPage(
-                                  task: context.settings.alwaysBlackToPlay
-                                      ? task.withBlackToPlay()
-                                      : task)),
+                          SingleTaskPage.routeName,
+                          arguments: SingleTaskRouteArguments(
+                            task: context.settings.alwaysBlackToPlay
+                                ? task.withBlackToPlay()
+                                : task,
+                          ),
                         );
                       }
                     } else {
@@ -316,12 +291,7 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MyMistakesPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, MyMistakesPage.routeName);
               },
               icon: Icon(Icons.sentiment_very_dissatisfied),
               label: const Text('My mistakes'),
@@ -329,12 +299,7 @@ class _Train extends StatelessWidget {
             FloatingActionButton.extended(
               heroTag: null,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TrainStatsPage(),
-                  ),
-                );
+                Navigator.pushNamed(context, TrainStatsPage.routeName);
               },
               icon: Icon(Icons.query_stats),
               label: const Text('Statistics'),

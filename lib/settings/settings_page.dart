@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/settings/about_page.dart';
 import 'package:wqhub/settings/appearance_settings_page.dart';
 import 'package:wqhub/settings/behavior_settings_page.dart';
+import 'package:wqhub/settings/settings_route_arguments.dart';
 import 'package:wqhub/settings/sound_settings_page.dart';
 
 class SettingsPage extends StatefulWidget {
+  static const routeName = '/settings';
+
   final Function() reloadAppTheme;
 
   const SettingsPage({super.key, required this.reloadAppTheme});
@@ -24,12 +27,11 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Appearance'),
             trailing: const Icon(Icons.arrow_forward),
             onTap: () {
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => AppearanceSettingsPage(
-                      reloadAppTheme: widget.reloadAppTheme),
-                ),
+                AppearanceSettingsPage.routeName,
+                arguments: SettingsRouteArguments(
+                    reloadAppTheme: widget.reloadAppTheme),
               );
             },
           ),
@@ -37,36 +39,21 @@ class _SettingsPageState extends State<SettingsPage> {
             title: const Text('Behaviour'),
             trailing: const Icon(Icons.arrow_forward),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BehaviourSettingsPage(),
-                ),
-              );
+              Navigator.pushNamed(context, BehaviourSettingsPage.routeName);
             },
           ),
           ListTile(
             title: const Text('Sound'),
             trailing: const Icon(Icons.arrow_forward),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SoundSettingsPage(),
-                ),
-              );
+              Navigator.pushNamed(context, SoundSettingsPage.routeName);
             },
           ),
           ListTile(
             title: const Text('About'),
             trailing: const Icon(Icons.arrow_forward),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AboutPage(),
-                ),
-              );
+              Navigator.pushNamed(context, AboutPage.routeName);
             },
           ),
         ],

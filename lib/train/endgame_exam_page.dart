@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
+import 'package:wqhub/train/endgame_exam_selection_page.dart';
 import 'package:wqhub/train/exam_page.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
@@ -11,7 +12,15 @@ import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
+class EndgameExamRouteArguments {
+  final Rank rank;
+
+  const EndgameExamRouteArguments({required this.rank});
+}
+
 class EndgameExamPage extends StatelessWidget {
+  static const routeName = '/train/endgame_exam';
+
   static const taskTypes = const ISetConst({TaskType.endgame});
   static const taskCount = 10;
   static const timePerTask = const Duration(seconds: 45);
@@ -23,6 +32,7 @@ class EndgameExamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nextRank = Rank.values[min(rank.index + 1, Rank.p10.index)];
     return ExamPage(
       title: "Endgame Exam",
       taskCount: taskCount,
@@ -31,11 +41,10 @@ class EndgameExamPage extends StatelessWidget {
       createTaskSource: createTaskSource,
       onPass: () => context.stats.incrementEndgameExamPassCount(rank),
       onFail: () => context.stats.incrementEndgameExamFailCount(rank),
-      buildRedoPage: () => EndgameExamPage(rank: rank),
-      buildNextPage: () {
-        final nextRank = Rank.values[min(rank.index + 1, Rank.p10.index)];
-        return EndgameExamPage(rank: nextRank);
-      },
+      baseRoute: routeName,
+      exitRoute: EndgameExamSelectionPage.routeName,
+      redoRouteArguments: EndgameExamRouteArguments(rank: rank),
+      nextRouteArguments: EndgameExamRouteArguments(rank: nextRank),
     );
   }
 

@@ -6,6 +6,8 @@ import 'package:wqhub/train/grading_exam_ranks.dart';
 import 'package:wqhub/wq/rank.dart';
 
 class TrainStatsPage extends StatefulWidget {
+  static const routeName = '/train/stats';
+
   const TrainStatsPage({super.key});
 
   @override

@@ -4,6 +4,8 @@ import 'package:wqhub/train/tag_completion_rate.dart';
 import 'package:wqhub/train/task_tag.dart';
 
 class TagsPage extends StatelessWidget {
+  static const routeName = '/train/tags';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +51,10 @@ class _TagTile extends StatelessWidget {
       title: Text(tag.toString()),
       trailing: TagCompletionRate(tag: tag),
       onTap: () {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => SubtagsPage(tag: tag),
-          ),
+          SubtagsPage.routeName,
+          arguments: SubtagsRouteArguments(tag: tag),
         );
       },
     );

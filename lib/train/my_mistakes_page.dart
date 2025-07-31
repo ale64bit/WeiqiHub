@@ -6,6 +6,8 @@ import 'package:wqhub/train/task_preview_tile.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 
 class MyMistakesPage extends StatefulWidget {
+  static const routeName = '/train/my_mistakes';
+
   const MyMistakesPage({super.key});
 
   @override

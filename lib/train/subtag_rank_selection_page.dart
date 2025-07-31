@@ -1,5 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/exam_rank_card.dart';
 import 'package:wqhub/train/rank_range.dart';
@@ -7,7 +8,15 @@ import 'package:wqhub/train/tag_exam_page.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 
+class SubtagRankSelectionRouteArguments {
+  final TaskTag subtag;
+
+  const SubtagRankSelectionRouteArguments({required this.subtag});
+}
+
 class SubtagRankSelectionPage extends StatefulWidget {
+  static const routeName = '/train/subtag_rank_selection';
+
   final TaskTag subtag;
 
   const SubtagRankSelectionPage({super.key, required this.subtag});
@@ -18,7 +27,7 @@ class SubtagRankSelectionPage extends StatefulWidget {
 }
 
 class _SubtagRankSelectionPageState
-    extends WindowClassAwareState<SubtagRankSelectionPage> {
+    extends PopAndWindowClassAwareState<SubtagRankSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final rankRanges = widget.subtag.ranks();
@@ -49,16 +58,12 @@ class _SubtagRankSelectionPageState
                   failCount: stats[rankRange]?.fail ?? 0,
                   isActive: i == 0 || (stats[rankRanges[i - 1]]?.pass ?? 0) > 0,
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => PopScope(
-                          canPop: false,
-                          child: TagExamPage(
-                            tag: widget.subtag,
-                            rankRange: rankRange,
-                          ),
-                        ),
+                      TagExamPage.routeName,
+                      arguments: TagExamRouteArguments(
+                        tag: widget.subtag,
+                        rankRange: rankRange,
                       ),
                     );
                   },

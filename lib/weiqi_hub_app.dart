@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/main_page.dart';
+import 'package:wqhub/routes.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class WeiqiHubApp extends StatefulWidget {
@@ -25,9 +26,15 @@ class _WeiqiHubAppState extends State<WeiqiHubApp> {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: context.settings.themeMode,
-      home: MainPage(reloadAppTheme: () {
-        setState(() {});
-      }),
+      home: MainPage(
+        destination: MainPageDestination.home,
+        reloadAppTheme: () {
+          setState(() {});
+        },
+      ),
+      routes: routes,
+      onGenerateRoute: onGenerateRoute,
+      navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
     );
   }

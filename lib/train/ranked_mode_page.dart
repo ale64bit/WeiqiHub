@@ -16,7 +16,15 @@ import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
+class RankedModeRouteArguments {
+  final TaskSource taskSource;
+
+  RankedModeRouteArguments({required this.taskSource});
+}
+
 class RankedModePage extends StatefulWidget {
+  static const routeName = '/train/ranked_mode';
+
   const RankedModePage({super.key, required this.taskSource});
 
   final TaskSource taskSource;

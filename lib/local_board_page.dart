@@ -17,6 +17,8 @@ import 'package:wqhub/wq/handicap.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class LocalBoardPage extends StatefulWidget {
+  static const routeName = '/local_board';
+
   const LocalBoardPage({super.key});
 
   @override

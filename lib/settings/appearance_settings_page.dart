@@ -11,6 +11,8 @@ import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class AppearanceSettingsPage extends StatefulWidget {
+  static const routeName = '/settings/appearance';
+
   final Function() reloadAppTheme;
 
   const AppearanceSettingsPage({super.key, required this.reloadAppTheme});
