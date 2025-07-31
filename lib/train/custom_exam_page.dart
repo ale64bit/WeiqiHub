@@ -2,6 +2,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
+import 'package:wqhub/train/custom_exam_selection_page.dart';
 import 'package:wqhub/train/exam_page.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_repository.dart';
@@ -12,7 +13,30 @@ import 'package:wqhub/train/task_source/task_source_type.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 
+class CustomExamRouteArguments {
+  final int taskCount;
+  final Duration timePerTask;
+  final RankRange rankRange;
+  final int maxMistakes;
+  final TaskSourceType taskSourceType;
+  final ISet<TaskType>? taskTypes;
+  final TaskTag? taskTag;
+  final bool collectStats;
+
+  const CustomExamRouteArguments(
+      {required this.taskCount,
+      required this.timePerTask,
+      required this.rankRange,
+      required this.maxMistakes,
+      required this.taskSourceType,
+      required this.taskTypes,
+      required this.taskTag,
+      required this.collectStats});
+}
+
 class CustomExamPage extends StatelessWidget {
+  static const routeName = '/train/custom_exam';
+
   final int taskCount;
   final Duration timePerTask;
   final RankRange rankRange;
@@ -43,7 +67,9 @@ class CustomExamPage extends StatelessWidget {
       createTaskSource: createTaskSource,
       onPass: () {},
       onFail: () {},
-      buildRedoPage: () => CustomExamPage(
+      baseRoute: routeName,
+      exitRoute: CustomExamSelectionPage.routeName,
+      redoRouteArguments: CustomExamRouteArguments(
         taskCount: taskCount,
         timePerTask: timePerTask,
         rankRange: rankRange,

@@ -4,6 +4,8 @@ import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/response_delay.dart';
 
 class BehaviourSettingsPage extends StatefulWidget {
+  static const routeName = '/settings/behaviour';
+
   const BehaviourSettingsPage({super.key});
 
   @override
@@ -33,7 +35,7 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
             ListTile(
               title: const Text('Confirm board size'),
               subtitle: const Text(
-                  'Boards of this size or larger require move confirmation'),
+                  'Boards this size or larger require move confirmation'),
               trailing: DropdownButton<int>(
                 value: context.settings.confirmMovesBoardSize,
                 items: BoardSizes.values.map((boardSize) {

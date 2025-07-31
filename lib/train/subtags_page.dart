@@ -3,7 +3,15 @@ import 'package:wqhub/train/subtag_rank_selection_page.dart';
 import 'package:wqhub/train/tag_completion_rate.dart';
 import 'package:wqhub/train/task_tag.dart';
 
+class SubtagsRouteArguments {
+  final TaskTag tag;
+
+  const SubtagsRouteArguments({required this.tag});
+}
+
 class SubtagsPage extends StatelessWidget {
+  static const routeName = '/train/subtags';
+
   final TaskTag tag;
 
   const SubtagsPage({super.key, required this.tag});
@@ -23,12 +31,11 @@ class SubtagsPage extends StatelessWidget {
                   title: Text(subtag.toString()),
                   trailing: TagCompletionRate(tag: subtag),
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            SubtagRankSelectionPage(subtag: subtag),
-                      ),
+                      SubtagRankSelectionPage.routeName,
+                      arguments:
+                          SubtagRankSelectionRouteArguments(subtag: subtag),
                     );
                   },
                 )

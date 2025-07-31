@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/settings/settings_page.dart';
+import 'package:wqhub/settings/settings_route_arguments.dart';
 
 class SettingsButton extends StatelessWidget {
   final Function() reloadAppTheme;
@@ -10,11 +11,10 @@ class SettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => SettingsPage(reloadAppTheme: reloadAppTheme),
-          ),
+          SettingsPage.routeName,
+          arguments: SettingsRouteArguments(reloadAppTheme: reloadAppTheme),
         );
       },
       icon: Icon(Icons.settings),

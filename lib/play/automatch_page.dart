@@ -6,7 +6,17 @@ import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/play/game_page.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
+class AutomatchRouteArguments {
+  final GameClient gameClient;
+  final AutomatchPreset preset;
+
+  const AutomatchRouteArguments(
+      {required this.gameClient, required this.preset});
+}
+
 class AutomatchPage extends StatefulWidget {
+  static const routeName = '/play/automatch';
+
   final GameClient gameClient;
   final AutomatchPreset preset;
 
@@ -26,16 +36,13 @@ class _AutomatchPageState extends State<AutomatchPage> {
     _findGame.then((game) {
       if (context.mounted) {
         if (context.settings.sound) AudioController().startToPlay();
-        Navigator.pushReplacement(
+        Navigator.pushReplacementNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => PopScope(
-              canPop: false,
-              child: GamePage(
-                serverFeatures: widget.gameClient.serverFeatures,
-                game: game,
-              ),
-            ),
+          GamePage.routeName,
+          arguments: GameRouteArguments(
+            serverFeatures: widget.gameClient.serverFeatures,
+            game: game,
+            gameListener: null,
           ),
         );
       }

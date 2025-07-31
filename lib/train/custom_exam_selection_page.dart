@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/input/duration_form_field.dart';
 import 'package:wqhub/input/int_form_field.dart';
 import 'package:wqhub/input/rank_range_form_field.dart';
+import 'package:wqhub/pop_aware_state.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/custom_exam_page.dart';
 import 'package:wqhub/train/rank_range.dart';
@@ -13,12 +14,15 @@ import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
 class CustomExamSelectionPage extends StatefulWidget {
+  static const routeName = '/train/custom_exam_selection';
+
   @override
   State<CustomExamSelectionPage> createState() =>
       _CustomExamSelectionPageState();
 }
 
-class _CustomExamSelectionPageState extends State<CustomExamSelectionPage> {
+class _CustomExamSelectionPageState
+    extends PopAwareState<CustomExamSelectionPage> {
   final _formKey = GlobalKey<FormState>();
   var _taskCount = 10;
   var _maxMistakes = 2;
@@ -225,22 +229,18 @@ class _CustomExamSelectionPageState extends State<CustomExamSelectionPage> {
                         ? null
                         : () {
                             if (_formKey.currentState!.validate()) {
-                              Navigator.push(
+                              Navigator.pushNamed(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => PopScope(
-                                    canPop: false,
-                                    child: CustomExamPage(
-                                      taskCount: _taskCount,
-                                      timePerTask: _timePerTask,
-                                      rankRange: _rankRange,
-                                      maxMistakes: _maxMistakes,
-                                      taskSourceType: _taskSourceType,
-                                      taskTypes: ISet(_selectedTaskTypes),
-                                      taskTag: _subtag,
-                                      collectStats: _collectStats,
-                                    ),
-                                  ),
+                                CustomExamPage.routeName,
+                                arguments: CustomExamRouteArguments(
+                                  taskCount: _taskCount,
+                                  timePerTask: _timePerTask,
+                                  rankRange: _rankRange,
+                                  maxMistakes: _maxMistakes,
+                                  taskSourceType: _taskSourceType,
+                                  taskTypes: ISet(_selectedTaskTypes),
+                                  taskTag: _subtag,
+                                  collectStats: _collectStats,
                                 ),
                               );
                             } else {

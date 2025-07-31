@@ -8,10 +8,18 @@ import 'package:wqhub/play/my_games_page.dart';
 import 'package:wqhub/play/promotion_card.dart';
 import 'package:wqhub/play/streak_card.dart';
 import 'package:wqhub/play/user_info_card.dart';
+import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
-import 'package:wqhub/window_class_aware_state.dart';
+
+class ServerLobbyRouteArguments {
+  final GameClient gameClient;
+
+  const ServerLobbyRouteArguments({required this.gameClient});
+}
 
 class ServerLobbyPage extends StatefulWidget {
+  static const routeName = '/play/lobby';
+
   const ServerLobbyPage({super.key, required this.gameClient});
 
   final GameClient gameClient;
@@ -20,7 +28,8 @@ class ServerLobbyPage extends StatefulWidget {
   State<ServerLobbyPage> createState() => _ServerLobbyPageState();
 }
 
-class _ServerLobbyPageState extends WindowClassAwareState<ServerLobbyPage> {
+class _ServerLobbyPageState
+    extends PopAndWindowClassAwareState<ServerLobbyPage> {
   @override
   void initState() {
     super.initState();
@@ -28,16 +37,13 @@ class _ServerLobbyPageState extends WindowClassAwareState<ServerLobbyPage> {
     widget.gameClient.ongoingGame().then((game) {
       if (context.mounted && game != null) {
         if (context.settings.sound) AudioController().startToPlay();
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => PopScope(
-              canPop: false,
-              child: GamePage(
-                serverFeatures: widget.gameClient.serverFeatures,
-                game: game,
-              ),
-            ),
+          GamePage.routeName,
+          arguments: GameRouteArguments(
+            serverFeatures: widget.gameClient.serverFeatures,
+            game: game,
+            gameListener: null,
           ),
         );
       }
@@ -97,14 +103,12 @@ class _ServerLobbyPageState extends WindowClassAwareState<ServerLobbyPage> {
                   )
                 : null,
             onTap: () {
-              Navigator.push(
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => PopScope(
-                    canPop: false,
-                    child: AutomatchPage(
-                        gameClient: widget.gameClient, preset: preset),
-                  ),
+                AutomatchPage.routeName,
+                arguments: AutomatchRouteArguments(
+                  gameClient: widget.gameClient,
+                  preset: preset,
                 ),
               );
             },
@@ -178,13 +182,12 @@ class _ServerLobbyPageState extends WindowClassAwareState<ServerLobbyPage> {
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('My games'),
         onPressed: () {
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) => MyGamesPage(
-                gameClient: widget.gameClient,
-                gameList: widget.gameClient.listGames(),
-              ),
+            MyGamesPage.routeName,
+            arguments: MyGamesRouteArguments(
+              gameClient: widget.gameClient,
+              gameList: widget.gameClient.listGames(),
             ),
           );
         },

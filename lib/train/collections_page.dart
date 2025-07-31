@@ -3,15 +3,17 @@ import 'package:animated_tree_view/tree_view/tree_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:wqhub/confirm_dialog.dart';
+import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/collection_page.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/collection_task_source.dart';
-import 'package:wqhub/window_class_aware_state.dart';
 
 class CollectionsPage extends StatelessWidget {
+  static const routeName = '/train/collections';
+
   const CollectionsPage({super.key});
 
   @override
@@ -40,7 +42,8 @@ class _CollectionTile extends StatefulWidget {
   State<_CollectionTile> createState() => _CollectionTileState();
 }
 
-class _CollectionTileState extends WindowClassAwareState<_CollectionTile> {
+class _CollectionTileState
+    extends PopAndWindowClassAwareState<_CollectionTile> {
   @override
   Widget build(BuildContext context) {
     if (isWindowClassCompact) {
@@ -117,7 +120,7 @@ class _CollectionTileState extends WindowClassAwareState<_CollectionTile> {
     onContinue();
   }
 
-  onContinue() async {
+  onContinue() {
     final activeSession =
         StatsDB().collectionActiveSession(widget.collection.id) ??
             CollectionActiveSession(
@@ -127,24 +130,18 @@ class _CollectionTileState extends WindowClassAwareState<_CollectionTile> {
               duration: Duration.zero,
             );
     final currentTask = activeSession.correctCount + activeSession.wrongCount;
-    await Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => PopScope(
-          canPop: false,
-          child: CollectionPage(
-            taskCollection: widget.collection,
-            taskSource: BlackToPlaySource(
-              source:
-                  CollectionTaskSource(widget.collection, offset: currentTask),
-              blackToPlay: context.settings.alwaysBlackToPlay,
-            ),
-            initialTask: currentTask + 1,
-          ),
+      CollectionPage.routeName,
+      arguments: CollectionRouteArguments(
+        taskCollection: widget.collection,
+        taskSource: BlackToPlaySource(
+          source: CollectionTaskSource(widget.collection, offset: currentTask),
+          blackToPlay: context.settings.alwaysBlackToPlay,
         ),
+        initialTask: currentTask + 1,
       ),
     );
-    setState(() {});
   }
 
   String collectionSubtitle() =>

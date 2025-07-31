@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/pop_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/circular_percent_text.dart';
 import 'package:wqhub/train/task_tag.dart';
@@ -12,7 +13,7 @@ class TagCompletionRate extends StatefulWidget {
   State<TagCompletionRate> createState() => _TagCompletionRateState();
 }
 
-class _TagCompletionRateState extends State<TagCompletionRate> {
+class _TagCompletionRateState extends PopAwareState<TagCompletionRate> {
   late final Future<int> completionRateFut;
 
   @override

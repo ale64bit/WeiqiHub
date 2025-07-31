@@ -17,7 +17,20 @@ import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
+class CollectionRouteArguments {
+  final TaskCollection taskCollection;
+  final TaskSource taskSource;
+  final int initialTask;
+
+  const CollectionRouteArguments(
+      {required this.taskCollection,
+      required this.taskSource,
+      required this.initialTask});
+}
+
 class CollectionPage extends StatefulWidget {
+  static const routeName = '/train/collection';
+
   const CollectionPage(
       {super.key,
       required this.taskCollection,

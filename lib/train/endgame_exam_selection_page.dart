@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/endgame_exam_page.dart';
 import 'package:wqhub/train/endgame_exam_ranks.dart';
@@ -11,6 +12,8 @@ import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/rank.dart';
 
 class EndgameExamSelectionPage extends StatefulWidget {
+  static const routeName = '/train/endgame_exam_selection';
+
   const EndgameExamSelectionPage({super.key});
 
   @override
@@ -19,7 +22,7 @@ class EndgameExamSelectionPage extends StatefulWidget {
 }
 
 class _EndgameExamSelectionPageState
-    extends WindowClassAwareState<EndgameExamSelectionPage> {
+    extends PopAndWindowClassAwareState<EndgameExamSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final stats = loadStats();
@@ -53,14 +56,10 @@ class _EndgameExamSelectionPageState
                               0) >
                           0),
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => PopScope(
-                          canPop: false,
-                          child: EndgameExamPage(rank: rank),
-                        ),
-                      ),
+                      EndgameExamPage.routeName,
+                      arguments: EndgameExamRouteArguments(rank: rank),
                     );
                   },
                 ),

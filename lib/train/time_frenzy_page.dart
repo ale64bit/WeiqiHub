@@ -16,7 +16,15 @@ import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
+class TimeFrenzyRouteArguments {
+  final TaskSource taskSource;
+
+  const TimeFrenzyRouteArguments({required this.taskSource});
+}
+
 class TimeFrenzyPage extends StatefulWidget {
+  static const routeName = '/train/time_frenzy';
+
   const TimeFrenzyPage({super.key, required this.taskSource});
 
   final TaskSource taskSource;

@@ -11,7 +11,16 @@ import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/wq/annotated_game_tree.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
+class GameRecordRouteArguments {
+  final GameSummary summary;
+  final GameRecord record;
+
+  const GameRecordRouteArguments({required this.summary, required this.record});
+}
+
 class GameRecordPage extends StatefulWidget {
+  static const routeName = '/play/game_record';
+
   const GameRecordPage(
       {super.key, required this.summary, required this.record});
 

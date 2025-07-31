@@ -19,7 +19,17 @@ import 'package:async/async.dart';
 
 final _dateFormat = DateFormat('yyyy.MM.dd hh.mm');
 
+class MyGamesRouteArguments {
+  final GameClient gameClient;
+  final Future<List<GameSummary>> gameList;
+
+  const MyGamesRouteArguments(
+      {required this.gameClient, required this.gameList});
+}
+
 class MyGamesPage extends StatefulWidget {
+  static const routeName = '/play/my_games';
+
   const MyGamesPage(
       {super.key, required this.gameClient, required this.gameList});
 
@@ -84,13 +94,12 @@ class _MyGamesPageState extends State<MyGamesPage> {
       summary,
       recordFut,
       onRecord: (context, summary, record) {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => GameRecordPage(
-              summary: summary,
-              record: record,
-            ),
+          GameRecordPage.routeName,
+          arguments: GameRecordRouteArguments(
+            summary: summary,
+            record: record,
           ),
         );
       },

@@ -28,15 +28,18 @@ class ServerCard extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return gameClient.userInfo.value == null
-              ? ServerLoginPage(gameClient: gameClient)
-              : ServerLobbyPage(gameClient: gameClient);
-        },
-      ),
-    );
+    if (gameClient.userInfo.value == null) {
+      Navigator.pushNamed(
+        context,
+        ServerLoginPage.routeName,
+        arguments: ServerLoginRouteArguments(gameClient: gameClient),
+      );
+    } else {
+      Navigator.pushNamed(
+        context,
+        ServerLobbyPage.routeName,
+        arguments: ServerLobbyRouteArguments(gameClient: gameClient),
+      );
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/exam_page.dart';
+import 'package:wqhub/train/grading_exam_selection_page.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
@@ -11,7 +12,15 @@ import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
+class GradingExamRouteArguments {
+  final Rank rank;
+
+  const GradingExamRouteArguments({required this.rank});
+}
+
 class GradingExamPage extends StatelessWidget {
+  static const routeName = '/train/grading_exam';
+
   static const taskTypes = const ISetConst({
     TaskType.lifeAndDeath,
     TaskType.tesuji,
@@ -28,6 +37,7 @@ class GradingExamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nextRank = Rank.values[min(rank.index + 1, Rank.p10.index)];
     return ExamPage(
       title: "Grading Exam",
       taskCount: taskCount,
@@ -36,11 +46,10 @@ class GradingExamPage extends StatelessWidget {
       createTaskSource: createTaskSource,
       onPass: () => context.stats.incrementGradingExamPassCount(rank),
       onFail: () => context.stats.incrementGradingExamFailCount(rank),
-      buildRedoPage: () => GradingExamPage(rank: rank),
-      buildNextPage: () {
-        final nextRank = Rank.values[min(rank.index + 1, Rank.p10.index)];
-        return GradingExamPage(rank: nextRank);
-      },
+      baseRoute: routeName,
+      exitRoute: GradingExamSelectionPage.routeName,
+      redoRouteArguments: GradingExamRouteArguments(rank: rank),
+      nextRouteArguments: GradingExamRouteArguments(rank: nextRank),
     );
   }
 

@@ -85,10 +85,10 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => SingleTaskPage(task: task)),
+                        SingleTaskPage.routeName,
+                        arguments: SingleTaskRouteArguments(task: task),
                       );
                     },
                     onLongPressStart: (details) {

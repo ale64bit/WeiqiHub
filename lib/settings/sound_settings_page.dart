@@ -3,6 +3,8 @@ import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class SoundSettingsPage extends StatefulWidget {
+  static const routeName = '/settings/sound';
+
   const SoundSettingsPage({super.key});
 
   @override
