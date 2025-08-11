@@ -8,12 +8,14 @@ class BoardTheme {
   final BoardBackground background;
   final Stone blackStone;
   final Stone whiteStone;
+  final Color lineColor;
 
   const BoardTheme({
     required this.id,
     required this.background,
     required this.blackStone,
     required this.whiteStone,
+    required this.lineColor,
   });
 
   @override
@@ -25,7 +27,8 @@ class BoardTheme {
         other.id == id &&
         other.background == background &&
         other.blackStone == blackStone &&
-        other.whiteStone == whiteStone;
+        other.whiteStone == whiteStone &&
+        other.lineColor == lineColor;
   }
 
   @override
@@ -37,8 +40,26 @@ class BoardTheme {
     id: 'plain',
     background:
         SolidColorBoardBackground(color: Color.fromARGB(255, 218, 174, 92)),
-    blackStone: SolidColorStone(color: Colors.black),
-    whiteStone: SolidColorStone(color: Colors.white),
+    blackStone: SolidColorStone(color: Colors.black, border: false),
+    whiteStone: SolidColorStone(color: Colors.white, border: false),
+    lineColor: Colors.black,
+  );
+
+  static const green = BoardTheme(
+    id: 'green',
+    background:
+        SolidColorBoardBackground(color: Color.fromARGB(170, 127, 150, 112)),
+    blackStone: SolidColorStone(color: Colors.black, border: false),
+    whiteStone: SolidColorStone(color: Colors.white, border: true),
+    lineColor: Color(0xff89987f),
+  );
+
+  static const book = BoardTheme(
+    id: 'book',
+    background: SolidColorBoardBackground(color: Colors.white),
+    blackStone: SolidColorStone(color: Colors.black, border: false),
+    whiteStone: SolidColorStone(color: Colors.white, border: true),
+    lineColor: Colors.black,
   );
 
   static const t101weiqi = BoardTheme(
@@ -49,6 +70,7 @@ class BoardTheme {
         ImageStone(image: AssetImage('$_imagesPath/stones/101weiqi_b.png')),
     whiteStone:
         ImageStone(image: AssetImage('$_imagesPath/stones/101weiqi_w.png')),
+    lineColor: Colors.black,
   );
 
   static const fox = BoardTheme(
@@ -57,6 +79,7 @@ class BoardTheme {
         ImageBoardBackground(image: AssetImage('$_imagesPath/board/fox.png')),
     blackStone: ImageStone(image: AssetImage('$_imagesPath/stones/fox_b.png')),
     whiteStone: ImageStone(image: AssetImage('$_imagesPath/stones/fox_w.png')),
+    lineColor: Colors.black,
   );
 
   static const foxOld = BoardTheme(
@@ -65,6 +88,7 @@ class BoardTheme {
         image: AssetImage('$_imagesPath/board/fox_old.png')),
     blackStone: ImageStone(image: AssetImage('$_imagesPath/stones/fox_b.png')),
     whiteStone: ImageStone(image: AssetImage('$_imagesPath/stones/fox_w.png')),
+    lineColor: Colors.black,
   );
 
   static const foxMobile = BoardTheme(
@@ -75,6 +99,7 @@ class BoardTheme {
         ImageStone(image: AssetImage('$_imagesPath/stones/fox_new_b.png')),
     whiteStone:
         ImageStone(image: AssetImage('$_imagesPath/stones/fox_new_w.png')),
+    lineColor: Colors.black,
   );
 
   static const sabaki = BoardTheme(
@@ -85,10 +110,13 @@ class BoardTheme {
         ImageStone(image: AssetImage('$_imagesPath/stones/sabaki_b.png')),
     whiteStone:
         ImageStone(image: AssetImage('$_imagesPath/stones/sabaki_w.png')),
+    lineColor: Colors.black,
   );
 
   static const themes = {
     'plain': plain,
+    'green': green,
+    'book': book,
     '101weiqi': t101weiqi,
     'fox': fox,
     'fox_old': foxOld,

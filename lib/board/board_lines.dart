@@ -48,15 +48,15 @@ class BoardLines extends CustomPainter with BoardGeometry {
     final boardLineWidth = pointSize / 48;
     final linePaint = Paint()
       ..style = PaintingStyle.stroke
-      ..color = Colors.black
+      ..color = settings.theme.lineColor
       ..strokeWidth = boardLineWidth;
     final thickLinePaint = Paint()
       ..style = PaintingStyle.stroke
-      ..color = Colors.black
+      ..color = settings.theme.lineColor
       ..strokeWidth = 2 * boardLineWidth;
     final starPointPaint = Paint()
       ..style = PaintingStyle.fill
-      ..color = Colors.black;
+      ..color = settings.theme.lineColor;
     final (r0, c0) = settings.topLeft;
     final (r1, c1) = settings.bottomRight;
     for (final (r, c) in _starPoints[settings.size] ?? <wq.Point>[]) {
