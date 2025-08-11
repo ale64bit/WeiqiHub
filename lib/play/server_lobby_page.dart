@@ -88,9 +88,9 @@ class _ServerLobbyPageState
       children: <Widget>[
         for (final preset in widget.gameClient.automatchPresets)
           ListTile(
-            leading: Text('${preset.boardSize}x${preset.boardSize}'),
+            leading: Text('${preset.boardSize}×${preset.boardSize}'),
             title: Text(
-                '${preset.timeControl.mainTime.inMinutes}m ${preset.timeControl.periodCount}x${preset.timeControl.timePerPeriod.inSeconds}s'),
+                '${preset.timeControl.mainTime.inMinutes}m ${preset.timeControl.periodCount}×${preset.timeControl.timePerPeriod.inSeconds}s'),
             subtitle: Text('Rules: ${preset.rules.toString()}'),
             trailing: (preset.playerCount != null)
                 ? Row(
