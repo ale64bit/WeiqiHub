@@ -5,6 +5,8 @@
 - fix: redo button bug on custom exams
 - fix: disable start custom exam if there are no tasks available
 - fix many broken tasks
+- improve overall routing/navigation
+- 9x9 human-like AI bot
 
 ## 0.1.8
 - add file picker dialog to save games on desktop
