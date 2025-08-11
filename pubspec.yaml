@@ -52,6 +52,7 @@ dependencies:
   shared_preferences: ^2.3.5
   sqlite3: ^2.7.5
   sqlite3_flutter_libs: ^0.5.32
+  tflite_flutter: ^0.11.0
   url_launcher: ^6.3.1
 
 dev_dependencies:
@@ -92,6 +93,7 @@ flutter:
     - assets/sounds/
     - assets/sounds/en/
     - assets/tasks/
+    - assets/models/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
