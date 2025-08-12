@@ -12,7 +12,7 @@ class CountingResultBottomSheet extends StatelessWidget {
     required this.winner,
     required this.scoreLead,
     required this.onAccept,
-    this.onReject,
+    required this.onReject,
   });
 
   @override
@@ -29,8 +29,7 @@ class CountingResultBottomSheet extends StatelessWidget {
             child: Text('${winner.toString()}+ $scoreLead'),
           ),
           FilledButton(onPressed: onAccept, child: const Text('Accept')),
-          if (onReject != null)
-            FilledButton(onPressed: onReject, child: const Text('Reject')),
+          FilledButton(onPressed: onReject, child: const Text('Reject')),
         ],
       ),
     );

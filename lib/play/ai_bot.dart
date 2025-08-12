@@ -14,44 +14,41 @@ class AIBot {
   final int boardSize;
   final int historySize;
   final MoveSelection moveSelection;
-  final Interpreter _playInterpreter;
-  final Interpreter _scoreInterpreter;
+  final Interpreter _interpreter;
   final _history = <List<List<wq.Color?>>>[];
 
-  AIBot._internal(
-      {required this.boardSize,
-      required this.historySize,
-      required this.moveSelection,
-      required playInterpreter,
-      required scoreInterpreter})
-      : _playInterpreter = playInterpreter,
-        _scoreInterpreter = scoreInterpreter {
+  AIBot._internal({
+    required this.boardSize,
+    required this.historySize,
+    required this.moveSelection,
+    required playInterpreter,
+  }) : _interpreter = playInterpreter {
     for (int t = 0; t < historySize; ++t) {
       _history.add(List.generate(
           boardSize, (_) => List.generate(boardSize, (_) => null)));
     }
   }
 
-  static Future<AIBot> _fromAssets(
-      {required int boardSize,
-      required int historySize,
-      required String playModelAsset,
-      required String scoreModelAsset}) async {
+  static Future<AIBot> _fromAssets({
+    required int boardSize,
+    required int historySize,
+    required String modelAsset,
+    required MoveSelection moveSelection,
+  }) async {
     return AIBot._internal(
       boardSize: boardSize,
       historySize: historySize,
-      moveSelection: MoveSelection.top,
-      playInterpreter: await Interpreter.fromAsset(playModelAsset),
-      scoreInterpreter: await Interpreter.fromAsset(scoreModelAsset),
+      moveSelection: moveSelection,
+      playInterpreter: await Interpreter.fromAsset(modelAsset),
     );
   }
 
-  static Future<AIBot> new9x9() {
+  static Future<AIBot> new9x9(MoveSelection moveSelection) {
     return _fromAssets(
       boardSize: 9,
       historySize: 4,
-      playModelAsset: 'assets/models/play_9x9.tflite',
-      scoreModelAsset: 'assets/models/score_9x9.tflite',
+      modelAsset: 'assets/models/play_9x9.tflite',
+      moveSelection: moveSelection,
     );
   }
 
@@ -109,46 +106,13 @@ class AIBot {
     }
     final numMoves = boardSize * boardSize + 1;
     final output = List.filled(numMoves, 0.0).reshape([1, numMoves]);
-    _playInterpreter.run(
+    _interpreter.run(
         input.reshape([1, boardSize, boardSize, 2 * historySize + 1]), output);
 
     return output[0] as List<double>;
   }
 
-  List<List<wq.Color?>> ownership() {
-    final input = <double>[];
-    for (int i = 0; i < boardSize; ++i) {
-      for (int j = 0; j < boardSize; ++j) {
-        input.addAll(switch (_history[0][i][j]) {
-          null => [0.0, 0.0],
-          wq.Color.black => [1.0, 0.0],
-          wq.Color.white => [0.0, 1.0],
-        });
-      }
-    }
-    final output = List.filled(boardSize * boardSize * 3, 0.0)
-        .reshape([1, boardSize, boardSize, 3]);
-    _scoreInterpreter.run(input.reshape([1, boardSize, boardSize, 2]), output);
-
-    List<List<wq.Color?>> ret =
-        List.generate(boardSize, (_) => List.generate(boardSize, (_) => null));
-
-    for (int i = 0; i < boardSize; ++i) {
-      for (int j = 0; j < boardSize; ++j) {
-        var bestp = output[0][i][j][0];
-        for (int k = 1; k < 3; ++k) {
-          if (output[0][i][j][k] > bestp) {
-            bestp = output[0][i][j][k];
-            ret[i][j] = wq.Color.values[k - 1];
-          }
-        }
-      }
-    }
-    return ret;
-  }
-
   void close() {
-    _playInterpreter.close();
-    _scoreInterpreter.close();
+    _interpreter.close();
   }
 }

@@ -13,6 +13,7 @@ import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/play/ai_bot.dart';
+import 'package:wqhub/play/score_estimator.dart';
 import 'package:wqhub/play/counting_result_bottom_sheet.dart';
 import 'package:wqhub/play/game_navigation_bar.dart';
 import 'package:wqhub/play/gameplay_bar.dart';
@@ -27,13 +28,16 @@ class AIGameRouteArguments {
   final int handicap;
   final double komi;
   final wq.Color myColor;
+  final MoveSelection moveSelection;
 
-  AIGameRouteArguments(
-      {required this.rules,
-      required this.boardSize,
-      required this.handicap,
-      required this.komi,
-      required this.myColor});
+  AIGameRouteArguments({
+    required this.rules,
+    required this.boardSize,
+    required this.handicap,
+    required this.komi,
+    required this.myColor,
+    required this.moveSelection,
+  });
 }
 
 enum GameState {
@@ -50,14 +54,17 @@ class AIGamePage extends StatefulWidget {
   final int handicap;
   final double komi;
   final wq.Color myColor;
+  final MoveSelection moveSelection;
 
-  const AIGamePage(
-      {super.key,
-      required this.rules,
-      required this.boardSize,
-      required this.handicap,
-      required this.komi,
-      required this.myColor});
+  const AIGamePage({
+    super.key,
+    required this.rules,
+    required this.boardSize,
+    required this.handicap,
+    required this.komi,
+    required this.myColor,
+    required this.moveSelection,
+  });
 
   @override
   State<AIGamePage> createState() => _AIGamePageState();
@@ -76,6 +83,7 @@ class _AIGamePageState extends State<AIGamePage> {
 
   final _log = Logger('AIGamePage');
   AIBot? _aiBot;
+  ScoreEstimator? _scoreEstimator;
 
   // State
   late AnnotatedGameTree _gameTree;
@@ -96,12 +104,14 @@ class _AIGamePageState extends State<AIGamePage> {
   @override
   void dispose() {
     _aiBot?.close();
+    _scoreEstimator?.close();
     super.dispose();
   }
 
   void initBot() async {
     _log.fine('tflite interpreter version: ${version}');
-    _aiBot = await AIBot.new9x9();
+    _aiBot = await AIBot.new9x9(widget.moveSelection);
+    _scoreEstimator = await ScoreEstimator.new9x9();
     setState(() {
       _state = GameState.playing;
     });
@@ -310,22 +320,15 @@ class _AIGamePageState extends State<AIGamePage> {
   }
 
   CountingResult count() {
-    final ownership = _aiBot!.ownership();
-    var blackArea = 0;
-    var whiteArea = 0;
+    final stones = _gameTree.stones;
+    final result =
+        _scoreEstimator!.estimate((i, j) => stones[(i, j)], komi: widget.komi);
     _territoryAnnotations = IMapOfSets.empty();
     for (int i = 0; i < widget.boardSize; ++i) {
       for (int j = 0; j < widget.boardSize; ++j) {
-        if (ownership[i][j] != null) {
+        if (result.ownership[i][j] != null) {
           final p = (i, j);
-          final col = ownership[i][j];
-          switch (col) {
-            case null:
-            case wq.Color.black:
-              blackArea++;
-            case wq.Color.white:
-              whiteArea++;
-          }
+          final col = result.ownership[i][j];
           _territoryAnnotations = _territoryAnnotations?.add(p, (
             type: AnnotationShape.territory.u21,
             color: col == wq.Color.black ? Colors.black : Colors.white,
@@ -333,14 +336,7 @@ class _AIGamePageState extends State<AIGamePage> {
         }
       }
     }
-
-    final blackLead = (blackArea - whiteArea - widget.komi) / 2;
-
-    return CountingResult(
-      winner: blackLead > 0 ? wq.Color.black : wq.Color.white,
-      scoreLead: blackLead.abs(),
-      ownership: ownership,
-    );
+    return result;
   }
 
   void passOrGenMove() {
@@ -374,6 +370,12 @@ class _AIGamePageState extends State<AIGamePage> {
               Navigator.pop(context);
               setState(() {
                 _state = GameState.over;
+                _territoryAnnotations = null;
+              });
+            },
+            onReject: () {
+              Navigator.pop(context);
+              setState(() {
                 _territoryAnnotations = null;
               });
             },
@@ -413,21 +415,14 @@ class _AIGamePageState extends State<AIGamePage> {
   void onToggleOwnership() {
     if (_territoryAnnotations == null) {
       _territoryAnnotations = IMapOfSets.empty();
-      final ownership = _aiBot!.ownership();
-      var blackArea = 0;
-      var whiteArea = 0;
+      final stones = _gameTree.stones;
+      final result = _scoreEstimator!
+          .estimate((i, j) => stones[(i, j)], komi: widget.komi);
       for (int i = 0; i < widget.boardSize; ++i) {
         for (int j = 0; j < widget.boardSize; ++j) {
-          if (ownership[i][j] != null) {
+          if (result.ownership[i][j] != null) {
             final p = (i, j);
-            final col = ownership[i][j];
-            switch (col) {
-              case null:
-              case wq.Color.black:
-                blackArea++;
-              case wq.Color.white:
-                whiteArea++;
-            }
+            final col = result.ownership[i][j];
             _territoryAnnotations = _territoryAnnotations?.add(p, (
               type: AnnotationShape.territory.u21,
               color: col == wq.Color.black ? Colors.black : Colors.white,
@@ -435,9 +430,6 @@ class _AIGamePageState extends State<AIGamePage> {
           }
         }
       }
-      final blackLead = (blackArea - whiteArea - 7.5) / 2;
-      final result = (blackLead < 0) ? 'W+${-blackLead}' : 'B+$blackLead';
-      _log.fine('B=$blackArea W=$whiteArea bl=$blackLead res=$result');
     } else {
       _territoryAnnotations = null;
     }

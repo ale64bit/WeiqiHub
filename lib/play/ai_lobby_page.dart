@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/rules.dart';
+import 'package:wqhub/play/ai_bot.dart';
 import 'package:wqhub/play/ai_game_page.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
@@ -17,7 +18,7 @@ class AILobbyPage extends StatelessWidget {
           children: <ListTile>[
             ListTile(
               leading: const Text('9×9'),
-              title: const Text('Even game'),
+              title: const Text('Even game (A)'),
               subtitle: const Text('Rules: chinese'),
               onTap: () {
                 Navigator.pushNamed(context, AIGamePage.routeName,
@@ -27,6 +28,23 @@ class AILobbyPage extends StatelessWidget {
                       myColor: wq.Color.black,
                       handicap: 0,
                       komi: 7.5,
+                      moveSelection: MoveSelection.dist,
+                    ));
+              },
+            ),
+            ListTile(
+              leading: const Text('9×9'),
+              title: const Text('Even game (B)'),
+              subtitle: const Text('Rules: chinese'),
+              onTap: () {
+                Navigator.pushNamed(context, AIGamePage.routeName,
+                    arguments: AIGameRouteArguments(
+                      rules: Rules.chinese,
+                      boardSize: 9,
+                      myColor: wq.Color.black,
+                      handicap: 0,
+                      komi: 7.5,
+                      moveSelection: MoveSelection.top,
                     ));
               },
             )
