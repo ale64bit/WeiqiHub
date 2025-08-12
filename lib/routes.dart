@@ -173,6 +173,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           myColor: args.myColor,
           handicap: args.handicap,
           komi: args.komi,
+          moveSelection: args.moveSelection,
         ),
       );
   }
