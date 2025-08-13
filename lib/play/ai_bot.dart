@@ -74,13 +74,20 @@ class AIBot {
   wq.Move genMove(wq.Color turn) {
     final output = policy(turn);
 
+    var maxp = 0.0;
     final moves = <(wq.Point, double)>[];
     for (int i = 0; i < boardSize; ++i) {
       for (int j = 0; j < boardSize; ++j) {
-        moves.add(((i, j), output[i * boardSize + j]));
+        final p = output[i * boardSize + j];
+        moves.add(((i, j), p));
+        maxp = max(maxp, p);
       }
     }
     moves.add(((-1, -1), output[boardSize * boardSize]));
+    for (int i = 0; i < moves.length; ++i) {
+      final (m, p) = moves[i];
+      if (p < 0.5 * maxp) moves[i] = (m, 0.0);
+    }
 
     switch (moveSelection) {
       case MoveSelection.top:
@@ -90,6 +97,8 @@ class AIBot {
         return (col: turn, p: randomDistFloat(moves));
     }
   }
+
+  double maskProb(double p) => p < 0.2 ? 0.0 : p;
 
   List<double> policy(wq.Color turn) {
     final input = <double>[];

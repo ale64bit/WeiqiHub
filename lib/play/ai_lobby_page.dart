@@ -18,7 +18,7 @@ class AILobbyPage extends StatelessWidget {
           children: <ListTile>[
             ListTile(
               leading: const Text('9×9'),
-              title: const Text('Even game (A)'),
+              title: const Text('Even game'),
               subtitle: const Text('Rules: chinese'),
               onTap: () {
                 Navigator.pushNamed(context, AIGamePage.routeName,
@@ -32,22 +32,6 @@ class AILobbyPage extends StatelessWidget {
                     ));
               },
             ),
-            ListTile(
-              leading: const Text('9×9'),
-              title: const Text('Even game (B)'),
-              subtitle: const Text('Rules: chinese'),
-              onTap: () {
-                Navigator.pushNamed(context, AIGamePage.routeName,
-                    arguments: AIGameRouteArguments(
-                      rules: Rules.chinese,
-                      boardSize: 9,
-                      myColor: wq.Color.black,
-                      handicap: 0,
-                      komi: 7.5,
-                      moveSelection: MoveSelection.top,
-                    ));
-              },
-            )
           ],
         ),
       ),
