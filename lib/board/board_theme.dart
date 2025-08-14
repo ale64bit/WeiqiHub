@@ -45,15 +45,6 @@ class BoardTheme {
     lineColor: Colors.black,
   );
 
-  static const green = BoardTheme(
-    id: 'green',
-    background:
-        SolidColorBoardBackground(color: Color.fromARGB(170, 127, 150, 112)),
-    blackStone: SolidColorStone(color: Colors.black, border: false),
-    whiteStone: SolidColorStone(color: Colors.white, border: true),
-    lineColor: Color(0xff89987f),
-  );
-
   static const book = BoardTheme(
     id: 'book',
     background: SolidColorBoardBackground(color: Colors.white),
@@ -113,14 +104,73 @@ class BoardTheme {
     lineColor: Colors.black,
   );
 
+  static const goldenHane = BoardTheme(
+    id: 'Golden Hane by Pumu',
+    background:
+        SolidColorBoardBackground(color: Color.fromARGB(255, 185, 133, 45)),
+    blackStone:
+        SolidColorStone(color: Color.fromARGB(255, 52, 45, 9), border: false),
+    whiteStone: SolidColorStone(
+        color: Color.fromARGB(255, 205, 194, 175), border: true),
+    lineColor: Color.fromARGB(255, 216, 213, 197),
+  );
+
+  static const sepiaSente = BoardTheme(
+    id: 'Sepia Sente by Pumu',
+    background:
+        SolidColorBoardBackground(color: Color.fromARGB(255, 118, 114, 107)),
+    blackStone:
+        SolidColorStone(color: Color.fromARGB(255, 53, 46, 34), border: false),
+    whiteStone: SolidColorStone(
+        color: Color.fromARGB(255, 206, 201, 192), border: true),
+    lineColor: Color.fromARGB(255, 216, 213, 197),
+  );
+
+  static const jumpingMoss = BoardTheme(
+    id: 'Jumping Moss by Pumu',
+    background:
+        SolidColorBoardBackground(color: Color.fromARGB(255, 125, 140, 115)),
+    blackStone:
+        SolidColorStone(color: Color.fromARGB(255, 39, 47, 34), border: false),
+    whiteStone: SolidColorStone(
+        color: Color.fromARGB(255, 225, 222, 203), border: true),
+    lineColor: Color.fromARGB(255, 185, 183, 157),
+  );
+
+  static const jadeMonkey = BoardTheme(
+    id: 'Jade Monkey by Pumu',
+    background:
+        SolidColorBoardBackground(color: Color.fromARGB(255, 88, 132, 105)),
+    blackStone:
+        SolidColorStone(color: Color.fromARGB(255, 29, 68, 48), border: false),
+    whiteStone: SolidColorStone(
+        color: Color.fromARGB(255, 175, 197, 186), border: true),
+    lineColor: Color.fromARGB(255, 161, 201, 175),
+  );
+
+  static const jadeWalrus = BoardTheme(
+    id: 'Jade Walrus by Pumu',
+    background:
+        SolidColorBoardBackground(color: Color.fromARGB(255, 88, 132, 105)),
+    blackStone:
+        SolidColorStone(color: Color.fromARGB(255, 11, 35, 23), border: false),
+    whiteStone: SolidColorStone(
+        color: Color.fromARGB(255, 214, 225, 219), border: true),
+    lineColor: Color.fromARGB(255, 161, 201, 175),
+  );
+
   static const themes = {
     'plain': plain,
-    'green': green,
     'book': book,
     '101weiqi': t101weiqi,
     'fox': fox,
     'fox_old': foxOld,
     'fox_mobile': foxMobile,
     'sabaki': sabaki,
+    'Golden Hane by Pumu': goldenHane,
+    'Sepia Sente by Pumu': sepiaSente,
+    'Jumping Moss by Pumu': jumpingMoss,
+    'Jade Monkey by Pumu': jadeMonkey,
+    'Jade Walrus by Pumu': jadeWalrus,
   };
 }

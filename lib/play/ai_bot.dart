@@ -98,8 +98,6 @@ class AIBot {
     }
   }
 
-  double maskProb(double p) => p < 0.2 ? 0.0 : p;
-
   List<double> policy(wq.Color turn) {
     final input = <double>[];
     for (int i = 0; i < boardSize; ++i) {
