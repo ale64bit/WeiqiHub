@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/endgame_exam_selection_page.dart';
 import 'package:wqhub/train/exam_page.dart';
+import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
@@ -34,7 +35,9 @@ class EndgameExamPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final nextRank = Rank.values[min(rank.index + 1, Rank.p10.index)];
     return ExamPage(
-      title: "Endgame Exam",
+      title: 'Endgame Exam',
+      examType: 'Endgame',
+      rankRange: RankRange.single(rank),
       taskCount: taskCount,
       timePerTask: timePerTask,
       maxMistakes: maxMistakes,

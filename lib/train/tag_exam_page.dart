@@ -36,7 +36,9 @@ class TagExamPage extends StatelessWidget {
     final hasNextRank = currentIndex != -1 && currentIndex + 1 < ranks.length;
 
     return ExamPage(
-      title: "Topic Exam",
+      title: 'Topic Exam',
+      examType: 'Topic (${tag.toString()})',
+      rankRange: rankRange,
       taskCount: taskCount,
       timePerTask: timePerTask,
       maxMistakes: maxMistakes,

@@ -5,6 +5,7 @@ import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/stats/stats_db.dart';
+import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_action_bar.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_solving_state_mixin.dart';
@@ -22,6 +23,8 @@ class ExamPage extends StatefulWidget {
   const ExamPage({
     super.key,
     required this.title,
+    required this.examType,
+    required this.rankRange,
     required this.taskCount,
     required this.timePerTask,
     required this.maxMistakes,
@@ -36,6 +39,8 @@ class ExamPage extends StatefulWidget {
   });
 
   final String title;
+  final String examType;
+  final RankRange rankRange;
   final int taskCount;
   final Duration timePerTask;
   final int maxMistakes;
@@ -157,6 +162,17 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                 onNextTask: _onNext,
                 onCancelExam: () {
                   widget.onFail();
+                  if (widget.collectStats) {
+                    final curCount =
+                        _taskNumber - (solveStatus == null ? 1 : 0);
+                    StatsDB().addExamAttempt(
+                        widget.examType,
+                        widget.rankRange,
+                        curCount - _mistakeCount,
+                        _mistakeCount + widget.taskCount - curCount,
+                        false,
+                        _totalTime);
+                  }
                   Navigator.popUntil(
                       context, ModalRoute.withName(widget.exitRoute));
                 },
@@ -192,6 +208,17 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                         'Are you sure that you want to stop the ${widget.title}?',
                     onYes: () {
                       widget.onFail();
+                      if (widget.collectStats) {
+                        final curCount =
+                            _taskNumber - (solveStatus == null ? 1 : 0);
+                        StatsDB().addExamAttempt(
+                            widget.examType,
+                            widget.rankRange,
+                            curCount - _mistakeCount,
+                            _mistakeCount + widget.taskCount - curCount,
+                            false,
+                            _totalTime);
+                      }
                       Navigator.popUntil(
                           context, ModalRoute.withName(widget.exitRoute));
                     },
@@ -253,6 +280,15 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
         widget.onPass();
       } else {
         widget.onFail();
+      }
+      if (widget.collectStats) {
+        StatsDB().addExamAttempt(
+            widget.examType,
+            widget.rankRange,
+            widget.taskCount - _mistakeCount,
+            _mistakeCount,
+            passed,
+            _totalTime);
       }
       showDialog(
         context: context,
