@@ -6,6 +6,7 @@
 - fix: disable start custom exam if there are no tasks available
 - fix many broken tasks
 - improve overall routing/navigation
+- improve statistics page: daily/weekly/monthly stats
 - new themes by Pumu
 - experimental: 9x9 human-like AI bot 
 

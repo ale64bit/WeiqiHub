@@ -61,6 +61,8 @@ class CustomExamPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExamPage(
       title: 'Custom Exam',
+      examType: 'Custom',
+      rankRange: rankRange,
       taskCount: taskCount,
       timePerTask: timePerTask,
       maxMistakes: maxMistakes,
