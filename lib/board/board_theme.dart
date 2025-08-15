@@ -5,6 +5,7 @@ import 'package:wqhub/board/stone.dart';
 @immutable
 class BoardTheme {
   final String id;
+  final String displayName;
   final BoardBackground background;
   final Stone blackStone;
   final Stone whiteStone;
@@ -12,6 +13,7 @@ class BoardTheme {
 
   const BoardTheme({
     required this.id,
+    required this.displayName,
     required this.background,
     required this.blackStone,
     required this.whiteStone,
@@ -25,6 +27,7 @@ class BoardTheme {
 
     return other is BoardTheme &&
         other.id == id &&
+        other.displayName == displayName &&
         other.background == background &&
         other.blackStone == blackStone &&
         other.whiteStone == whiteStone &&
@@ -38,6 +41,7 @@ class BoardTheme {
 
   static const plain = BoardTheme(
     id: 'plain',
+    displayName: 'Plain',
     background:
         SolidColorBoardBackground(color: Color.fromARGB(255, 218, 174, 92)),
     blackStone: SolidColorStone(color: Colors.black, border: false),
@@ -45,8 +49,39 @@ class BoardTheme {
     lineColor: Colors.black,
   );
 
+  static const plainGradient = BoardTheme(
+    id: 'plain_gradient',
+    displayName: 'Plain with gradient',
+    background:
+        SolidColorBoardBackground(color: Color.fromARGB(255, 218, 174, 92)),
+    blackStone: SolidColorStone(
+      gradient: RadialGradient(
+        center: AlignmentGeometry.xy(-0.5, -0.5),
+        radius: 0.8,
+        colors: <Color>[
+          Color(0xff13251c),
+          Colors.black,
+        ],
+      ),
+      border: false,
+    ),
+    whiteStone: SolidColorStone(
+      gradient: RadialGradient(
+        center: AlignmentGeometry.xy(-0.5, -0.5),
+        radius: 0.8,
+        colors: <Color>[
+          Colors.white,
+          Color.fromARGB(255, 194, 194, 194),
+        ],
+      ),
+      border: false,
+    ),
+    lineColor: Colors.black,
+  );
+
   static const book = BoardTheme(
     id: 'book',
+    displayName: 'Book',
     background: SolidColorBoardBackground(color: Colors.white),
     blackStone: SolidColorStone(color: Colors.black, border: false),
     whiteStone: SolidColorStone(color: Colors.white, border: true),
@@ -55,6 +90,7 @@ class BoardTheme {
 
   static const t101weiqi = BoardTheme(
     id: '101weiqi',
+    displayName: '101weiqi',
     background: ImageBoardBackground(
         image: AssetImage('$_imagesPath/board/101weiqi.png')),
     blackStone:
@@ -66,6 +102,7 @@ class BoardTheme {
 
   static const fox = BoardTheme(
     id: 'fox',
+    displayName: 'Fox',
     background:
         ImageBoardBackground(image: AssetImage('$_imagesPath/board/fox.png')),
     blackStone: ImageStone(image: AssetImage('$_imagesPath/stones/fox_b.png')),
@@ -75,6 +112,7 @@ class BoardTheme {
 
   static const foxOld = BoardTheme(
     id: 'fox_old',
+    displayName: 'Fox - legacy',
     background: ImageBoardBackground(
         image: AssetImage('$_imagesPath/board/fox_old.png')),
     blackStone: ImageStone(image: AssetImage('$_imagesPath/stones/fox_b.png')),
@@ -84,6 +122,7 @@ class BoardTheme {
 
   static const foxMobile = BoardTheme(
     id: 'fox_mobile',
+    displayName: 'Fox - mobile',
     background: ImageBoardBackground(
         image: AssetImage('$_imagesPath/board/fox_new.png')),
     blackStone:
@@ -95,6 +134,7 @@ class BoardTheme {
 
   static const sabaki = BoardTheme(
     id: 'sabaki',
+    displayName: 'Sabaki',
     background: ImageBoardBackground(
         image: AssetImage('$_imagesPath/board/sabaki.png')),
     blackStone:
@@ -105,7 +145,8 @@ class BoardTheme {
   );
 
   static const goldenHane = BoardTheme(
-    id: 'Golden Hane by Pumu',
+    id: 'golden_hane',
+    displayName: 'Golden Hane by Pumu',
     background:
         SolidColorBoardBackground(color: Color.fromARGB(255, 185, 133, 45)),
     blackStone:
@@ -116,7 +157,8 @@ class BoardTheme {
   );
 
   static const sepiaSente = BoardTheme(
-    id: 'Sepia Sente by Pumu',
+    id: 'sepia_sente',
+    displayName: 'Sepia Sente by Pumu',
     background:
         SolidColorBoardBackground(color: Color.fromARGB(255, 118, 114, 107)),
     blackStone:
@@ -127,7 +169,8 @@ class BoardTheme {
   );
 
   static const jumpingMoss = BoardTheme(
-    id: 'Jumping Moss by Pumu',
+    id: 'jumping_moss',
+    displayName: 'Jumping Moss by Pumu',
     background:
         SolidColorBoardBackground(color: Color.fromARGB(255, 125, 140, 115)),
     blackStone:
@@ -138,7 +181,8 @@ class BoardTheme {
   );
 
   static const jadeMonkey = BoardTheme(
-    id: 'Jade Monkey by Pumu',
+    id: 'jade_monkey',
+    displayName: 'Jade Monkey by Pumu',
     background:
         SolidColorBoardBackground(color: Color.fromARGB(255, 88, 132, 105)),
     blackStone:
@@ -149,7 +193,8 @@ class BoardTheme {
   );
 
   static const jadeWalrus = BoardTheme(
-    id: 'Jade Walrus by Pumu',
+    id: 'jade_walrus',
+    displayName: 'Jade Walrus by Pumu',
     background:
         SolidColorBoardBackground(color: Color.fromARGB(255, 88, 132, 105)),
     blackStone:
@@ -161,16 +206,17 @@ class BoardTheme {
 
   static const themes = {
     'plain': plain,
+    'plain_gradient': plainGradient,
     'book': book,
     '101weiqi': t101weiqi,
     'fox': fox,
     'fox_old': foxOld,
     'fox_mobile': foxMobile,
     'sabaki': sabaki,
-    'Golden Hane by Pumu': goldenHane,
-    'Sepia Sente by Pumu': sepiaSente,
-    'Jumping Moss by Pumu': jumpingMoss,
-    'Jade Monkey by Pumu': jadeMonkey,
-    'Jade Walrus by Pumu': jadeWalrus,
+    'golden_hane': goldenHane,
+    'sepia_sente': sepiaSente,
+    'jumping_moss': jumpingMoss,
+    'jade_monkey': jadeMonkey,
+    'jade_walrus': jadeWalrus,
   };
 }
