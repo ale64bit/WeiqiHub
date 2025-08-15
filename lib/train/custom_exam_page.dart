@@ -92,7 +92,7 @@ class CustomExamPage extends StatelessWidget {
       TaskSourceType.fromTaskTag =>
         TaskRepository().taskSourceByTag(rankRange, taskTag!),
       TaskSourceType.fromMistakes => ConstTaskRefSource(
-          taskRefs: StatsDB().getMistakesByRange(rankRange, taskCount)),
+          taskRefs: StatsDB().mistakesByRankRange(rankRange, taskCount)),
     };
     return BlackToPlaySource(
       source: taskSource,
