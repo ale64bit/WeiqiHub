@@ -163,7 +163,7 @@ class StatsDB {
   final PreparedStatement _mistakesByMostRecent;
   final PreparedStatement _mistakesBySuccessRate;
   final PreparedStatement _countMistakesByRange;
-  final PreparedStatement _getMistakesByRange;
+  final PreparedStatement _mistakesByRankRange;
   final PreparedStatement _collectionStat;
   final PreparedStatement _collectionActiveSession;
   final PreparedStatement _updateCollectionActiveSession;
@@ -207,6 +207,10 @@ class StatsDB {
 
       CREATE INDEX IF NOT EXISTS mistakes_by_success_rate 
         ON task_stats(100 * correct_count / (correct_count + wrong_count), wrong_count DESC)
+        WHERE wrong_count>0 AND NOT ignore_mistake;
+
+      CREATE INDEX IF NOT EXISTS mistakes_by_rank
+        ON task_stats(rank)
         WHERE wrong_count>0 AND NOT ignore_mistake;
 
       CREATE TABLE IF NOT EXISTS task_daily_stats (
@@ -301,11 +305,11 @@ class StatsDB {
         ''', persistent: true),
         _countMistakesByRange = db.prepare('''
           SELECT count(1) FROM task_stats 
-            WHERE rank BETWEEN ? AND ?;
+            WHERE (rank BETWEEN ? AND ?) AND (wrong_count>0 AND NOT ignore_mistake);
         ''', persistent: true),
-        _getMistakesByRange = db.prepare('''
+        _mistakesByRankRange = db.prepare('''
           SELECT rank, type, id FROM task_stats 
-            WHERE rank BETWEEN ? AND ?
+            WHERE (rank BETWEEN ? AND ?) AND (wrong_count>0 AND NOT ignore_mistake)
             ORDER BY RANDOM()
             LIMIT ?;
         ''', persistent: true),
@@ -393,8 +397,8 @@ class StatsDB {
     return result.first.values.first! as int;
   }
 
-  List<TaskRef> getMistakesByRange(RankRange rankRange, int n) {
-    final resultSet = _getMistakesByRange
+  List<TaskRef> mistakesByRankRange(RankRange rankRange, int n) {
+    final resultSet = _mistakesByRankRange
         .select([rankRange.from.index, rankRange.to.index, n]);
     return [
       for (final row in resultSet)
