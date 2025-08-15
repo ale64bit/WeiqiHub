@@ -44,7 +44,7 @@ class AppearanceSettingsList extends StatelessWidget {
                 value: theme,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(theme.id),
+                  child: Text(theme.displayName),
                 ),
               );
             }).toList(),

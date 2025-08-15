@@ -5,10 +5,12 @@ abstract class Stone extends StatelessWidget {
 }
 
 class SolidColorStone extends Stone {
-  final Color color;
+  final Color? color;
+  final Gradient? gradient;
   final bool border;
 
-  const SolidColorStone({super.key, required this.color, required this.border});
+  const SolidColorStone(
+      {super.key, this.color, this.gradient, required this.border});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class SolidColorStone extends Stone {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color,
+        gradient: gradient,
         border: border ? Border.all() : null,
       ),
     );
