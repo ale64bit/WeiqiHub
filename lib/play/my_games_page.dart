@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
@@ -153,21 +155,25 @@ class _MyGamesPageState extends State<MyGamesPage> {
         }
       } else {
         Rect? sharePositionOrigin;
-        if (Platform.isIOS) {
-          final box = context.findRenderObject() as RenderBox?;
-          sharePositionOrigin = box!.localToGlobal(Offset.zero) & box.size;
+        if (defaultTargetPlatform == TargetPlatform.iOS) {
+          DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+          IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+          if (iosInfo.model.toLowerCase().contains('ipad')) {
+            final box = context.findRenderObject() as RenderBox?;
+            sharePositionOrigin = box!.localToGlobal(Offset.zero) & box.size;
+          }
         }
-        await Share.shareXFiles(
-          [
+        final params = ShareParams(
+          files: [
             XFile.fromData(
               Uint8List.fromList(record.rawData),
               mimeType: 'application/x-go-${record.type.name}',
             )
           ],
-          text: filename,
           fileNameOverrides: [filename],
           sharePositionOrigin: sharePositionOrigin,
         );
+        await SharePlus.instance.share(params);
       }
     }, onError: (err) {
       if (context.mounted) {
