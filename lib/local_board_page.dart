@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' show join;
 import 'package:share_plus/share_plus.dart';
 import 'package:wqhub/audio/audio_controller.dart';
+import 'package:wqhub/file_picker.dart';
 import 'package:wqhub/save_sgf_form.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/wq/annotated_game_tree.dart';
@@ -171,28 +174,53 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
         result: res.result,
       );
       final filename = res.suggestedFilename();
-      if (Platform.isLinux) {
-        final downloadDir = await getDownloadsDirectory();
-        final f = File('${downloadDir?.path}/$filename');
-        await f.writeAsString(sgfData);
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).removeCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: const Text('SGF saved to Downloads folder'),
-            showCloseIcon: true,
-            behavior: SnackBarBehavior.floating,
-          ));
-        }
+
+      if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+        showDialog<Directory>(
+          context: context,
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: FilePicker(
+                initialDirectory: Directory(context.settings.saveDirectory),
+                title: 'Select directory',
+              ),
+            );
+          },
+        ).then((Directory? dir) async {
+          if (dir != null) {
+            final f = File(join(dir.path, filename));
+            await f.writeAsBytes(utf8.encode(sgfData));
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('SGF saved to ${dir.path}'),
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+            ));
+            context.settings.saveDirectory = dir.path;
+          }
+        });
       } else {
-        await Share.shareXFiles(
-            [
-              XFile.fromData(
-                Uint8List.fromList(sgfData.codeUnits),
-                mimeType: 'application/x-go-sgf',
-              )
-            ],
-            text: filename,
-            fileNameOverrides: [filename]);
+        Rect? sharePositionOrigin;
+        if (defaultTargetPlatform == TargetPlatform.iOS) {
+          DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+          IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+          if (iosInfo.model.toLowerCase().contains('ipad')) {
+            final box = context.findRenderObject() as RenderBox?;
+            sharePositionOrigin = box!.localToGlobal(Offset.zero) & box.size;
+          }
+        }
+        final params = ShareParams(
+          files: [
+            XFile.fromData(
+              utf8.encode(sgfData),
+              mimeType: 'application/x-go-sgf',
+            )
+          ],
+          fileNameOverrides: [filename],
+          sharePositionOrigin: sharePositionOrigin,
+        );
+        await SharePlus.instance.share(params);
       }
     }
   }
