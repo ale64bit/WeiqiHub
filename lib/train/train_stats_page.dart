@@ -51,7 +51,7 @@ class TrainStatsPage extends StatelessWidget {
   }
 }
 
-class _TimePeriodTab extends StatelessWidget {
+class _TimePeriodTab extends StatefulWidget {
   final String dateLabel;
   final DateFormat dateFormat;
   final DateTime since;
@@ -63,63 +63,92 @@ class _TimePeriodTab extends StatelessWidget {
   });
 
   @override
+  State<_TimePeriodTab> createState() => _TimePeriodTabState();
+}
+
+class _TimePeriodTabState extends State<_TimePeriodTab> {
+  late final dailyStatsFut =
+      Future(() => StatsDB().taskDailyStatsSince(widget.since));
+  late final examEntriesFut =
+      Future(() => StatsDB().examsSince(widget.since).reversed);
+
+  @override
   Widget build(BuildContext context) {
     final isCompact = MediaQuery.sizeOf(context).width < 600;
-    final entries = StatsDB().examsSince(since).reversed;
-    final (correctCount, wrongCount) = StatsDB().taskDailyStatsSince(since);
-    final totalCount = correctCount + wrongCount;
     final passedIcon = Icon(Icons.check, color: Colors.green);
     final failedIcon = Icon(Icons.close, color: Colors.red);
+    final taskDailyStatsText = FutureBuilder(
+        future: dailyStatsFut,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final (correctCount, wrongCount) = snapshot.data!;
+            final totalCount = correctCount + wrongCount;
+            return Text(
+                '$correctCount / $totalCount  (${(100 * correctCount / max(totalCount, 1)).floor()}%)',
+                style: TextTheme.of(context).titleLarge);
+          }
+          return CircularProgressIndicator();
+        });
+    final examTable = FutureBuilder(
+      future: examEntriesFut,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final entries = snapshot.data!;
+          return Expanded(
+            child: SingleChildScrollView(
+              child: DataTable(
+                columnSpacing: 8,
+                columns: <DataColumn>[
+                  DataColumn(label: Text(widget.dateLabel)),
+                  DataColumn(label: const Text('Type')),
+                  DataColumn(label: const Text('Rank')),
+                  DataColumn(label: const Text('Result')),
+                  if (!isCompact) DataColumn(label: const Text('Time')),
+                ],
+                rows: <DataRow>[
+                  for (final entry in entries)
+                    DataRow(
+                      cells: <DataCell>[
+                        DataCell(Text(widget.dateFormat.format(entry.date))),
+                        DataCell(Text(entry.type,
+                            softWrap: false, overflow: TextOverflow.fade)),
+                        DataCell(Text(entry.rankRange.toString())),
+                        DataCell(
+                          Row(
+                            spacing: 4.0,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              (entry.passed ? passedIcon : failedIcon),
+                              Text(
+                                  '${entry.correctCount} / ${entry.correctCount + entry.wrongCount}'),
+                            ],
+                          ),
+                        ),
+                        if (!isCompact)
+                          DataCell(Text('${entry.duration.inSeconds}s')),
+                      ],
+                    )
+                ],
+              ),
+            ),
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
+    );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: 8.0,
       children: [
         Card(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-              child: Text(
-                  '$correctCount / $totalCount  (${(100 * correctCount / max(totalCount, 1)).floor()}%)',
-                  style: TextTheme.of(context).titleLarge)),
-        )),
-        Expanded(
-          child: SingleChildScrollView(
-            child: DataTable(
-              columnSpacing: 8,
-              columns: <DataColumn>[
-                DataColumn(label: Text(dateLabel)),
-                DataColumn(label: const Text('Type')),
-                DataColumn(label: const Text('Rank')),
-                DataColumn(label: const Text('Result')),
-                if (!isCompact) DataColumn(label: const Text('Time')),
-              ],
-              rows: <DataRow>[
-                for (final entry in entries)
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text(dateFormat.format(entry.date))),
-                      DataCell(Text(entry.type,
-                          softWrap: false, overflow: TextOverflow.fade)),
-                      DataCell(Text(entry.rankRange.toString())),
-                      DataCell(
-                        Row(
-                          spacing: 4.0,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            (entry.passed ? passedIcon : failedIcon),
-                            Text(
-                                '${entry.correctCount} / ${entry.correctCount + entry.wrongCount}'),
-                          ],
-                        ),
-                      ),
-                      if (!isCompact)
-                        DataCell(Text('${entry.duration.inSeconds}s')),
-                    ],
-                  )
-              ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: taskDailyStatsText,
             ),
           ),
         ),
+        examTable,
       ],
     );
   }
