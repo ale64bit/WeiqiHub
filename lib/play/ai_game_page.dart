@@ -115,7 +115,7 @@ class _AIGamePageState extends State<AIGamePage> {
     setState(() {
       _state = GameState.playing;
     });
-    if (context.settings.sound) AudioController().startToPlay();
+    AudioController().startToPlay();
   }
 
   @override
@@ -279,9 +279,7 @@ class _AIGamePageState extends State<AIGamePage> {
             : AnnotationMode.mainline);
     if (node == null) return;
 
-    if (context.settings.sound) {
-      AudioController().playForNode(_gameTree.curNode);
-    }
+    AudioController().playForNode(_gameTree.curNode);
 
     if (_state == GameState.playing) {
       _aiBot?.update(_gameTree);
@@ -349,7 +347,7 @@ class _AIGamePageState extends State<AIGamePage> {
     final countResult = count();
     if (countResult.winner == widget.myColor.opposite) {
       _turn = _turn.opposite;
-      if (context.settings.sound) AudioController().pass();
+      AudioController().pass();
       gameOver(countResult);
       return;
     }
@@ -389,7 +387,7 @@ class _AIGamePageState extends State<AIGamePage> {
       final mv = _aiBot!.genMove(_turn);
       final (r, c) = mv.p;
       if (r < 0) {
-        if (context.settings.sound) AudioController().pass();
+        AudioController().pass();
         _turn = _turn.opposite;
       } else {
         final node = _gameTree.moveAnnotated(mv, mode: AnnotationMode.mainline);
@@ -402,7 +400,7 @@ class _AIGamePageState extends State<AIGamePage> {
       }
     }
     if (!validMove) {
-      if (context.settings.sound) AudioController().pass();
+      AudioController().pass();
       _turn = _turn.opposite;
     }
     setState(() {});

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/board/board_sizes.dart';
@@ -16,7 +17,9 @@ class Settings {
   static const _defaultSaveDirKey = 'default.save_dir';
   static const _themeKey = 'settings.theme';
   static const _behaviourKeyPrefix = 'settings.behaviour';
-  static const _soundKey = 'settings.sound';
+  static const _soundStoneKey = 'settings.sound.stone';
+  static const _soundVoiceKey = 'settings.sound.voice';
+  static const _soundUIKey = 'settings.sound.ui';
   static const _credentialsPrefix = 'settings.auth';
   static const _boardTheme = 'settings.board.theme';
   static const _boardShowCoordinatesKey = 'settings.board.show_coordinates';
@@ -66,8 +69,8 @@ class Settings {
       prefs.getInt('$_behaviourKeyPrefix.confirm_moves_board_size') ??
       BoardSizes.size_9.value;
 
-  set confirmMovesBoardSize(int boardSize) => prefs.setInt(
-      '$_behaviourKeyPrefix.confirm_moves_board_size', boardSize);
+  set confirmMovesBoardSize(int boardSize) =>
+      prefs.setInt('$_behaviourKeyPrefix.confirm_moves_board_size', boardSize);
 
   ResponseDelay get responseDelay => ResponseDelay.values[
       prefs.getInt('$_behaviourKeyPrefix.response_delay') ??
@@ -83,8 +86,20 @@ class Settings {
       prefs.setBool('$_behaviourKeyPrefix.always_black_to_play', val);
 
   // Sound
-  bool get sound => prefs.getBool(_soundKey) ?? true;
-  set sound(bool val) => prefs.setBool(_soundKey, val);
+  double get soundStone => prefs.getDouble(_soundStoneKey) ?? 1.0;
+  set soundStone(double val) => prefs.setDouble(_soundStoneKey, val).then((_) {
+        AudioController().stoneVolume = val;
+      });
+
+  double get soundVoice => prefs.getDouble(_soundVoiceKey) ?? 1.0;
+  set soundVoice(double val) => prefs.setDouble(_soundVoiceKey, val).then((_) {
+        AudioController().voiceVolume = val;
+      });
+
+  double get soundUI => prefs.getDouble(_soundUIKey) ?? 1.0;
+  set soundUI(double val) => prefs.setDouble(_soundUIKey, val).then((_) {
+        AudioController().uiVolume = val;
+      });
 
   // Auth
   String? getUsername(String serverId) =>

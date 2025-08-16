@@ -9,7 +9,6 @@ import 'package:wqhub/play/promotion_card.dart';
 import 'package:wqhub/play/streak_card.dart';
 import 'package:wqhub/play/user_info_card.dart';
 import 'package:wqhub/pop_and_window_class_aware_state.dart';
-import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class ServerLobbyRouteArguments {
   final GameClient gameClient;
@@ -36,7 +35,7 @@ class _ServerLobbyPageState
     widget.gameClient.disconnected.addListener(onDisconnected);
     widget.gameClient.ongoingGame().then((game) {
       if (context.mounted && game != null) {
-        if (context.settings.sound) AudioController().startToPlay();
+        AudioController().startToPlay();
         Navigator.pushNamed(
           context,
           GamePage.routeName,

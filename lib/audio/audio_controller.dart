@@ -1,5 +1,6 @@
 import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:logging/logging.dart';
+import 'package:wqhub/settings/settings.dart';
 import 'package:wqhub/wq/game_tree.dart';
 
 class _LocalizedVoice {
@@ -25,7 +26,11 @@ class AudioController {
   final AudioSource _wrong;
   final _LocalizedVoice _enVoice;
 
-  static init() async {
+  var stoneVolume = 1.0;
+  var voiceVolume = 1.0;
+  var uiVolume = 1.0;
+
+  static init(Settings settings) async {
     _log.info('init');
     assert(_instance == null);
     final soloud = SoLoud.instance;
@@ -46,6 +51,9 @@ class AudioController {
             soloud.loadAsset('assets/sounds/en/$i.mp3')
         ]),
       ),
+      stoneVolume: settings.soundStone,
+      voiceVolume: settings.soundVoice,
+      uiVolume: settings.soundUI,
     );
   }
 
@@ -57,6 +65,9 @@ class AudioController {
     required AudioSource correct,
     required AudioSource wrong,
     required _LocalizedVoice enVoice,
+    required this.stoneVolume,
+    required this.voiceVolume,
+    required this.uiVolume,
   })  : _stone = stone,
         _captureOne = captureOne,
         _captureMany = captureMany,
@@ -68,9 +79,14 @@ class AudioController {
     _soloud.deinit();
   }
 
-  Future<void> playStone() async => await _soloud.play(_stone);
-  Future<void> captureOne() async => await _soloud.play(_captureOne);
-  Future<void> captureMany() async => await _soloud.play(_captureMany);
+  //================================================================================
+  // Stone sounds
+  Future<void> playStone() async =>
+      await _soloud.play(_stone, volume: stoneVolume);
+  Future<void> captureOne() async =>
+      await _soloud.play(_captureOne, volume: stoneVolume);
+  Future<void> captureMany() async =>
+      await _soloud.play(_captureMany, volume: stoneVolume);
 
   Future<void> playForNode(GameTreeNode node) async {
     playStone();
@@ -83,10 +99,18 @@ class AudioController {
     }
   }
 
-  Future<void> correct() async => await _soloud.play(_correct);
-  Future<void> wrong() async => await _soloud.play(_wrong);
+  //================================================================================
+  // UI sounds
+  Future<void> correct() async =>
+      await _soloud.play(_correct, volume: uiVolume);
+  Future<void> wrong() async => await _soloud.play(_wrong, volume: uiVolume);
 
-  Future<void> startToPlay() async => await _soloud.play(_enVoice.startToPlay);
-  Future<void> pass() async => await _soloud.play(_enVoice.pass);
-  Future<void> count(int i) async => await _soloud.play(_enVoice.count[i - 1]);
+  //================================================================================
+  // Voice sounds
+  Future<void> startToPlay() async =>
+      await _soloud.play(_enVoice.startToPlay, volume: voiceVolume);
+  Future<void> pass() async =>
+      await _soloud.play(_enVoice.pass, volume: voiceVolume);
+  Future<void> count(int i) async =>
+      await _soloud.play(_enVoice.count[i - 1], volume: voiceVolume);
 }

@@ -4,7 +4,6 @@ import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/play/game_page.dart';
-import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class AutomatchRouteArguments {
   final GameClient gameClient;
@@ -35,7 +34,7 @@ class _AutomatchPageState extends State<AutomatchPage> {
   void initState() {
     _findGame.then((game) {
       if (context.mounted) {
-        if (context.settings.sound) AudioController().startToPlay();
+        AudioController().startToPlay();
         Navigator.pushReplacementNamed(
           context,
           GamePage.routeName,

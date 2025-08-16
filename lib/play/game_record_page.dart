@@ -189,9 +189,7 @@ class _GameRecordPageState extends State<GameRecordPage> {
         .moveAnnotated((col: _turn!, p: p), mode: AnnotationMode.variation);
     if (node == null) return;
 
-    if (context.settings.sound) {
-      AudioController().playForNode(_gameTree.curNode);
-    }
+    AudioController().playForNode(_gameTree.curNode);
 
     // Toggle current turn
     setState(() {

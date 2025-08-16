@@ -37,7 +37,7 @@ Future<void> main() async {
     // Initialize singletons
     await Future.wait(<Future>[
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),
-      AudioController.init(),
+      AudioController.init(settings),
       TaskRepository.init(),
       StatsDB.init(),
     ]);

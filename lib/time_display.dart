@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/game_client/time_state.dart';
-import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 enum TickMode {
   increase,
@@ -133,8 +132,7 @@ class _TimeDisplayState extends State<TimeDisplay> {
   }
 
   void _voiceCountdown() {
-    if (context.settings.sound &&
-        widget.voiceCountdown &&
+    if (widget.voiceCountdown &&
         widget.timeState.isOvertime &&
         Duration.zero < _timeLeft &&
         _timeLeft <= Duration(seconds: 9)) {
