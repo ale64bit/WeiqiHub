@@ -4,6 +4,7 @@
 - add Next button for topic exams 
 - fix: redo button bug on custom exams
 - fix: disable start custom exam if there are no tasks available
+- fix: custom exam reports more mistakes than available
 - fix many broken tasks
 - improve overall routing/navigation
 - improve statistics page: daily/weekly/monthly stats
