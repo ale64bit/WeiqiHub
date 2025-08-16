@@ -10,6 +10,7 @@
 - improve statistics page: daily/weekly/monthly stats
 - new themes by Pumu
 - experimental: 9x9 human-like AI bot 
+- improved sound settings
 
 ## 0.1.8
 - add file picker dialog to save games on desktop

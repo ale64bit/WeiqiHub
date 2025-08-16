@@ -136,9 +136,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
                 ? AnnotationMode.variation
                 : AnnotationMode.mainline) !=
         null) {
-      if (context.settings.sound) {
-        AudioController().playForNode(_gameTree.curNode);
-      }
+      AudioController().playForNode(_gameTree.curNode);
       setState(() {
         _turn = _turn.opposite;
       });

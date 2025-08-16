@@ -63,9 +63,7 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
     if (gameTree
             .moveAnnotated((col: turn, p: p), mode: AnnotationMode.variation) !=
         null) {
-      if (context.settings.sound) {
-        AudioController().playForNode(gameTree.curNode);
-      }
+      AudioController().playForNode(gameTree.curNode);
       continuationAnnotations = null;
       final status = _vtreeIt!.move(p);
       turn = turn.opposite;
@@ -128,12 +126,10 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
       solveStatusNotified = true;
     }
     if (solveStatus == null) {
-      if (context.settings.sound) {
-        if (status == VariationStatus.correct) {
-          AudioController().correct();
-        } else {
-          AudioController().wrong();
-        }
+      if (status == VariationStatus.correct) {
+        AudioController().correct();
+      } else {
+        AudioController().wrong();
       }
       solveStatus = status;
       onSolveStatus(status);

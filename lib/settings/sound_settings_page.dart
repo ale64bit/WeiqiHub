@@ -19,14 +19,54 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
       body: ListView(
         children: <ListTile>[
           ListTile(
-            title: const Text('Sound'),
-            trailing: Switch(
-              value: context.settings.sound,
+            title: const Text('Stones'),
+            subtitle: Slider(
+              value: context.settings.soundStone,
+              label: '${(100 * context.settings.soundStone).floor()}%',
+              divisions: 10,
               onChanged: (value) {
-                context.settings.sound = value;
-                if (value) AudioController().correct();
+                context.settings.soundStone = value;
+                AudioController().stoneVolume = value;
                 setState(() {});
               },
+            ),
+            trailing: FilledButton(
+              onPressed: () => AudioController().playStone(),
+              child: const Text('Test'),
+            ),
+          ),
+          ListTile(
+            title: const Text('UI'),
+            subtitle: Slider(
+              value: context.settings.soundUI,
+              label: '${(100 * context.settings.soundUI).floor()}%',
+              divisions: 10,
+              onChanged: (value) {
+                context.settings.soundUI = value;
+                AudioController().uiVolume = value;
+                setState(() {});
+              },
+            ),
+            trailing: FilledButton(
+              onPressed: () => AudioController().correct(),
+              child: const Text('Test'),
+            ),
+          ),
+          ListTile(
+            title: const Text('Voice'),
+            subtitle: Slider(
+              value: context.settings.soundVoice,
+              label: '${(100 * context.settings.soundVoice).floor()}%',
+              divisions: 10,
+              onChanged: (value) {
+                context.settings.soundVoice = value;
+                AudioController().voiceVolume = value;
+                setState(() {});
+              },
+            ),
+            trailing: FilledButton(
+              onPressed: () => AudioController().startToPlay(),
+              child: const Text('Test'),
             ),
           ),
         ],

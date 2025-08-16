@@ -382,9 +382,7 @@ class _GamePageState extends State<GamePage> {
             : AnnotationMode.mainline);
     if (node == null) return;
 
-    if (context.settings.sound) {
-      AudioController().playForNode(_gameTree.curNode);
-    }
+    AudioController().playForNode(_gameTree.curNode);
 
     if (_state == GameState.playing) {
       // If we are playing, send the move command to the game client
@@ -423,9 +421,7 @@ class _GamePageState extends State<GamePage> {
     final node = _gameTree.moveAnnotated(mv, mode: AnnotationMode.mainline);
     if (node == null) return;
 
-    if (context.settings.sound) {
-      AudioController().playForNode(_gameTree.curNode);
-    }
+    AudioController().playForNode(_gameTree.curNode);
 
     setState(() {
       _turn = _turn.opposite;
@@ -482,7 +478,7 @@ class _GamePageState extends State<GamePage> {
           behavior: SnackBarBehavior.floating,
           showCloseIcon: true,
         ));
-        if (context.settings.sound) AudioController().pass();
+        AudioController().pass();
         setState(() {
           _state = GameState.playing;
           _turn = _turn.opposite;
@@ -494,7 +490,7 @@ class _GamePageState extends State<GamePage> {
           behavior: SnackBarBehavior.floating,
           showCloseIcon: true,
         ));
-        if (context.settings.sound) AudioController().pass();
+        AudioController().pass();
         setState(() {
           _state = GameState.playing;
           _turn = _turn.opposite;
