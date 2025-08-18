@@ -14,7 +14,7 @@ class AIBot {
   final int boardSize;
   final int historySize;
   final MoveSelection moveSelection;
-  final Interpreter _interpreter;
+  final IsolateInterpreter _interpreter;
   final _history = <List<List<wq.Color?>>>[];
 
   AIBot._internal({
@@ -35,11 +35,14 @@ class AIBot {
     required String modelAsset,
     required MoveSelection moveSelection,
   }) async {
+    final interpreter = await Interpreter.fromAsset(modelAsset);
+    final asyncInterpreter =
+        await IsolateInterpreter.create(address: interpreter.address);
     return AIBot._internal(
       boardSize: boardSize,
       historySize: historySize,
       moveSelection: moveSelection,
-      playInterpreter: await Interpreter.fromAsset(modelAsset),
+      playInterpreter: asyncInterpreter,
     );
   }
 
@@ -71,8 +74,8 @@ class AIBot {
     }
   }
 
-  wq.Move genMove(wq.Color turn) {
-    final output = policy(turn);
+  Future<wq.Move> genMove(wq.Color turn) async {
+    final output = await policy(turn);
 
     var maxp = 0.0;
     final moves = <(wq.Point, double)>[];
@@ -98,7 +101,7 @@ class AIBot {
     }
   }
 
-  List<double> policy(wq.Color turn) {
+  Future<List<double>> policy(wq.Color turn) async {
     final input = <double>[];
     for (int i = 0; i < boardSize; ++i) {
       for (int j = 0; j < boardSize; ++j) {
@@ -113,7 +116,7 @@ class AIBot {
     }
     final numMoves = boardSize * boardSize + 1;
     final output = List.filled(numMoves, 0.0).reshape([1, numMoves]);
-    _interpreter.run(
+    await _interpreter.run(
         input.reshape([1, boardSize, boardSize, 2 * historySize + 1]), output);
 
     return output[0] as List<double>;

@@ -89,6 +89,7 @@ class _AIGamePageState extends State<AIGamePage> {
   late AnnotatedGameTree _gameTree;
   var _turn = wq.Color.black;
   var _state = GameState.preparing;
+  var _consecutivePasses = 0;
   // End State
 
   IMapOfSets<wq.Point, Annotation>? _territoryAnnotations;
@@ -97,8 +98,8 @@ class _AIGamePageState extends State<AIGamePage> {
   @override
   void initState() {
     super.initState();
-    initBot();
     _gameTree = AnnotatedGameTree(widget.boardSize);
+    initBot();
   }
 
   @override
@@ -116,6 +117,7 @@ class _AIGamePageState extends State<AIGamePage> {
       _state = GameState.playing;
     });
     AudioController().startToPlay();
+    if (widget.myColor == wq.Color.white) genMove();
   }
 
   @override
@@ -284,6 +286,7 @@ class _AIGamePageState extends State<AIGamePage> {
     if (_state == GameState.playing) {
       _aiBot?.update(_gameTree);
       _turn = _turn.opposite;
+      _consecutivePasses = 0;
       genMove();
     } else {
       _turn = _turn.opposite;
@@ -309,7 +312,12 @@ class _AIGamePageState extends State<AIGamePage> {
     if (_state == GameState.playing) {
       _aiBot?.update(_gameTree);
       _turn = _turn.opposite;
-      passOrGenMove();
+      _consecutivePasses++;
+      if (_consecutivePasses >= 2) {
+        gameOver(count());
+      } else {
+        passOrGenMove();
+      }
     } else {
       _turn = _turn.opposite;
     }
@@ -346,8 +354,9 @@ class _AIGamePageState extends State<AIGamePage> {
 
     final countResult = count();
     if (countResult.winner == widget.myColor.opposite) {
-      _turn = _turn.opposite;
       AudioController().pass();
+      _turn = _turn.opposite;
+      _consecutivePasses++;
       gameOver(countResult);
       return;
     }
@@ -373,6 +382,8 @@ class _AIGamePageState extends State<AIGamePage> {
             },
             onReject: () {
               Navigator.pop(context);
+              _consecutivePasses = 0;
+              if (_turn != widget.myColor) genMove();
               setState(() {
                 _territoryAnnotations = null;
               });
@@ -381,27 +392,33 @@ class _AIGamePageState extends State<AIGamePage> {
         });
   }
 
-  void genMove() {
-    var validMove = false;
+  Future<wq.Move> pickMove(wq.Color turn) async {
     for (int i = 0; i < 3; ++i) {
-      final mv = _aiBot!.genMove(_turn);
+      final mv = await _aiBot!.genMove(turn);
       final (r, c) = mv.p;
-      if (r < 0) {
-        AudioController().pass();
-        _turn = _turn.opposite;
-      } else {
-        final node = _gameTree.moveAnnotated(mv, mode: AnnotationMode.mainline);
-        if (node != null) {
-          _aiBot?.update(_gameTree);
-          _turn = _turn.opposite;
-          validMove = true;
-          break;
-        }
+      if (r < 0 || _gameTree.canMove(mv)) {
+        return mv;
       }
     }
-    if (!validMove) {
+    return (col: turn, p: (-1, -1));
+  }
+
+  void genMove() async {
+    final mv = await pickMove(_turn);
+    if (_state != GameState.playing || mv.col != _turn) return;
+    final (r, c) = mv.p;
+    if (r < 0) {
       AudioController().pass();
       _turn = _turn.opposite;
+      _consecutivePasses++;
+      if (_consecutivePasses >= 2) gameOver(count());
+    } else {
+      final node = _gameTree.moveAnnotated(mv, mode: AnnotationMode.mainline);
+      if (node != null) {
+        _aiBot?.update(_gameTree);
+        _turn = _turn.opposite;
+        _consecutivePasses = 0;
+      }
     }
     setState(() {});
   }
@@ -434,6 +451,7 @@ class _AIGamePageState extends State<AIGamePage> {
     setState(() {});
   }
 
+/*
   void onTogglePolicy() {
     if (_policyAnnotations == null) {
       _policyAnnotations = IMapOfSets.empty();
@@ -471,6 +489,7 @@ class _AIGamePageState extends State<AIGamePage> {
     }
     setState(() {});
   }
+  */
 
   void onResignClicked() {
     showDialog(
