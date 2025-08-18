@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/game_client_list.dart';
 import 'package:wqhub/main_page_bottom_navigation_bar.dart';
@@ -143,32 +141,31 @@ class _Play extends StatelessWidget {
         children: <Widget>[
           for (final gameClient in gameClients)
             ServerCard(gameClient: gameClient),
-          if (Platform.isAndroid || Platform.isLinux || Platform.isWindows)
-            Card(
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, AILobbyPage.routeName);
-                },
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.videogame_asset),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          const Text('Bot'),
-                          Badge(
-                            label: Text('Experimental'),
-                          ),
-                        ],
-                      ),
-                      subtitle: const Text(
-                          'Play against a human-like AI opponent. No internet required.'),
+          Card(
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, AILobbyPage.routeName);
+              },
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.videogame_asset),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        const Text('Bot'),
+                        Badge(
+                          label: Text('Experimental'),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                    subtitle: const Text(
+                        'Play against a human-like AI opponent. No internet required.'),
+                  ),
+                ],
               ),
             ),
+          ),
         ],
       ),
     );

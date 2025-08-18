@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/settings/settings.dart';
@@ -28,11 +27,6 @@ Future<void> main() async {
     final sharedPreferences = await SharedPreferencesWithCache.create(
         cacheOptions: const SharedPreferencesWithCacheOptions());
     final settings = Settings(sharedPreferences);
-
-    // Set default save directory
-    final downloadsDir = await getDownloadsDirectory();
-    final appDocsDir = await getApplicationDocumentsDirectory();
-    settings.defaultSaveDirectory = downloadsDir?.path ?? appDocsDir.path;
 
     // Initialize singletons
     await Future.wait(<Future>[
