@@ -143,7 +143,7 @@ class _Play extends StatelessWidget {
         children: <Widget>[
           for (final gameClient in gameClients)
             ServerCard(gameClient: gameClient),
-          if (Platform.isAndroid || Platform.isLinux)
+          if (Platform.isAndroid || Platform.isLinux || Platform.isWindows)
             Card(
               child: InkWell(
                 onTap: () {
