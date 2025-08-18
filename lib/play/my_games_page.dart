@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:wqhub/file_picker.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/play/game_record_page.dart';
@@ -121,36 +121,25 @@ class _MyGamesPageState extends State<MyGamesPage> {
     final recordFut = widget.gameClient.getGame(summary.id);
     _GameLoadingDialog.show(context, 'Downloading game', summary, recordFut,
         onRecord: (context, summary, record) async {
-      final filename =
+      final fileName =
           '${_dateFormat.format(summary.dateTime)} - ${summary.white.username} vs ${summary.black.username}.${record.type.name}';
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
         if (context.mounted) {
-          showDialog<Directory>(
-            context: context,
-            builder: (context) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: FilePicker(
-                  initialDirectory: Directory(context.settings.saveDirectory),
-                  title: 'Select directory',
-                ),
-              );
-            },
-          ).then((Directory? dir) async {
-            if (dir != null) {
-              final f = File(join(dir.path, filename));
-              await f.writeAsBytes(record.rawData);
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).removeCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('Game saved to ${dir.path}'),
-                  showCloseIcon: true,
-                  behavior: SnackBarBehavior.floating,
-                ));
-                context.settings.saveDirectory = dir.path;
-              }
-            }
-          });
+          final FileSaveLocation? result = await getSaveLocation(
+            suggestedName: fileName,
+            initialDirectory: context.settings.getSaveDirectory(),
+          );
+          if (result != null) {
+            final f = File(result.path);
+            await f.writeAsBytes(record.rawData);
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text('Game saved to ${result.path}'),
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+            ));
+            context.settings.saveDirectory = dirname(result.path);
+          }
         }
       } else {
         Rect? sharePositionOrigin;
@@ -169,7 +158,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
               mimeType: 'application/x-go-${record.type.name}',
             )
           ],
-          fileNameOverrides: [filename],
+          fileNameOverrides: [fileName],
           sharePositionOrigin: sharePositionOrigin,
         );
         await SharePlus.instance.share(params);
