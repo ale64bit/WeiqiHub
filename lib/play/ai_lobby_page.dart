@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/play/ai_bot.dart';
@@ -25,7 +27,8 @@ class AILobbyPage extends StatelessWidget {
                     arguments: AIGameRouteArguments(
                       rules: Rules.chinese,
                       boardSize: 9,
-                      myColor: wq.Color.black,
+                      myColor:
+                          Random().nextBool() ? wq.Color.black : wq.Color.white,
                       handicap: 0,
                       komi: 7.5,
                       moveSelection: MoveSelection.dist,
