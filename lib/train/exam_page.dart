@@ -267,6 +267,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
           currentTask.id, status == VariationStatus.correct);
       if (status == VariationStatus.correct) {
         context.stats.incrementTotalPassCount(currentTask.rank);
+        StatsDB().deleteMistakes([TaskRef(rank: currentTask.rank, type: currentTask.type, id: currentTask.id)]);
       } else {
         context.stats.incrementTotalFailCount(currentTask.rank);
       }

@@ -21,6 +21,8 @@ WeiqiHub is a unified client to multiple Go servers and offline puzzle solving.
   * Time Frenzy: solve as many problems as possible within 3 minutes. Difficulty increases the more you solve. If you make 3 mistakes, you are out.
   * Ranked Mode: solve problems without a time limit. Difficulty increases the more/faster you solve.
   * Collections: solve classic curated collections of problems without a time limit to improve your reading strength.
+  * Topics: solve problems across various topics and ranks.
+  * Custom Exam: solve problems from a customized set of topics, collections or from your mistakes
 - Keep track of your solve stats and mistakes
 
 ## Development
