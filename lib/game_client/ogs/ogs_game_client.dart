@@ -110,8 +110,8 @@ class OGSGameClient extends GameClient {
         final userData = jsonDecode(loginResponse.body)['user'];
         
         final user = UserInfo(
-          userId: userData['user']?['id']?.toString() ?? '',
-          username: userData['user']?['username'] ?? username,
+          userId: userData['id'].toString(),
+          username: userData['username'],
           rank: _ratingToRank(userData['ratings']['overall']['rating']),
           online: true,
           winCount: 0,
@@ -171,7 +171,8 @@ class OGSGameClient extends GameClient {
       final clipped = rating.clamp(minRating, maxRating);
       final rankNum = (math.log(clipped / a) * c).round();
 
-      return Rank.values[rankNum];
+      final clampedRankNum = rankNum.clamp(0, Rank.values.length - 1);
+      return Rank.values[clampedRankNum];
     }
     return Rank.k6; // Default
   }
