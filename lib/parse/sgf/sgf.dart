@@ -53,8 +53,12 @@ class _SgfDefinition extends GrammarDefinition {
   Parser<List<String>> propValues() =>
       ref0(propValue).plusSeparated(ref0(space)).map((sl) => sl.elements);
 
-  Parser<String> propValue() => (any().starLazy(char(']')).flatten())
-      .skip(before: char('['), after: char(']'));
+  Parser<String> propValue() =>
+      ((char('\\') & char(']')).map((_) => ']') // handle escaped ]
+          | (char(']').not() & any()).pick(1)) // any char except ]
+          .star()
+          .map((parts) => parts.join())
+          .skip(before: char('['), after: char(']'));
 
   Parser<void> space() => (whitespace() | newline()).star();
 }

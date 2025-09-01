@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/parse/sgf/sgf.dart';
+import 'package:wqhub/wq/wq.dart' as wq;
 
 void main() {
   test('parse', () {
@@ -31,5 +32,59 @@ void main() {
     final rec = GameRecord.fromSgf(sgfData);
     expect(rec.type, GameRecordType.sgf);
     expect(rec.moves.length, 291);
+  });
+  
+  test('fromSgf with variations', () {
+    // Test SGF with a simple variation - should follow main line
+    const sgfData =
+        '(;GM[1]FF[4]SZ[9];B[fe];W[de](;B[ec];W[dc];B[db])(;B[ee];W[dd]))';
+    final sgf = Sgf.parse(sgfData);
+
+    expect(sgf.trees.length, 1);
+
+    final tree = sgf.trees.first;
+    // Main line nodes: root + B[fe] + W[de]
+    expect(tree.nodes.length, 3);
+    expect(tree.nodes[0]['GM'], ['1']);
+    expect(tree.nodes[1]['B'], ['fe']);
+    expect(tree.nodes[2]['W'], ['de']);
+
+    // There are two variations (children)
+    expect(tree.children.length, 2);
+
+    // First variation
+    final var1 = tree.children[0];
+    expect(var1.nodes.length, 3);
+    expect(var1.nodes[0]['B'], ['ec']);
+    expect(var1.nodes[1]['W'], ['dc']);
+    expect(var1.nodes[2]['B'], ['db']);
+
+    // Second variation
+    final var2 = tree.children[1];
+    expect(var2.nodes.length, 2);
+    expect(var2.nodes[0]['B'], ['ee']);
+    expect(var2.nodes[1]['W'], ['dd']);
+  });
+
+  test('SGF with escaped bracket', () {
+    // Test that escaped characters in comments are handled correctly
+    const sgfWithEscape = '(;GM[1]FF[4]SZ[9]C[Comment with \\] bracket];B[aa])';
+    final sgf = Sgf.parse(sgfWithEscape);
+    expect(sgf.trees.length, 1);
+
+    final comment = sgf.trees.first.nodes.first['C']?.first;
+    expect(comment, 'Comment with ] bracket');
+
+    final rec = GameRecord.fromSgf(sgfWithEscape);
+    expect(rec.moves.length, 1);
+    expect(rec.moves[0].col, wq.Color.black);
+  });
+
+  test('fromSgf with variations... and a space', () {
+    const problematicSgfData =
+        '(;GM[1]FF[4]SZ[9];B[fe];W[de] (;B[ec];W[dc];B[db])(;B[ee];W[dd]))';
+    // TODO: we don't actually want this to throw an exception
+    expect(() => GameRecord.fromSgf(problematicSgfData),
+        throwsA(isA<Exception>()));
   });
 }
