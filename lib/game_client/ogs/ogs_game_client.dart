@@ -9,10 +9,12 @@ import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
+import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/game_client/server_info.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/rank.dart';
+import 'package:wqhub/wq/wq.dart' as wq;
 
 class OGSGameClient extends GameClient {
   final ValueNotifier<UserInfo?> _userInfo = ValueNotifier(null);
@@ -150,9 +152,107 @@ class OGSGameClient extends GameClient {
     throw UnimplementedError();
   }
 
-  @override
+@override
   Future<List<GameSummary>> listGames() async {
-    return [];
+    try {
+      // Get the current user ID for the games API endpoint
+      final userInfo = _userInfo.value;
+      if (userInfo == null) {
+        throw Exception('Not logged in');
+      }
+      print(userInfo);
+
+      final response = await _httpClient.get(
+        Uri.parse('$serverUrl/api/v1/players/${userInfo.userId}/games/')
+            .replace(
+          queryParameters: {
+            'page_size': '50',
+            'page': '1',
+            'source': 'play',
+            'ended__isnull': 'false',
+            'ordering': '-ended',
+          },
+        ),
+        headers: {
+          'User-Agent': 'WeiqiHub/1.0',
+          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+        },
+      );
+
+      print("got here ${response.statusCode}");
+      print('$serverUrl/api/v1/players/${userInfo.userId}/games/');
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to fetch games: ${response.statusCode}');
+      }
+
+      final data = jsonDecode(response.body);
+      final List<dynamic> results = data['results'] ?? [];
+
+      return results.map<GameSummary>((gameData) {
+        // Parse basic game info
+        final gameId = gameData['id'].toString();
+        final boardSize = gameData['width'] as int? ?? 19;
+
+        // Parse dates
+        final endedStr = gameData['ended'] as String?;
+        final dateTime =
+            endedStr != null ? DateTime.parse(endedStr) : DateTime.now();
+
+        // Parse players
+        final blackPlayerData = gameData['players']['black'];
+        final whitePlayerData = gameData['players']['white'];
+
+        final blackPlayer = UserInfo(
+          userId: blackPlayerData['id'].toString(),
+          username: blackPlayerData['username'] ?? '',
+          rank:
+              _ratingToRank(blackPlayerData['ratings']?['overall']?['rating']),
+          online: false, // Not available in this API
+          winCount: 0, // Not available in this API
+          lossCount: 0, // Not available in this API
+        );
+
+        final whitePlayer = UserInfo(
+          userId: whitePlayerData['id'].toString(),
+          username: whitePlayerData['username'] ?? '',
+          rank:
+              _ratingToRank(whitePlayerData['ratings']?['overall']?['rating']),
+          online: false, // Not available in this API
+          winCount: 0, // Not available in this API
+          lossCount: 0, // Not available in this API
+        );
+
+        // Parse game result
+        final outcome = gameData['outcome'] as String? ?? '';
+        final blackLost = gameData['black_lost'] as bool? ?? false;
+        final whiteLost = gameData['white_lost'] as bool? ?? false;
+
+        wq.Color? winner;
+        if (blackLost && !whiteLost) {
+          winner = wq.Color.white;
+        } else if (whiteLost && !blackLost) {
+          winner = wq.Color.black;
+        }
+        // If both lost or neither lost, winner remains null (draw/unknown)
+
+        final result = GameResult(
+          winner: winner,
+          result: outcome,
+        );
+
+        return GameSummary(
+          id: gameId,
+          boardSize: boardSize,
+          white: whitePlayer,
+          black: blackPlayer,
+          dateTime: dateTime,
+          result: result,
+        );
+      }).toList();
+    } catch (e) {
+      throw Exception('Failed to list games: $e');
+    }
   }
 
   @override
