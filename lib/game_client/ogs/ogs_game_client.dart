@@ -10,6 +10,7 @@ import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/game_client/server_info.dart';
 import 'package:wqhub/game_client/user_info.dart';
@@ -21,12 +22,21 @@ class OGSGameClient extends GameClient {
   final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
   
   final String serverUrl;
+  late final OGSWebSocketManager _webSocketManager;
 
   OGSGameClient({required this.serverUrl}) {
+    _webSocketManager = OGSWebSocketManager(serverUrl: serverUrl);
     
+    // Listen to WebSocket connection status
+    _webSocketManager.connected.addListener(() {
+      if (!_webSocketManager.connected.value) {
+        _disconnected.value = DateTime.now();
+      }
+    });
   }
 
   String? _csrfToken;
+  String? _jwtToken;
   final http.Client _httpClient = http.Client();
 
   @override
@@ -69,6 +79,8 @@ class OGSGameClient extends GameClient {
       );
       
       if (response.statusCode == 200) {
+        // Connect to WebSocket
+        await _webSocketManager.connect();
         return ReadyInfo();
       } else {
         throw Exception('OGS API not available: ${response.statusCode}');
@@ -109,7 +121,11 @@ class OGSGameClient extends GameClient {
       );
       
       if (loginResponse.statusCode == 200) {
-        final userData = jsonDecode(loginResponse.body)['user'];
+        final loginData = jsonDecode(loginResponse.body);
+        final userData = loginData['user'];
+
+        // Extract JWT token for WebSocket authentication
+        _jwtToken = loginData['jwt'] ?? '';
         
         final user = UserInfo(
           userId: userData['id'].toString(),
@@ -121,7 +137,12 @@ class OGSGameClient extends GameClient {
         );
         
         _userInfo.value = user;
-        
+
+        // Authenticate with WebSocket if JWT token is available
+        if (_jwtToken != null && _jwtToken!.isNotEmpty) {
+          await _webSocketManager.authenticate(jwtToken: _jwtToken!);
+        }
+
         return user;
       } else {
         throw Exception('Login failed: ${loginResponse.statusCode}');
@@ -134,7 +155,9 @@ class OGSGameClient extends GameClient {
   @override
   void logout() {
     _csrfToken = null;
+    _jwtToken = null;
     _userInfo.value = null;
+    _webSocketManager.disconnect();
   }
 
   @override
@@ -277,5 +300,6 @@ class OGSGameClient extends GameClient {
     _httpClient.close();
     _userInfo.dispose();
     _disconnected.dispose();
+    _webSocketManager.dispose();
   }
 }
