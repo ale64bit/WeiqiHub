@@ -80,11 +80,33 @@ void main() {
     expect(rec.moves[0].col, wq.Color.black);
   });
 
-  test('fromSgf with variations... and a space', () {
-    const problematicSgfData =
+  test('parse with variations... and a space', () {
+    const sgfWithSpaceAroundVariation =
         '(;GM[1]FF[4]SZ[9];B[fe];W[de] (;B[ec];W[dc];B[db])(;B[ee];W[dd]))';
-    // TODO: we don't actually want this to throw an exception
-    expect(() => GameRecord.fromSgf(problematicSgfData),
-        throwsA(isA<Exception>()));
+    final sgf = Sgf.parse(sgfWithSpaceAroundVariation);
+    expect(sgf.trees.length, 1);
+
+    final tree = sgf.trees.first;
+    // Main line nodes: root + B[fe] + W[de]
+    expect(tree.nodes.length, 3);
+    expect(tree.nodes[0]['GM'], ['1']);
+    expect(tree.nodes[1]['B'], ['fe']);
+    expect(tree.nodes[2]['W'], ['de']);
+
+    // There are two variations (children)
+    expect(tree.children.length, 2);
+
+    // First variation
+    final var1 = tree.children[0];
+    expect(var1.nodes.length, 3);
+    expect(var1.nodes[0]['B'], ['ec']);
+    expect(var1.nodes[1]['W'], ['dc']);
+    expect(var1.nodes[2]['B'], ['db']);
+
+    // Second variation
+    final var2 = tree.children[1];
+    expect(var2.nodes.length, 2);
+    expect(var2.nodes[0]['B'], ['ee']);
+    expect(var2.nodes[1]['W'], ['dd']);
   });
 }

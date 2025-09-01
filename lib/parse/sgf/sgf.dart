@@ -30,7 +30,7 @@ class _SgfDefinition extends GrammarDefinition {
 
   Parser<SgfTree> gameTree() =>
       (ref0(nodeSeq) & ref0(gameTree).starSeparated(ref0(space)))
-          .skip(before: char('('), after: char(')'))
+          .skip(before: char('(').trim(), after: char(')').trim())
           .map((l) => SgfTree(
                 nodes: l[0],
                 children: l[1].elements,
