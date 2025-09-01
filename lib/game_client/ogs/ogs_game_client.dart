@@ -160,7 +160,6 @@ class OGSGameClient extends GameClient {
       if (userInfo == null) {
         throw Exception('Not logged in');
       }
-      print(userInfo);
 
       final response = await _httpClient.get(
         Uri.parse('$serverUrl/api/v1/players/${userInfo.userId}/games/')
@@ -178,9 +177,6 @@ class OGSGameClient extends GameClient {
           if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
         },
       );
-
-      print("got here ${response.statusCode}");
-      print('$serverUrl/api/v1/players/${userInfo.userId}/games/');
 
       if (response.statusCode != 200) {
         throw Exception('Failed to fetch games: ${response.statusCode}');
