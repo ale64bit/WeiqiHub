@@ -22,6 +22,4 @@ This directory contains the implementation of a GameClient for Online Go Server 
 ## TODO
 
 - Implement gameplay
-- Add error handling for network failures
-- Add support for game analysis
-- WebSocket connection
+- Implement automatch
