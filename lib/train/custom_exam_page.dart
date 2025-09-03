@@ -22,6 +22,7 @@ class CustomExamRouteArguments {
   final ISet<TaskType>? taskTypes;
   final TaskTag? taskTag;
   final bool collectStats;
+  final bool removeMistakesOnSuccess;
 
   const CustomExamRouteArguments(
       {required this.taskCount,
@@ -31,7 +32,8 @@ class CustomExamRouteArguments {
       required this.taskSourceType,
       required this.taskTypes,
       required this.taskTag,
-      required this.collectStats});
+      required this.collectStats,
+      required this.removeMistakesOnSuccess});
 }
 
 class CustomExamPage extends StatelessWidget {
@@ -45,6 +47,7 @@ class CustomExamPage extends StatelessWidget {
   final ISet<TaskType>? taskTypes;
   final TaskTag? taskTag;
   final bool collectStats;
+  final bool removeMistakesOnSuccess;
 
   const CustomExamPage(
       {super.key,
@@ -55,7 +58,8 @@ class CustomExamPage extends StatelessWidget {
       required this.taskSourceType,
       this.taskTypes,
       this.taskTag,
-      required this.collectStats});
+      required this.collectStats,
+      required this.removeMistakesOnSuccess});
 
   @override
   Widget build(BuildContext context) {
@@ -80,8 +84,10 @@ class CustomExamPage extends StatelessWidget {
         taskTypes: taskTypes,
         taskTag: taskTag,
         collectStats: collectStats,
+        removeMistakesOnSuccess: removeMistakesOnSuccess,
       ),
       collectStats: collectStats,
+      removeMistakesOnSuccess: removeMistakesOnSuccess,
     );
   }
 

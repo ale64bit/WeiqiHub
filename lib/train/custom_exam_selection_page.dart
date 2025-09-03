@@ -28,6 +28,7 @@ class _CustomExamSelectionPageState
   var _maxMistakes = 2;
   var _timePerTask = Duration(seconds: 45);
   var _collectStats = true;
+  var _removeMistakesOnSuccess = true;
   var _rankRange = RankRange(from: Rank.k15, to: Rank.d7);
   var _taskSourceType = TaskSourceType.values.first;
   var _selectedTaskTypes = {TaskType.lifeAndDeath, TaskType.tesuji};
@@ -209,6 +210,17 @@ class _CustomExamSelectionPageState
                         }
                       },
                     ),
+                    CheckboxListTile(
+                      title: const Text('Remove mistakes on success'),
+                      value: _removeMistakesOnSuccess,
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            _removeMistakesOnSuccess = value;
+                          });
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -241,6 +253,7 @@ class _CustomExamSelectionPageState
                                   taskTypes: ISet(_selectedTaskTypes),
                                   taskTag: _subtag,
                                   collectStats: _collectStats,
+                                  removeMistakesOnSuccess: _removeMistakesOnSuccess,
                                 ),
                               );
                             } else {
