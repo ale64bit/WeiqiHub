@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
 class OGSWebSocketManager {
+  final _log = Logger('OGSWebSocketManager');
+
   WebSocketChannel? _channel;
   final String serverUrl;
   String? _deviceId;
@@ -49,7 +52,7 @@ class OGSWebSocketManager {
           .replaceFirst('https://', 'wss://')
           .replaceFirst('http://', 'ws://');
       
-      debugPrint('Connecting to OGS WebSocket: $wsUrl');
+      _log.fine('Connecting to OGS WebSocket: $wsUrl');
       
       _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
       
@@ -65,10 +68,10 @@ class OGSWebSocketManager {
       // Start ping timer
       _startPingTimer();
       
-      debugPrint('Connected to OGS WebSocket');
+      _log.fine('Connected to OGS WebSocket');
       
     } catch (e) {
-      debugPrint('Failed to connect to OGS WebSocket: $e');
+      _log.warning('Failed to connect to OGS WebSocket: $e');
       _scheduleReconnect();
     }
   }
@@ -97,7 +100,7 @@ class OGSWebSocketManager {
       };
       
       send('authenticate', authData);
-      debugPrint('Sent authentication message');
+      _log.fine('Sent authentication message');
     }
   }
   
@@ -107,26 +110,26 @@ class OGSWebSocketManager {
       final List<dynamic> message = data != null ? [command, data] : [command];
       final messageStr = jsonEncode(message);
       _channel!.sink.add(messageStr);
-      debugPrint('Sent: $messageStr');
+      _log.fine('Sent: $messageStr');
     } else {
-      debugPrint('Cannot send message: WebSocket not connected');
+      _log.warning('Cannot send message: WebSocket not connected');
     }
   }
   
   void joinGame(String gameId) {
     send('game/connect', {'game_id': int.parse(gameId)});
-    debugPrint('Joining game: $gameId');
+    _log.fine('Joining game: $gameId');
   }
   
   void leaveGame(String gameId) {
     send('game/disconnect', {'game_id': int.parse(gameId)});
-    debugPrint('Leaving game: $gameId');
+    _log.fine('Leaving game: $gameId');
   }
   
   void _handleMessage(dynamic message) {
     try {
       final String messageStr = message.toString();
-      debugPrint('Received: $messageStr');
+      _log.fine('Received: $messageStr');
       
       // Parse JSON message - OGS uses plain JSON arrays
       final data = jsonDecode(messageStr);
@@ -153,7 +156,7 @@ class OGSWebSocketManager {
       }
       
     } catch (e) {
-      debugPrint('Error parsing message: $e');
+      _log.warning('Error parsing message: $e');
     }
   }
   
@@ -166,38 +169,38 @@ class OGSWebSocketManager {
       _latency = (now - clientTime).toDouble();
       _clockDrift = now - _latency / 2 - serverTime;
       
-      debugPrint('Latency: ${_latency}ms, Clock drift: ${_clockDrift}ms');
+      _log.fine('Latency: ${_latency}ms, Clock drift: ${_clockDrift}ms');
     }
   }
   
   void _handleSpecialEvents(String event, Map<String, dynamic> data) {
     switch (event) {
       case 'authenticated':
-        debugPrint('Successfully authenticated with OGS');
+        _log.info('Successfully authenticated with OGS');
         break;
       case 'authentication_failed':
-        debugPrint('Authentication failed: ${data['error']}');
+        _log.warning('Authentication failed: ${data['error']}');
         break;
       case 'game/move':
-        debugPrint('Game move received: $data');
+        _log.fine('Game move received: $data');
         break;
       case 'game/data':
-        debugPrint('Game data received: $data');
+        _log.fine('Game data received: $data');
         break;
       case 'error':
-        debugPrint('Server error: $data');
+        _log.warning('Server error: $data');
         break;
     }
   }
   
   void _handleError(error) {
-    debugPrint('WebSocket error: $error');
+    _log.warning('WebSocket error: $error');
     _connected.value = false;
     _scheduleReconnect();
   }
   
   void _handleDisconnect() {
-    debugPrint('WebSocket disconnected');
+    _log.info('WebSocket disconnected');
     _connected.value = false;
     _scheduleReconnect();
   }
@@ -213,21 +216,22 @@ class OGSWebSocketManager {
           'latency': _latency,
         };
         send('net/ping', pingData);
-        debugPrint('Sent ping');
+        _log.fine('Sent ping');
       }
     });
   }
   
   void _scheduleReconnect() {
     if (_reconnectAttempts >= maxReconnectAttempts) {
-      debugPrint('Max reconnection attempts reached');
+      _log.warning('Max reconnection attempts reached');
       return;
     }
     
     _reconnectTimer?.cancel();
     final delay = Duration(seconds: math.min(30, math.pow(2, _reconnectAttempts).toInt()));
     
-    debugPrint('Scheduling reconnect in ${delay.inSeconds} seconds (attempt ${_reconnectAttempts + 1})');
+    _log.info(
+        'Scheduling reconnect in ${delay.inSeconds} seconds (attempt ${_reconnectAttempts + 1})');
     
     _reconnectTimer = Timer(delay, () {
       _reconnectAttempts++;

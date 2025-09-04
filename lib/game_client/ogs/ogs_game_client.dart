@@ -19,6 +19,8 @@ import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:wqhub/parse/sgf/sgf.dart';
 
 class OGSGameClient extends GameClient {
+  static const String _userAgent = 'WeiqiHub/1.0';
+
   final ValueNotifier<UserInfo?> _userInfo = ValueNotifier(null);
   final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
   
@@ -72,23 +74,7 @@ class OGSGameClient extends GameClient {
 
   @override
   Future<ReadyInfo> ready() async {
-    try {
-      // Test connection to OGS API
-      final response = await _httpClient.get(
-        Uri.parse('$serverUrl/api/v1/ui/config'),
-        headers: {'User-Agent': 'WeiqiHub/1.0'},
-      );
-      
-      if (response.statusCode == 200) {
-        // Connect to WebSocket
-        await _webSocketManager.connect();
-        return ReadyInfo();
-      } else {
-        throw Exception('OGS API not available: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Failed to connect to OGS: $e');
-    }
+    return ReadyInfo();
   }
 
   @override
@@ -97,7 +83,7 @@ class OGSGameClient extends GameClient {
       // First, get the CSRF token
       final csrfResponse = await _httpClient.get(
         Uri.parse('$serverUrl/api/v1/ui/config'),
-        headers: {'User-Agent': 'WeiqiHub/1.0'},
+        headers: {'User-Agent': _userAgent},
       );
       
       if (csrfResponse.statusCode != 200) {
@@ -112,7 +98,7 @@ class OGSGameClient extends GameClient {
         Uri.parse('$serverUrl/api/v0/login'),
         headers: {
           'Content-Type': 'application/json',
-          'User-Agent': 'WeiqiHub/1.0',
+          'User-Agent': _userAgent,
           'X-CSRFToken': _csrfToken!,
         },
         body: jsonEncode({
@@ -197,7 +183,7 @@ class OGSGameClient extends GameClient {
           },
         ),
         headers: {
-          'User-Agent': 'WeiqiHub/1.0',
+          'User-Agent': _userAgent,
           if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
         },
       );
@@ -281,7 +267,7 @@ class OGSGameClient extends GameClient {
       final response = await _httpClient.get(
         Uri.parse('$serverUrl/api/v1/games/$gameId/sgf'),
         headers: {
-          'User-Agent': 'WeiqiHub/1.0',
+          'User-Agent': _userAgent,
           if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
         },
       );
