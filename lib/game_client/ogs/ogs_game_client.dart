@@ -1,0 +1,348 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math' as math;
+
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:wqhub/game_client/automatch_preset.dart';
+import 'package:wqhub/game_client/game.dart';
+import 'package:wqhub/game_client/game_client.dart';
+import 'package:wqhub/game_client/game_record.dart';
+import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
+import 'package:wqhub/game_client/server_features.dart';
+import 'package:wqhub/game_client/server_info.dart';
+import 'package:wqhub/game_client/user_info.dart';
+import 'package:wqhub/wq/rank.dart';
+import 'package:wqhub/wq/wq.dart' as wq;
+import 'package:wqhub/parse/sgf/sgf.dart';
+
+class OGSGameClient extends GameClient {
+  static const String _userAgent = 'WeiqiHub/1.0';
+
+  final ValueNotifier<UserInfo?> _userInfo = ValueNotifier(null);
+  final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
+  
+  final String serverUrl;
+  late final OGSWebSocketManager _webSocketManager;
+
+  OGSGameClient({required this.serverUrl}) {
+    _webSocketManager = OGSWebSocketManager(serverUrl: serverUrl);
+    
+    // Listen to WebSocket connection status
+    _webSocketManager.connected.addListener(() {
+      if (!_webSocketManager.connected.value) {
+        _disconnected.value = DateTime.now();
+      }
+    });
+  }
+
+  String? _csrfToken;
+  String? _jwtToken;
+  final http.Client _httpClient = http.Client();
+
+  @override
+  ServerInfo get serverInfo => ServerInfo(
+        id: 'ogs',
+        name: 'Online Go Server',
+        nativeName: 'OGS',
+        description: 'The premier online Go platform with tournaments, AI analysis, and a vibrant community.',
+        homeUrl: serverUrl,
+        registerUrl: Uri.parse('$serverUrl/register'),
+      );
+
+  @override
+  ServerFeatures get serverFeatures => ServerFeatures(
+        manualCounting: true,
+        automaticCounting: true,
+        aiReferee: false, // OGS's AI referee cannot be called on-demand
+        aiRefereeMinMoveCount: const IMapConst({}),
+        forcedCounting: false, // OGS handles counting differently
+        forcedCountingMinMoveCount: const IMapConst({}),
+        localTimeControl: false, // OGS handles time control server-side
+      );
+
+  @override
+  ValueNotifier<UserInfo?> get userInfo => _userInfo;
+
+  @override
+  ValueNotifier<DateTime> get disconnected => _disconnected;
+
+  @override
+  IList<AutomatchPreset> get automatchPresets => IList();
+
+  @override
+  Future<ReadyInfo> ready() async {
+    return ReadyInfo();
+  }
+
+  @override
+  Future<UserInfo> login(String username, String password) async {
+    try {
+      // First, get the CSRF token
+      final csrfResponse = await _httpClient.get(
+        Uri.parse('$serverUrl/api/v1/ui/config'),
+        headers: {'User-Agent': _userAgent},
+      );
+      
+      if (csrfResponse.statusCode != 200) {
+        throw Exception('Failed to get CSRF token');
+      }
+      
+      final csrfData = jsonDecode(csrfResponse.body);
+      _csrfToken = csrfData['csrf_token'];
+      
+      // Now attempt login
+      final loginResponse = await _httpClient.post(
+        Uri.parse('$serverUrl/api/v0/login'),
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': _userAgent,
+          'X-CSRFToken': _csrfToken!,
+        },
+        body: jsonEncode({
+          'username': username,
+          'password': password,
+        }),
+      );
+      
+      if (loginResponse.statusCode == 200) {
+        final loginData = jsonDecode(loginResponse.body);
+        final userData = loginData['user'];
+
+        // Extract JWT token for WebSocket authentication
+        _jwtToken = loginData['jwt'] ?? '';
+        
+        final user = UserInfo(
+          userId: userData['id'].toString(),
+          username: userData['username'],
+          rank: _ratingToRank(userData['ratings']['overall']['rating']),
+          online: true,
+          winCount: 0,
+          lossCount: 0,
+        );
+        
+        _userInfo.value = user;
+
+        // Authenticate with WebSocket if JWT token is available
+        if (_jwtToken != null && _jwtToken!.isNotEmpty) {
+          await _webSocketManager.authenticate(jwtToken: _jwtToken!);
+        }
+
+        return user;
+      } else {
+        throw Exception('Login failed: ${loginResponse.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Login error: $e');
+    }
+  }
+
+  @override
+  void logout() {
+    _csrfToken = null;
+    _jwtToken = null;
+    _userInfo.value = null;
+    _webSocketManager.disconnect();
+  }
+
+  @override
+  Future<Game?> ongoingGame() async {
+    return null;
+  }
+
+  @override
+  Future<Game> findGame(String presetId) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  void stopAutomatch() {
+    throw UnimplementedError();
+  }
+
+@override
+  Future<List<GameSummary>> listGames() async {
+    try {
+      // Get the current user ID for the games API endpoint
+      final userInfo = _userInfo.value;
+      if (userInfo == null) {
+        throw Exception('Not logged in');
+      }
+
+      final response = await _httpClient.get(
+        Uri.parse('$serverUrl/api/v1/players/${userInfo.userId}/games/')
+            .replace(
+          queryParameters: {
+            'page_size': '50',
+            'page': '1',
+            'source': 'play',
+            'ended__isnull': 'false',
+            'ordering': '-ended',
+          },
+        ),
+        headers: {
+          'User-Agent': _userAgent,
+          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to fetch games: ${response.statusCode}');
+      }
+
+      final data = jsonDecode(response.body);
+      final List<dynamic> results = data['results'] ?? [];
+
+      return results.map<GameSummary>((gameData) {
+        // Parse basic game info
+        final gameId = gameData['id'].toString();
+        final boardSize = gameData['width'] as int? ?? 19;
+
+        // Parse dates
+        final endedStr = gameData['ended'] as String?;
+        final dateTime =
+            endedStr != null ? DateTime.parse(endedStr) : DateTime.now();
+
+        // Parse players
+        final blackPlayerData = gameData['players']['black'];
+        final whitePlayerData = gameData['players']['white'];
+
+        final blackPlayer = UserInfo(
+          userId: blackPlayerData['id'].toString(),
+          username: blackPlayerData['username'] ?? '',
+          rank:
+              _ratingToRank(blackPlayerData['ratings']?['overall']?['rating']),
+          online: false, // Not available in this API
+          winCount: 0, // Not available in this API
+          lossCount: 0, // Not available in this API
+        );
+
+        final whitePlayer = UserInfo(
+          userId: whitePlayerData['id'].toString(),
+          username: whitePlayerData['username'] ?? '',
+          rank:
+              _ratingToRank(whitePlayerData['ratings']?['overall']?['rating']),
+          online: false, // Not available in this API
+          winCount: 0, // Not available in this API
+          lossCount: 0, // Not available in this API
+        );
+
+        // Parse game result
+        final outcome = gameData['outcome'] as String? ?? '';
+        final blackLost = gameData['black_lost'] as bool? ?? false;
+        final whiteLost = gameData['white_lost'] as bool? ?? false;
+
+        wq.Color? winner;
+        if (blackLost && !whiteLost) {
+          winner = wq.Color.white;
+        } else if (whiteLost && !blackLost) {
+          winner = wq.Color.black;
+        }
+        // If both lost or neither lost, winner remains null (draw/unknown)
+
+        final result = GameResult(
+          winner: winner,
+          result: outcome,
+        );
+
+        return GameSummary(
+          id: gameId,
+          boardSize: boardSize,
+          white: whitePlayer,
+          black: blackPlayer,
+          dateTime: dateTime,
+          result: result,
+        );
+      }).toList();
+    } catch (e) {
+      throw Exception('Failed to list games: $e');
+    }
+  }
+
+  @override
+  Future<GameRecord> getGame(String gameId) async {
+    try {
+      final response = await _httpClient.get(
+        Uri.parse('$serverUrl/api/v1/games/$gameId/sgf'),
+        headers: {
+          'User-Agent': _userAgent,
+          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to fetch SGF: ${response.statusCode}');
+      }
+
+      final sgfContent = response.body;
+      return _parseOgsSgf(sgfContent);
+    } catch (e) {
+      throw Exception('Failed to get game record: $e');
+    }
+  }
+
+  /// Parses OGS SGF files which structure moves as nested variations
+  /// instead of sequential nodes in the main line.
+  GameRecord _parseOgsSgf(String sgfStr) {
+    final sgf = Sgf.parse(sgfStr);
+    if (sgf.trees.isEmpty) throw const FormatException('Empty SGF');
+
+    final moves = <wq.Move>[];
+    _extractMovesFromOgsTree(sgf.trees.first, moves, isRoot: true);
+
+    return GameRecord(
+      moves: moves,
+      type: GameRecordType.sgf,
+      rawData: utf8.encode(sgfStr),
+    );
+  }
+
+  /// Recursively traverses the OGS SGF tree to extract moves.
+  /// OGS puts each move in its own variation, so we need to follow
+  /// the first variation at each level to get the main game line.
+  void _extractMovesFromOgsTree(SgfTree tree, List<wq.Move> moves,
+      {bool isRoot = false}) {
+    // Process nodes in the current tree level
+    // Skip root node only for the initial tree, not for variations
+    final nodesToProcess = isRoot ? tree.nodes.skip(1) : tree.nodes;
+    for (final node in nodesToProcess) {
+      if (node.containsKey('B')) {
+        moves.add((col: wq.Color.black, p: wq.parseSgfPoint(node['B']!.first)));
+      } else if (node.containsKey('W')) {
+        moves.add((col: wq.Color.white, p: wq.parseSgfPoint(node['W']!.first)));
+      }
+    }
+
+    // OGS typically puts the next move in the first variation
+    // Follow the first child if it exists
+    if (tree.children.isNotEmpty) {
+      _extractMovesFromOgsTree(tree.children.first, moves);
+    }
+  }
+
+  Rank _ratingToRank(dynamic rating) {
+    // OGS Glicko2 rating to rank conversion
+    const minRating = 100;
+    const maxRating = 6000;
+    const a = 525;
+    const c = 23.15;
+
+    if (rating is num) {
+      final clipped = rating.clamp(minRating, maxRating);
+      final rankNum = (math.log(clipped / a) * c).round();
+
+      final clampedRankNum = rankNum.clamp(0, Rank.values.length - 1);
+      return Rank.values[clampedRankNum];
+    }
+    return Rank.k6; // Default
+  }
+
+  void dispose() {
+    _httpClient.close();
+    _userInfo.dispose();
+    _disconnected.dispose();
+    _webSocketManager.dispose();
+  }
+}
