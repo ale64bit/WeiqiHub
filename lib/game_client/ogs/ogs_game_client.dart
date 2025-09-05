@@ -16,7 +16,6 @@ import 'package:wqhub/game_client/server_info.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
-import 'package:wqhub/parse/sgf/sgf.dart';
 
 class OGSGameClient extends GameClient {
   static const String _userAgent = 'WeiqiHub/1.0';
