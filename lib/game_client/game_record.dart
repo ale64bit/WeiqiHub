@@ -17,23 +17,39 @@ class GameRecord {
     final sgf = Sgf.parse(sgfStr);
     if (sgf.trees.isEmpty) throw const FormatException('Empty SGF');
     final tree = sgf.trees.first;
-    if (tree.nodes.length < 2) {
-      throw const FormatException('Not enough SGF nodes');
-    }
 
     final moves = <wq.Move>[];
-    for (final node in tree.nodes.skip(1)) {
+    _appendTrunkMoves(tree, moves);
+
+    return GameRecord(
+      moves: moves,
+      type: GameRecordType.sgf,
+      rawData: utf8.encode(sgfStr),
+    );
+  }
+
+  static void _appendTrunkMoves(SgfTree tree, List<wq.Move> moves) {
+    // Process all nodes in the current tree
+    for (int i = 0; i < tree.nodes.length; i++) {
+      final node = tree.nodes[i];
+
+      // Skip the root node (index 0) only in the main tree
+      // Child trees don't have root nodes with game info
+      if (i == 0 && moves.isEmpty) continue;
+
+      // Check for black move
       if (node.containsKey('B')) {
         moves.add((col: wq.Color.black, p: wq.parseSgfPoint(node['B']!.first)));
       } else if (node.containsKey('W')) {
         moves.add((col: wq.Color.white, p: wq.parseSgfPoint(node['W']!.first)));
       }
     }
-    return GameRecord(
-      moves: moves,
-      type: GameRecordType.sgf,
-      rawData: utf8.encode(sgfStr),
-    );
+
+    // Continue with the first child (trunk) if it exists
+    // Ignore other children (variations)
+    if (tree.children.isNotEmpty) {
+      _appendTrunkMoves(tree.children.first, moves);
+    }
   }
 
   factory GameRecord.fromGib(List<int> gibData) {

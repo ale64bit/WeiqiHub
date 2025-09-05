@@ -64,6 +64,12 @@ void main() {
     expect(var2.nodes.length, 2);
     expect(var2.nodes[0]['B'], ['ee']);
     expect(var2.nodes[1]['W'], ['dd']);
+
+    final rec = GameRecord.fromSgf(sgfData);
+    // We assume the actual game follows the first variation
+    // at each branch point.  Therefore, we have
+    // 2 moves at the top level + 3 moves in the first variation.
+    expect(rec.moves.length, 5);
   });
 
   test('SGF with escaped bracket', () {
