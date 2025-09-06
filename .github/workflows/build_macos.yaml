@@ -1,9 +1,10 @@
 name: Build MacOS
 on: 
-  pull_request:
-    branches: [ main ]
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+  # pull_request:
+  #   branches: [ main ]
+  # push:
+  #   branches: [ main ]
 jobs:
   build:
     name: "Build"
@@ -12,7 +13,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.WQHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           submodules: 'recursive'
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
