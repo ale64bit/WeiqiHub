@@ -23,10 +23,10 @@ jobs:
         run: flutter pub get
       - name: Create debug symbols directory
         run: mkdir -p out/macos
-      - name: Patch game client
-        run: |
-          rm lib/game_client/game_client_list.dart
-          mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
+      # - name: Patch game client
+      #   run: |
+      #     rm lib/game_client/game_client_list.dart
+      #     mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
       - name: Run tests
         run: flutter test
       - name: Build
