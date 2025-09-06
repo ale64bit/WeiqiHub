@@ -22,7 +22,7 @@ class RankRangeFormField extends FormField<RankRange> {
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<Rank>(
-                        value: st.value?.from,
+                        initialValue: st.value?.from,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Min rank',
@@ -47,7 +47,7 @@ class RankRangeFormField extends FormField<RankRange> {
                     ),
                     Expanded(
                       child: DropdownButtonFormField<Rank>(
-                        value: st.value?.to,
+                        initialValue: st.value?.to,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Max rank',
