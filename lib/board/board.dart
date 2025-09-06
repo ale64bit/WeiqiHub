@@ -17,7 +17,7 @@ class Board extends StatefulWidget with BoardGeometry {
     super.key,
     required this.size,
     this.settings = const BoardSettings(),
-    this.cursor = SystemMouseCursors.precise,
+    this.cursor = SystemMouseCursors.click,
     this.onPointClicked,
     required this.turn,
     required this.stones,
