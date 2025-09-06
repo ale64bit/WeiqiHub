@@ -66,7 +66,7 @@ jobs:
       - name: Upload unsigned release APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-unsigned-apk
+          name: wqhub-unsigned-apk
           path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 7
           compression-level: 9
