@@ -1,6 +1,6 @@
-[submodule "lib/game_client/foxwq"]
-	path = lib/game_client/foxwq
-	url = https://github.com/ale64bit/WeiqiHub_foxwq.git
-[submodule "lib/game_client/tygem"]
-	path = lib/game_client/tygem
-	url = https://github.com/ale64bit/WeiqiHub_tygem.git
+# [submodule "lib/game_client/foxwq"]
+# 	path = lib/game_client/foxwq
+# 	url = https://github.com/ale64bit/WeiqiHub_foxwq.git
+# [submodule "lib/game_client/tygem"]
+# 	path = lib/game_client/tygem
+# 	url = https://github.com/ale64bit/WeiqiHub_tygem.git

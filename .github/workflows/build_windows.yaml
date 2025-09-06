@@ -1,9 +1,10 @@
 name: Build Windows
 on: 
-  pull_request:
-    branches: [ main ]
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+  # pull_request:
+  #   branches: [ main ]
+  # push:
+  #   branches: [ main ]
 jobs:
   build:
     name: "Build"
@@ -12,7 +13,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.WQHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           submodules: 'recursive'
       - name: Find VC Redist Path
         id: find_vcredist
@@ -39,10 +40,10 @@ jobs:
         run: flutter pub get
       - name: Create debug symbols directory
         run: mkdir -p out/windows
-      - name: Patch game client
-        run: |
-          rm lib/game_client/game_client_list.dart
-          mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
+      # - name: Patch game client
+      #   run: |
+      #     rm lib/game_client/game_client_list.dart
+      #     mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
       - name: Run tests
         run: flutter test
       - name: Build

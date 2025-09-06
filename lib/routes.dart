@@ -120,6 +120,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             taskTypes: args.taskTypes,
             taskTag: args.taskTag,
             collectStats: args.collectStats,
+            removeMistakesOnSuccess: args.removeMistakesOnSuccess,
           ));
     case RankedModePage.routeName:
       final args = settings.arguments as RankedModeRouteArguments;

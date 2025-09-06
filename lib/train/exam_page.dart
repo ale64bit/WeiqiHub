@@ -36,6 +36,7 @@ class ExamPage extends StatefulWidget {
     required this.redoRouteArguments,
     this.nextRouteArguments,
     this.collectStats = true,
+    this.removeMistakesOnSuccess = true,
   });
 
   final String title;
@@ -52,6 +53,7 @@ class ExamPage extends StatefulWidget {
   final dynamic redoRouteArguments;
   final dynamic nextRouteArguments;
   final bool collectStats;
+  final bool removeMistakesOnSuccess;
 
   @override
   State<ExamPage> createState() => _ExamPageState();
@@ -270,6 +272,9 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
       } else {
         context.stats.incrementTotalFailCount(currentTask.rank);
       }
+    }
+    if (widget.removeMistakesOnSuccess) {
+      StatsDB().deleteMistakes([TaskRef(rank: currentTask.rank, type: currentTask.type, id: currentTask.id)]);
     }
   }
 

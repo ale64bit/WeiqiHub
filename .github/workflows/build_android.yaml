@@ -1,0 +1,72 @@
+name: Build Android
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: "Build Android APK"
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          submodules: 'recursive'
+
+      # Java 21 = modern & broadly supported by Android Gradle Plugin 8.x
+      - name: Set up Java 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter doctor
+        run: flutter doctor -v
+
+      # Accept Android licenses non-interactively
+      - name: Accept Android licenses
+        shell: bash
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      # Optional: cache Gradle for speed
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run tests
+        run: flutter test
+
+      # -----------------------------
+      # Build Release APK (unsigned)
+      # -----------------------------
+      - name: Build unsigned release APK
+        run: flutter build apk --release
+
+      # -----------------------------
+      # Upload artifacts
+      # -----------------------------
+      - name: Upload unsigned release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: wqhub-unsigned-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7
+          compression-level: 9
