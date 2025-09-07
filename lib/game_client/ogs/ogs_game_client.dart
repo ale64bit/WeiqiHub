@@ -10,13 +10,17 @@ import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/ogs/ogs_game.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
+import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/game_client/server_info.dart';
+import 'package:wqhub/game_client/time_control.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:wqhub/parse/sgf/sgf.dart';
+import 'package:uuid/uuid.dart';
 
 class OGSGameClient extends GameClient {
   static const String _userAgent = 'WeiqiHub/1.0';
@@ -40,6 +44,9 @@ class OGSGameClient extends GameClient {
 
   String? _csrfToken;
   String? _jwtToken;
+  String? _currentAutomatchUuid;
+  Completer<Game>? _automatchCompleter;
+  StreamSubscription<Map<String, dynamic>>? _messageSubscription;
   final http.Client _httpClient = http.Client();
 
   @override
@@ -70,7 +77,86 @@ class OGSGameClient extends GameClient {
   ValueNotifier<DateTime> get disconnected => _disconnected;
 
   @override
-  IList<AutomatchPreset> get automatchPresets => IList();
+  IList<AutomatchPreset> get automatchPresets => _createAutomatchPresets();
+
+  static IList<AutomatchPreset> _createAutomatchPresets() {
+    const boardSizes = [9, 13, 19];
+    const speeds = ['blitz', 'rapid', 'live'];
+
+    // Define time controls for each board size and speed combination based on OGS SPEED_OPTIONS
+    final timeControlsBySpeedAndSize = {
+      '9x9': {
+        'blitz': TimeControl(
+          mainTime: Duration(seconds: 30),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 10),
+        ),
+        'rapid': TimeControl(
+          mainTime: Duration(minutes: 2),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 30),
+        ),
+        'live': TimeControl(
+          mainTime: Duration(minutes: 5),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 30),
+        ),
+      },
+      '13x13': {
+        'blitz': TimeControl(
+          mainTime: Duration(seconds: 30),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 10),
+        ),
+        'rapid': TimeControl(
+          mainTime: Duration(minutes: 3),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 30),
+        ),
+        'live': TimeControl(
+          mainTime: Duration(minutes: 10),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 30),
+        ),
+      },
+      '19x19': {
+        'blitz': TimeControl(
+          mainTime: Duration(seconds: 30),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 10),
+        ),
+        'rapid': TimeControl(
+          mainTime: Duration(minutes: 5),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 30),
+        ),
+        'live': TimeControl(
+          mainTime: Duration(minutes: 20),
+          periodCount: 5,
+          timePerPeriod: Duration(seconds: 30),
+        ),
+      },
+    };
+
+    final presets = <AutomatchPreset>[];
+
+    for (final boardSize in boardSizes) {
+      for (final speed in speeds) {
+        final sizeKey = '${boardSize}x$boardSize';
+        final timeControl = timeControlsBySpeedAndSize[sizeKey]![speed]!;
+
+        presets.add(AutomatchPreset(
+          id: '${boardSize}_${speed}',
+          boardSize: boardSize,
+          variant: Variant.standard,
+          rules: Rules.japanese, // OGS uses Japanese rules
+          timeControl: timeControl,
+        ));
+      }
+    }
+
+    return presets.lock;
+  }
 
   @override
   Future<ReadyInfo> ready() async {
@@ -112,7 +198,7 @@ class OGSGameClient extends GameClient {
         final userData = loginData['user'];
 
         // Extract JWT token for WebSocket authentication
-        _jwtToken = loginData['jwt'] ?? '';
+        _jwtToken = loginData['user_jwt'] ?? '';
         
         final user = UserInfo(
           userId: userData['id'].toString(),
@@ -125,9 +211,13 @@ class OGSGameClient extends GameClient {
         
         _userInfo.value = user;
 
+        await _webSocketManager.connect();
+
         // Authenticate with WebSocket if JWT token is available
         if (_jwtToken != null && _jwtToken!.isNotEmpty) {
           await _webSocketManager.authenticate(jwtToken: _jwtToken!);
+        } else {
+          throw Exception('No JWT token received');
         }
 
         return user;
@@ -143,6 +233,7 @@ class OGSGameClient extends GameClient {
   void logout() {
     _csrfToken = null;
     _jwtToken = null;
+    _currentAutomatchUuid = null;
     _userInfo.value = null;
     _webSocketManager.disconnect();
   }
@@ -154,12 +245,86 @@ class OGSGameClient extends GameClient {
 
   @override
   Future<Game> findGame(String presetId) async {
-    throw UnimplementedError();
+    // Parse the preset ID to extract board size and speed (format: "9_blitz", "19_live", etc.)
+    final parts = presetId.split('_');
+    final boardSize = int.parse(parts[0]);
+    final speed = parts.length >= 2 ? parts[1] : 'rapid';
+
+    // Generate a UUID for the automatch request and store it for later cancellation
+    _currentAutomatchUuid = const Uuid().v4();
+    _automatchCompleter = Completer<Game>();
+
+    // Set up message listener for automatch responses
+    _messageSubscription = _webSocketManager.messages.listen((message) {
+      if (message['uuid'] == _currentAutomatchUuid) {
+        _handleAutomatchResponse(message);
+      }
+    });
+
+    // Create the automatch payload data matching OGS format
+    final automatchData = {
+      "uuid": _currentAutomatchUuid!,
+      "size_speed_options": [
+        {"size": "${boardSize}x$boardSize", "speed": speed, "system": "byoyomi"}
+      ],
+      "lower_rank_diff": 3,
+      "upper_rank_diff": 3,
+      "rules": {"condition": "required", "value": "japanese"},
+      "handicap": {"condition": "preferred", "value": "enabled"}
+    };
+
+    // Send the automatch request via WebSocket
+    _webSocketManager.send('automatch/find_match', automatchData);
+
+    return _automatchCompleter!.future;
+  }
+
+  void _handleAutomatchResponse(Map<String, dynamic> message) {
+    // Check if this is an automatch/start message
+    if (message['event'] == 'automatch/start' && message['game_id'] != null) {
+      final gameId = message['game_id'] as int;
+
+      // Clean up resources
+      _messageSubscription?.cancel();
+      _messageSubscription = null;
+      _currentAutomatchUuid = null;
+
+      // TODO: Create actual Game object from game_id by fetching game details from API
+      // For now, create a minimal placeholder with default values
+      final game = OGSGame(
+        id: gameId.toString(),
+        boardSize: 19, // Default, should be fetched from game details
+        rules: Rules.japanese,
+        handicap: 0,
+        komi: 6.5,
+        myColor: wq.Color.black, // Default, should be determined from game data
+        timeControl: const TimeControl(
+          mainTime: Duration(minutes: 30),
+          timePerPeriod: Duration(seconds: 30),
+          periodCount: 5,
+        ),
+        previousMoves: [],
+      );
+
+      _automatchCompleter?.complete(game);
+      _automatchCompleter = null;
+    }
   }
 
   @override
   void stopAutomatch() {
-    throw UnimplementedError();
+    // Send automatch cancel request to OGS with the stored UUID
+    if (_currentAutomatchUuid != null) {
+      _webSocketManager
+          .send('automatch/cancel', {'uuid': _currentAutomatchUuid!});
+      _currentAutomatchUuid = null; // Clear the stored UUID after cancellation
+    }
+
+    // Clean up message subscription and completer
+    _messageSubscription?.cancel();
+    _messageSubscription = null;
+    _automatchCompleter?.completeError('Automatch cancelled');
+    _automatchCompleter = null;
   }
 
 @override
@@ -344,5 +509,6 @@ class OGSGameClient extends GameClient {
     _userInfo.dispose();
     _disconnected.dispose();
     _webSocketManager.dispose();
+    _messageSubscription?.cancel();
   }
 }
