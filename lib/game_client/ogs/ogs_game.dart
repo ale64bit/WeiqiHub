@@ -5,8 +5,11 @@ import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
+import 'package:logging/logging.dart';
 
 class OGSGame extends Game {
+  final Logger _logger = Logger('OGSGame');
+
   OGSGame({
     required super.id,
     required super.boardSize,
@@ -16,7 +19,9 @@ class OGSGame extends Game {
     required super.myColor,
     required super.timeControl,
     required super.previousMoves,
-  });
+  }) {
+    _logger.info('Initialized OGSGame with id: $id');
+  }
 
   @override
   Future<void> acceptCountingResult(bool agree) => Future.value();

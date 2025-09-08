@@ -21,19 +21,22 @@ import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:wqhub/parse/sgf/sgf.dart';
 import 'package:uuid/uuid.dart';
+import 'package:logging/logging.dart';
 
 class OGSGameClient extends GameClient {
+  final Logger _logger = Logger('OGSGameClient');
+
   static const String _userAgent = 'WeiqiHub/1.0';
 
   final ValueNotifier<UserInfo?> _userInfo = ValueNotifier(null);
   final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
-  
+
   final String serverUrl;
   late final OGSWebSocketManager _webSocketManager;
 
   OGSGameClient({required this.serverUrl}) {
     _webSocketManager = OGSWebSocketManager(serverUrl: serverUrl);
-    
+
     // Listen to WebSocket connection status
     _webSocketManager.connected.addListener(() {
       if (!_webSocketManager.connected.value) {
@@ -44,7 +47,9 @@ class OGSGameClient extends GameClient {
 
   String? _csrfToken;
   String? _jwtToken;
+
   String? _currentAutomatchUuid;
+
   Completer<Game>? _automatchCompleter;
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
   final http.Client _httpClient = http.Client();
@@ -54,7 +59,8 @@ class OGSGameClient extends GameClient {
         id: 'ogs',
         name: 'Online Go Server',
         nativeName: 'OGS',
-        description: 'The premier online Go platform with tournaments, AI analysis, and a vibrant community.',
+        description:
+            'The premier online Go platform with tournaments, AI analysis, and a vibrant community.',
         homeUrl: serverUrl,
         registerUrl: Uri.parse('$serverUrl/register'),
       );
@@ -149,7 +155,7 @@ class OGSGameClient extends GameClient {
           id: '${boardSize}_${speed}',
           boardSize: boardSize,
           variant: Variant.standard,
-          rules: Rules.japanese, // OGS uses Japanese rules
+          rules: Rules.japanese, // OGS uses Japanese rules for automatch
           timeControl: timeControl,
         ));
       }
@@ -171,14 +177,14 @@ class OGSGameClient extends GameClient {
         Uri.parse('$serverUrl/api/v1/ui/config'),
         headers: {'User-Agent': _userAgent},
       );
-      
+
       if (csrfResponse.statusCode != 200) {
         throw Exception('Failed to get CSRF token');
       }
-      
+
       final csrfData = jsonDecode(csrfResponse.body);
       _csrfToken = csrfData['csrf_token'];
-      
+
       // Now attempt login
       final loginResponse = await _httpClient.post(
         Uri.parse('$serverUrl/api/v0/login'),
@@ -192,14 +198,14 @@ class OGSGameClient extends GameClient {
           'password': password,
         }),
       );
-      
+
       if (loginResponse.statusCode == 200) {
         final loginData = jsonDecode(loginResponse.body);
         final userData = loginData['user'];
 
         // Extract JWT token for WebSocket authentication
         _jwtToken = loginData['user_jwt'] ?? '';
-        
+
         final user = UserInfo(
           userId: userData['id'].toString(),
           username: userData['username'],
@@ -208,7 +214,7 @@ class OGSGameClient extends GameClient {
           winCount: 0,
           lossCount: 0,
         );
-        
+
         _userInfo.value = user;
 
         await _webSocketManager.connect();
@@ -255,11 +261,8 @@ class OGSGameClient extends GameClient {
     _automatchCompleter = Completer<Game>();
 
     // Set up message listener for automatch responses
-    _messageSubscription = _webSocketManager.messages.listen((message) {
-      if (message['uuid'] == _currentAutomatchUuid) {
-        _handleAutomatchResponse(message);
-      }
-    });
+    _messageSubscription =
+        _webSocketManager.messages.listen(_handleAutomatchResponse);
 
     // Create the automatch payload data matching OGS format
     final automatchData = {
@@ -279,35 +282,62 @@ class OGSGameClient extends GameClient {
     return _automatchCompleter!.future;
   }
 
-  void _handleAutomatchResponse(Map<String, dynamic> message) {
+  void _handleAutomatchResponse(Map<String, dynamic> message) async {
     // Check if this is an automatch/start message
-    if (message['event'] == 'automatch/start' && message['game_id'] != null) {
-      final gameId = message['game_id'] as int;
+    if (message['event'] == 'automatch/start' &&
+        message['data']['uuid'] == _currentAutomatchUuid) {
+      final gameId = message['data']['game_id'] as int;
 
       // Clean up resources
       _messageSubscription?.cancel();
       _messageSubscription = null;
       _currentAutomatchUuid = null;
 
-      // TODO: Create actual Game object from game_id by fetching game details from API
-      // For now, create a minimal placeholder with default values
-      final game = OGSGame(
-        id: gameId.toString(),
-        boardSize: 19, // Default, should be fetched from game details
-        rules: Rules.japanese,
-        handicap: 0,
-        komi: 6.5,
-        myColor: wq.Color.black, // Default, should be determined from game data
-        timeControl: const TimeControl(
-          mainTime: Duration(minutes: 30),
-          timePerPeriod: Duration(seconds: 30),
-          periodCount: 5,
-        ),
-        previousMoves: [],
+      final response = await _httpClient.get(
+        Uri.parse('$serverUrl/api/v1/games/$gameId'),
+        headers: {
+          'User-Agent': _userAgent,
+          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+        },
       );
 
-      _automatchCompleter?.complete(game);
-      _automatchCompleter = null;
+      Map<String, dynamic> gameData = {};
+      if (response.statusCode == 200) {
+        gameData = jsonDecode(response.body)['gamedata'];
+      } else {
+        throw Exception('Failed to fetch game details: ${response.statusCode}');
+      }
+
+      try {
+        final game = OGSGame(
+          id: gameId.toString(),
+          boardSize: gameData['width'] as int? ?? 19,
+          rules: Rules.japanese,
+          handicap: gameData['handicap'] as int? ?? 0,
+          komi: gameData['komi'] as double? ?? 6.5,
+          myColor: gameData['players']['black']['id'].toString() ==
+                  _userInfo.value?.userId
+              ? wq.Color.black
+              : wq.Color.white,
+          timeControl: TimeControl(
+            mainTime: Duration(
+                seconds: gameData['time_control']?['main_time'] as int? ?? 300),
+            timePerPeriod: Duration(
+                seconds:
+                    gameData['time_control']?['period_time'] as int? ?? 30),
+            periodCount: gameData['time_control']?['periods'] as int? ?? 5,
+          ),
+          previousMoves: [],
+        );
+
+        // TODO: there's chance of a race where the automatch may have been created, but
+        // the user has already cancelled it.  We should think about how to
+        // avoid getting the user in trouble in this scenario.
+        _automatchCompleter?.complete(game);
+        _automatchCompleter = null;
+      } catch (e) {
+        _logger.warning("Error creating game: $e");
+      }
     }
   }
 
@@ -327,7 +357,7 @@ class OGSGameClient extends GameClient {
     _automatchCompleter = null;
   }
 
-@override
+  @override
   Future<List<GameSummary>> listGames() async {
     try {
       // Get the current user ID for the games API endpoint
