@@ -328,6 +328,7 @@ class OGSGameClient extends GameClient {
             periodCount: gameData['time_control']?['periods'] as int? ?? 5,
           ),
           previousMoves: [],
+          webSocketManager: _webSocketManager,
         );
 
         // TODO: there's chance of a race where the automatch may have been created, but
