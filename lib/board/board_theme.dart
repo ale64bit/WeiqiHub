@@ -132,6 +132,16 @@ class BoardTheme {
     lineColor: Colors.black,
   );
 
+  static const badukTV = BoardTheme(
+    id: 'badukTV',
+    displayName: 'BadukTV',
+    background: ImageBoardBackground(
+        image: AssetImage('$_imagesPath/board/baduktv.png')),
+    blackStone: ImageStone(image: AssetImage('$_imagesPath/stones/baduktv_b.png'), scale: 1.2,),
+    whiteStone: ImageStone(image: AssetImage('$_imagesPath/stones/baduktv_w.png'), scale: 1.2,),
+    lineColor: Colors.black,
+  );
+
   static const sabaki = BoardTheme(
     id: 'sabaki',
     displayName: 'Sabaki',
@@ -212,6 +222,7 @@ class BoardTheme {
     'fox': fox,
     'fox_old': foxOld,
     'fox_mobile': foxMobile,
+    'badukTV': badukTV,
     'sabaki': sabaki,
     'golden_hane': goldenHane,
     'sepia_sente': sepiaSente,
