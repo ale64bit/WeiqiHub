@@ -70,30 +70,14 @@ class OGSGame extends Game {
   }
 
   Future<void> _sendMove(String sgfMove, wq.Color color) {
-    // Get current time info for the move
-    final timeNotifier = color == wq.Color.black ? blackTime : whiteTime;
-    final (_, timeState) = timeNotifier.value;
-
-    // Create clock data matching OGS format
-    final clockData = {
-      'main_time': timeState.mainTimeLeft.inMilliseconds,
-      'timed_out': false,
-      'periods_left': timeState.periodCount,
-      'period_time_left': timeState.periodTimeLeft.inMilliseconds,
-    };
-
-    // Send the move message with automatically generated request ID
-    final moveData = {
+    // Note: OGS Websocket supports 2-way communication if one appends a requestId
+    // we could potentially wait for confirmation of the move being accepted
+    _webSocketManager.send('game/move', {
       'game_id': int.parse(id),
       'move': sgfMove,
-      'blur': 0, // TODO: track actual blur time
-      'clock': clockData,
-    };
+    });
 
-    _webSocketManager.send('game/move', moveData);
-
-    final moveType = sgfMove.isEmpty ? 'pass' : 'move: $sgfMove';
-    _logger.fine('Sent $moveType for game $id');
+    _logger.fine('Sent move "$sgfMove" for game $id');
 
     return Future.value();
   }
