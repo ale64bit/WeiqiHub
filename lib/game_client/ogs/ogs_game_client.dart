@@ -474,48 +474,9 @@ class OGSGameClient extends GameClient {
       }
 
       final sgfContent = response.body;
-      return _parseOgsSgf(sgfContent);
+      return GameRecord.fromSgf(sgfContent);
     } catch (e) {
       throw Exception('Failed to get game record: $e');
-    }
-  }
-
-  /// Parses OGS SGF files which structure moves as nested variations
-  /// instead of sequential nodes in the main line.
-  GameRecord _parseOgsSgf(String sgfStr) {
-    final sgf = Sgf.parse(sgfStr);
-    if (sgf.trees.isEmpty) throw const FormatException('Empty SGF');
-
-    final moves = <wq.Move>[];
-    _extractMovesFromOgsTree(sgf.trees.first, moves, isRoot: true);
-
-    return GameRecord(
-      moves: moves,
-      type: GameRecordType.sgf,
-      rawData: utf8.encode(sgfStr),
-    );
-  }
-
-  /// Recursively traverses the OGS SGF tree to extract moves.
-  /// OGS puts each move in its own variation, so we need to follow
-  /// the first variation at each level to get the main game line.
-  void _extractMovesFromOgsTree(SgfTree tree, List<wq.Move> moves,
-      {bool isRoot = false}) {
-    // Process nodes in the current tree level
-    // Skip root node only for the initial tree, not for variations
-    final nodesToProcess = isRoot ? tree.nodes.skip(1) : tree.nodes;
-    for (final node in nodesToProcess) {
-      if (node.containsKey('B')) {
-        moves.add((col: wq.Color.black, p: wq.parseSgfPoint(node['B']!.first)));
-      } else if (node.containsKey('W')) {
-        moves.add((col: wq.Color.white, p: wq.parseSgfPoint(node['W']!.first)));
-      }
-    }
-
-    // OGS typically puts the next move in the first variation
-    // Follow the first child if it exists
-    if (tree.children.isNotEmpty) {
-      _extractMovesFromOgsTree(tree.children.first, moves);
     }
   }
 
