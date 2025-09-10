@@ -90,6 +90,7 @@ class OGSGameClient extends GameClient {
     const speeds = ['blitz', 'rapid', 'live'];
 
     // Define time controls for each board size and speed combination based on OGS SPEED_OPTIONS
+    // https://github.com/online-go/online-go.com/blob/4ed60176f8fe21960376b663515f4721dad22ab1/src/views/Play/SPEED_OPTIONS.ts#L40
     final timeControlsBySpeedAndSize = {
       '9x9': {
         'blitz': TimeControl(
