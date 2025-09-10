@@ -112,7 +112,6 @@ class OGSGame extends Game {
 
       wq.Point point;
 
-      // Handle different move formats from OGS
       if (moveData is List && moveData.length >= 2) {
         // Numeric format: [row, col, time] where -1,-1 is pass
         final row = moveData[1] as int;
