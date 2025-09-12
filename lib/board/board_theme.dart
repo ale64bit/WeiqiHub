@@ -133,7 +133,7 @@ class BoardTheme {
   );
 
   static const badukTV = BoardTheme(
-    id: 'badukTV',
+    id: 'baduk_tv',
     displayName: 'BadukTV',
     background: ImageBoardBackground(
         image: AssetImage('$_imagesPath/board/baduktv.png')),
@@ -222,7 +222,7 @@ class BoardTheme {
     'fox': fox,
     'fox_old': foxOld,
     'fox_mobile': foxMobile,
-    'badukTV': badukTV,
+    'baduk_tv': badukTV,
     'sabaki': sabaki,
     'golden_hane': goldenHane,
     'sepia_sente': sepiaSente,
