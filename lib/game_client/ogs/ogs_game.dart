@@ -118,7 +118,7 @@ class OGSGame extends Game {
         final col = moveData[0] as int;
         point = (row, col);
       } else {
-        _logger.warning('Unknown move format: $moveData');
+        _logger.severe('Unknown move format: $moveData');
         return;
       }
 

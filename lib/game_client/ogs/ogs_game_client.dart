@@ -28,6 +28,10 @@ class OGSGameClient extends GameClient {
 
   static const String _userAgent = 'WeiqiHub/1.0';
 
+  /// OGS default rank difference for automatch requests
+  /// https://github.com/online-go/online-go.com/blob/b0d661e69cef0ce57c2c5d4e2e04109227ba9a96/src/lib/preferences.ts#L57-L58
+  static const int _defaultRankDiff = 3;
+
   final ValueNotifier<UserInfo?> _userInfo = ValueNotifier(null);
   final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
 
@@ -271,8 +275,8 @@ class OGSGameClient extends GameClient {
       "size_speed_options": [
         {"size": "${boardSize}x$boardSize", "speed": speed, "system": "byoyomi"}
       ],
-      "lower_rank_diff": 3,
-      "upper_rank_diff": 3,
+      "lower_rank_diff": _defaultRankDiff,
+      "upper_rank_diff": _defaultRankDiff,
       "rules": {"condition": "required", "value": "japanese"},
       "handicap": {"condition": "preferred", "value": "enabled"}
     };
