@@ -96,6 +96,13 @@ class OGSGame extends Game {
   void _handleMessage(Map<String, dynamic> message) {
     final event = message['event'] as String;
 
+    // Check if this is an error event for our game
+    if (event == 'game/$id/error') {
+      final data = message['data'];
+      _logger.warning('Error received for game $id: $data');
+      return;
+    }
+
     // Check if this is a move event for our game
     if (event == 'game/$id/move') {
       final data = message['data'] as Map<String, dynamic>;
