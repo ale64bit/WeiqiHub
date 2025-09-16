@@ -148,15 +148,13 @@ class OGSWebSocketManager {
         // Emit the message to listeners
         _messageController.add({
           'event': command,
-          'data': payload ?? {},
+          'data': payload,
           'request_id': requestId,
         });
-        
-        _handleSpecialEvents(command, payload ?? {});
       }
       
     } catch (e) {
-      _log.warning('Error parsing message: $e');
+      _log.warning('Error parsing message \'$message\': $e');
     }
   }
   
@@ -170,26 +168,6 @@ class OGSWebSocketManager {
       _clockDrift = now - _latency / 2 - serverTime;
       
       _log.fine('Latency: ${_latency}ms, Clock drift: ${_clockDrift}ms');
-    }
-  }
-  
-  void _handleSpecialEvents(String event, Map<String, dynamic> data) {
-    switch (event) {
-      case 'authenticated':
-        _log.info('Successfully authenticated with OGS');
-        break;
-      case 'authentication_failed':
-        _log.warning('Authentication failed: ${data['error']}');
-        break;
-      case 'game/move':
-        _log.fine('Game move received: $data');
-        break;
-      case 'game/data':
-        _log.fine('Game data received: $data');
-        break;
-      case 'error':
-        _log.warning('Server error: $data');
-        break;
     }
   }
   

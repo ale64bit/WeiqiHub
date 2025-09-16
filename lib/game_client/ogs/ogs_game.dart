@@ -66,7 +66,8 @@ class OGSGame extends Game {
 
   @override
   Future<void> pass() {
-    return _sendMove('', myColor);
+    // ".." isn't standard SGF format, but it's what OGS expects for a pass
+    return _sendMove('..', myColor);
   }
 
   Future<void> _sendMove(String sgfMove, wq.Color color) {
@@ -96,6 +97,13 @@ class OGSGame extends Game {
   void _handleMessage(Map<String, dynamic> message) {
     final event = message['event'] as String;
 
+    // Check if this is an error event for our game
+    if (event == 'game/$id/error') {
+      final data = message['data'];
+      _logger.warning('Error received for game $id: $data');
+      return;
+    }
+
     // Check if this is a move event for our game
     if (event == 'game/$id/move') {
       final data = message['data'] as Map<String, dynamic>;
@@ -119,6 +127,11 @@ class OGSGame extends Game {
         point = (row, col);
       } else {
         _logger.severe('Unknown move format: $moveData');
+        return;
+      }
+
+      if (point == (-1, -1)) {
+        _moveController.add(null);
         return;
       }
 
