@@ -1,7 +1,5 @@
-name: Build Linux
+name: Build Linux (Production)
 on: 
-  pull_request:
-    branches: [ main ]
   push:
     branches: [ main ]
 jobs:
