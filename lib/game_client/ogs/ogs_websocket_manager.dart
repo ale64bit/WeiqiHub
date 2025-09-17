@@ -28,6 +28,10 @@ class OGSWebSocketManager {
   double _latency = 0.0;
   double _clockDrift = 0.0;
   
+  // For request/response tracking
+  int _lastRequestId = 0;
+  final Map<int, Completer<dynamic>> _pendingRequests = {};
+  
   OGSWebSocketManager({required this.serverUrl}) {
     _generateDeviceId();
   }
@@ -80,6 +84,8 @@ class OGSWebSocketManager {
     _pingTimer?.cancel();
     _reconnectTimer?.cancel();
     
+    _rejectPendingRequests();
+    
     if (_channel != null) {
       await _channel!.sink.close(status.goingAway);
       _channel = null;
@@ -104,16 +110,37 @@ class OGSWebSocketManager {
     }
   }
   
+  /// Send a fire-and-forget message (no response expected)
   void send(String command, [Map<String, dynamic>? data]) {
     if (_channel != null && _connected.value) {
       // OGS uses JSON array format: [command] or [command, data]
-      final List<dynamic> message = data != null ? [command, data] : [command];
+      final message = data != null ? [command, data] : [command];
       final messageStr = jsonEncode(message);
       _channel!.sink.add(messageStr);
       _log.fine('Sent: $messageStr');
     } else {
       _log.warning('Cannot send message: WebSocket not connected');
     }
+  }
+
+  /// Send a message and return a Future that completes when the server responds
+  Future<dynamic> sendAndGetResponse(String command,
+      [Map<String, dynamic>? data]) {
+    final completer = Completer<dynamic>();
+
+    if (_channel != null && _connected.value) {
+      final requestId = ++_lastRequestId;
+      _pendingRequests[requestId] = completer;
+
+      final message = [command, data, requestId];
+      final messageStr = jsonEncode(message);
+      _channel!.sink.add(messageStr);
+      _log.fine('Sent with response expected: $messageStr');
+    } else {
+      completer.completeError(StateError('WebSocket not connected'));
+    }
+
+    return completer.future;
   }
   
   void joinGame(String gameId) {
@@ -135,9 +162,36 @@ class OGSWebSocketManager {
       final data = jsonDecode(messageStr);
       
       if (data is List && data.isNotEmpty) {
-        final command = data[0] as String;
+        final commandOrId = data[0];
         final payload = data.length > 1 ? data[1] : null;
-        final requestId = data.length > 2 ? data[2] : null;
+
+        // Check if this is a response to a request (first element is numeric request ID)
+        // This matches the OGS pattern: [requestId, responseData, errorData]
+        if (commandOrId is int) {
+          final requestId = commandOrId;
+          final error = data.length > 2 ? data[2] : null;
+
+          _log.fine('Handling response for request ID: $requestId');
+
+          // Handle promise-based requests
+          final completer = _pendingRequests.remove(requestId);
+          if (completer != null) {
+            if (error != null) {
+              completer.completeError(error);
+            } else {
+              completer.complete(payload);
+            }
+          } else {
+            _log.warning(
+                'Received response for unknown request ID: $requestId');
+          }
+
+          return;
+        }
+
+        // Handle regular events (first element is string command)
+        // Format: [command, data, requestId] (requestId is optional)
+        final command = commandOrId as String;
         
         // Handle special ping/pong messages
         if (command == 'net/pong' && payload is Map<String, dynamic>) {
@@ -149,7 +203,6 @@ class OGSWebSocketManager {
         _messageController.add({
           'event': command,
           'data': payload,
-          'request_id': requestId,
         });
       }
       
@@ -205,6 +258,8 @@ class OGSWebSocketManager {
       return;
     }
     
+    _rejectPendingRequests();
+    
     _reconnectTimer?.cancel();
     final delay = Duration(seconds: math.min(30, math.pow(2, _reconnectAttempts).toInt()));
     
@@ -216,10 +271,21 @@ class OGSWebSocketManager {
       connect();
     });
   }
+
+  void _rejectPendingRequests() {
+    // Reject all pending promises
+    for (final completer in _pendingRequests.values) {
+      if (!completer.isCompleted) {
+        completer.completeError(StateError('WebSocket connection lost'));
+      }
+    }
+    _pendingRequests.clear();
+  }
   
   void dispose() {
     _pingTimer?.cancel();
     _reconnectTimer?.cancel();
+    _rejectPendingRequests();
     _messageController.close();
     _connected.dispose();
     disconnect();
