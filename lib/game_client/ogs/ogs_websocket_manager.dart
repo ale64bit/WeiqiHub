@@ -190,7 +190,7 @@ class OGSWebSocketManager {
         }
 
         // Handle regular events (first element is string command)
-        // Format: [command, data, requestId] (requestId is optional)
+        // Format: [command, data]
         final command = commandOrId as String;
         
         // Handle special ping/pong messages
