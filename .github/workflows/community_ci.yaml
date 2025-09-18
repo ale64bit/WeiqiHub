@@ -22,8 +22,16 @@ on:
 
 jobs:
   test:
-    name: "Static Analysis & Tests"
+    name: "Static Analysis & Tests (${{ matrix.flutter-name }})"
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # File picker is broken on Flutter 3.33 on Windows
+          - flutter-version: '3.32.0'
+            flutter-name: 'Flutter 3.32'
+          - flutter-version: ''
+            flutter-name: 'Latest Stable'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -32,10 +40,11 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          flutter-version: ${{ matrix.flutter-version }}
           
       - name: Install Flutter dependencies
         run: flutter pub get
-        
+
       - name: Analyze code
         run: flutter analyze
         
