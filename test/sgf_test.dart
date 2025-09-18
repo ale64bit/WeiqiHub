@@ -33,7 +33,7 @@ void main() {
     expect(rec.type, GameRecordType.sgf);
     expect(rec.moves.length, 291);
   });
-  
+
   test('fromSgf with variations', () {
     // Test SGF with a simple variation - should follow main line
     const sgfData =

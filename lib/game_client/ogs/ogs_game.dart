@@ -77,8 +77,7 @@ class OGSGame extends Game {
         'move': sgfMove,
       });
 
-      _logger
-          .fine('Move "$sgfMove" for game $id confirmed by server');
+      _logger.fine('Move "$sgfMove" for game $id confirmed by server');
     } catch (error) {
       _logger.warning('Failed to send move "$sgfMove" for game $id: $error');
       rethrow;
