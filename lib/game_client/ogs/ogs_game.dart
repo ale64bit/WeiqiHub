@@ -70,17 +70,19 @@ class OGSGame extends Game {
     return _sendMove('..', myColor);
   }
 
-  Future<void> _sendMove(String sgfMove, wq.Color color) {
-    // Note: OGS Websocket supports 2-way communication if one appends a requestId
-    // we could potentially wait for confirmation of the move being accepted
-    _webSocketManager.send('game/move', {
-      'game_id': int.parse(id),
-      'move': sgfMove,
-    });
+  Future<void> _sendMove(String sgfMove, wq.Color color) async {
+    try {
+      await _webSocketManager.sendAndGetResponse('game/move', {
+        'game_id': int.parse(id),
+        'move': sgfMove,
+      });
 
-    _logger.fine('Sent move "$sgfMove" for game $id');
-
-    return Future.value();
+      _logger
+          .fine('Move "$sgfMove" for game $id confirmed by server');
+    } catch (error) {
+      _logger.warning('Failed to send move "$sgfMove" for game $id: $error');
+      rethrow;
+    }
   }
 
   @override
