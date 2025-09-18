@@ -1,7 +1,5 @@
-name: Build Windows
+name: Build Windows (Production)
 on: 
-  pull_request:
-    branches: [ main ]
   push:
     branches: [ main ]
 jobs:

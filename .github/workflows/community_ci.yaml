@@ -1,0 +1,43 @@
+
+name: Community CI (No Private Dependencies)
+
+# This workflow provides essential validation for pull requests and pushes,
+# including those from external contributors. It runs:
+#   - Static code analysis (flutter analyze)
+#   - Unit tests (flutter test)
+#
+# What it DOESN'T run:
+#   - Cross-platform builds (Linux/macOS/Windows)
+#   - Production builds with private game clients (FoxWQ, Tygem)
+#   - Builds requiring private submodules or tokens
+#
+# This ensures fast feedback for contributors while keeping the essential
+# quality checks that catch most issues.
+
+on: 
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: "Static Analysis & Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          
+      - name: Install Flutter dependencies
+        run: flutter pub get
+        
+      - name: Analyze code
+        run: flutter analyze
+        
+      - name: Run tests
+        run: flutter test

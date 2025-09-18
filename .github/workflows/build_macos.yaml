@@ -1,7 +1,5 @@
-name: Build MacOS
+name: Build MacOS (Production)
 on: 
-  pull_request:
-    branches: [ main ]
   push:
     branches: [ main ]
 jobs:

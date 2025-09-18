@@ -19,7 +19,6 @@ import 'package:wqhub/game_client/time_control.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
-import 'package:wqhub/parse/sgf/sgf.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
 
