@@ -101,7 +101,8 @@ class _CustomExamSelectionPageState
                       },
                     ),
                     DropdownButtonFormField<TaskSourceType>(
-                      initialValue: _taskSourceType,
+                      // ignore: deprecated_member_use
+                      value: _taskSourceType,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Task source',
@@ -151,7 +152,8 @@ class _CustomExamSelectionPageState
                               border: OutlineInputBorder(),
                               labelText: 'Topic',
                             ),
-                            initialValue: _tag,
+                            // ignore: deprecated_member_use
+                            value: _tag,
                             items: [
                               for (final tag in TaskTag.values
                                   .where((t) => t.subtags().isNotEmpty))
@@ -174,7 +176,8 @@ class _CustomExamSelectionPageState
                               border: OutlineInputBorder(),
                               labelText: 'Subtopic',
                             ),
-                            initialValue: _subtag,
+                            // ignore: deprecated_member_use
+                            value: _subtag,
                             items: [
                               for (final tag in _tag
                                   .subtags()
