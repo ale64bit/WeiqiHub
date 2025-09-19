@@ -137,8 +137,10 @@ class BoardTheme {
     displayName: 'BadukTV',
     background: ImageBoardBackground(
         image: AssetImage('$_imagesPath/board/baduktv.png')),
-    blackStone: ImageStone(image: AssetImage('$_imagesPath/stones/baduktv_b.png')),
-    whiteStone: ImageStone(image: AssetImage('$_imagesPath/stones/baduktv_w.png')),
+    blackStone:
+        ImageStone(image: AssetImage('$_imagesPath/stones/baduktv_b.png')),
+    whiteStone:
+        ImageStone(image: AssetImage('$_imagesPath/stones/baduktv_w.png')),
     lineColor: Colors.black,
   );
 
