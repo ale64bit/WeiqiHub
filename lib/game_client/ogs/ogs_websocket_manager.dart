@@ -7,11 +7,12 @@ import 'package:logging/logging.dart';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:stream_channel/stream_channel.dart';
 
 class OGSWebSocketManager {
   final _log = Logger('OGSWebSocketManager');
 
-  WebSocketChannel? _channel;
+  StreamChannel? _channel;
   final String serverUrl;
   String? _deviceId;
 
@@ -34,6 +35,13 @@ class OGSWebSocketManager {
 
   OGSWebSocketManager({required this.serverUrl}) {
     _generateDeviceId();
+  }
+
+  /// Set a custom channel for testing purposes
+  void setChannel(StreamChannel channel) {
+    _channel = channel;
+    _connected.value = true;
+    _setupChannelListeners();
   }
 
   ValueNotifier<bool> get connected => _connected;
@@ -60,11 +68,7 @@ class OGSWebSocketManager {
 
       _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
 
-      _channel!.stream.listen(
-        _handleMessage,
-        onError: _handleError,
-        onDone: _handleDisconnect,
-      );
+      _setupChannelListeners();
 
       _connected.value = true;
       _reconnectAttempts = 0;
@@ -86,11 +90,25 @@ class OGSWebSocketManager {
     _rejectPendingRequests();
 
     if (_channel != null) {
-      await _channel!.sink.close(status.goingAway);
+      // Check if this is a WebSocketChannel and close with proper code
+      if (_channel is WebSocketChannel) {
+        await (_channel as WebSocketChannel).sink.close(status.goingAway);
+      } else {
+        // For generic StreamChannel (like in tests), just close normally
+        await _channel!.sink.close();
+      }
       _channel = null;
     }
 
     _connected.value = false;
+  }
+
+  void _setupChannelListeners() {
+    _channel!.stream.listen(
+      _handleMessage,
+      onError: _handleError,
+      onDone: _handleDisconnect,
+    );
   }
 
   Future<void> authenticate({required String jwtToken}) async {
