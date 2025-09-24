@@ -14,7 +14,7 @@ class OGSWebSocketManager {
 
   StreamChannel? _channel;
   final String serverUrl;
-  final StreamChannel Function(Uri) _createChannel;
+  final StreamChannel Function(Uri) createChannel;
   String? _deviceId;
 
   final ValueNotifier<bool> _connected = ValueNotifier(false);
@@ -36,8 +36,8 @@ class OGSWebSocketManager {
 
   OGSWebSocketManager({
     required this.serverUrl,
-    StreamChannel Function(Uri)? createChannel,
-  }) : _createChannel = createChannel ?? WebSocketChannel.connect {
+    this.createChannel = WebSocketChannel.connect,
+  }) {
     _generateDeviceId();
   }
 
@@ -63,7 +63,7 @@ class OGSWebSocketManager {
 
       _log.fine('Connecting to OGS WebSocket: $wsUrl');
 
-      _channel = _createChannel(Uri.parse(wsUrl));
+      _channel = createChannel(Uri.parse(wsUrl));
 
       _channel!.stream.listen(
         _handleMessage,
