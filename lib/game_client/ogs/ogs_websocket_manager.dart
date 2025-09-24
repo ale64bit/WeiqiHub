@@ -14,6 +14,7 @@ class OGSWebSocketManager {
 
   StreamChannel? _channel;
   final String serverUrl;
+  final StreamChannel Function(Uri) _createChannel;
   String? _deviceId;
 
   final ValueNotifier<bool> _connected = ValueNotifier(false);
@@ -33,15 +34,11 @@ class OGSWebSocketManager {
   int _lastRequestId = 0;
   final Map<int, Completer<dynamic>> _pendingRequests = {};
 
-  OGSWebSocketManager({required this.serverUrl}) {
+  OGSWebSocketManager({
+    required this.serverUrl,
+    StreamChannel Function(Uri)? createChannel,
+  }) : _createChannel = createChannel ?? WebSocketChannel.connect {
     _generateDeviceId();
-  }
-
-  /// Set a custom channel for testing purposes
-  void setChannel(StreamChannel channel) {
-    _channel = channel;
-    _connected.value = true;
-    _setupChannelListeners();
   }
 
   ValueNotifier<bool> get connected => _connected;
@@ -66,9 +63,13 @@ class OGSWebSocketManager {
 
       _log.fine('Connecting to OGS WebSocket: $wsUrl');
 
-      _channel = WebSocketChannel.connect(Uri.parse(wsUrl));
+      _channel = _createChannel(Uri.parse(wsUrl));
 
-      _setupChannelListeners();
+      _channel!.stream.listen(
+        _handleMessage,
+        onError: _handleError,
+        onDone: _handleDisconnect,
+      );
 
       _connected.value = true;
       _reconnectAttempts = 0;
@@ -101,14 +102,6 @@ class OGSWebSocketManager {
     }
 
     _connected.value = false;
-  }
-
-  void _setupChannelListeners() {
-    _channel!.stream.listen(
-      _handleMessage,
-      onError: _handleError,
-      onDone: _handleDisconnect,
-    );
   }
 
   Future<void> authenticate({required String jwtToken}) async {

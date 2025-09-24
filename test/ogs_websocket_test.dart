@@ -16,9 +16,14 @@ void main() {
       final mockChannel =
           StreamChannel(serverToClient.stream, clientToServer.sink);
 
-      // Create the manager and set the mock channel
-      final manager = OGSWebSocketManager(serverUrl: 'wss://online-go.com');
-      manager.setChannel(mockChannel);
+      // Create the manager with custom channel factory
+      final manager = OGSWebSocketManager(
+        serverUrl: 'wss://online-go.com',
+        createChannel: (_) => mockChannel,
+      );
+
+      // Connect to establish the channel
+      await manager.connect();
 
       // Arrange
       const command = 'test/command';
@@ -56,9 +61,14 @@ void main() {
       final mockChannel =
           StreamChannel(serverToClient.stream, clientToServer.sink);
 
-      // Create the manager and set the mock channel
-      final manager = OGSWebSocketManager(serverUrl: 'wss://online-go.com');
-      manager.setChannel(mockChannel);
+      // Create the manager with custom channel factory
+      final manager = OGSWebSocketManager(
+        serverUrl: 'wss://online-go.com',
+        createChannel: (_) => mockChannel,
+      );
+
+      // Connect to establish the channel
+      await manager.connect();
 
       // Arrange
       const command = 'invalid/command';
