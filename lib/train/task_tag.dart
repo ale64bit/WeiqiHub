@@ -1937,7 +1937,7 @@ enum TaskTag {
         TaskTag.jGroupAndSimilar => IList([
             RankRange(from: Rank.k7, to: Rank.k4),
             RankRange(from: Rank.k3, to: Rank.k1),
-            RankRange(from: Rank.d1, to: Rank.k3),
+            RankRange(from: Rank.k3, to: Rank.d1),
             RankRange(from: Rank.d4, to: Rank.d6),
           ]),
         TaskTag.josekiFundamentals => IList([
