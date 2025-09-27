@@ -29,18 +29,18 @@ enum MainPageDestination { home, play, train }
 
 class MainRouteArguments {
   final MainPageDestination destination;
-  final Function() reloadAppTheme;
+  final Function() rebuildApp;
 
   const MainRouteArguments(
-      {required this.destination, required this.reloadAppTheme});
+      {required this.destination, required this.rebuildApp});
 }
 
 class MainPage extends StatefulWidget {
   final MainPageDestination destination;
-  final Function() reloadAppTheme;
+  final Function() rebuildApp;
 
   const MainPage(
-      {super.key, required this.destination, required this.reloadAppTheme});
+      {super.key, required this.destination, required this.rebuildApp});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -56,7 +56,7 @@ class _MainPageState extends WindowClassAwareState<MainPage> {
           ? AppBar(
               title: Text('WeiqiHub'),
               actions: <Widget>[
-                SettingsButton(reloadAppTheme: widget.reloadAppTheme),
+                SettingsButton(reloadAppTheme: widget.rebuildApp),
               ],
             )
           : null,
@@ -86,8 +86,8 @@ class _MainPageState extends WindowClassAwareState<MainPage> {
                 Navigator.pushNamed(
                   context,
                   SettingsPage.routeName,
-                  arguments: SettingsRouteArguments(
-                      reloadAppTheme: widget.reloadAppTheme),
+                  arguments:
+                      SettingsRouteArguments(rebuildApp: widget.rebuildApp),
                 );
               },
             ),

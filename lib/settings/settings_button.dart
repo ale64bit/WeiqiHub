@@ -14,7 +14,7 @@ class SettingsButton extends StatelessWidget {
         Navigator.pushNamed(
           context,
           SettingsPage.routeName,
-          arguments: SettingsRouteArguments(reloadAppTheme: reloadAppTheme),
+          arguments: SettingsRouteArguments(rebuildApp: reloadAppTheme),
         );
       },
       icon: Icon(Icons.settings),

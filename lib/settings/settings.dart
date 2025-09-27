@@ -6,6 +6,7 @@ import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/board/board_sizes.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/response_delay.dart';
 
 class Settings {
@@ -25,6 +26,7 @@ class Settings {
   static const _boardStoneShadowsKey = 'settings.board.stone_shadows';
   static const _boardEdgeLine = 'settings.board.edge_line';
   static const _saveDirectory = 'settings.save_dir';
+  static const _locale = 'settings.language.locale';
 
   // Internal preferences
   bool getVersionPatchStatus(String version) =>
@@ -96,6 +98,20 @@ class Settings {
   set soundUI(double val) => prefs.setDouble(_soundUIKey, val).then((_) {
         AudioController().uiVolume = val;
       });
+
+  // Locale
+  Locale get locale => Locale(prefs.getString(_locale) ?? _defaultLocale());
+  set locale(Locale loc) => prefs.setString(_locale, loc.languageCode);
+
+  String _defaultLocale() {
+    final platformLoc = Locale(Platform.localeName);
+    for (final loc in AppLocalizations.supportedLocales) {
+      if (loc.languageCode == platformLoc.languageCode) {
+        return loc.languageCode;
+      }
+    }
+    return 'en';
+  }
 
   // Auth
   String? getUsername(String serverId) =>

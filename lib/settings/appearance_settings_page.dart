@@ -5,6 +5,7 @@ import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/appearance_settings_list.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/window_class_aware_state.dart';
@@ -13,9 +14,9 @@ import 'package:wqhub/wq/wq.dart' as wq;
 class AppearanceSettingsPage extends StatefulWidget {
   static const routeName = '/settings/appearance';
 
-  final Function() reloadAppTheme;
+  final Function() rebuildApp;
 
-  const AppearanceSettingsPage({super.key, required this.reloadAppTheme});
+  const AppearanceSettingsPage({super.key, required this.rebuildApp});
 
   @override
   State<AppearanceSettingsPage> createState() => _AppearanceSettingsPageState();
@@ -25,6 +26,7 @@ class _AppearanceSettingsPageState
     extends WindowClassAwareState<AppearanceSettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final borderSize =
         1.5 * (Theme.of(context).textTheme.labelMedium?.fontSize ?? 0);
     final border = context.settings.showCoordinates
@@ -83,7 +85,7 @@ class _AppearanceSettingsPageState
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Appearance'),
+        title: Text(loc.appearance),
       ),
       body: isWindowClassCompact
           ? Column(
@@ -97,7 +99,7 @@ class _AppearanceSettingsPageState
                     onChanged: () {
                       setState(() {});
                     },
-                    onAppThemeChanged: widget.reloadAppTheme,
+                    onAppThemeChanged: widget.rebuildApp,
                   ),
                 ),
               ],
@@ -117,7 +119,7 @@ class _AppearanceSettingsPageState
                     onChanged: () {
                       setState(() {});
                     },
-                    onAppThemeChanged: widget.reloadAppTheme,
+                    onAppThemeChanged: widget.rebuildApp,
                   ),
                 ),
               ],

@@ -1,5 +1,5 @@
 class SettingsRouteArguments {
-  final Function() reloadAppTheme;
+  final Function() rebuildApp;
 
-  SettingsRouteArguments({required this.reloadAppTheme});
+  SettingsRouteArguments({required this.rebuildApp});
 }

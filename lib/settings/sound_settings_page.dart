@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/audio/audio_controller.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class SoundSettingsPage extends StatefulWidget {
@@ -14,12 +15,13 @@ class SoundSettingsPage extends StatefulWidget {
 class _SoundSettingsPageState extends State<SoundSettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Sound')),
+      appBar: AppBar(title: Text(loc.sound)),
       body: ListView(
         children: <ListTile>[
           ListTile(
-            title: const Text('Stones'),
+            title: Text(loc.stones),
             subtitle: Slider(
               value: context.settings.soundStone,
               label: '${(100 * context.settings.soundStone).floor()}%',
@@ -32,11 +34,11 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
             ),
             trailing: FilledButton(
               onPressed: () => AudioController().playStone(),
-              child: const Text('Test'),
+              child: Text(loc.test),
             ),
           ),
           ListTile(
-            title: const Text('UI'),
+            title: Text(loc.ui),
             subtitle: Slider(
               value: context.settings.soundUI,
               label: '${(100 * context.settings.soundUI).floor()}%',
@@ -49,11 +51,11 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
             ),
             trailing: FilledButton(
               onPressed: () => AudioController().correct(),
-              child: const Text('Test'),
+              child: Text(loc.test),
             ),
           ),
           ListTile(
-            title: const Text('Voice'),
+            title: Text(loc.voice),
             subtitle: Slider(
               value: context.settings.soundVoice,
               label: '${(100 * context.settings.soundVoice).floor()}%',
@@ -66,7 +68,7 @@ class _SoundSettingsPageState extends State<SoundSettingsPage> {
             ),
             trailing: FilledButton(
               onPressed: () => AudioController().startToPlay(),
-              child: const Text('Test'),
+              child: Text(loc.test),
             ),
           ),
         ],
