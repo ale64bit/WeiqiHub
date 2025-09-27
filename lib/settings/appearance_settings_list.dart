@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class AppearanceSettingsList extends StatelessWidget {
@@ -12,10 +13,11 @@ class AppearanceSettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return ListView(
       children: [
         ListTile(
-          title: const Text('Theme'),
+          title: Text(loc.theme),
           trailing: DropdownButton<ThemeMode>(
             value: context.settings.themeMode,
             items: ThemeMode.values.map((mode) {
@@ -35,7 +37,7 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: const Text('Board theme'),
+          title: Text(loc.boardTheme),
           trailing: DropdownButton<BoardTheme>(
             value: context.settings.boardTheme,
             borderRadius: BorderRadius.circular(8),
@@ -55,7 +57,7 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: const Text('Show coordinates'),
+          title: Text(loc.showCoordinates),
           trailing: Switch(
             value: context.settings.showCoordinates,
             onChanged: (value) {
@@ -65,7 +67,7 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: const Text('Stone shadows'),
+          title: Text(loc.stoneShadows),
           trailing: Switch(
             value: context.settings.stoneShadows,
             onChanged: (value) {
@@ -75,17 +77,17 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: const Text('Edge line'),
+          title: Text(loc.edgeLine),
           trailing: SegmentedButton<BoardEdgeLine>(
             selected: <BoardEdgeLine>{context.settings.edgeLine},
             segments: [
               ButtonSegment<BoardEdgeLine>(
                 value: BoardEdgeLine.single,
-                label: Text('Simple'),
+                label: Text(loc.simple),
               ),
               ButtonSegment<BoardEdgeLine>(
                 value: BoardEdgeLine.thick,
-                label: Text('Thick'),
+                label: Text(loc.thick),
               ),
             ],
             onSelectionChanged: (value) {

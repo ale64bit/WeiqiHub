@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
   static const routeName = '/settings/about';
@@ -8,9 +9,10 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About'),
+        title: Text(loc.about),
       ),
       body: Center(
         child: Column(

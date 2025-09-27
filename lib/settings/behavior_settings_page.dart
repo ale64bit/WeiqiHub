@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/board/board_sizes.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/response_delay.dart';
 
@@ -15,14 +16,14 @@ class BehaviourSettingsPage extends StatefulWidget {
 class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Behaviour')),
+      appBar: AppBar(title: Text(loc.behaviour)),
       body: ListView(
         children: <ListTile>[
           ListTile(
-            title: const Text('Confirm moves'),
-            subtitle: const Text(
-                'Double-tap to confirm moves on large boards to avoid misclicks'),
+            title: Text(loc.confirmMoves),
+            subtitle: Text(loc.confirmMovesDesc),
             trailing: Switch(
               value: context.settings.confirmMoves,
               onChanged: (value) {
@@ -33,9 +34,8 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
           ),
           if (context.settings.confirmMoves)
             ListTile(
-              title: const Text('Confirm board size'),
-              subtitle: const Text(
-                  'Boards this size or larger require move confirmation'),
+              title: Text(loc.confirmBoardSize),
+              subtitle: Text(loc.confirmBoardSizeDesc),
               trailing: DropdownButton<int>(
                 value: context.settings.confirmMovesBoardSize,
                 items: BoardSizes.values.map((boardSize) {
@@ -56,9 +56,8 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
               ),
             ),
           ListTile(
-            title: const Text('Response delay'),
-            subtitle: const Text(
-                'Duration of the delay before the response appears while solving tasks'),
+            title: Text(loc.responseDelay),
+            subtitle: Text(loc.responseDelayDesc),
             trailing: DropdownButton<ResponseDelay>(
               value: context.settings.responseDelay,
               items: ResponseDelay.values.map((delay) {
@@ -78,9 +77,8 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
             ),
           ),
           ListTile(
-            title: const Text('Always black-to-play'),
-            subtitle:
-                const Text('Set all tasks as black-to-play to avoid confusion'),
+            title: Text(loc.alwaysBlackToPlay),
+            subtitle: Text(loc.alwaysBlackToPlayDesc),
             trailing: Switch(
               value: context.settings.alwaysBlackToPlay,
               onChanged: (value) {

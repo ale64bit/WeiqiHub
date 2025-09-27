@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/main_page.dart';
 import 'package:wqhub/routes.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
@@ -23,12 +24,15 @@ class _WeiqiHubAppState extends State<WeiqiHubApp> {
     );
     return MaterialApp(
       title: 'WeiqiHub',
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: context.settings.locale,
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: context.settings.themeMode,
       home: MainPage(
         destination: MainPageDestination.home,
-        reloadAppTheme: () {
+        rebuildApp: () {
           setState(() {});
         },
       ),

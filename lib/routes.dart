@@ -12,6 +12,7 @@ import 'package:wqhub/play/server_login_page.dart';
 import 'package:wqhub/settings/about_page.dart';
 import 'package:wqhub/settings/appearance_settings_page.dart';
 import 'package:wqhub/settings/behavior_settings_page.dart';
+import 'package:wqhub/settings/language_page.dart';
 import 'package:wqhub/settings/settings_page.dart';
 import 'package:wqhub/settings/settings_route_arguments.dart';
 import 'package:wqhub/settings/sound_settings_page.dart';
@@ -63,15 +64,18 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           settings,
           MainPage(
             destination: args.destination,
-            reloadAppTheme: args.reloadAppTheme,
+            rebuildApp: args.rebuildApp,
           ));
     case SettingsPage.routeName:
       final args = settings.arguments as SettingsRouteArguments;
-      return _mpr(settings, SettingsPage(reloadAppTheme: args.reloadAppTheme));
+      return _mpr(settings, SettingsPage(rebuildApp: args.rebuildApp));
     case AppearanceSettingsPage.routeName:
       final args = settings.arguments as SettingsRouteArguments;
-      return _mpr(settings,
-          AppearanceSettingsPage(reloadAppTheme: args.reloadAppTheme));
+      return _mpr(
+          settings, AppearanceSettingsPage(rebuildApp: args.rebuildApp));
+    case LanguagePage.routeName:
+      final args = settings.arguments as SettingsRouteArguments;
+      return _mpr(settings, LanguagePage(rebuildApp: args.rebuildApp));
     case SingleTaskPage.routeName:
       final args = settings.arguments as SingleTaskRouteArguments;
       return _mpr(settings, SingleTaskPage(task: args.task));
