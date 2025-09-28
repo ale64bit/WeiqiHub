@@ -22,7 +22,7 @@ class _LanguagePageState extends State<LanguagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.language)),
-      body: RadioGroup.new(
+      body: RadioGroup(
         groupValue: context.settings.locale,
         onChanged: (Locale? loc) {
           context.settings.locale = loc!;
