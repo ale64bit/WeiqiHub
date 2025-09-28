@@ -155,11 +155,17 @@ class OGSWebSocketManager {
 
   void joinGame(String gameId) {
     send('game/connect', {'game_id': int.parse(gameId)});
+    // It's a bit absurd that OGS requires joining the chat channel,
+    // but this does two things (not chat related):
+    //  - It shows the player as "online" (the green dot over the avatar)
+    //  - It makes the server wait for the player to accept the score when the game ends.
+    send('chat/join', {'channel': 'game-$gameId'});
     _log.fine('Joining game: $gameId');
   }
 
   void leaveGame(String gameId) {
     send('game/disconnect', {'game_id': int.parse(gameId)});
+    send('chat/part', {'channel': 'game-$gameId'});
     _log.fine('Leaving game: $gameId');
   }
 
