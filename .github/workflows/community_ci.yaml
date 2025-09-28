@@ -47,6 +47,7 @@ jobs:
 
       - name: Check code formatting
         run: dart format --set-exit-if-changed .
+        if: matrix.flutter-name == 'Latest Stable'
 
       - name: Analyze code
         run: flutter analyze
