@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     name: "Build"
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
