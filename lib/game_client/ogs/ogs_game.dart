@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
+import 'package:wqhub/game_client/ogs/territory_calculator.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -13,9 +15,17 @@ import 'package:logging/logging.dart';
 class OGSGame extends Game {
   final Logger _logger = Logger('OGSGame');
   final OGSWebSocketManager _webSocketManager;
+  final String _myUserId;
   late final StreamController<wq.Move?> _moveController;
+  late final StreamController<CountingResult> _countingResultController;
   late final Completer<GameResult> _resultCompleter;
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
+
+  // Track all moves played in the game for board state reconstruction
+  final List<wq.Move> _allMoves = [];
+
+  // Track stone removal proposals from our opponent or server
+  String _recentlyRemovedStonesString = '';
 
   OGSGame({
     required super.id,
@@ -27,15 +37,44 @@ class OGSGame extends Game {
     required super.timeControl,
     required super.previousMoves,
     required OGSWebSocketManager webSocketManager,
-  }) : _webSocketManager = webSocketManager {
+    required String myUserId,
+  })  : _webSocketManager = webSocketManager,
+        _myUserId = myUserId {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
+    _countingResultController = StreamController<CountingResult>.broadcast();
     _resultCompleter = Completer<GameResult>();
+
+    // Add previous moves to our tracking list
+    _allMoves.addAll(previousMoves);
+
     _setupGame();
   }
 
   @override
-  Future<void> acceptCountingResult(bool agree) => Future.value();
+  Future<void> acceptCountingResult(bool agree) async {
+    try {
+      if (agree) {
+        // Send stone removal acceptance to OGS with the stones our opponent proposed
+        final stonesString = _recentlyRemovedStonesString;
+
+        _webSocketManager.send('game/removed_stones/accept', {
+          'game_id': int.parse(id),
+          'stones': stonesString,
+          'strict_seki_mode': false,
+        });
+      } else {
+        // Send stone removal rejection to OGS and continue the game
+        _webSocketManager.send('game/removed_stones/reject', {
+          'game_id': int.parse(id),
+        });
+      }
+    } catch (error) {
+      _logger.warning(
+          'Failed to send stone removal ${agree ? "acceptance" : "rejection"} for game $id: $error');
+      rethrow;
+    }
+  }
 
   @override
   Future<void> agreeToAutomaticCounting(bool agree) => Future.value();
@@ -54,7 +93,7 @@ class OGSGame extends Game {
   Stream<bool> countingResultResponses() => Stream.empty();
 
   @override
-  Stream<CountingResult> countingResults() => Stream.empty();
+  Stream<CountingResult> countingResults() => _countingResultController.stream;
 
   @override
   Future<void> forceCounting() => Future.value();
@@ -115,6 +154,12 @@ class OGSGame extends Game {
       return;
     }
 
+    // Check if this is a stone removal acceptance event for our game
+    if (event == 'game/$id/removed_stones_accepted') {
+      _handleRemovedStonesAccepted(message['data'] as Map<String, dynamic>);
+      return;
+    }
+
     // Check if this is a move event for our game
     if (event == 'game/$id/move') {
       final data = message['data'] as Map<String, dynamic>;
@@ -147,6 +192,7 @@ class OGSGame extends Game {
       }
 
       final move = (col: color, p: point);
+      _allMoves.add(move); // Track this move
       _moveController.add(move);
     }
   }
@@ -255,10 +301,99 @@ class OGSGame extends Game {
     );
   }
 
+  /// Decodes OGS stone string format to a list of board coordinates
+  /// Stone strings contain pairs of characters representing SGF coordinates
+  /// e.g. "eafaebac" -> [(4,0), (5,0), (4,1), (0,2)]
+  List<wq.Point> _decodeOgsStones(String stonesString) {
+    final stones = <wq.Point>[];
+
+    // Process pairs of characters
+    for (int i = 0; i < stonesString.length; i += 2) {
+      if (i + 1 >= stonesString.length) break;
+
+      final sgfPoint = stonesString.substring(i, i + 2);
+      final point = wq.parseSgfPoint(sgfPoint);
+
+      // Skip invalid coordinates (passes are encoded as (-1,-1))
+      if (point.$1 >= 0 &&
+          point.$2 >= 0 &&
+          point.$1 < boardSize &&
+          point.$2 < boardSize) {
+        stones.add(point);
+      }
+    }
+
+    return stones;
+  }
+
+  void _handleRemovedStonesAccepted(Map<String, dynamic> data) {
+    _logger.fine('Received removed stones accepted for game $id');
+
+    try {
+      // Check if this is just the server telling us about our own acceptance
+      final playerId = data['player_id'] as int?;
+      if (playerId?.toString() == _myUserId) {
+        _logger.fine('Ignoring our own stone removal acceptance');
+        return;
+      }
+
+      final stonesString = data['stones'] as String? ?? '';
+      final players = data['players'] as Map<String, dynamic>?;
+
+      if (players == null) {
+        _logger.warning('No players data in removed stones accepted event');
+        return;
+      }
+
+      // Update player information
+      _updatePlayerInfo(players);
+
+      // Decode the removed stones
+      final removedStones = _decodeOgsStones(stonesString);
+      _recentlyRemovedStonesString = stonesString;
+      _logger.fine(
+          'Decoded ${removedStones.length} removed stones: $removedStones');
+
+      // Calculate territory and score
+      final countingResult =
+          _calculateTerritoryFromRemovedStones(removedStones);
+
+      // Emit the counting result
+      _countingResultController.add(countingResult);
+    } catch (error) {
+      _logger.warning(
+          'Error handling removed stones accepted for game $id: $error');
+    }
+  }
+
+  /// Calculate territory ownership and score after stone removal
+  CountingResult _calculateTerritoryFromRemovedStones(
+      List<wq.Point> removedStones) {
+    _logger.fine(
+        'Calculating territory from ${removedStones.length} removed stones');
+
+    // Create a board state from all the moves played
+    final boardState = BoardState(size: boardSize);
+
+    // Play all moves to reconstruct the board state
+    for (final move in _allMoves) {
+      boardState.move(move);
+    }
+
+    final result = calculateTerritory(boardState, removedStones, komi);
+
+    _logger.fine(
+        'Score calculation: Black=${result.winner == wq.Color.black ? "wins" : "loses"}, '
+        'Winner=${result.winner}, Lead=${result.scoreLead}');
+
+    return result;
+  }
+
   void dispose() {
     _messageSubscription?.cancel();
     _webSocketManager.leaveGame(id);
     _moveController.close();
+    _countingResultController.close();
 
     // Complete the result future if not already completed
     if (!_resultCompleter.isCompleted) {
