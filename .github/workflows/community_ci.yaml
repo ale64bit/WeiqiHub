@@ -27,9 +27,6 @@ jobs:
     strategy:
       matrix:
         include:
-          # File picker is broken on Flutter 3.33 on Windows
-          - flutter-version: '3.32.0'
-            flutter-name: 'Flutter 3.32'
           - flutter-version: ''
             flutter-name: 'Latest Stable'
     steps:
