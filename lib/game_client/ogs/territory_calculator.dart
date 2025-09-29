@@ -9,15 +9,17 @@ import 'package:wqhub/wq/wq.dart' as wq;
 /// Returns a [CountingResult] with territory ownership, winner, and score lead.
 ///
 /// Scoring includes:
-/// - Living stones (1 point each)
 /// - Territory controlled (1 point per intersection)
 /// - Captured stones (1 point per removed stone for the opponent)
 /// - Komi compensation for white
+/// TODO: handle seki and dame points correctly (for Japanese rules)
 CountingResult calculateTerritory(
   BoardState boardState,
   List<wq.Point> removedStones,
-  double komi,
-) {
+  double komi, {
+  int blackCaptures = 0,
+  int whiteCaptures = 0,
+}) {
   final boardSize = boardState.size;
 
   // Calculate territory ownership for each point
@@ -49,7 +51,13 @@ CountingResult calculateTerritory(
   var blackScore = 0.0;
   var whiteScore = 0.0;
 
-  // Count captured stones
+  // Add capture counts from gameplay
+  blackScore +=
+      whiteCaptures.toDouble(); // Black gets points for capturing white stones
+  whiteScore +=
+      blackCaptures.toDouble(); // White gets points for capturing black stones
+
+  // Count captured stones from manual removal
   for (final removedPoint in removedStones) {
     final removedStoneColor = boardState[removedPoint];
     if (removedStoneColor == wq.Color.black) {

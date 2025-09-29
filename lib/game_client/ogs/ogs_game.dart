@@ -338,15 +338,6 @@ class OGSGame extends Game {
       }
 
       final stonesString = data['stones'] as String? ?? '';
-      final players = data['players'] as Map<String, dynamic>?;
-
-      if (players == null) {
-        _logger.warning('No players data in removed stones accepted event');
-        return;
-      }
-
-      // Update player information
-      _updatePlayerInfo(players);
 
       // Decode the removed stones
       final removedStones = _decodeOgsStones(stonesString);
@@ -372,15 +363,28 @@ class OGSGame extends Game {
     _logger.fine(
         'Calculating territory from ${removedStones.length} removed stones');
 
-    // Create a board state from all the moves played
     final boardState = BoardState(size: boardSize);
+
+    var blackCaptures = 0;
+    var whiteCaptures = 0;
 
     // Play all moves to reconstruct the board state
     for (final move in _allMoves) {
-      boardState.move(move);
+      final capturedStones = boardState.move(move);
+      if (capturedStones != null) {
+        if (move.col == wq.Color.black) {
+          blackCaptures += capturedStones.length;
+        } else if (move.col == wq.Color.white) {
+          whiteCaptures += capturedStones.length;
+        }
+      }
     }
 
-    final result = calculateTerritory(boardState, removedStones, komi);
+    _logger.fine(
+        'Captures during play: Black captured $blackCaptures, White captured $whiteCaptures');
+
+    final result = calculateTerritory(boardState, removedStones, komi,
+        blackCaptures: blackCaptures, whiteCaptures: whiteCaptures);
 
     _logger.fine(
         'Score calculation: Black=${result.winner == wq.Color.black ? "wins" : "loses"}, '
