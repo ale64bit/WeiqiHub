@@ -45,7 +45,6 @@ class OGSGame extends Game {
     _countingResultController = StreamController<CountingResult>.broadcast();
     _resultCompleter = Completer<GameResult>();
 
-    // Add previous moves to our tracking list
     _allMoves.addAll(previousMoves);
 
     _setupGame();
@@ -55,7 +54,7 @@ class OGSGame extends Game {
   Future<void> acceptCountingResult(bool agree) async {
     try {
       if (agree) {
-        // Send stone removal acceptance to OGS with the stones our opponent proposed
+        // end the game with the removed stones our opponent proposed
         final stonesString = _recentlyRemovedStonesString;
 
         _webSocketManager.send('game/removed_stones/accept', {
@@ -64,7 +63,7 @@ class OGSGame extends Game {
           'strict_seki_mode': false,
         });
       } else {
-        // Send stone removal rejection to OGS and continue the game
+        // continue the game
         _webSocketManager.send('game/removed_stones/reject', {
           'game_id': int.parse(id),
         });
@@ -192,7 +191,7 @@ class OGSGame extends Game {
       }
 
       final move = (col: color, p: point);
-      _allMoves.add(move); // Track this move
+      _allMoves.add(move);
       _moveController.add(move);
     }
   }
@@ -358,9 +357,6 @@ class OGSGame extends Game {
       }
     }
 
-    // Calculate final scores
-    // Black score = black territory + white captures
-    // White score = white territory + black captures + komi
     final blackScore = blackTerritory + whiteCaptures;
     final whiteScore = whiteTerritory + blackCaptures + komi;
 
