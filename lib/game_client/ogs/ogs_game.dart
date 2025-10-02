@@ -7,6 +7,7 @@ import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 import 'package:wqhub/game_client/user_info.dart';
+import 'package:wqhub/wq/grid.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:logging/logging.dart';
@@ -326,36 +327,19 @@ class OGSGame extends Game {
       Map<String, dynamic> data) {
     _logger.fine('Calculating territory from OGS ownership data');
 
-    final ownershipData = data['ownership'] as List<dynamic>;
+    final ogsOwnership = data['ownership'] as List<List<int>>;
 
-    // Convert OGS ownership format to our ownership format
-    // OGS format: -1 = white, 1 = black, 0 = neutral
-    final ownership = <List<wq.Color?>>[];
+    final ownership = generate2D<wq.Color?>(boardSize, (i, j) {
+      return switch (ogsOwnership[i][j]) {
+        -1 => wq.Color.white,
+        1 => wq.Color.black,
+        _ => null,
+      };
+    });
 
-    var blackTerritory = 0;
-    var whiteTerritory = 0;
-
-    for (final row in ownershipData) {
-      final ownershipRow = <wq.Color?>[];
-      for (final cell in row as List<dynamic>) {
-        final value = cell as int;
-        switch (value) {
-          case -1:
-            ownershipRow.add(wq.Color.white);
-            whiteTerritory++;
-            break;
-          case 1:
-            ownershipRow.add(wq.Color.black);
-            blackTerritory++;
-            break;
-          case 0:
-          default:
-            ownershipRow.add(null);
-            break;
-        }
-      }
-      ownership.add(ownershipRow);
-    }
+    final territoryCounts = count2D(ownership);
+    final blackTerritory = territoryCounts[wq.Color.black] ?? 0;
+    final whiteTerritory = territoryCounts[wq.Color.white] ?? 0;
 
     // Calculate captures during the game by reconstructing board state
     final boardState = BoardState(size: boardSize);
