@@ -349,10 +349,11 @@ class OGSGame extends Game {
     for (final move in _allMoves) {
       final capturedStones = boardState.move(move);
       if (capturedStones != null) {
-        if (move.col == wq.Color.black) {
-          blackCaptures += capturedStones.length;
-        } else if (move.col == wq.Color.white) {
-          whiteCaptures += capturedStones.length;
+        switch (move.col) {
+          case wq.Color.black:
+            blackCaptures += capturedStones.length;
+          case wq.Color.white:
+            whiteCaptures += capturedStones.length;
         }
       }
     }
