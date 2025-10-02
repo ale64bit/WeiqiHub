@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/main_page.dart';
 
 class MainPageBottomNavigationBar extends StatefulWidget {
@@ -28,6 +29,7 @@ class _MainPageBottomNavigationBarState
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return BottomNavigationBar(
       currentIndex: _selectedDestination.index,
       onTap: (index) {
@@ -38,18 +40,18 @@ class _MainPageBottomNavigationBarState
           widget.onDestinationSelected(_selectedDestination);
         }
       },
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Home',
+          label: loc.home,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.sports_esports),
-          label: 'Play',
+          label: loc.play,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.fitness_center),
-          label: 'Train',
+          label: loc.train,
         ),
       ],
     );

@@ -1,3 +1,5 @@
+import 'package:wqhub/l10n/app_localizations.dart';
+
 enum TaskType {
   lifeAndDeath,
   tesuji,
@@ -10,17 +12,16 @@ enum TaskType {
   theory,
   appreciation;
 
-  @override
-  String toString() => switch (this) {
-        TaskType.lifeAndDeath => 'Life & death',
-        TaskType.tesuji => 'Tesuji',
-        TaskType.capture => 'Capture stones',
-        TaskType.captureRace => 'Capture race',
-        TaskType.opening => 'Opening',
-        TaskType.joseki => 'Joseki',
-        TaskType.middlegame => 'Middlegame',
-        TaskType.endgame => 'Endgame',
-        TaskType.theory => 'Theory',
-        TaskType.appreciation => 'Appreciation'
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        TaskType.lifeAndDeath => loc.taskTypeLifeAndDeath,
+        TaskType.tesuji => loc.taskTypeTesuji,
+        TaskType.capture => loc.taskTypeCapture,
+        TaskType.captureRace => loc.taskTypeCaptureRace,
+        TaskType.opening => loc.taskTypeOpening,
+        TaskType.joseki => loc.taskTypeJoseki,
+        TaskType.middlegame => loc.taskTypeMiddlegame,
+        TaskType.endgame => loc.taskTypeEndgame,
+        TaskType.theory => loc.taskTypeTheory,
+        TaskType.appreciation => loc.taskTypeAppreciation,
       };
 }

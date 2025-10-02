@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/grading_exam_ranks.dart';
@@ -16,6 +17,7 @@ class TrainStatsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final thisWeek = today.subtract(Duration(days: today.weekday));
@@ -25,24 +27,30 @@ class TrainStatsPage extends StatelessWidget {
       length: 4,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Statistics'),
-          bottom: const TabBar(
+          title: Text(loc.statistics),
+          bottom: TabBar(
             tabs: [
-              const Tab(icon: Icon(Icons.today), text: 'Today'),
-              const Tab(icon: Icon(Icons.calendar_view_week), text: 'Week'),
-              const Tab(icon: Icon(Icons.calendar_month), text: 'Month'),
-              const Tab(icon: Icon(Icons.bar_chart), text: 'By rank'),
+              Tab(icon: Icon(Icons.today), text: loc.today),
+              Tab(icon: Icon(Icons.calendar_view_week), text: loc.week),
+              Tab(icon: Icon(Icons.calendar_month), text: loc.month),
+              Tab(icon: Icon(Icons.bar_chart), text: loc.byRank),
             ],
           ),
         ),
         body: TabBarView(
           children: [
             _TimePeriodTab(
-                dateLabel: 'Time', dateFormat: _onlyTime, since: today),
+                dateLabel: loc.statsTimeColumn,
+                dateFormat: _onlyTime,
+                since: today),
             _TimePeriodTab(
-                dateLabel: 'Date', dateFormat: _onlyDate, since: thisWeek),
+                dateLabel: loc.statsDateColumn,
+                dateFormat: _onlyDate,
+                since: thisWeek),
             _TimePeriodTab(
-                dateLabel: 'Date', dateFormat: _onlyDate, since: thisMonth),
+                dateLabel: loc.statsDateColumn,
+                dateFormat: _onlyDate,
+                since: thisMonth),
             _ByRankTab(),
           ],
         ),
@@ -74,6 +82,7 @@ class _TimePeriodTabState extends State<_TimePeriodTab> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final isCompact = MediaQuery.sizeOf(context).width < 600;
     final passedIcon = Icon(Icons.check, color: Colors.green);
     final failedIcon = Icon(Icons.close, color: Colors.red);
@@ -100,10 +109,11 @@ class _TimePeriodTabState extends State<_TimePeriodTab> {
                 columnSpacing: 8,
                 columns: <DataColumn>[
                   DataColumn(label: Text(widget.dateLabel)),
-                  DataColumn(label: const Text('Type')),
-                  DataColumn(label: const Text('Rank')),
-                  DataColumn(label: const Text('Result')),
-                  if (!isCompact) DataColumn(label: const Text('Time')),
+                  DataColumn(label: Text(loc.type)),
+                  DataColumn(label: Text(loc.rank)),
+                  DataColumn(label: Text(loc.result)),
+                  if (!isCompact)
+                    DataColumn(label: Text(loc.statsDurationColumn)),
                 ],
                 rows: <DataRow>[
                   for (final entry in entries)

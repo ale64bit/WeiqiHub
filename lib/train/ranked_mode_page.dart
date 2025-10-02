@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/task_action_bar.dart';
@@ -52,6 +53,7 @@ class _RankedModePageState extends State<RankedModePage>
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
     final borderSize =
         1.5 * (Theme.of(context).textTheme.labelMedium?.fontSize ?? 0);
@@ -98,7 +100,7 @@ class _RankedModePageState extends State<RankedModePage>
     );
 
     final taskTitle =
-        '[${widget.taskSource.task.rank.toString()}] ${widget.taskSource.task.type.toString()}';
+        '[${widget.taskSource.task.rank.toString()}] ${widget.taskSource.task.type.toLocalizedString(loc)}';
 
     final rankDisplay = Text(Rank.decimalString(widget.taskSource.rank),
         style: TextTheme.of(context).titleLarge);

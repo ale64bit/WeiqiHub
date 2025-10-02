@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/main_page.dart';
 
 class MainPageNavigationRail extends StatefulWidget {
@@ -26,6 +27,7 @@ class _MainPageNavigationRailState extends State<MainPageNavigationRail> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return NavigationRail(
       selectedIndex: _selectedDestination.index,
       onDestinationSelected: (index) {
@@ -37,18 +39,18 @@ class _MainPageNavigationRailState extends State<MainPageNavigationRail> {
         }
       },
       labelType: NavigationRailLabelType.all,
-      destinations: const <NavigationRailDestination>[
+      destinations: <NavigationRailDestination>[
         NavigationRailDestination(
           icon: Icon(Icons.home),
-          label: Text('Home'),
+          label: Text(loc.home),
         ),
         NavigationRailDestination(
           icon: Icon(Icons.sports_esports),
-          label: Text('Play'),
+          label: Text(loc.play),
         ),
         NavigationRailDestination(
           icon: Icon(Icons.fitness_center),
-          label: Text('Train'),
+          label: Text(loc.train),
         ),
       ],
     );

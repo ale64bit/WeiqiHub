@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/input/int_form_field.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 
 class DurationFormField extends FormField<Duration> {
   DurationFormField({
     super.key,
     String? label,
-    String minutesLabel = 'Minutes',
-    String secondsLabel = 'Seconds',
     required Duration initialValue,
     required FormFieldValidator<Duration> validator,
     Function(Duration)? onChanged,
@@ -15,6 +14,7 @@ class DurationFormField extends FormField<Duration> {
           validator: validator,
           autovalidateMode: AutovalidateMode.always,
           builder: (FormFieldState<Duration> st) {
+            final loc = AppLocalizations.of(st.context)!;
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -24,7 +24,7 @@ class DurationFormField extends FormField<Duration> {
                     if (label != null) Text(label),
                     Expanded(
                       child: IntFormField(
-                        label: minutesLabel,
+                        label: loc.minutes,
                         initialValue: (st.value?.inMinutes ?? 0) % 60,
                         minValue: 0,
                         maxValue: 59,
@@ -41,7 +41,7 @@ class DurationFormField extends FormField<Duration> {
                     Text(':', style: TextTheme.of(st.context).headlineLarge),
                     Expanded(
                       child: IntFormField(
-                        label: secondsLabel,
+                        label: loc.seconds,
                         initialValue: (st.value?.inSeconds ?? 0) % 60,
                         minValue: 0,
                         maxValue: 59,

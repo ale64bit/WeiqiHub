@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 
 class IntFormField extends StatelessWidget {
   final String label;
@@ -18,6 +19,19 @@ class IntFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
+    (int, String?) _validator(value) {
+      if (value == null || value.isEmpty) return (0, loc.errCannotBeEmpty);
+      final count = int.tryParse(value);
+      if (count == null) return (0, loc.errMustBeInteger);
+      if (minValue != null && count < minValue!)
+        return (0, loc.errMustBeAtLeast(minValue!));
+      if (maxValue != null && count > maxValue!)
+        return (0, loc.errMustBeAtMost(maxValue!));
+      return (count, null);
+    }
+
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
@@ -33,16 +47,5 @@ class IntFormField extends StatelessWidget {
         if (err == null) onChanged?.call(i);
       },
     );
-  }
-
-  (int, String?) _validator(value) {
-    if (value == null || value.isEmpty) return (0, 'Cannot be empty');
-    final count = int.tryParse(value);
-    if (count == null) return (0, 'Must be an integer');
-    if (minValue != null && count < minValue!)
-      return (0, 'Must be at least $minValue');
-    if (maxValue != null && count > maxValue!)
-      return (0, 'Must be at most $maxValue');
-    return (count, null);
   }
 }

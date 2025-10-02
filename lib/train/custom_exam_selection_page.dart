@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/input/duration_form_field.dart';
 import 'package:wqhub/input/int_form_field.dart';
 import 'package:wqhub/input/rank_range_form_field.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/pop_aware_state.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/custom_exam_page.dart';
@@ -36,11 +37,12 @@ class _CustomExamSelectionPageState
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final taskCount = availableTasks();
-    final availableTasksText = Text('$taskCount tasks available');
+    final availableTasksText = Text(loc.nTasksAvailable(taskCount));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Custom exam'),
+        title: Text(loc.customExam),
       ),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -55,7 +57,7 @@ class _CustomExamSelectionPageState
                   spacing: 8.0,
                   children: <Widget>[
                     IntFormField(
-                      label: 'Number of tasks',
+                      label: loc.numberOfTasks,
                       initialValue: _taskCount,
                       minValue: 1,
                       maxValue: 1000,
@@ -64,7 +66,7 @@ class _CustomExamSelectionPageState
                       },
                     ),
                     IntFormField(
-                      label: 'Maximum number of mistakes',
+                      label: loc.maxNumberOfMistakes,
                       initialValue: _maxMistakes,
                       minValue: 0,
                       maxValue: 1 << 30,
@@ -73,7 +75,7 @@ class _CustomExamSelectionPageState
                       },
                     ),
                     DurationFormField(
-                      label: 'Time per task',
+                      label: loc.timePerTask,
                       initialValue: _timePerTask,
                       validator: (duration) {
                         if (duration! == Duration.zero)
@@ -104,13 +106,13 @@ class _CustomExamSelectionPageState
                       initialValue: _taskSourceType,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: 'Task source',
+                        labelText: loc.taskSource,
                       ),
                       items: [
                         for (final value in TaskSourceType.values)
                           DropdownMenuItem(
                             value: value,
-                            child: Text(value.description),
+                            child: Text(value.toLocalizedString(loc)),
                           ),
                       ],
                       onChanged: (value) {
@@ -129,7 +131,7 @@ class _CustomExamSelectionPageState
                             children: [
                               for (final taskType in TaskType.values)
                                 FilterChip(
-                                  label: Text(taskType.toString()),
+                                  label: Text(taskType.toLocalizedString(loc)),
                                   selected:
                                       _selectedTaskTypes.contains(taskType),
                                   onSelected: (bool selected) {
@@ -149,7 +151,7 @@ class _CustomExamSelectionPageState
                           DropdownButtonFormField<TaskTag>(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Topic',
+                              labelText: loc.topic,
                             ),
                             initialValue: _tag,
                             items: [
@@ -172,7 +174,7 @@ class _CustomExamSelectionPageState
                           DropdownButtonFormField<TaskTag>(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Subtopic',
+                              labelText: loc.subtopic,
                             ),
                             initialValue: _subtag,
                             items: [
@@ -199,7 +201,7 @@ class _CustomExamSelectionPageState
                         ],
                     },
                     CheckboxListTile(
-                      title: const Text('Collect statistics'),
+                      title: Text(loc.collectStats),
                       value: _collectStats,
                       onChanged: (value) {
                         if (value != null) {
@@ -224,7 +226,7 @@ class _CustomExamSelectionPageState
               children: [
                 Expanded(
                   child: FilledButton(
-                    child: const Text('Start'),
+                    child: Text(loc.start),
                     onPressed: taskCount == 0
                         ? null
                         : () {

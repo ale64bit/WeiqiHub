@@ -4,6 +4,14 @@ import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
+extension on ThemeMode {
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        ThemeMode.system => loc.system,
+        ThemeMode.light => loc.light,
+        ThemeMode.dark => loc.dark,
+      };
+}
+
 class AppearanceSettingsList extends StatelessWidget {
   final Function() onChanged;
   final Function() onAppThemeChanged;
@@ -25,7 +33,7 @@ class AppearanceSettingsList extends StatelessWidget {
                 value: mode,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(mode.name),
+                  child: Text(mode.toLocalizedString(loc)),
                 ),
               );
             }).toList(),

@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/task_preview_tile.dart';
 import 'package:wqhub/window_class_aware_state.dart';
@@ -26,14 +27,15 @@ class _MyMistakesPageState extends WindowClassAwareState<MyMistakesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My mistakes'),
+        title: Text(loc.myMistakes),
         actions: <Widget>[
           DropdownButton<_SortMode>(
             icon: Icon(Icons.sort),
             value: selectedSortMode,
-            items: _SortMode.entries,
+            items: _SortMode.entries(loc),
             onChanged: (_SortMode? sortLabel) {
               if (sortLabel != null && sortLabel != selectedSortMode) {
                 setState(() {
@@ -83,21 +85,23 @@ class _MyMistakesPageState extends WindowClassAwareState<MyMistakesPage> {
 typedef _SortModeEntry = DropdownMenuItem<_SortMode>;
 
 enum _SortMode {
-  recent('Recent'),
-  difficult('Difficult');
+  recent,
+  difficult;
 
-  const _SortMode(this.label);
-  final String label;
-
-  static final List<_SortModeEntry> entries =
+  static List<_SortModeEntry> entries(AppLocalizations loc) =>
       UnmodifiableListView<_SortModeEntry>(
-    values.map<_SortModeEntry>(
-      (l) => _SortModeEntry(
-          value: l,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Text(l.label),
-          )),
-    ),
-  );
+        values.map<_SortModeEntry>(
+          (l) => _SortModeEntry(
+              value: l,
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(l.toLocalizedString(loc)),
+              )),
+        ),
+      );
+
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        _SortMode.recent => loc.sortModeRecent,
+        _SortMode.difficult => loc.sortModeDifficult,
+      };
 }

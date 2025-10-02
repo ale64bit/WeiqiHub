@@ -98,143 +98,113 @@ abstract class AppLocalizations {
     Locale('es')
   ];
 
-  /// No description provided for @settings.
+  /// No description provided for @foxwqName.
   ///
   /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
+  /// **'Fox Weiqi'**
+  String get foxwqName;
 
-  /// No description provided for @appearance.
+  /// No description provided for @foxwqDesc.
   ///
   /// In en, this message translates to:
-  /// **'Appearance'**
-  String get appearance;
+  /// **'The most popular server in China and the world.'**
+  String get foxwqDesc;
 
-  /// No description provided for @theme.
+  /// No description provided for @tygemName.
   ///
   /// In en, this message translates to:
-  /// **'Theme'**
-  String get theme;
+  /// **'Tygem Baduk'**
+  String get tygemName;
 
-  /// No description provided for @system.
+  /// No description provided for @tygemDesc.
   ///
   /// In en, this message translates to:
-  /// **'System'**
-  String get system;
+  /// **'The most popular server in Korea and one of the most popular in the world.'**
+  String get tygemDesc;
 
-  /// No description provided for @light.
+  /// No description provided for @ogsName.
   ///
   /// In en, this message translates to:
-  /// **'Light'**
-  String get light;
+  /// **'Online Go Server'**
+  String get ogsName;
 
-  /// No description provided for @dark.
+  /// No description provided for @ogsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Dark'**
-  String get dark;
+  /// **'The premier online Go platform with tournaments, AI analysis, and a vibrant community.'**
+  String get ogsDesc;
 
-  /// No description provided for @boardTheme.
+  /// No description provided for @username.
   ///
   /// In en, this message translates to:
-  /// **'Board theme'**
-  String get boardTheme;
+  /// **'Username'**
+  String get username;
 
-  /// No description provided for @showCoordinates.
+  /// No description provided for @password.
   ///
   /// In en, this message translates to:
-  /// **'Show coordinates'**
-  String get showCoordinates;
+  /// **'Password'**
+  String get password;
 
-  /// No description provided for @stoneShadows.
+  /// No description provided for @login.
   ///
   /// In en, this message translates to:
-  /// **'Stone shadows'**
-  String get stoneShadows;
+  /// **'Login'**
+  String get login;
 
-  /// No description provided for @edgeLine.
+  /// No description provided for @logout.
   ///
   /// In en, this message translates to:
-  /// **'Edge line'**
-  String get edgeLine;
+  /// **'Logout'**
+  String get logout;
 
-  /// No description provided for @simple.
+  /// No description provided for @register.
   ///
   /// In en, this message translates to:
-  /// **'Simple'**
-  String get simple;
+  /// **'Register'**
+  String get register;
 
-  /// No description provided for @thick.
+  /// No description provided for @rules.
   ///
   /// In en, this message translates to:
-  /// **'Thick'**
-  String get thick;
+  /// **'Rules'**
+  String get rules;
 
-  /// No description provided for @behaviour.
+  /// No description provided for @rulesChinese.
   ///
   /// In en, this message translates to:
-  /// **'Behaviour'**
-  String get behaviour;
+  /// **'Chinese'**
+  String get rulesChinese;
 
-  /// No description provided for @confirmMoves.
+  /// No description provided for @rulesJapanese.
   ///
   /// In en, this message translates to:
-  /// **'Confirm moves'**
-  String get confirmMoves;
+  /// **'Japanese'**
+  String get rulesJapanese;
 
-  /// No description provided for @confirmMovesDesc.
+  /// No description provided for @rulesKorean.
   ///
   /// In en, this message translates to:
-  /// **'Double-tap to confirm moves on large boards to avoid misclicks'**
-  String get confirmMovesDesc;
+  /// **'Korean'**
+  String get rulesKorean;
 
-  /// No description provided for @confirmBoardSize.
+  /// No description provided for @myGames.
   ///
   /// In en, this message translates to:
-  /// **'Confirm board size'**
-  String get confirmBoardSize;
+  /// **'My games'**
+  String get myGames;
 
-  /// No description provided for @confirmBoardSizeDesc.
+  /// No description provided for @ok.
   ///
   /// In en, this message translates to:
-  /// **'Boards this size or larger require move confirmation'**
-  String get confirmBoardSizeDesc;
+  /// **'OK'**
+  String get ok;
 
-  /// No description provided for @responseDelay.
+  /// No description provided for @about.
   ///
   /// In en, this message translates to:
-  /// **'Response delay'**
-  String get responseDelay;
-
-  /// No description provided for @responseDelayDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Duration of the delay before the response appears while solving tasks'**
-  String get responseDelayDesc;
-
-  /// No description provided for @none.
-  ///
-  /// In en, this message translates to:
-  /// **'None'**
-  String get none;
-
-  /// No description provided for @short.
-  ///
-  /// In en, this message translates to:
-  /// **'Short'**
-  String get short;
-
-  /// No description provided for @medium.
-  ///
-  /// In en, this message translates to:
-  /// **'Medium'**
-  String get medium;
-
-  /// No description provided for @long.
-  ///
-  /// In en, this message translates to:
-  /// **'Long'**
-  String get long;
+  /// **'About'**
+  String get about;
 
   /// No description provided for @alwaysBlackToPlay.
   ///
@@ -248,17 +218,587 @@ abstract class AppLocalizations {
   /// **'Set all tasks as black-to-play to avoid confusion'**
   String get alwaysBlackToPlayDesc;
 
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @behaviour.
+  ///
+  /// In en, this message translates to:
+  /// **'Behaviour'**
+  String get behaviour;
+
+  /// No description provided for @board.
+  ///
+  /// In en, this message translates to:
+  /// **'Board'**
+  String get board;
+
+  /// No description provided for @boardSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Board size'**
+  String get boardSize;
+
+  /// No description provided for @boardTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Board theme'**
+  String get boardTheme;
+
+  /// No description provided for @handicap.
+  ///
+  /// In en, this message translates to:
+  /// **'Handicap'**
+  String get handicap;
+
+  /// No description provided for @komi.
+  ///
+  /// In en, this message translates to:
+  /// **'Komi'**
+  String get komi;
+
+  /// No description provided for @saveSGF.
+  ///
+  /// In en, this message translates to:
+  /// **'Save SGF'**
+  String get saveSGF;
+
+  /// No description provided for @byRank.
+  ///
+  /// In en, this message translates to:
+  /// **'By rank'**
+  String get byRank;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @collections.
+  ///
+  /// In en, this message translates to:
+  /// **'Collections'**
+  String get collections;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @confirmBoardSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm board size'**
+  String get confirmBoardSize;
+
+  /// No description provided for @confirmBoardSizeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Boards this size or larger require move confirmation'**
+  String get confirmBoardSizeDesc;
+
+  /// No description provided for @confirmMoves.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm moves'**
+  String get confirmMoves;
+
+  /// No description provided for @confirmMovesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Double-tap to confirm moves on large boards to avoid misclicks'**
+  String get confirmMovesDesc;
+
+  /// No description provided for @customExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom exam'**
+  String get customExam;
+
+  /// No description provided for @dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get dark;
+
+  /// No description provided for @edgeLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Edge line'**
+  String get edgeLine;
+
+  /// No description provided for @endgameExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Endgame exam'**
+  String get endgameExam;
+
+  /// No description provided for @enterTaskLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the task link'**
+  String get enterTaskLink;
+
+  /// No description provided for @errIncorrectUsernameOrPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect username or password'**
+  String get errIncorrectUsernameOrPassword;
+
+  /// No description provided for @errCannotBeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot be empty'**
+  String get errCannotBeEmpty;
+
+  /// No description provided for @errMustBeInteger.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be an integer'**
+  String get errMustBeInteger;
+
+  /// No description provided for @errMustBeAtLeast.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be at least {n}'**
+  String errMustBeAtLeast(num n);
+
+  /// No description provided for @errMustBeAtMost.
+  ///
+  /// In en, this message translates to:
+  /// **'Must be at most {n}'**
+  String errMustBeAtMost(num n);
+
+  /// No description provided for @find.
+  ///
+  /// In en, this message translates to:
+  /// **'Find'**
+  String get find;
+
+  /// No description provided for @findTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Find task'**
+  String get findTask;
+
+  /// No description provided for @gradingExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Grading exam'**
+  String get gradingExam;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @light.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get light;
+
+  /// No description provided for @long.
+  ///
+  /// In en, this message translates to:
+  /// **'Long'**
+  String get long;
+
+  /// No description provided for @medium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get medium;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// No description provided for @myMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'My mistakes'**
+  String get myMistakes;
+
+  /// No description provided for @nTasksAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No tasks available} =1{1 task available} other{{count} tasks available}}'**
+  String nTasksAvailable(int count);
+
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @numberOfTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of tasks'**
+  String get numberOfTasks;
+
+  /// No description provided for @maxNumberOfMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum number of mistakes'**
+  String get maxNumberOfMistakes;
+
+  /// No description provided for @timePerTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Time per task'**
+  String get timePerTask;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get minutes;
+
+  /// No description provided for @seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Seconds'**
+  String get seconds;
+
+  /// No description provided for @minRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Min rank'**
+  String get minRank;
+
+  /// No description provided for @maxRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Max rank'**
+  String get maxRank;
+
+  /// No description provided for @taskSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Task source'**
+  String get taskSource;
+
+  /// No description provided for @taskSourceFromTaskTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'From task types'**
+  String get taskSourceFromTaskTypes;
+
+  /// No description provided for @taskSourceFromTaskTopic.
+  ///
+  /// In en, this message translates to:
+  /// **'From task topic'**
+  String get taskSourceFromTaskTopic;
+
+  /// No description provided for @taskSourceFromMyMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'From my mistakes'**
+  String get taskSourceFromMyMistakes;
+
+  /// No description provided for @collectStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect statistics'**
+  String get collectStats;
+
+  /// No description provided for @play.
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get play;
+
+  /// No description provided for @rank.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank'**
+  String get rank;
+
+  /// No description provided for @rankedMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranked mode'**
+  String get rankedMode;
+
+  /// No description provided for @responseDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Response delay'**
+  String get responseDelay;
+
+  /// No description provided for @responseDelayDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration of the delay before the response appears while solving tasks'**
+  String get responseDelayDesc;
+
+  /// No description provided for @responseDelayLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Long'**
+  String get responseDelayLong;
+
+  /// No description provided for @responseDelayMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get responseDelayMedium;
+
+  /// No description provided for @responseDelayNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get responseDelayNone;
+
+  /// No description provided for @responseDelayShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Short'**
+  String get responseDelayShort;
+
+  /// No description provided for @result.
+  ///
+  /// In en, this message translates to:
+  /// **'Result'**
+  String get result;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @short.
+  ///
+  /// In en, this message translates to:
+  /// **'Short'**
+  String get short;
+
+  /// No description provided for @showCoordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Show coordinates'**
+  String get showCoordinates;
+
+  /// No description provided for @simple.
+  ///
+  /// In en, this message translates to:
+  /// **'Simple'**
+  String get simple;
+
+  /// No description provided for @sortModeDifficult.
+  ///
+  /// In en, this message translates to:
+  /// **'Difficult'**
+  String get sortModeDifficult;
+
+  /// No description provided for @sortModeRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent'**
+  String get sortModeRecent;
+
   /// No description provided for @sound.
   ///
   /// In en, this message translates to:
   /// **'Sound'**
   String get sound;
 
+  /// No description provided for @start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get start;
+
+  /// No description provided for @continue_.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continue_;
+
+  /// No description provided for @statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// No description provided for @statsDateColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get statsDateColumn;
+
+  /// No description provided for @statsDurationColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get statsDurationColumn;
+
+  /// No description provided for @statsTimeColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get statsTimeColumn;
+
+  /// No description provided for @stoneShadows.
+  ///
+  /// In en, this message translates to:
+  /// **'Stone shadows'**
+  String get stoneShadows;
+
   /// No description provided for @stones.
   ///
   /// In en, this message translates to:
   /// **'Stones'**
   String get stones;
+
+  /// No description provided for @system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get system;
+
+  /// No description provided for @task.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get task;
+
+  /// No description provided for @taskTypeLifeAndDeath.
+  ///
+  /// In en, this message translates to:
+  /// **'Life & death'**
+  String get taskTypeLifeAndDeath;
+
+  /// No description provided for @taskTypeTesuji.
+  ///
+  /// In en, this message translates to:
+  /// **'Tesuji'**
+  String get taskTypeTesuji;
+
+  /// No description provided for @taskTypeCapture.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture stones'**
+  String get taskTypeCapture;
+
+  /// No description provided for @taskTypeCaptureRace.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture race'**
+  String get taskTypeCaptureRace;
+
+  /// No description provided for @taskTypeOpening.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening'**
+  String get taskTypeOpening;
+
+  /// No description provided for @taskTypeJoseki.
+  ///
+  /// In en, this message translates to:
+  /// **'Joseki'**
+  String get taskTypeJoseki;
+
+  /// No description provided for @taskTypeMiddlegame.
+  ///
+  /// In en, this message translates to:
+  /// **'Middlegame'**
+  String get taskTypeMiddlegame;
+
+  /// No description provided for @taskTypeEndgame.
+  ///
+  /// In en, this message translates to:
+  /// **'Endgame'**
+  String get taskTypeEndgame;
+
+  /// No description provided for @taskTypeTheory.
+  ///
+  /// In en, this message translates to:
+  /// **'Theory'**
+  String get taskTypeTheory;
+
+  /// No description provided for @taskTypeAppreciation.
+  ///
+  /// In en, this message translates to:
+  /// **'Appreciation'**
+  String get taskTypeAppreciation;
+
+  /// No description provided for @test.
+  ///
+  /// In en, this message translates to:
+  /// **'Test'**
+  String get test;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @thick.
+  ///
+  /// In en, this message translates to:
+  /// **'Thick'**
+  String get thick;
+
+  /// No description provided for @timeFrenzy.
+  ///
+  /// In en, this message translates to:
+  /// **'Time frenzy'**
+  String get timeFrenzy;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @topic.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic'**
+  String get topic;
+
+  /// No description provided for @topics.
+  ///
+  /// In en, this message translates to:
+  /// **'Topics'**
+  String get topics;
+
+  /// No description provided for @subtopic.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtopic'**
+  String get subtopic;
+
+  /// No description provided for @train.
+  ///
+  /// In en, this message translates to:
+  /// **'Train'**
+  String get train;
+
+  /// No description provided for @type.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get type;
 
   /// No description provided for @ui.
   ///
@@ -272,23 +812,11 @@ abstract class AppLocalizations {
   /// **'Voice'**
   String get voice;
 
-  /// No description provided for @test.
+  /// No description provided for @week.
   ///
   /// In en, this message translates to:
-  /// **'Test'**
-  String get test;
-
-  /// No description provided for @language.
-  ///
-  /// In en, this message translates to:
-  /// **'Language'**
-  String get language;
-
-  /// No description provided for @about.
-  ///
-  /// In en, this message translates to:
-  /// **'About'**
-  String get about;
+  /// **'Week'**
+  String get week;
 }
 
 class _AppLocalizationsDelegate

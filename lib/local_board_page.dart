@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart' show dirname;
 import 'package:share_plus/share_plus.dart';
 import 'package:wqhub/audio/audio_controller.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/save_sgf_form.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/wq/annotated_game_tree.dart';
@@ -45,6 +46,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final borderSize =
         1.5 * (Theme.of(context).textTheme.labelMedium?.fontSize ?? 0);
     final border = context.settings.showCoordinates
@@ -89,7 +91,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Board'),
+        title: Text(loc.board),
         actions: <Widget>[
           Switch(
             thumbIcon: variationThumbIcon,
@@ -238,6 +240,7 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return MenuAnchor(
       childFocusNode: _buttonFocusNode,
       menuChildren: <Widget>[
@@ -260,7 +263,7 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
                 child: Text('${size}×$size'),
               )
           ],
-          child: const Text('Board size'),
+          child: Text(loc.boardSize),
         ),
         SubmenuButton(
           menuChildren: <Widget>[
@@ -280,10 +283,9 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
                 child: Text('$h'),
               )
           ],
-          child: const Text('Handicap'),
+          child: Text(loc.handicap),
         ),
-        MenuItemButton(
-            onPressed: widget.onSaveSgf, child: const Text('Save SGF')),
+        MenuItemButton(onPressed: widget.onSaveSgf, child: Text(loc.saveSGF)),
       ],
       builder: (context, controller, child) {
         return IconButton(

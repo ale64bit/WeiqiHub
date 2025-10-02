@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/game_client.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/login_form.dart';
 import 'package:wqhub/play/server_lobby_page.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
@@ -27,9 +28,10 @@ class _ServerLoginPageState extends State<ServerLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.gameClient.serverInfo.name),
+        title: Text(widget.gameClient.serverInfo.name(loc)),
       ),
       body: FutureBuilder(
         future: _serverReady,
@@ -82,10 +84,11 @@ class _ServerLoginPageState extends State<ServerLoginPage> {
       }
     }, onError: (err) {
       if (context.mounted) {
+        final loc = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
-            content: Text('Invalid username or password'),
+            content: Text(loc.errIncorrectUsernameOrPassword),
             showCloseIcon: true,
           ),
         );

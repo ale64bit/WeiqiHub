@@ -3,6 +3,7 @@ import 'package:animated_tree_view/tree_view/tree_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:wqhub/confirm_dialog.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
@@ -18,9 +19,10 @@ class CollectionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Collections'),
+        title: Text(loc.collections),
       ),
       body: TreeView.simpleTyped<TaskCollection, TreeNode<TaskCollection>>(
         tree: TaskRepository().collectionsTreeNode(),
@@ -46,6 +48,7 @@ class _CollectionTileState
     extends PopAndWindowClassAwareState<_CollectionTile> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     if (isWindowClassCompact) {
       return Slidable(
         key: ValueKey<String>('collection_tile.${widget.collection.id}'),
@@ -55,15 +58,15 @@ class _CollectionTileState
             SlidableAction(
               backgroundColor: Colors.green,
               icon: Icons.flag,
-              label: 'Start',
+              label: loc.start,
               padding: EdgeInsets.all(8),
-              onPressed: (context) => onStart(),
+              onPressed: (context) => onStart(loc),
             ),
             if (StatsDB().collectionActiveSession(widget.collection.id) != null)
               SlidableAction(
                 backgroundColor: Colors.blue,
                 icon: Icons.double_arrow,
-                label: 'Continue',
+                label: loc.continue_,
                 padding: EdgeInsets.all(8),
                 onPressed: (context) => onContinue(),
               ),
@@ -86,14 +89,14 @@ class _CollectionTileState
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ElevatedButton.icon(
-                label: const Text('Start'),
+                label: Text(loc.start),
                 icon: const Icon(Icons.flag),
-                onPressed: onStart,
+                onPressed: () => onStart(loc),
               ),
               if (StatsDB().collectionActiveSession(widget.collection.id) !=
                   null)
                 ElevatedButton.icon(
-                  label: const Text('Continue'),
+                  label: Text(loc.continue_),
                   icon: const Icon(Icons.double_arrow),
                   onPressed: onContinue,
                 ),
@@ -102,12 +105,12 @@ class _CollectionTileState
         ));
   }
 
-  onStart() {
+  onStart(AppLocalizations loc) {
     if (StatsDB().collectionActiveSession(widget.collection.id) != null) {
       showDialog(
           context: context,
           builder: (context) => ConfirmDialog(
-              title: 'Confirm',
+              title: loc.confirm,
               content: 'Are you sure you want to delete previous attempt?',
               onYes: () {
                 Navigator.pop(context);

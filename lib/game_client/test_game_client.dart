@@ -110,9 +110,10 @@ class TestGameClient extends GameClient {
   @override
   ServerInfo get serverInfo => ServerInfo(
         id: 'test',
-        name: 'Test Server',
+        name: (_) => 'Test Server',
         nativeName: 'Test Server',
-        description: 'A dummy server to easily test layout changes, etc.',
+        description: (_) =>
+            'A dummy server to easily test layout changes, etc.',
         homeUrl: 'https://weiqihub.com',
       );
 

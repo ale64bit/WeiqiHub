@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/game_client/user_info.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/automatch_page.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/play/game_page.dart';
@@ -57,6 +58,7 @@ class _ServerLobbyPageState
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final userInfoCard = ValueListenableBuilder(
       valueListenable: widget.gameClient.userInfo,
       builder: (context, info, child) {
@@ -90,7 +92,8 @@ class _ServerLobbyPageState
             leading: Text('${preset.boardSize}×${preset.boardSize}'),
             title: Text(
                 '${preset.timeControl.mainTime.inMinutes}m ${preset.timeControl.periodCount}×${preset.timeControl.timePerPeriod.inSeconds}s'),
-            subtitle: Text('Rules: ${preset.rules.toString()}'),
+            subtitle:
+                Text('${loc.rules}: ${preset.rules.toLocalizedString(loc)}'),
             trailing: (preset.playerCount != null)
                 ? Row(
                     mainAxisSize: MainAxisSize.min,
@@ -117,7 +120,7 @@ class _ServerLobbyPageState
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.gameClient.serverInfo.name),
+        title: Text(widget.gameClient.serverInfo.name(loc)),
         actions: [
           TextButton.icon(
             onPressed: () {
@@ -125,7 +128,7 @@ class _ServerLobbyPageState
               Navigator.popUntil(context, (route) => route.isFirst);
             },
             icon: const Icon(Icons.logout),
-            label: const Text('Logout'),
+            label: Text(loc.logout),
           ),
         ],
       ),
@@ -179,7 +182,7 @@ class _ServerLobbyPageState
               ],
             ),
       floatingActionButton: FloatingActionButton.extended(
-        label: const Text('My games'),
+        label: Text(loc.myGames),
         onPressed: () {
           Navigator.pushNamed(
             context,
