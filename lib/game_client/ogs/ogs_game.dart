@@ -6,7 +6,6 @@ import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
-import 'package:wqhub/game_client/ogs/territory_calculator.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -301,31 +300,6 @@ class OGSGame extends Game {
     );
   }
 
-  /// Decodes OGS stone string format to a list of board coordinates
-  /// Stone strings contain pairs of characters representing SGF coordinates
-  /// e.g. "eafaebac" -> [(4,0), (5,0), (4,1), (0,2)]
-  List<wq.Point> _decodeOgsStones(String stonesString) {
-    final stones = <wq.Point>[];
-
-    // Process pairs of characters
-    for (int i = 0; i < stonesString.length; i += 2) {
-      if (i + 1 >= stonesString.length) break;
-
-      final sgfPoint = stonesString.substring(i, i + 2);
-      final point = wq.parseSgfPoint(sgfPoint);
-
-      // Skip invalid coordinates (passes are encoded as (-1,-1))
-      if (point.$1 >= 0 &&
-          point.$2 >= 0 &&
-          point.$1 < boardSize &&
-          point.$2 < boardSize) {
-        stones.add(point);
-      }
-    }
-
-    return stones;
-  }
-
   void _handleRemovedStonesAccepted(Map<String, dynamic> data) {
     _logger.fine('Received removed stones accepted for game $id');
 
@@ -337,19 +311,9 @@ class OGSGame extends Game {
         return;
       }
 
-      final stonesString = data['stones'] as String? ?? '';
+      _recentlyRemovedStonesString = data['stones'] as String? ?? '';
 
-      // Decode the removed stones
-      final removedStones = _decodeOgsStones(stonesString);
-      _recentlyRemovedStonesString = stonesString;
-      _logger.fine(
-          'Decoded ${removedStones.length} removed stones: $removedStones');
-
-      // Calculate territory and score
-      final countingResult =
-          _calculateTerritoryFromRemovedStones(removedStones);
-
-      // Emit the counting result
+      final countingResult = _calculateCountingResultFromOwnership(data);
       _countingResultController.add(countingResult);
     } catch (error) {
       _logger.warning(
@@ -357,18 +321,47 @@ class OGSGame extends Game {
     }
   }
 
-  /// Calculate territory ownership and score after stone removal
-  CountingResult _calculateTerritoryFromRemovedStones(
-      List<wq.Point> removedStones) {
-    _logger.fine(
-        'Calculating territory from ${removedStones.length} removed stones');
+  /// Calculate territory ownership and score from OGS ownership data
+  CountingResult _calculateCountingResultFromOwnership(
+      Map<String, dynamic> data) {
+    _logger.fine('Calculating territory from OGS ownership data');
 
+    final ownershipData = data['ownership'] as List<dynamic>;
+
+    // Convert OGS ownership format to our ownership format
+    // OGS format: -1 = white, 1 = black, 0 = neutral
+    final ownership = <List<wq.Color?>>[];
+
+    var blackTerritory = 0;
+    var whiteTerritory = 0;
+
+    for (final row in ownershipData) {
+      final ownershipRow = <wq.Color?>[];
+      for (final cell in row as List<dynamic>) {
+        final value = cell as int;
+        switch (value) {
+          case -1:
+            ownershipRow.add(wq.Color.white);
+            whiteTerritory++;
+            break;
+          case 1:
+            ownershipRow.add(wq.Color.black);
+            blackTerritory++;
+            break;
+          case 0:
+          default:
+            ownershipRow.add(null);
+            break;
+        }
+      }
+      ownership.add(ownershipRow);
+    }
+
+    // Calculate captures during the game by reconstructing board state
     final boardState = BoardState(size: boardSize);
-
     var blackCaptures = 0;
     var whiteCaptures = 0;
 
-    // Play all moves to reconstruct the board state
     for (final move in _allMoves) {
       final capturedStones = boardState.move(move);
       if (capturedStones != null) {
@@ -380,17 +373,25 @@ class OGSGame extends Game {
       }
     }
 
+    // Calculate final scores
+    // Black score = black territory + white captures
+    // White score = white territory + black captures + komi
+    final blackScore = blackTerritory + whiteCaptures;
+    final whiteScore = whiteTerritory + blackCaptures + komi;
+
+    final scoreLead = (blackScore - whiteScore).abs();
+    final winner = blackScore > whiteScore ? wq.Color.black : wq.Color.white;
+
     _logger.fine(
-        'Captures during play: Black captured $blackCaptures, White captured $whiteCaptures');
+        'Score from ownership: Black=$blackScore (territory: $blackTerritory, captures: $whiteCaptures), '
+        'White=$whiteScore (territory: $whiteTerritory, captures: $blackCaptures, komi: $komi)');
+    _logger.fine('Winner: $winner, Lead: $scoreLead');
 
-    final result = calculateTerritory(boardState, removedStones, komi,
-        blackCaptures: blackCaptures, whiteCaptures: whiteCaptures);
-
-    _logger.fine(
-        'Score calculation: Black=${result.winner == wq.Color.black ? "wins" : "loses"}, '
-        'Winner=${result.winner}, Lead=${result.scoreLead}');
-
-    return result;
+    return CountingResult(
+      winner: winner,
+      scoreLead: scoreLead,
+      ownership: ownership,
+    );
   }
 
   void dispose() {
