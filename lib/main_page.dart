@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/game_client_list.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/main_page_bottom_navigation_bar.dart';
 import 'package:wqhub/main_page_navigation_rail.dart';
 import 'package:wqhub/play/ai_lobby_page.dart';
 import 'package:wqhub/play/server_card.dart';
+import 'package:wqhub/section_button.dart';
 import 'package:wqhub/settings/settings_button.dart';
 import 'package:wqhub/settings/settings_page.dart';
 import 'package:wqhub/settings/settings_route_arguments.dart';
@@ -119,13 +121,29 @@ class _Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Center(
-      child: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.pushNamed(context, LocalBoardPage.routeName);
-        },
-        icon: Icon(Icons.grid_on),
-        label: const Text('Board'),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 400),
+        child: GridView(
+          padding: EdgeInsets.all(8),
+          shrinkWrap: true,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            mainAxisSpacing: 8.0,
+            crossAxisSpacing: 8.0,
+            crossAxisCount: 1,
+            childAspectRatio: 2.5,
+          ),
+          children: <Widget>[
+            SectionButton(
+              icon: Icons.grid_on,
+              label: loc.board,
+              onPressed: () {
+                Navigator.pushNamed(context, LocalBoardPage.routeName);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -179,6 +197,7 @@ class _Train extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Center(
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: 800),
@@ -192,26 +211,25 @@ class _Train extends StatelessWidget {
             childAspectRatio: 2.5,
           ),
           children: <Widget>[
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.verified,
+              label: loc.gradingExam,
               onPressed: () {
                 Navigator.pushNamed(
                     context, GradingExamSelectionPage.routeName);
               },
-              icon: Icon(Icons.verified),
-              label: const Text('Grading exam'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.verified,
+              label: loc.endgameExam,
               onPressed: () {
                 Navigator.pushNamed(
                     context, EndgameExamSelectionPage.routeName);
               },
-              icon: Icon(Icons.verified),
-              label: const Text('Endgame exam'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.bolt,
+              label: loc.timeFrenzy,
               onPressed: () {
                 Navigator.pushNamed(
                   context,
@@ -224,11 +242,10 @@ class _Train extends StatelessWidget {
                   ),
                 );
               },
-              icon: Icon(Icons.bolt),
-              label: const Text('Time frenzy'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.trending_up,
+              label: loc.rankedMode,
               onPressed: () {
                 Navigator.pushNamed(
                   context,
@@ -242,35 +259,31 @@ class _Train extends StatelessWidget {
                   ),
                 );
               },
-              icon: Icon(Icons.trending_up),
-              label: const Text('Ranked mode'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.book,
+              label: loc.collections,
               onPressed: () {
                 Navigator.pushNamed(context, CollectionsPage.routeName);
               },
-              icon: Icon(Icons.book),
-              label: const Text('Collections'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.category,
+              label: loc.topics,
               onPressed: () {
                 Navigator.pushNamed(context, TagsPage.routeName);
               },
-              icon: Icon(Icons.category),
-              label: const Text('Topics'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.tune,
+              label: loc.customExam,
               onPressed: () {
                 Navigator.pushNamed(context, CustomExamSelectionPage.routeName);
               },
-              icon: Icon(Icons.tune),
-              label: const Text('Custom exam'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.search,
+              label: loc.findTask,
               onPressed: () {
                 showDialog<(Task?, bool)>(
                   context: context,
@@ -311,24 +324,20 @@ class _Train extends StatelessWidget {
                   }
                 });
               },
-              icon: Icon(Icons.search),
-              label: const Text('Find task'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.sentiment_very_dissatisfied,
+              label: loc.myMistakes,
               onPressed: () {
                 Navigator.pushNamed(context, MyMistakesPage.routeName);
               },
-              icon: Icon(Icons.sentiment_very_dissatisfied),
-              label: const Text('My mistakes'),
             ),
-            FloatingActionButton.extended(
-              heroTag: null,
+            SectionButton(
+              icon: Icons.query_stats,
+              label: loc.statistics,
               onPressed: () {
                 Navigator.pushNamed(context, TrainStatsPage.routeName);
               },
-              icon: Icon(Icons.query_stats),
-              label: const Text('Statistics'),
             ),
           ],
         ),
@@ -353,27 +362,28 @@ class _FindTaskDialogState extends State<_FindTaskDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return AlertDialog(
       icon: Icon(Icons.search),
-      title: const Text('Find task'),
+      title: Text(loc.findTask),
       content: TextField(
         controller: controller,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          hintText: 'Enter the task link',
+          hintText: loc.enterTaskLink,
         ),
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context, (null, true)),
-          child: const Text('Cancel'),
+          child: Text(loc.cancel),
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(context,
                 (TaskRepository().readByUri(controller.text.trim()), false));
           },
-          child: const Text('Find'),
+          child: Text(loc.find),
         ),
       ],
     );

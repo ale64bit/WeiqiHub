@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -14,6 +15,7 @@ class RankRangeFormField extends FormField<RankRange> {
           validator: validator,
           autovalidateMode: AutovalidateMode.always,
           builder: (FormFieldState<RankRange> st) {
+            final loc = AppLocalizations.of(st.context)!;
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -25,7 +27,7 @@ class RankRangeFormField extends FormField<RankRange> {
                         initialValue: st.value?.from,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Min rank',
+                          labelText: loc.minRank,
                         ),
                         items: [
                           for (var i = Rank.k15.index; i <= Rank.d7.index; ++i)
@@ -50,7 +52,7 @@ class RankRangeFormField extends FormField<RankRange> {
                         initialValue: st.value?.to,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Max rank',
+                          labelText: loc.maxRank,
                         ),
                         items: [
                           for (var i = (st.value?.from ?? Rank.k15).index;

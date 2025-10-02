@@ -1,12 +1,13 @@
+import 'package:wqhub/l10n/app_localizations.dart';
+
 enum Rules {
   chinese,
   japanese,
   korean;
 
-  @override
-  String toString() => switch (this) {
-        Rules.chinese => 'Chinese',
-        Rules.japanese => 'Japanese',
-        Rules.korean => 'Korean',
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        Rules.chinese => loc.rulesChinese,
+        Rules.japanese => loc.rulesJapanese,
+        Rules.korean => loc.rulesKorean,
       };
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/subtags_page.dart';
 import 'package:wqhub/train/tag_completion_rate.dart';
 import 'package:wqhub/train/task_tag.dart';
@@ -8,9 +9,10 @@ class TagsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Topics'),
+        title: Text(loc.topics),
       ),
       body: Center(
         child: ListView(

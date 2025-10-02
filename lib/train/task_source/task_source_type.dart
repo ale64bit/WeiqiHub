@@ -1,9 +1,13 @@
+import 'package:wqhub/l10n/app_localizations.dart';
+
 enum TaskSourceType {
-  fromTaskTypes(description: 'From task types'),
-  fromTaskTag(description: 'From task topic'),
-  fromMistakes(description: 'From my mistakes');
+  fromTaskTypes,
+  fromTaskTag,
+  fromMistakes;
 
-  final String description;
-
-  const TaskSourceType({required this.description});
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        TaskSourceType.fromTaskTypes => loc.taskSourceFromTaskTypes,
+        TaskSourceType.fromTaskTag => loc.taskSourceFromTaskTopic,
+        TaskSourceType.fromMistakes => loc.taskSourceFromMyMistakes,
+      };
 }

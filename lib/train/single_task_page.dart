@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/task_action_bar.dart';
 import 'package:wqhub/train/task_repository.dart';
@@ -34,6 +35,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
     with TaskSolvingStateMixin {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
     final borderSize =
         1.5 * (Theme.of(context).textTheme.labelMedium?.fontSize ?? 0);
@@ -80,7 +82,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
     );
 
     final taskTitle =
-        '[${widget.task.rank.toString()}] ${widget.task.type.toString()}';
+        '[${widget.task.rank.toString()}] ${widget.task.type.toLocalizedString(loc)}';
 
     if (wideLayout) {
       return Scaffold(

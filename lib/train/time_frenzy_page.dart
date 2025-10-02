@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/time_state.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/time_display.dart';
 import 'package:wqhub/confirm_dialog.dart';
@@ -58,6 +59,7 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
 
     final borderSize =
@@ -105,7 +107,7 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     );
 
     final taskTitle =
-        '[${widget.taskSource.task.rank.toString()}] ${widget.taskSource.task.type.toString()}';
+        '[${widget.taskSource.task.rank.toString()}] ${widget.taskSource.task.type.toLocalizedString(loc)}';
 
     final timeDisplay = TimeDisplay(
       key: _timeDisplayKey,
@@ -156,7 +158,7 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
                 showDialog(
                   context: context,
                   builder: (context) => ConfirmDialog(
-                    title: 'Confirm',
+                    title: loc.confirm,
                     content:
                         'Are you sure that you want to stop the Time Frenzy?',
                     onYes: () =>
@@ -230,6 +232,7 @@ class _SideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final widgetSize = MediaQuery.sizeOf(context);
     final sidebarSize = min(
         widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
@@ -253,7 +256,7 @@ class _SideBar extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) => ConfirmDialog(
-                        title: 'Confirm',
+                        title: loc.confirm,
                         content:
                             'Are you sure that you want to stop the Time Frenzy?',
                         onYes: () => Navigator.popUntil(
@@ -290,8 +293,9 @@ class _ResultDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: const Text('Result'),
+      title: Text(loc.result),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -300,14 +304,14 @@ class _ResultDialog extends StatelessWidget {
             trailing: Text('$solveCount'),
           ),
           ListTile(
-            title: const Text('Max rank'),
+            title: Text(loc.maxRank),
             trailing: Text(maxRank.toString()),
           ),
         ],
       ),
       actions: <Widget>[
         TextButton(
-          child: const Text('OK'),
+          child: Text(loc.ok),
           onPressed: () {
             Navigator.popUntil(context, (route) => route.isFirst);
           },

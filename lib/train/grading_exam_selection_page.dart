@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/exam_rank_card.dart';
@@ -25,10 +26,11 @@ class _GradingExamSelectionPageState
     extends PopAndWindowClassAwareState<GradingExamSelectionPage> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final stats = loadStats();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Grading exam'),
+        title: Text(loc.gradingExam),
       ),
       body: Center(
         child: ConstrainedBox(

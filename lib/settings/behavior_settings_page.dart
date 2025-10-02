@@ -65,7 +65,7 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
                   value: delay,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(delay.name),
+                    child: Text(delay.toLocalizedString(loc)),
                   ),
                 );
               }).toList(),

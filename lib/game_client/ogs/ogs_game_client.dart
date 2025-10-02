@@ -60,10 +60,9 @@ class OGSGameClient extends GameClient {
   @override
   ServerInfo get serverInfo => ServerInfo(
         id: 'ogs',
-        name: 'Online Go Server',
+        name: (loc) => loc.ogsName,
         nativeName: 'OGS',
-        description:
-            'The premier online Go platform with tournaments, AI analysis, and a vibrant community.',
+        description: (loc) => loc.ogsDesc,
         homeUrl: serverUrl,
         registerUrl: Uri.parse('$serverUrl/register'),
       );

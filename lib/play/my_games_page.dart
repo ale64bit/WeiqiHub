@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/game_record_page.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/window_class_aware_state.dart';
@@ -44,8 +45,9 @@ class MyGamesPage extends StatefulWidget {
 class _MyGamesPageState extends State<MyGamesPage> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('My games')),
+      appBar: AppBar(title: Text(loc.myGames)),
       body: FutureBuilder(
         future: widget.gameList,
         builder: (context, snapshot) {
@@ -314,6 +316,7 @@ class _GameLoadingDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return AlertDialog(
       title: Text(title),
       content: Column(
@@ -326,7 +329,7 @@ class _GameLoadingDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () => record.cancel(),
-          child: const Text('Cancel'),
+          child: Text(loc.cancel),
         ),
       ],
     );

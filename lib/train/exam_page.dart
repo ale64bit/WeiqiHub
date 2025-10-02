@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/time_state.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/stats/stats_db.dart';
@@ -79,6 +80,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
     final borderSize =
         1.5 * (Theme.of(context).textTheme.labelMedium?.fontSize ?? 0);
@@ -125,7 +127,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
     );
 
     final taskTitle =
-        '[${_taskSource.task.rank.toString()}] ${_taskSource.task.type.toString()}';
+        '[${_taskSource.task.rank.toString()}] ${_taskSource.task.type.toLocalizedString(loc)}';
 
     final timeDisplay = TimeDisplay(
       key: _timeDisplayKey,
@@ -203,7 +205,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                 showDialog(
                   context: context,
                   builder: (context) => ConfirmDialog(
-                    title: 'Confirm',
+                    title: loc.confirm,
                     content:
                         'Are you sure that you want to stop the ${widget.title}?',
                     onYes: () {
@@ -386,6 +388,7 @@ class _SideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final widgetSize = MediaQuery.sizeOf(context);
     final sidebarSize = min(
         widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
@@ -409,7 +412,7 @@ class _SideBar extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (context) => ConfirmDialog(
-                        title: 'Confirm',
+                        title: loc.confirm,
                         content:
                             'Are you sure that you want to stop the $title?',
                         onYes: onCancelExam,

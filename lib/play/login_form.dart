@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 
 class LoginForm extends StatefulWidget {
   final String? username;
@@ -43,6 +44,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Form(
       key: _formKey,
       child: Column(
@@ -55,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             maxLength: 32,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Username',
+              labelText: loc.username,
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -70,7 +72,7 @@ class _LoginFormState extends State<LoginForm> {
             maxLength: 32,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Password',
+              labelText: loc.password,
             ),
             obscureText: true,
             validator: (value) {
@@ -93,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
                                 _passwordController.text);
                           }
                         },
-                        child: const Text('Login'),
+                        child: Text(loc.login),
                       ),
                     ),
                     if (!Platform.isIOS &&
@@ -102,7 +104,7 @@ class _LoginFormState extends State<LoginForm> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () => _launchUrl(widget.registerUrl!),
-                          child: const Text('Register'),
+                          child: Text(loc.register),
                         ),
                       ),
                   ],
