@@ -25,7 +25,7 @@ void main() {
         ['B', 'A', 'A'],
         [null, 'B', 'A']
       ];
-      
+
       final counts = count2D(grid);
       expect(counts['A'], 4);
       expect(counts['B'], 3);
