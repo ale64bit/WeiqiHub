@@ -326,10 +326,11 @@ class OGSGame extends Game {
       Map<String, dynamic> data) {
     _logger.fine('Calculating territory from OGS ownership data');
 
-    final ogsOwnership = data['ownership'] as List<List<int>>;
+    final ownershipData = data['ownership'] as List<dynamic>;
 
     final ownership = generate2D<wq.Color?>(boardSize, (i, j) {
-      return switch (ogsOwnership[i][j]) {
+      final value = (ownershipData[i] as List<dynamic>)[j] as int;
+      return switch (value) {
         -1 => wq.Color.white,
         1 => wq.Color.black,
         _ => null,
