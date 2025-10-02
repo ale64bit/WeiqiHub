@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 import 'package:wqhub/game_client/user_info.dart';
+import 'package:wqhub/wq/grid.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:logging/logging.dart';
@@ -13,9 +15,17 @@ import 'package:logging/logging.dart';
 class OGSGame extends Game {
   final Logger _logger = Logger('OGSGame');
   final OGSWebSocketManager _webSocketManager;
+  final String _myUserId;
   late final StreamController<wq.Move?> _moveController;
+  late final StreamController<CountingResult> _countingResultController;
   late final Completer<GameResult> _resultCompleter;
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
+
+  // Track all moves played in the game for board state reconstruction
+  final List<wq.Move> _allMoves = [];
+
+  // Track stone removal proposals from our opponent or server
+  String _recentlyRemovedStonesString = '';
 
   OGSGame({
     required super.id,
@@ -27,15 +37,43 @@ class OGSGame extends Game {
     required super.timeControl,
     required super.previousMoves,
     required OGSWebSocketManager webSocketManager,
-  }) : _webSocketManager = webSocketManager {
+    required String myUserId,
+  })  : _webSocketManager = webSocketManager,
+        _myUserId = myUserId {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
+    _countingResultController = StreamController<CountingResult>.broadcast();
     _resultCompleter = Completer<GameResult>();
+
+    _allMoves.addAll(previousMoves);
+
     _setupGame();
   }
 
   @override
-  Future<void> acceptCountingResult(bool agree) => Future.value();
+  Future<void> acceptCountingResult(bool agree) async {
+    try {
+      if (agree) {
+        // end the game with the removed stones our opponent proposed
+        final stonesString = _recentlyRemovedStonesString;
+
+        _webSocketManager.send('game/removed_stones/accept', {
+          'game_id': int.parse(id),
+          'stones': stonesString,
+          'strict_seki_mode': false,
+        });
+      } else {
+        // continue the game
+        _webSocketManager.send('game/removed_stones/reject', {
+          'game_id': int.parse(id),
+        });
+      }
+    } catch (error) {
+      _logger.warning(
+          'Failed to send stone removal ${agree ? "acceptance" : "rejection"} for game $id: $error');
+      rethrow;
+    }
+  }
 
   @override
   Future<void> agreeToAutomaticCounting(bool agree) => Future.value();
@@ -54,7 +92,7 @@ class OGSGame extends Game {
   Stream<bool> countingResultResponses() => Stream.empty();
 
   @override
-  Stream<CountingResult> countingResults() => Stream.empty();
+  Stream<CountingResult> countingResults() => _countingResultController.stream;
 
   @override
   Future<void> forceCounting() => Future.value();
@@ -115,6 +153,12 @@ class OGSGame extends Game {
       return;
     }
 
+    // Check if this is a stone removal acceptance event for our game
+    if (event == 'game/$id/removed_stones_accepted') {
+      _handleRemovedStonesAccepted(message['data'] as Map<String, dynamic>);
+      return;
+    }
+
     // Check if this is a move event for our game
     if (event == 'game/$id/move') {
       final data = message['data'] as Map<String, dynamic>;
@@ -147,6 +191,7 @@ class OGSGame extends Game {
       }
 
       final move = (col: color, p: point);
+      _allMoves.add(move);
       _moveController.add(move);
     }
   }
@@ -255,10 +300,87 @@ class OGSGame extends Game {
     );
   }
 
+  void _handleRemovedStonesAccepted(Map<String, dynamic> data) {
+    _logger.fine('Received removed stones accepted for game $id');
+
+    try {
+      // Check if this is just the server telling us about our own acceptance
+      final playerId = data['player_id'] as int?;
+      if (playerId?.toString() == _myUserId) {
+        _logger.fine('Ignoring our own stone removal acceptance');
+        return;
+      }
+
+      _recentlyRemovedStonesString = data['stones'] as String? ?? '';
+
+      final countingResult = _calculateCountingResultFromOwnership(data);
+      _countingResultController.add(countingResult);
+    } catch (error) {
+      _logger.warning(
+          'Error handling removed stones accepted for game $id: $error');
+    }
+  }
+
+  /// Calculate territory ownership and score from OGS ownership data
+  CountingResult _calculateCountingResultFromOwnership(
+      Map<String, dynamic> data) {
+    _logger.fine('Calculating territory from OGS ownership data');
+
+    final ownershipData = data['ownership'] as List<dynamic>;
+
+    final ownership = generate2D<wq.Color?>(boardSize, (i, j) {
+      final value = (ownershipData[i] as List<dynamic>)[j] as int;
+      return switch (value) {
+        -1 => wq.Color.white,
+        1 => wq.Color.black,
+        _ => null,
+      };
+    });
+
+    final territoryCounts = count2D(ownership);
+    final blackTerritory = territoryCounts[wq.Color.black] ?? 0;
+    final whiteTerritory = territoryCounts[wq.Color.white] ?? 0;
+
+    // Calculate captures during the game by reconstructing board state
+    final boardState = BoardState(size: boardSize);
+    var blackCaptures = 0;
+    var whiteCaptures = 0;
+
+    for (final move in _allMoves) {
+      final capturedStones = boardState.move(move);
+      if (capturedStones != null) {
+        switch (move.col) {
+          case wq.Color.black:
+            blackCaptures += capturedStones.length;
+          case wq.Color.white:
+            whiteCaptures += capturedStones.length;
+        }
+      }
+    }
+
+    final blackScore = blackTerritory + whiteCaptures;
+    final whiteScore = whiteTerritory + blackCaptures + komi;
+
+    final scoreLead = (blackScore - whiteScore).abs();
+    final winner = blackScore > whiteScore ? wq.Color.black : wq.Color.white;
+
+    _logger.fine(
+        'Score from ownership: Black=$blackScore (territory: $blackTerritory, captures: $whiteCaptures), '
+        'White=$whiteScore (territory: $whiteTerritory, captures: $blackCaptures, komi: $komi)');
+    _logger.fine('Winner: $winner, Lead: $scoreLead');
+
+    return CountingResult(
+      winner: winner,
+      scoreLead: scoreLead,
+      ownership: ownership,
+    );
+  }
+
   void dispose() {
     _messageSubscription?.cancel();
     _webSocketManager.leaveGame(id);
     _moveController.close();
+    _countingResultController.close();
 
     // Complete the result future if not already completed
     if (!_resultCompleter.isCompleted) {
