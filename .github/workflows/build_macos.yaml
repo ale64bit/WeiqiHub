@@ -12,6 +12,8 @@ jobs:
         with:
           token: ${{ secrets.WQHUB_TOKEN }}
           submodules: 'recursive'
+      - name: Update submodules
+        run: git submodule update --init --remote --recursive
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:

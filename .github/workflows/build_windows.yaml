@@ -12,6 +12,8 @@ jobs:
         with:
           token: ${{ secrets.WQHUB_TOKEN }}
           submodules: 'recursive'
+      - name: Update submodules
+        run: git submodule update --init --remote --recursive
       - name: Find VC Redist Path
         id: find_vcredist
         shell: pwsh
