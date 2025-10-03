@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 
 class ConfirmDialog extends StatelessWidget {
   final String title;
@@ -15,17 +16,18 @@ class ConfirmDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return AlertDialog(
       title: Text(title),
       content: Text(content),
       actions: <Widget>[
         TextButton(
           onPressed: onNo,
-          child: const Text('No'),
+          child: Text(loc.no),
         ),
         TextButton(
           onPressed: onYes,
-          child: const Text('Yes'),
+          child: Text(loc.yes),
         ),
       ],
     );

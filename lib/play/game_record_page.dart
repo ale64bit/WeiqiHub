@@ -5,6 +5,7 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/game_navigation_bar.dart';
 import 'package:wqhub/play/player_card.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
@@ -49,6 +50,7 @@ class _GameRecordPageState extends State<GameRecordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
 
     // Board
@@ -174,7 +176,7 @@ class _GameRecordPageState extends State<GameRecordPage> {
       floatingActionButton: wideLayout
           ? FloatingActionButton.large(
               onPressed: onLeaveClicked,
-              tooltip: 'Leave game',
+              tooltip: loc.leave,
               child: Icon(Icons.logout),
             )
           : null,
@@ -209,18 +211,19 @@ class _GameInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Card(
         child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Game Record',
+          loc.gameRecord,
           textAlign: TextAlign.center,
           style: TextTheme.of(context).titleLarge,
         ),
         Text(
-          'Result: ${summary.result.result}',
+          '${loc.result}: ${summary.result.result}',
           textAlign: TextAlign.center,
         ),
         // if (game.handicap > 1)

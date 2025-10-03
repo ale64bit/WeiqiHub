@@ -1,16 +1,16 @@
 import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 enum VariationStatus {
   correct,
   wrong;
 
-  @override
-  String toString() => switch (this) {
-        VariationStatus.correct => 'Correct',
-        VariationStatus.wrong => 'Wrong',
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        VariationStatus.correct => loc.taskCorrect,
+        VariationStatus.wrong => loc.taskWrong,
       };
 }
 

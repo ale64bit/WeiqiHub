@@ -89,9 +89,9 @@ class _ServerLobbyPageState
       children: <Widget>[
         for (final preset in widget.gameClient.automatchPresets)
           ListTile(
-            leading: Text('${preset.boardSize}×${preset.boardSize}'),
+            leading: Text(loc.nxnBoardSize(preset.boardSize)),
             title: Text(
-                '${preset.timeControl.mainTime.inMinutes}m ${preset.timeControl.periodCount}×${preset.timeControl.timePerPeriod.inSeconds}s'),
+                '${loc.mMinutes(preset.timeControl.mainTime.inMinutes)} ${loc.pxsByoyomi(preset.timeControl.periodCount, preset.timeControl.timePerPeriod.inSeconds)}'),
             subtitle:
                 Text('${loc.rules}: ${preset.rules.toLocalizedString(loc)}'),
             trailing: (preset.playerCount != null)
@@ -139,7 +139,7 @@ class _ServerLobbyPageState
                 streakCard,
                 promotionRequirementCard,
                 Divider(),
-                const Text('Auto-Match'),
+                Text(loc.autoMatch),
                 Expanded(child: automatchPresetList),
               ],
             )
@@ -158,11 +158,11 @@ class _ServerLobbyPageState
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Text('User info'),
+                      Text(loc.userInfo),
                       userInfoCard,
-                      const Text('Recent record'),
+                      Text(loc.recentRecord),
                       streakCard,
-                      const Text('Promotion requirements'),
+                      Text(loc.promotionRequirements),
                       promotionRequirementCard,
                     ],
                   ),
@@ -172,7 +172,7 @@ class _ServerLobbyPageState
                   child: Column(
                     children: [
                       Text(
-                        'Auto-Match',
+                        loc.autoMatch,
                         style: TextTheme.of(context).titleLarge,
                       ),
                       Expanded(child: automatchPresetList),
