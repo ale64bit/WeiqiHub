@@ -111,7 +111,7 @@ class _CollectionTileState
           context: context,
           builder: (context) => ConfirmDialog(
               title: loc.confirm,
-              content: 'Are you sure you want to delete previous attempt?',
+              content: loc.msgConfirmDeleteCollectionProgress,
               onYes: () {
                 Navigator.pop(context);
                 StatsDB().resetCollectionActiveSession(widget.collection.id);
@@ -147,6 +147,8 @@ class _CollectionTileState
     );
   }
 
-  String collectionSubtitle() =>
-      '${widget.collection.taskCount} tasks\nBest result: ${StatsDB().collectionStat(widget.collection.id) ?? '-'}';
+  String collectionSubtitle() {
+    final loc = AppLocalizations.of(context)!;
+    return '${loc.nTasks(widget.collection.taskCount)}\n${loc.bestResult}: ${StatsDB().collectionStat(widget.collection.id) ?? '-'}';
+  }
 }

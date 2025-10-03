@@ -159,7 +159,7 @@ class _CustomExamSelectionPageState
                                   .where((t) => t.subtags().isNotEmpty))
                                 DropdownMenuItem(
                                   value: tag,
-                                  child: Text(tag.toString()),
+                                  child: Text(tag.toLocalizedString(loc)),
                                 )
                             ],
                             onChanged: (value) {
@@ -183,7 +183,7 @@ class _CustomExamSelectionPageState
                                   .where((t) => t.ranks().isNotEmpty))
                                 DropdownMenuItem(
                                   value: tag,
-                                  child: Text(tag.toString()),
+                                  child: Text(tag.toLocalizedString(loc)),
                                 )
                             ],
                             onChanged: (value) {

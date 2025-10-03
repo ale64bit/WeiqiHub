@@ -4,9 +4,9 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for English (`en`).
-class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([String locale = 'en']) : super(locale);
+/// The translations for Chinese (`zh`).
+class AppLocalizationsZh extends AppLocalizations {
+  AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
   String get about => 'About';
@@ -452,711 +452,691 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskSourceFromTaskTypes => 'From task types';
 
   @override
-  String get taskTag_afterJoseki => 'After joseki';
+  String get taskTag_afterJoseki => '定式之后';
 
   @override
-  String get taskTag_aiOpening => 'AI opening';
+  String get taskTag_aiOpening => 'AI布局';
 
   @override
-  String get taskTag_aiVariations => 'AI variations';
+  String get taskTag_aiVariations => 'AI变化';
 
   @override
-  String get taskTag_attack => 'Attack';
+  String get taskTag_attack => '攻击';
 
   @override
-  String get taskTag_attackAndDefenseInKo => 'Attack and defense in a ko';
+  String get taskTag_attackAndDefenseInKo => '劫的攻防';
 
   @override
-  String get taskTag_attackAndDefenseOfCuts => 'Attack and defense of cuts';
+  String get taskTag_attackAndDefenseOfCuts => '切断的处理';
 
   @override
-  String get taskTag_attackAndDefenseOfInvadingStones =>
-      'Attack and defense of invading stones';
+  String get taskTag_attackAndDefenseOfInvadingStones => '征子的攻防';
 
   @override
-  String get taskTag_avoidKo => 'Avoid ko';
+  String get taskTag_avoidKo => '避劫';
 
   @override
-  String get taskTag_avoidMakingDeadShape => 'Avoid making dead shape';
+  String get taskTag_avoidMakingDeadShape => '避免被聚杀';
 
   @override
-  String get taskTag_avoidTrap => 'Avoid trap';
+  String get taskTag_avoidTrap => '避开陷阱';
 
   @override
-  String get taskTag_basicEndgame => 'Endgame: basic';
+  String get taskTag_basicEndgame => '基础官子';
 
   @override
-  String get taskTag_basicLifeAndDeath => 'Life & death: basic';
+  String get taskTag_basicLifeAndDeath => '基本死活';
 
   @override
-  String get taskTag_basicMoves => 'Basic moves';
+  String get taskTag_basicMoves => '基本行棋';
 
   @override
-  String get taskTag_basicTesuji => 'Tesuji';
+  String get taskTag_basicTesuji => '基本手筋';
 
   @override
-  String get taskTag_beginner => 'Beginner';
+  String get taskTag_beginner => '启蒙';
 
   @override
-  String get taskTag_bend => 'Bend';
+  String get taskTag_bend => '弯';
 
   @override
-  String get taskTag_bentFour => 'Bent four';
+  String get taskTag_bentFour => '弯四';
 
   @override
-  String get taskTag_bentFourInTheCorner => 'Bent four in the corner';
+  String get taskTag_bentFourInTheCorner => '盘角曲四';
 
   @override
-  String get taskTag_bentThree => 'Bent three';
+  String get taskTag_bentThree => '弯三';
 
   @override
-  String get taskTag_bigEyeLiberties => 'Big eye\'s liberties';
+  String get taskTag_bigEyeLiberties => '大眼的气';
 
   @override
-  String get taskTag_bigEyeVsSmallEye => 'Big eye vs small eye';
+  String get taskTag_bigEyeVsSmallEye => '大眼杀小眼';
 
   @override
-  String get taskTag_bigPoints => 'Big points';
+  String get taskTag_bigPoints => '大场';
 
   @override
-  String get taskTag_blindSpot => 'Blind spot';
+  String get taskTag_blindSpot => '盲点';
 
   @override
-  String get taskTag_breakEye => 'Break eye';
+  String get taskTag_breakEye => '破眼';
 
   @override
-  String get taskTag_breakEyeInOneStep => 'Break eye in one step';
+  String get taskTag_breakEyeInOneStep => '一步破眼';
 
   @override
-  String get taskTag_breakEyeInSente => 'Break eye in sente';
+  String get taskTag_breakEyeInSente => '先手破眼';
 
   @override
-  String get taskTag_breakOut => 'Break out';
+  String get taskTag_breakOut => '突围';
 
   @override
-  String get taskTag_breakPoints => 'Break points';
+  String get taskTag_breakPoints => '破目';
 
   @override
-  String get taskTag_breakShape => 'Break shape';
+  String get taskTag_breakShape => '破坏棋形';
 
   @override
-  String get taskTag_bridgeUnder => 'Bridge under';
+  String get taskTag_bridgeUnder => '渡';
 
   @override
-  String get taskTag_brilliantSequence => 'Brilliant sequence';
+  String get taskTag_brilliantSequence => '一一妙手';
 
   @override
-  String get taskTag_bulkyFive => 'Bulky five';
+  String get taskTag_bulkyFive => '刀把五';
 
   @override
-  String get taskTag_bump => 'Bump';
+  String get taskTag_bump => '顶';
 
   @override
-  String get taskTag_captureBySnapback => 'Capture by snapback';
+  String get taskTag_captureBySnapback => '扑吃';
 
   @override
-  String get taskTag_captureInLadder => 'Capture in ladder';
+  String get taskTag_captureInLadder => '征吃';
 
   @override
-  String get taskTag_captureInOneMove => 'Capture in one move';
+  String get taskTag_captureInOneMove => '一步吃子';
 
   @override
-  String get taskTag_captureOnTheSide => 'Capture on the side';
+  String get taskTag_captureOnTheSide => '边线吃子';
 
   @override
-  String get taskTag_captureToLive => 'Capture to live';
+  String get taskTag_captureToLive => '吃子做活';
 
   @override
-  String get taskTag_captureTwoRecaptureOne => 'Capture two, recapture one';
+  String get taskTag_captureTwoRecaptureOne => '打二还一';
 
   @override
-  String get taskTag_capturingRace => 'Capturing race';
+  String get taskTag_capturingRace => '对杀';
 
   @override
-  String get taskTag_capturingTechniques => 'Capturing techniques';
+  String get taskTag_capturingTechniques => '吃子技巧';
 
   @override
-  String get taskTag_carpentersSquareAndSimilar =>
-      'Carpenter\'s square and similar';
+  String get taskTag_carpentersSquareAndSimilar => '金柜角及类似型';
 
   @override
-  String get taskTag_chooseTheFight => 'Choose the fight';
+  String get taskTag_chooseTheFight => '战斗的选择';
 
   @override
-  String get taskTag_clamp => 'Clamp';
+  String get taskTag_clamp => '夹';
 
   @override
-  String get taskTag_clampCapture => 'Clamp capture';
+  String get taskTag_clampCapture => '夹吃';
 
   @override
-  String get taskTag_closeInCapture => 'Closing-in capture';
+  String get taskTag_closeInCapture => '门吃';
 
   @override
-  String get taskTag_combination => 'Combination';
+  String get taskTag_combination => '组合手段';
 
   @override
-  String get taskTag_commonLifeAndDeath => 'Life & death: common shapes';
+  String get taskTag_commonLifeAndDeath => '常型死活';
 
   @override
-  String get taskTag_compareSize => 'Compare size';
+  String get taskTag_compareSize => '比较大小';
 
   @override
-  String get taskTag_compareValue => 'Compare value';
+  String get taskTag_compareValue => '价值比较';
 
   @override
-  String get taskTag_completeKoToSecureEndgameAdvantage =>
-      'Complete ko to secure endgame advantage';
+  String get taskTag_completeKoToSecureEndgameAdvantage => '粘劫收后';
 
   @override
-  String get taskTag_compositeProblems => 'Composite tasks';
+  String get taskTag_compositeProblems => '复合问题';
 
   @override
-  String get taskTag_comprehensiveTasks => 'Comprehensive tasks';
+  String get taskTag_comprehensiveTasks => '综合';
 
   @override
-  String get taskTag_connect => 'Connect';
+  String get taskTag_connect => '连络';
 
   @override
-  String get taskTag_connectAndDie => 'Connect and die';
+  String get taskTag_connectAndDie => '接不归';
 
   @override
-  String get taskTag_connectInOneMove => 'Connect in one move';
+  String get taskTag_connectInOneMove => '一步连接';
 
   @override
-  String get taskTag_contactFightTesuji => 'Contact fight tesuji';
+  String get taskTag_contactFightTesuji => '接触战的手筋';
 
   @override
-  String get taskTag_contactPlay => 'Contact play';
+  String get taskTag_contactPlay => '靠';
 
   @override
-  String get taskTag_corner => 'Corner';
+  String get taskTag_corner => '角部常型';
 
   @override
-  String get taskTag_cornerIsGoldSideIsSilverCenterIsGrass =>
-      'Corner is gold, side is silver, center is grass';
+  String get taskTag_cornerIsGoldSideIsSilverCenterIsGrass => '金角银边草肚皮';
 
   @override
-  String get taskTag_counter => 'Counter';
+  String get taskTag_counter => '应对';
 
   @override
-  String get taskTag_counterAttack => 'Counter-attack';
+  String get taskTag_counterAttack => '反击';
 
   @override
-  String get taskTag_cranesNest => 'Crane\'s nest';
+  String get taskTag_cranesNest => '乌龟不出头';
 
   @override
-  String get taskTag_crawl => 'Crawl';
+  String get taskTag_crawl => '爬';
 
   @override
-  String get taskTag_createShortageOfLiberties =>
-      'Create shortage of liberties';
+  String get taskTag_createShortageOfLiberties => '导致气紧';
 
   @override
-  String get taskTag_crossedFive => 'Crossed five';
+  String get taskTag_crossedFive => '梅花五';
 
   @override
-  String get taskTag_cut => 'Cut';
+  String get taskTag_cut => '断';
 
   @override
-  String get taskTag_cut2 => 'Cut';
+  String get taskTag_cut2 => '分断';
 
   @override
-  String get taskTag_cutAcross => 'Cut across';
+  String get taskTag_cutAcross => '跨';
 
   @override
-  String get taskTag_defendFromInvasion => 'Defend from invasion';
+  String get taskTag_defendFromInvasion => '防守入侵';
 
   @override
-  String get taskTag_defendPoints => 'Defend points';
+  String get taskTag_defendPoints => '守目';
 
   @override
-  String get taskTag_defendWeakPoint => 'Defend weak point';
+  String get taskTag_defendWeakPoint => '防范弱点';
 
   @override
-  String get taskTag_descent => 'Descent';
+  String get taskTag_descent => '立';
 
   @override
-  String get taskTag_diagonal => 'Diagonal';
+  String get taskTag_diagonal => '尖';
 
   @override
-  String get taskTag_directionOfCapture => 'Direction of capture';
+  String get taskTag_directionOfCapture => '吃子方向';
 
   @override
-  String get taskTag_directionOfEscape => 'Direction of escape';
+  String get taskTag_directionOfEscape => '逃子方向';
 
   @override
-  String get taskTag_directionOfPlay => 'Direction of play';
+  String get taskTag_directionOfPlay => '方向选择';
 
   @override
-  String get taskTag_doNotUnderestimateOpponent =>
-      'Do not underestimate opponent';
+  String get taskTag_doNotUnderestimateOpponent => '不要忽略对方的抵抗';
 
   @override
-  String get taskTag_doubleAtari => 'Double atari';
+  String get taskTag_doubleAtari => '双吃';
 
   @override
-  String get taskTag_doubleCapture => 'Double capture';
+  String get taskTag_doubleCapture => '双提';
 
   @override
-  String get taskTag_doubleKo => 'Double ko';
+  String get taskTag_doubleKo => '连环劫';
 
   @override
-  String get taskTag_doubleSenteEndgame => 'Double sente endgame';
+  String get taskTag_doubleSenteEndgame => '双先官子';
 
   @override
-  String get taskTag_doubleSnapback => 'Double snapback';
+  String get taskTag_doubleSnapback => '双倒扑';
 
   @override
-  String get taskTag_endgame => 'Endgame: general';
+  String get taskTag_endgame => '官子';
 
   @override
-  String get taskTag_endgameFundamentals => 'Endgame fundamentals';
+  String get taskTag_endgameFundamentals => '基本收官';
 
   @override
-  String get taskTag_endgameIn5x5 => 'Endgame on 5x5';
+  String get taskTag_endgameIn5x5 => '5路官子';
 
   @override
-  String get taskTag_endgameOn4x4 => 'Endgame on 4x4';
+  String get taskTag_endgameOn4x4 => '4路官子';
 
   @override
-  String get taskTag_endgameTesuji => 'Endgame tesuji';
+  String get taskTag_endgameTesuji => '官子手筋';
 
   @override
-  String get taskTag_engulfingAtari => 'Engulfing atari';
+  String get taskTag_engulfingAtari => '抱吃';
 
   @override
-  String get taskTag_escape => 'Escape';
+  String get taskTag_escape => '逃子';
 
   @override
-  String get taskTag_escapeInOneMove => 'Escape in one move';
+  String get taskTag_escapeInOneMove => '一步逃子';
 
   @override
-  String get taskTag_exploitShapeWeakness => 'Exploit shape weakness';
+  String get taskTag_exploitShapeWeakness => '利用棋形弱点';
 
   @override
-  String get taskTag_eyeVsNoEye => 'Eye vs no-eye';
+  String get taskTag_eyeVsNoEye => '有眼杀无眼';
 
   @override
-  String get taskTag_fillNeutralPoints => 'Fill neutral points';
+  String get taskTag_fillNeutralPoints => '目与单官';
 
   @override
-  String get taskTag_findTheRoot => 'Find the root';
+  String get taskTag_findTheRoot => '搜根';
 
   @override
-  String get taskTag_firstLineBrilliantMove => 'First line brilliant move';
+  String get taskTag_firstLineBrilliantMove => '一路妙手';
 
   @override
-  String get taskTag_flowerSix => 'Flower six';
+  String get taskTag_flowerSix => '葡萄六';
 
   @override
-  String get taskTag_goldenChickenStandingOnOneLeg =>
-      'Golden rooster standing on one leg';
+  String get taskTag_goldenChickenStandingOnOneLeg => '金鸡独立';
 
   @override
-  String get taskTag_groupLiberties => 'Group liberties';
+  String get taskTag_groupLiberties => '棋子的气';
 
   @override
-  String get taskTag_groupsBase => 'Group\'s base';
+  String get taskTag_groupsBase => '棋子的根据地';
 
   @override
-  String get taskTag_hane => 'Hane';
+  String get taskTag_hane => '扳';
 
   @override
-  String get taskTag_increaseEyeSpace => 'Increase eye space';
+  String get taskTag_increaseEyeSpace => '扩大眼位';
 
   @override
-  String get taskTag_increaseLiberties => 'Increase liberties';
+  String get taskTag_increaseLiberties => '延气';
 
   @override
-  String get taskTag_indirectAttack => 'Indirect attack';
+  String get taskTag_indirectAttack => '间接进攻';
 
   @override
-  String get taskTag_influenceKeyPoints => 'Influence key points';
+  String get taskTag_influenceKeyPoints => '势力消长的要点';
 
   @override
-  String get taskTag_insideKill => 'Inside kill';
+  String get taskTag_insideKill => '聚杀';
 
   @override
-  String get taskTag_insideMoves => 'Inside moves';
+  String get taskTag_insideMoves => '内部动手';
 
   @override
-  String get taskTag_interestingTasks => 'Interesting tasks';
+  String get taskTag_interestingTasks => '趣题';
 
   @override
-  String get taskTag_internalLibertyShortage => 'Internal liberty shortage';
+  String get taskTag_internalLibertyShortage => '胀牯牛';
 
   @override
-  String get taskTag_invadingTechnique => 'Invading technique';
+  String get taskTag_invadingTechnique => '入侵的手段';
 
   @override
-  String get taskTag_invasion => 'Invasion';
+  String get taskTag_invasion => '打入';
 
   @override
-  String get taskTag_jGroupAndSimilar => 'J-group and similar';
+  String get taskTag_jGroupAndSimilar => '大猪嘴及类似型';
 
   @override
-  String get taskTag_josekiFundamentals => 'Joseki fundamentals';
+  String get taskTag_josekiFundamentals => '基本定式';
 
   @override
-  String get taskTag_jump => 'Jump';
+  String get taskTag_jump => '跳';
 
   @override
-  String get taskTag_keepSente => 'Keep sente';
+  String get taskTag_keepSente => '保留先手';
 
   @override
-  String get taskTag_killAfterCapture => 'Kill after capture';
+  String get taskTag_killAfterCapture => '提子后的杀着';
 
   @override
-  String get taskTag_killByEyePointPlacement => 'Kill by eye point placement';
+  String get taskTag_killByEyePointPlacement => '点杀';
 
   @override
-  String get taskTag_knightsMove => 'Knight\'s move';
+  String get taskTag_knightsMove => '飞';
 
   @override
-  String get taskTag_ko => 'Ko';
+  String get taskTag_ko => '打劫';
 
   @override
-  String get taskTag_kosumiWedge => 'Kosumi wedge';
+  String get taskTag_kosumiWedge => '挤';
 
   @override
-  String get taskTag_largeKnightsMove => 'Large knight move';
+  String get taskTag_largeKnightsMove => '大飞';
 
   @override
-  String get taskTag_largeMoyoFight => 'Large moyo fight';
+  String get taskTag_largeMoyoFight => '大模样作战';
 
   @override
-  String get taskTag_lifeAndDeath => 'Life & death: general';
+  String get taskTag_lifeAndDeath => '死活';
 
   @override
-  String get taskTag_lifeAndDeathOn4x4 => 'Life and death on 4x4';
+  String get taskTag_lifeAndDeathOn4x4 => '4路死活';
 
   @override
-  String get taskTag_lookForLeverage => 'Look for leverage';
+  String get taskTag_lookForLeverage => '寻求借用';
 
   @override
-  String get taskTag_looseLadder => 'Loose ladder';
+  String get taskTag_looseLadder => '宽征';
 
   @override
-  String get taskTag_lovesickCut => 'Lovesick cut';
+  String get taskTag_lovesickCut => '相思断';
 
   @override
-  String get taskTag_makeEye => 'Make eye';
+  String get taskTag_makeEye => '做眼';
 
   @override
-  String get taskTag_makeEyeInOneStep => 'Make eye in one step';
+  String get taskTag_makeEyeInOneStep => '一步做眼';
 
   @override
-  String get taskTag_makeEyeInSente => 'Make eye in sente';
+  String get taskTag_makeEyeInSente => '先手做眼';
 
   @override
-  String get taskTag_makeKo => 'Make ko';
+  String get taskTag_makeKo => '做劫';
 
   @override
-  String get taskTag_makeShape => 'Make shape';
+  String get taskTag_makeShape => '定形技巧';
 
   @override
-  String get taskTag_middlegame => 'Middlegame';
+  String get taskTag_middlegame => '中盘';
 
   @override
-  String get taskTag_monkeyClimbingMountain => 'Monkey climbing the mountain';
+  String get taskTag_monkeyClimbingMountain => '猴子翻山';
 
   @override
-  String get taskTag_mouseStealingOil => 'Mouse stealing oil';
+  String get taskTag_mouseStealingOil => '老鼠偷油';
 
   @override
-  String get taskTag_moveOut => 'Move out';
+  String get taskTag_moveOut => '出头';
 
   @override
-  String get taskTag_moveTowardsEmptySpace => 'Move towards empty space';
+  String get taskTag_moveTowardsEmptySpace => '棋往宽处走';
 
   @override
-  String get taskTag_multipleBrilliantMoves => 'Multiple brilliant moves';
+  String get taskTag_multipleBrilliantMoves => '一二妙手';
 
   @override
-  String get taskTag_net => 'Net';
+  String get taskTag_net => '枷';
 
   @override
-  String get taskTag_netCapture => 'Net capture';
+  String get taskTag_netCapture => '枷吃';
 
   @override
-  String get taskTag_observeSubtleDifference => 'Observe subtle difference';
+  String get taskTag_observeSubtleDifference => '注意细微差别';
 
   @override
-  String get taskTag_occupyEncloseAndApproachCorner =>
-      'Occupy, enclose and approach corners';
+  String get taskTag_occupyEncloseAndApproachCorner => '占角、守角和挂角';
 
   @override
-  String get taskTag_oneStoneTwoPurposes => 'One stone, two purposes';
+  String get taskTag_oneStoneTwoPurposes => '一子两用';
 
   @override
-  String get taskTag_opening => 'Opening';
+  String get taskTag_opening => '布局';
 
   @override
-  String get taskTag_openingChoice => 'Opening choice';
+  String get taskTag_openingChoice => '定式选择';
 
   @override
-  String get taskTag_openingFundamentals => 'Opening fundamentals';
+  String get taskTag_openingFundamentals => '布局基本下法';
 
   @override
-  String get taskTag_orderOfEndgameMoves => 'Order of endgame moves';
+  String get taskTag_orderOfEndgameMoves => '收束次序';
 
   @override
-  String get taskTag_orderOfMoves => 'Order of moves';
+  String get taskTag_orderOfMoves => '行棋次序';
 
   @override
-  String get taskTag_orderOfMovesInKo => 'Order of moves in a ko';
+  String get taskTag_orderOfMovesInKo => '区分劫的先后手';
 
   @override
-  String get taskTag_orioleCapturesButterfly => 'Oriole captures the butterfly';
+  String get taskTag_orioleCapturesButterfly => '黄莺扑蝶';
 
   @override
-  String get taskTag_pincer => 'Pincer';
+  String get taskTag_pincer => '夹击';
 
   @override
-  String get taskTag_placement => 'Placement';
+  String get taskTag_placement => '点';
 
   @override
-  String get taskTag_plunderingTechnique => 'Plundering technique';
+  String get taskTag_plunderingTechnique => '搜刮的手段';
 
   @override
-  String get taskTag_preventBambooJoint => 'Prevent the bamboo joint';
+  String get taskTag_preventBambooJoint => '靠单';
 
   @override
-  String get taskTag_preventBridgingUnder => 'Prevent bridging under';
+  String get taskTag_preventBridgingUnder => '阻渡';
 
   @override
-  String get taskTag_preventOpponentFromApproaching =>
-      'Prevent opponent from approaching';
+  String get taskTag_preventOpponentFromApproaching => '使对方不入';
 
   @override
-  String get taskTag_probe => 'Probe';
+  String get taskTag_probe => '试探应手';
 
   @override
-  String get taskTag_profitInSente => 'Profit in sente';
+  String get taskTag_profitInSente => '先手获利';
 
   @override
-  String get taskTag_profitUsingLifeAndDeath => 'Profit using life and death';
+  String get taskTag_profitUsingLifeAndDeath => '利用死活问题获利';
 
   @override
-  String get taskTag_push => 'Push';
+  String get taskTag_push => '冲';
 
   @override
-  String get taskTag_pyramidFour => 'Pyramid four';
+  String get taskTag_pyramidFour => '丁四';
 
   @override
-  String get taskTag_realEyeAndFalseEye => 'Real eye vs false eye';
+  String get taskTag_realEyeAndFalseEye => '真眼和假眼';
 
   @override
-  String get taskTag_rectangularSix => 'Rectangular six';
+  String get taskTag_rectangularSix => '板六';
 
   @override
-  String get taskTag_reduceEyeSpace => 'Reduce eye space';
+  String get taskTag_reduceEyeSpace => '缩小眼位';
 
   @override
-  String get taskTag_reduceLiberties => 'Reduce liberties';
+  String get taskTag_reduceLiberties => '紧气';
 
   @override
-  String get taskTag_reduction => 'Reduction';
+  String get taskTag_reduction => '侵消';
 
   @override
-  String get taskTag_runWeakGroup => 'Run weak group';
+  String get taskTag_runWeakGroup => '出动残子';
 
   @override
-  String get taskTag_sabakiAndUtilizingInfluence =>
-      'Sabaki and utilizing influence';
+  String get taskTag_sabakiAndUtilizingInfluence => '腾挪与借用';
 
   @override
-  String get taskTag_sacrifice => 'Sacrifice';
+  String get taskTag_sacrifice => '弃子';
 
   @override
-  String get taskTag_sacrificeAndSqueeze => 'Sacrifice and squeeze';
+  String get taskTag_sacrificeAndSqueeze => '滚打包收';
 
   @override
-  String get taskTag_sealIn => 'Seal in';
+  String get taskTag_sealIn => '封锁';
 
   @override
-  String get taskTag_secondLine => 'Second line';
+  String get taskTag_secondLine => '二线型';
 
   @override
-  String get taskTag_seizeTheOpportunity => 'Seize the opportunity';
+  String get taskTag_seizeTheOpportunity => '把握战机';
 
   @override
-  String get taskTag_seki => 'Seki';
+  String get taskTag_seki => '双活';
 
   @override
-  String get taskTag_senteAndGote => 'Sente and gote';
+  String get taskTag_senteAndGote => '先手与后手';
 
   @override
-  String get taskTag_settleShape => 'Settle shape';
+  String get taskTag_settleShape => '整形';
 
   @override
-  String get taskTag_settleShapeInSente => 'Settle shape in sente';
+  String get taskTag_settleShapeInSente => '先手定形';
 
   @override
-  String get taskTag_shape => 'Shape';
+  String get taskTag_shape => '棋形';
 
   @override
-  String get taskTag_shapesVitalPoint => 'Shape\'s vital point';
+  String get taskTag_shapesVitalPoint => '棋形要点';
 
   @override
-  String get taskTag_side => 'Side';
+  String get taskTag_side => '边部常型';
 
   @override
-  String get taskTag_smallBoardEndgame => 'Small board endgame';
+  String get taskTag_smallBoardEndgame => '小棋盘官子';
 
   @override
-  String get taskTag_snapback => 'Snapback';
+  String get taskTag_snapback => '倒扑';
 
   @override
-  String get taskTag_solidConnection => 'Solid connection';
+  String get taskTag_solidConnection => '接';
 
   @override
-  String get taskTag_solidExtension => 'Solid extension';
+  String get taskTag_solidExtension => '长';
 
   @override
-  String get taskTag_splitInOneMove => 'Split in one move';
+  String get taskTag_splitInOneMove => '一步分断';
 
   @override
-  String get taskTag_splittingMove => 'Splitting move';
+  String get taskTag_splittingMove => '分投';
 
   @override
-  String get taskTag_squareFour => 'Square four';
+  String get taskTag_squareFour => '方四';
 
   @override
-  String get taskTag_squeeze => 'Squeeze';
+  String get taskTag_squeeze => '滚打';
 
   @override
-  String get taskTag_standardCapturingRaces => 'Standard capturing races';
+  String get taskTag_standardCapturingRaces => '常型对杀';
 
   @override
-  String get taskTag_standardCornerAndSideEndgame =>
-      'Standard corner and side endgame';
+  String get taskTag_standardCornerAndSideEndgame => '边角常型收束';
 
   @override
-  String get taskTag_straightFour => 'Straight four';
+  String get taskTag_straightFour => '直四';
 
   @override
-  String get taskTag_straightThree => 'Straight three';
+  String get taskTag_straightThree => '直三';
 
   @override
-  String get taskTag_surroundTerritory => 'Surround territory';
+  String get taskTag_surroundTerritory => '围空';
 
   @override
-  String get taskTag_symmetricShape => 'Symmetric shape';
+  String get taskTag_symmetricShape => '左右同型';
 
   @override
-  String get taskTag_techniqueForReinforcingGroups =>
-      'Technique for reinforcing groups';
+  String get taskTag_techniqueForReinforcingGroups => '补棋的方法';
 
   @override
-  String get taskTag_techniqueForSecuringTerritory =>
-      'Technique for securing territory';
+  String get taskTag_techniqueForSecuringTerritory => '地中的手段';
 
   @override
-  String get taskTag_textbookTasks => 'Textbook tasks';
+  String get taskTag_textbookTasks => '文字题';
 
   @override
-  String get taskTag_thirdAndFourthLine => 'Third and fourth line';
+  String get taskTag_thirdAndFourthLine => '三路和四路';
 
   @override
-  String get taskTag_threeEyesTwoActions => 'Three eyes, two actions';
+  String get taskTag_threeEyesTwoActions => '三眼两做';
 
   @override
-  String get taskTag_threeSpaceExtensionFromTwoStones =>
-      'Three-space extension from two stones';
+  String get taskTag_threeSpaceExtensionFromTwoStones => '立二拆三';
 
   @override
-  String get taskTag_throwIn => 'Throw-in';
+  String get taskTag_throwIn => '扑';
 
   @override
-  String get taskTag_tigersMouth => 'Tiger\'s mouth';
+  String get taskTag_tigersMouth => '虎';
 
   @override
-  String get taskTag_tombstoneSqueeze => 'Tombstone squeeze';
+  String get taskTag_tombstoneSqueeze => '大头鬼';
 
   @override
-  String get taskTag_tripodGroupWithExtraLegAndSimilar =>
-      'Tripod group with extra leg and similar';
+  String get taskTag_tripodGroupWithExtraLegAndSimilar => '小猪嘴及类似型';
 
   @override
-  String get taskTag_twoHaneGainOneLiberty => 'Double hane grows one liberty';
+  String get taskTag_twoHaneGainOneLiberty => '两扳长一气';
 
   @override
-  String get taskTag_twoHeadedDragon => 'Two-headed dragon';
+  String get taskTag_twoHeadedDragon => '盘龙眼';
 
   @override
-  String get taskTag_twoSpaceExtension => 'Two-space extension';
+  String get taskTag_twoSpaceExtension => '拆二';
 
   @override
-  String get taskTag_typesOfKo => 'Types of ko';
+  String get taskTag_typesOfKo => '区分劫的种类';
 
   @override
-  String get taskTag_underTheStones => 'Under the stones';
+  String get taskTag_underTheStones => '倒脱靴';
 
   @override
-  String get taskTag_underneathAttachment => 'Underneath attachment';
+  String get taskTag_underneathAttachment => '托';
 
   @override
-  String get taskTag_urgentPointOfAFight => 'Urgent point of a fight';
+  String get taskTag_urgentPointOfAFight => '战斗的急所';
 
   @override
-  String get taskTag_urgentPoints => 'Urgent points';
+  String get taskTag_urgentPoints => '急所';
 
   @override
-  String get taskTag_useConnectAndDie => 'Use connect and die';
+  String get taskTag_useConnectAndDie => '利用接不归';
 
   @override
-  String get taskTag_useCornerSpecialProperties =>
-      'Use corner special properties';
+  String get taskTag_useCornerSpecialProperties => '利用角部特殊性';
 
   @override
-  String get taskTag_useDescentToFirstLine => 'Use descent to first line';
+  String get taskTag_useDescentToFirstLine => '利用一路硬腿';
 
   @override
-  String get taskTag_useInfluence => 'Use influence';
+  String get taskTag_useInfluence => '厚势的作用';
 
   @override
-  String get taskTag_useOpponentsLifeAndDeath =>
-      'Use opponent\'s life and death';
+  String get taskTag_useOpponentsLifeAndDeath => '利用对方死活';
 
   @override
-  String get taskTag_useShortageOfLiberties => 'Use shortage of liberties';
+  String get taskTag_useShortageOfLiberties => '利用气紧';
 
   @override
-  String get taskTag_useSnapback => 'Use snapback';
+  String get taskTag_useSnapback => '利用倒扑';
 
   @override
-  String get taskTag_useSurroundingStones => 'Use surrounding stones';
+  String get taskTag_useSurroundingStones => '利用外围棋子';
 
   @override
-  String get taskTag_vitalAndUselessStones => 'Vital and useless stones';
+  String get taskTag_vitalAndUselessStones => '要子与废子';
 
   @override
-  String get taskTag_vitalPointForBothSides => 'Vital point for both sides';
+  String get taskTag_vitalPointForBothSides => '双方要点';
 
   @override
-  String get taskTag_vitalPointForCapturingRace =>
-      'Vital point for capturing race';
+  String get taskTag_vitalPointForCapturingRace => '对杀要点';
 
   @override
-  String get taskTag_vitalPointForIncreasingLiberties =>
-      'Vital point for increasing liberties';
+  String get taskTag_vitalPointForIncreasingLiberties => '延气要点';
 
   @override
-  String get taskTag_vitalPointForKill => 'Vital point for kill';
+  String get taskTag_vitalPointForKill => '杀棋要点';
 
   @override
-  String get taskTag_vitalPointForLife => 'Vital point for life';
+  String get taskTag_vitalPointForLife => '活棋要点';
 
   @override
-  String get taskTag_vitalPointForReducingLiberties =>
-      'Vital point for reducing liberties';
+  String get taskTag_vitalPointForReducingLiberties => '紧气要点';
 
   @override
-  String get taskTag_wedge => 'Wedge';
+  String get taskTag_wedge => '挖';
 
   @override
-  String get taskTag_wedgingCapture => 'Wedging capture';
+  String get taskTag_wedgingCapture => '挖吃';
 
   @override
   String get taskTimeout => 'Timeout';

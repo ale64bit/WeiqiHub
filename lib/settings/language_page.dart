@@ -17,6 +17,7 @@ class _LanguagePageState extends State<LanguagePage> {
   static final Map<String, String> nativeLanguageName = {
     'en': 'English',
     'es': 'Español',
+    'zh': '中文 – 简体',
   };
   @override
   Widget build(BuildContext context) {

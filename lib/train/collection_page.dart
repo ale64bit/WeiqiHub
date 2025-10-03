@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/time_state.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/time_display.dart';
@@ -66,6 +67,7 @@ class _CollectionPageState extends State<CollectionPage>
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
     final borderSize =
         1.5 * (Theme.of(context).textTheme.labelMedium?.fontSize ?? 0);
@@ -113,7 +115,8 @@ class _CollectionPageState extends State<CollectionPage>
 
     final taskRank =
         solveStatus != null ? widget.taskSource.task.rank.toString() : '?';
-    final taskTitle = '[$taskRank] ${widget.taskSource.task.type.toString()}';
+    final taskTitle =
+        '[$taskRank] ${widget.taskSource.task.type.toLocalizedString(loc)}';
 
     final timeDisplay = TimeDisplay(
       key: _timeDisplayKey,
@@ -274,36 +277,39 @@ class _CollectionPageState extends State<CollectionPage>
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(isNewBest ? 'New best!' : 'Result'),
-        icon: isNewBest ? const Icon(Icons.emoji_events) : null,
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              title: const Text('Accuracy'),
-              trailing: Text(
-                  '${curResult.correctCount}/${curResult.correctCount + curResult.wrongCount} (${(100 * curResult.correctCount / (curResult.correctCount + curResult.wrongCount)).round()}%)'),
-            ),
-            ListTile(
-              title: const Text('Total time'),
-              trailing: Text(curResult.duration.toString().split('.').first),
-            ),
-            ListTile(
-              title: const Text('Avg time per task'),
-              trailing: Text(
-                  '${(curResult.duration.inSeconds / (curResult.correctCount + curResult.wrongCount)).toStringAsFixed(1)}s'),
+      builder: (context) {
+        final loc = AppLocalizations.of(context)!;
+        return AlertDialog(
+          title: Text(isNewBest ? loc.newBestResult : loc.result),
+          icon: isNewBest ? const Icon(Icons.emoji_events) : null,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                title: Text(loc.accuracy),
+                trailing: Text(
+                    '${curResult.correctCount}/${curResult.correctCount + curResult.wrongCount} (${(100 * curResult.correctCount / (curResult.correctCount + curResult.wrongCount)).round()}%)'),
+              ),
+              ListTile(
+                title: Text(loc.trainingTotalTime),
+                trailing: Text(curResult.duration.toString().split('.').first),
+              ),
+              ListTile(
+                title: Text(loc.trainingAvgTimePerTask),
+                trailing: Text(
+                    '${(curResult.duration.inSeconds / (curResult.correctCount + curResult.wrongCount)).toStringAsFixed(1)}s'),
+              ),
+            ],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(loc.exit),
             ),
           ],
-        ),
-        actionsAlignment: MainAxisAlignment.center,
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Exit'),
-          ),
-        ],
-      ),
+        );
+      },
     ).then((_) {
       if (context.mounted) Navigator.pop(context);
     });

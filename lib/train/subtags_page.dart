@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/subtag_rank_selection_page.dart';
 import 'package:wqhub/train/tag_completion_rate.dart';
 import 'package:wqhub/train/task_tag.dart';
@@ -18,9 +19,10 @@ class SubtagsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(tag.toString()),
+        title: Text(tag.toLocalizedString(loc)),
       ),
       body: Center(
         child: ListView(
@@ -28,7 +30,7 @@ class SubtagsPage extends StatelessWidget {
             for (final subtag in tag.subtags())
               if (subtag.ranks().isNotEmpty)
                 ListTile(
-                  title: Text(subtag.toString()),
+                  title: Text(subtag.toLocalizedString(loc)),
                   trailing: TagCompletionRate(tag: subtag),
                   onTap: () {
                     Navigator.pushNamed(
