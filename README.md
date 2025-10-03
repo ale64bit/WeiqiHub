@@ -28,3 +28,11 @@ WeiqiHub is a unified client to multiple Go servers and offline puzzle solving.
 ## Development
 
 A working installation of Flutter is needed. To run the app in debug mode, use `flutter run` or the Run button in VSCode.
+
+### Localization
+
+In order to localize parts of, or the whole app, to another language contributors are encouraged to modify/add the translation files. Each supported locale is stored as a `app_$LOCALE.arb` file under [lib/l10n]. The [English language](lib/l10n/app_en.arb) serves as the template and is a good starting point when translating to a new language.
+
+Feel free to open PRs with localization contributions/fixes if you are a developer. If you are not a developer, feel free to send me new/modified `.arb` files directly.
+
+You can read more about the syntax and use of the localization framework [here](https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization).
