@@ -9,60 +9,13 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get foxwqName => 'Fox Weiqi';
-
-  @override
-  String get foxwqDesc => 'El servidor más popular de China y el mundo.';
-
-  @override
-  String get tygemName => 'Tygem Baduk';
-
-  @override
-  String get tygemDesc =>
-      'El servidor más popular de Corea y uno de los más populares del mundo.';
-
-  @override
-  String get ogsName => 'Online Go Server';
-
-  @override
-  String get ogsDesc =>
-      'La principal plataforma en línea de Go, con torneos, análisis con IA y una vibrante comunidad.';
-
-  @override
-  String get username => 'Nombre de usuario';
-
-  @override
-  String get password => 'Contraseña';
-
-  @override
-  String get login => 'Entrar';
-
-  @override
-  String get logout => 'Salir';
-
-  @override
-  String get register => 'Registrarse';
-
-  @override
-  String get rules => 'Reglas';
-
-  @override
-  String get rulesChinese => 'Chinas';
-
-  @override
-  String get rulesJapanese => 'Japonesas';
-
-  @override
-  String get rulesKorean => 'Coreanas';
-
-  @override
-  String get myGames => 'Mis partidas';
-
-  @override
-  String get ok => 'OK';
-
-  @override
   String get about => 'Acerca de WeiqiHub';
+
+  @override
+  String get aiReferee => 'Árbitro IA';
+
+  @override
+  String get aiSensei => 'AI Sensei';
 
   @override
   String get alwaysBlackToPlay => 'Siempre juegan las negras';
@@ -73,6 +26,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get appearance => 'Apariencia';
+
+  @override
+  String get autoCounting => 'Conteo automático';
+
+  @override
+  String get autoMatch => 'Buscar partida';
 
   @override
   String get behaviour => 'Comportamiento';
@@ -87,19 +46,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get boardTheme => 'Tema del tablero';
 
   @override
-  String get handicap => 'Handicap';
-
-  @override
-  String get komi => 'Komi';
-
-  @override
-  String get saveSGF => 'Guardar SGF';
-
-  @override
   String get byRank => 'Por rango';
 
   @override
   String get cancel => 'Cancelar';
+
+  @override
+  String get captures => 'Capturas';
+
+  @override
+  String get collectStats => 'Añadir a las estadísticas';
 
   @override
   String get collections => 'Colecciones';
@@ -122,10 +78,19 @@ class AppLocalizationsEs extends AppLocalizations {
       'Doble tap para confirmar jugadas en tableros grandes para evitar accidentes';
 
   @override
+  String get continue_ => 'Continuar';
+
+  @override
+  String get copyTaskLink => 'Copiar enlace al problema';
+
+  @override
   String get customExam => 'Examen personalizado';
 
   @override
   String get dark => 'Oscuro';
+
+  @override
+  String get download => 'Descargar';
 
   @override
   String get edgeLine => 'Línea de borde';
@@ -137,14 +102,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get enterTaskLink => 'Introduce el enlace al problema';
 
   @override
-  String get errIncorrectUsernameOrPassword =>
-      'Nombre de usuario o contraseña incorrectos';
-
-  @override
   String get errCannotBeEmpty => 'No puede estar vacío';
 
   @override
-  String get errMustBeInteger => 'Debe ser un número entero';
+  String get errFailedToDownloadGame => 'Error descargando partida.';
+
+  @override
+  String get errFailedToLoadGameList =>
+      'Error cargando lista de partidas. Por favor, prueba de nuevo.';
+
+  @override
+  String get errFailedToUploadGameToAISensei =>
+      'Error enviando partida a AI Sensei';
+
+  @override
+  String get errIncorrectUsernameOrPassword =>
+      'Nombre de usuario o contraseña incorrectos';
 
   @override
   String errMustBeAtLeast(num n) {
@@ -157,31 +130,143 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get errMustBeInteger => 'Debe ser un número entero';
+
+  @override
+  String get exit => 'Salir';
+
+  @override
+  String get exitTryMode => 'Regresar';
+
+  @override
   String get find => 'Buscar';
 
   @override
   String get findTask => 'Buscar problema';
 
   @override
+  String get forceCounting => 'Forzar conteo';
+
+  @override
+  String get foxwqDesc => 'El servidor más popular de China y el mundo.';
+
+  @override
+  String get foxwqName => 'Fox Weiqi';
+
+  @override
+  String get gameInfo => 'Información de la partida';
+
+  @override
+  String get gameRecord => 'Partida';
+
+  @override
   String get gradingExam => 'Examen de rango';
+
+  @override
+  String get handicap => 'Handicap';
 
   @override
   String get home => 'Inicio';
 
   @override
+  String get komi => 'Komi';
+
+  @override
   String get language => 'Idioma';
+
+  @override
+  String get leave => 'Salir';
 
   @override
   String get light => 'Claro';
 
   @override
+  String get login => 'Entrar';
+
+  @override
+  String get logout => 'Salir';
+
+  @override
   String get long => 'Larga';
+
+  @override
+  String mMinutes(int m) {
+    return '${m}min';
+  }
+
+  @override
+  String get maxNumberOfMistakes => 'Número máximo de errores';
+
+  @override
+  String get maxRank => 'Rango máximo';
 
   @override
   String get medium => 'Media';
 
   @override
+  String get minRank => 'Rango mínimo';
+
+  @override
+  String get minutes => 'Minutos';
+
+  @override
   String get month => 'Mes';
+
+  @override
+  String get msgCannotUseAIRefereeYet =>
+      'El árbitro IA no está disponible todavía';
+
+  @override
+  String get msgCannotUseForcedCountingYet =>
+      'No es posible forzar el conteo automático todavía';
+
+  @override
+  String get msgConfirmResignation =>
+      '¿Estás seguro(a) de que quieres abandonar?';
+
+  @override
+  String msgConfirmStopEvent(String event) {
+    return '¿Estás seguro(a) de que quieres abandonar el $event?';
+  }
+
+  @override
+  String get msgDownloadingGame => 'Descargando partida';
+
+  @override
+  String msgGameSavedTo(String path) {
+    return 'Partida guardada en $path';
+  }
+
+  @override
+  String get msgPleaseWaitForYourTurn => 'Por favor, espera tu turno';
+
+  @override
+  String get msgSearchingForGame => 'Buscando partida...';
+
+  @override
+  String get msgTaskLinkCopied => 'Enlace al problema copiado.';
+
+  @override
+  String get msgWaitingForOpponentsDecision =>
+      'Esperando la decisión de tu oponente...';
+
+  @override
+  String get msgYouCannotPass => 'No puedes pasar';
+
+  @override
+  String get msgYourOpponentDisagreesWithCountingResult =>
+      'Tu oponente no está de acuerdo con el resultado del conteo';
+
+  @override
+  String get msgYourOpponentRefusesToCount =>
+      'Tu oponente no acepta el conteo automático.';
+
+  @override
+  String get msgYourOpponentRequestsAutomaticCounting =>
+      'Tu oponente pide conteo automático. ¿Aceptas?';
+
+  @override
+  String get myGames => 'Mis partidas';
 
   @override
   String get myMistakes => 'Mis errores';
@@ -203,52 +288,60 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get no => 'No';
+
+  @override
   String get none => 'Ninguna';
 
   @override
   String get numberOfTasks => 'Número de problemas';
 
   @override
-  String get maxNumberOfMistakes => 'Número máximo de errores';
+  String nxnBoardSize(int n) {
+    return '$n×$n';
+  }
 
   @override
-  String get timePerTask => 'Tiempo por problema';
+  String get ogsDesc =>
+      'La principal plataforma en línea de Go, con torneos, análisis con IA y una vibrante comunidad.';
 
   @override
-  String get minutes => 'Minutos';
+  String get ogsName => 'Online Go Server';
 
   @override
-  String get seconds => 'Segundos';
+  String get ok => 'OK';
 
   @override
-  String get minRank => 'Rango mínimo';
+  String get pass => 'Pasar';
 
   @override
-  String get maxRank => 'Rango máximo';
-
-  @override
-  String get taskSource => 'Origen de problemas';
-
-  @override
-  String get taskSourceFromTaskTypes => 'Por tipos de problema';
-
-  @override
-  String get taskSourceFromTaskTopic => 'Por tema';
-
-  @override
-  String get taskSourceFromMyMistakes => 'Mis errores';
-
-  @override
-  String get collectStats => 'Añadir a las estadísticas';
+  String get password => 'Contraseña';
 
   @override
   String get play => 'Jugar';
+
+  @override
+  String get promotionRequirements => 'Requisitos para promoción';
+
+  @override
+  String pxsByoyomi(int p, int s) {
+    return '$p×${s}s';
+  }
 
   @override
   String get rank => 'Rango';
 
   @override
   String get rankedMode => 'Clasificatorio';
+
+  @override
+  String get recentRecord => 'Resultados recientes';
+
+  @override
+  String get register => 'Registrarse';
+
+  @override
+  String get resign => 'Abandonar';
 
   @override
   String get responseDelay => 'Demora de respuesta';
@@ -271,6 +364,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get result => 'Resultado';
+
+  @override
+  String get rules => 'Reglas';
+
+  @override
+  String get rulesChinese => 'Chinas';
+
+  @override
+  String get rulesJapanese => 'Japonesas';
+
+  @override
+  String get rulesKorean => 'Coreanas';
+
+  @override
+  String get saveSGF => 'Guardar SGF';
+
+  @override
+  String get seconds => 'Segundos';
 
   @override
   String get settings => 'Preferencias';
@@ -297,9 +408,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get start => 'Comenzar';
 
   @override
-  String get continue_ => 'Continuar';
-
-  @override
   String get statistics => 'Estadísticas';
 
   @override
@@ -318,16 +426,40 @@ class AppLocalizationsEs extends AppLocalizations {
   String get stones => 'Piedras';
 
   @override
+  String get subtopic => 'Subtema';
+
+  @override
   String get system => 'Sistema';
 
   @override
   String get task => 'Problema';
 
   @override
-  String get taskTypeLifeAndDeath => 'Vida y muerte';
+  String get taskCorrect => 'Correcto';
 
   @override
-  String get taskTypeTesuji => 'Tesuji';
+  String get taskNext => 'Siguiente';
+
+  @override
+  String get taskRedo => 'Reintentar';
+
+  @override
+  String get taskSource => 'Origen de problemas';
+
+  @override
+  String get taskSourceFromMyMistakes => 'Mis errores';
+
+  @override
+  String get taskSourceFromTaskTopic => 'Por tema';
+
+  @override
+  String get taskSourceFromTaskTypes => 'Por tipos de problema';
+
+  @override
+  String get taskTimeout => 'Se acabó el tiempo';
+
+  @override
+  String get taskTypeAppreciation => 'Apreciación';
 
   @override
   String get taskTypeCapture => 'Capturar';
@@ -336,22 +468,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTypeCaptureRace => 'Semeai';
 
   @override
-  String get taskTypeOpening => 'Apertura';
+  String get taskTypeEndgame => 'Finales';
 
   @override
   String get taskTypeJoseki => 'Joseki';
 
   @override
+  String get taskTypeLifeAndDeath => 'Vida y muerte';
+
+  @override
   String get taskTypeMiddlegame => 'Medio-juego';
 
   @override
-  String get taskTypeEndgame => 'Finales';
+  String get taskTypeOpening => 'Apertura';
+
+  @override
+  String get taskTypeTesuji => 'Tesuji';
 
   @override
   String get taskTypeTheory => 'Teoría';
 
   @override
-  String get taskTypeAppreciation => 'Apreciación';
+  String get taskWrong => 'Incorrecto';
+
+  @override
+  String get tasksSolved => 'Problemas resueltos';
 
   @override
   String get test => 'Probar';
@@ -366,7 +507,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get timeFrenzy => 'Contrarreloj';
 
   @override
+  String get timePerTask => 'Tiempo por problema';
+
+  @override
   String get today => 'Hoy';
+
+  @override
+  String get tooltipAnalyzeWithAISensei => 'Analizar con AI Sensei';
+
+  @override
+  String get tooltipDownloadGame => 'Descargar partida';
 
   @override
   String get topic => 'Tema';
@@ -375,10 +525,32 @@ class AppLocalizationsEs extends AppLocalizations {
   String get topics => 'Temas';
 
   @override
-  String get subtopic => 'Subtema';
+  String get train => 'Entrenar';
 
   @override
-  String get train => 'Entrenar';
+  String get trainingAvgTimePerTask => 'Tiempo promedio por problema';
+
+  @override
+  String get trainingFailed => 'No aprobado';
+
+  @override
+  String get trainingMistakes => 'Errores';
+
+  @override
+  String get trainingPassed => 'Aprobado';
+
+  @override
+  String get trainingTotalTime => 'Tiempo total';
+
+  @override
+  String get tryCustomMoves => 'Probar otras jugadas';
+
+  @override
+  String get tygemDesc =>
+      'El servidor más popular de Corea y uno de los más populares del mundo.';
+
+  @override
+  String get tygemName => 'Tygem Baduk';
 
   @override
   String get type => 'Tipo';
@@ -387,8 +559,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ui => 'Interfaz';
 
   @override
+  String get userInfo => 'Perfil de usuario';
+
+  @override
+  String get username => 'Nombre de usuario';
+
+  @override
   String get voice => 'Voz';
 
   @override
   String get week => 'Semana';
+
+  @override
+  String get yes => 'Sí';
 }

@@ -13,6 +13,7 @@ import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/counting_result_bottom_sheet.dart';
 import 'package:wqhub/play/game_navigation_bar.dart';
 import 'package:wqhub/play/gameplay_bar.dart';
@@ -158,6 +159,7 @@ class _GamePageState extends State<GamePage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
 
     // Board
@@ -359,7 +361,7 @@ class _GamePageState extends State<GamePage> {
       floatingActionButton: (wideLayout && _state == GameState.over)
           ? FloatingActionButton.large(
               onPressed: onLeaveClicked,
-              tooltip: 'Leave game',
+              tooltip: loc.leave,
               child: Icon(Icons.logout),
             )
           : null,
@@ -429,12 +431,13 @@ class _GamePageState extends State<GamePage> {
   }
 
   void onPassClicked() {
+    final loc = AppLocalizations.of(context)!;
     // A pass can only processed in one of the following cases:
     //  - game is ongoing and it's our turn
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please wait for your turn'),
+        content: Text(loc.msgPleaseWaitForYourTurn),
         showCloseIcon: true,
       ));
       return;
@@ -454,7 +457,7 @@ class _GamePageState extends State<GamePage> {
       });
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('You cannot pass'),
+          content: Text(loc.msgYouCannotPass),
           showCloseIcon: true,
         ));
       }
@@ -467,6 +470,7 @@ class _GamePageState extends State<GamePage> {
   }
 
   void onPass() {
+    final loc = AppLocalizations.of(context)!;
     switch (_state) {
       case GameState.over:
         // If the game is already over, ignore move events. Should not happen.
@@ -474,7 +478,7 @@ class _GamePageState extends State<GamePage> {
       case GameState.playing:
         // If we are playing, assume our opponent passed.
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('Pass'),
+          content: Text(loc.pass),
           behavior: SnackBarBehavior.floating,
           showCloseIcon: true,
         ));
@@ -486,7 +490,7 @@ class _GamePageState extends State<GamePage> {
       case GameState.acking:
         // If we are acking, assume this is the ack for our pass request.
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('Pass'),
+          content: Text(loc.pass),
           behavior: SnackBarBehavior.floating,
           showCloseIcon: true,
         ));
@@ -503,17 +507,20 @@ class _GamePageState extends State<GamePage> {
   void onResignClicked() {
     showDialog(
       context: context,
-      builder: (context) => ConfirmDialog(
-        title: 'Confirm',
-        content: 'Are you sure that you want to resign?',
-        onYes: () {
-          widget.game.resign();
-          Navigator.of(context).pop();
-        },
-        onNo: () {
-          Navigator.of(context).pop();
-        },
-      ),
+      builder: (context) {
+        final loc = AppLocalizations.of(context)!;
+        return ConfirmDialog(
+          title: loc.confirm,
+          content: loc.msgConfirmResignation,
+          onYes: () {
+            widget.game.resign();
+            Navigator.of(context).pop();
+          },
+          onNo: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
     );
   }
 
@@ -522,11 +529,12 @@ class _GamePageState extends State<GamePage> {
   }
 
   void onAutomaticCountingClicked() {
+    final loc = AppLocalizations.of(context)!;
     // We can only request automatic counting if we are playing and it's our turn.
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please wait for your turn'),
+        content: Text(loc.msgPleaseWaitForYourTurn),
         showCloseIcon: true,
       ));
       return;
@@ -540,9 +548,10 @@ class _GamePageState extends State<GamePage> {
           barrierDismissible: false,
           routeSettings: RouteSettings(name: _waitingDialogName),
           builder: (context) {
+            final loc = AppLocalizations.of(context)!;
             return TimedDialog(
-              title: 'Automatic Counting',
-              content: "Waiting for your opponent's decision...",
+              title: loc.autoCounting,
+              content: loc.msgWaitingForOpponentsDecision,
               duration: info.timeout,
             );
           },
@@ -568,21 +577,24 @@ class _GamePageState extends State<GamePage> {
       if (_state == GameState.playing && agree) {
         showDialog(
           context: context,
-          builder: (context) => ConfirmDialog(
-            title: 'Confirm',
-            content: 'Your opponent requests automatic counting. Do you agree?',
-            onYes: () {
-              widget.game.agreeToAutomaticCounting(true);
-              setState(() {
-                _state = GameState.counting;
-              });
-              Navigator.of(context).pop();
-            },
-            onNo: () {
-              widget.game.agreeToAutomaticCounting(false);
-              Navigator.of(context).pop();
-            },
-          ),
+          builder: (context) {
+            final loc = AppLocalizations.of(context)!;
+            return ConfirmDialog(
+              title: loc.confirm,
+              content: loc.msgYourOpponentRequestsAutomaticCounting,
+              onYes: () {
+                widget.game.agreeToAutomaticCounting(true);
+                setState(() {
+                  _state = GameState.counting;
+                });
+                Navigator.of(context).pop();
+              },
+              onNo: () {
+                widget.game.agreeToAutomaticCounting(false);
+                Navigator.of(context).pop();
+              },
+            );
+          },
         );
       }
       return;
@@ -597,8 +609,9 @@ class _GamePageState extends State<GamePage> {
     } else {
       // If opponent refuses, go back into playing state
       if (context.mounted) {
+        final loc = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Your opponent refuses to count'),
+          content: Text(loc.msgYourOpponentRefusesToCount),
           showCloseIcon: true,
         ));
       }
@@ -616,8 +629,9 @@ class _GamePageState extends State<GamePage> {
     if (!accept) {
       maybeDismissRoute(_countingResultBottomSheetName);
       if (context.mounted) {
+        final loc = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Your opponent disagrees with the counting result'),
+          content: Text(loc.msgYourOpponentDisagreesWithCountingResult),
           showCloseIcon: true,
         ));
       }
@@ -683,11 +697,12 @@ class _GamePageState extends State<GamePage> {
   }
 
   void onAIRefereeClicked() {
+    final loc = AppLocalizations.of(context)!;
     // We can only request AI referee if we are playing and it's our turn.
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Please wait for your turn'),
+        content: Text(loc.msgPleaseWaitForYourTurn),
         showCloseIcon: true,
       ));
       return;
@@ -696,7 +711,7 @@ class _GamePageState extends State<GamePage> {
         (widget.serverFeatures.aiRefereeMinMoveCount[widget.game.boardSize] ??
             (1 << 30))) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('AI Referee cannot be used yet'),
+        content: Text(loc.msgCannotUseAIRefereeYet),
         showCloseIcon: true,
       ));
       return;
@@ -713,11 +728,12 @@ class _GamePageState extends State<GamePage> {
   }
 
   void onForceCountingClicked() {
+    final loc = AppLocalizations.of(context)!;
     // We can only request forced counting if we are playing and it's our turn.
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Please wait for your turn'),
+        content: Text(loc.msgPleaseWaitForYourTurn),
         showCloseIcon: true,
       ));
       return;
@@ -727,7 +743,7 @@ class _GamePageState extends State<GamePage> {
                 .forcedCountingMinMoveCount[widget.game.boardSize] ??
             (1 << 30))) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: const Text('Forced counting cannot be used yet'),
+        content: Text(loc.msgCannotUseForcedCountingYet),
         showCloseIcon: true,
       ));
       return;
@@ -754,12 +770,13 @@ class _GamePageState extends State<GamePage> {
       showDialog(
         context: context,
         builder: (context) {
+          final loc = AppLocalizations.of(context)!;
           return AlertDialog(
-            title: const Text('Result'),
+            title: Text(loc.result),
             content: Text(res.result),
             actions: <Widget>[
               TextButton(
-                child: const Text('OK'),
+                child: Text(loc.ok),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -859,28 +876,29 @@ class _GameInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Card(
         child: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Game Info',
+          loc.gameInfo,
           textAlign: TextAlign.center,
           style: TextTheme.of(context).titleLarge,
         ),
         Text(
-          'Rules: ${game.rules.toString()}',
+          '${loc.rules}: ${game.rules.toLocalizedString(loc)}',
           textAlign: TextAlign.center,
         ),
         if (game.handicap > 1)
           Text(
-            'Handicap: ${game.handicap}',
+            '${loc.handicap}: ${game.handicap}',
             textAlign: TextAlign.center,
           ),
         if (game.handicap <= 1)
           Text(
-            'Komi: ${game.komi}',
+            '${loc.komi}: ${game.komi}',
             textAlign: TextAlign.center,
           ),
       ],

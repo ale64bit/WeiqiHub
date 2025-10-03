@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/server_features.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 
 class GameplayBar extends StatelessWidget {
   final ServerFeatures features;
@@ -23,6 +24,7 @@ class GameplayBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Column(
@@ -36,14 +38,14 @@ class GameplayBar extends StatelessWidget {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: onPass,
-                  label: const Text('Pass'),
+                  label: Text(loc.pass),
                   icon: Icon(Icons.fast_forward),
                 ),
               ),
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: onResign,
-                  label: const Text('Resign'),
+                  label: Text(loc.resign),
                   icon: Icon(Icons.flag),
                 ),
               ),
@@ -57,14 +59,14 @@ class GameplayBar extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed:
                       features.automaticCounting ? onAutomaticCounting : null,
-                  label: const Text('Auto Counting'),
+                  label: Text(loc.autoCounting),
                   icon: Icon(Icons.calculate),
                 ),
               ),
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: features.forcedCounting ? onForceCounting : null,
-                  label: const Text('Force Counting'),
+                  label: Text(loc.forceCounting),
                   icon: Icon(Icons.sports),
                 ),
               ),
@@ -77,7 +79,7 @@ class GameplayBar extends StatelessWidget {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: features.aiReferee ? onAIReferee : null,
-                  label: const Text('AI Referee'),
+                  label: Text(loc.aiReferee),
                   icon: Icon(Icons.smart_toy),
                 ),
               ),

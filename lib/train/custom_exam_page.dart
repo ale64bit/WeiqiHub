@@ -1,5 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/custom_exam_selection_page.dart';
@@ -59,8 +60,9 @@ class CustomExamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return ExamPage(
-      title: 'Custom Exam',
+      title: loc.customExam,
       examType: 'Custom',
       rankRange: rankRange,
       taskCount: taskCount,

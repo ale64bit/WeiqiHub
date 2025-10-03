@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/server_features.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 
 class GameplayMenu extends StatelessWidget {
   final ServerFeatures features;
@@ -34,28 +35,29 @@ class GameplayMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return MenuAnchor(
       menuChildren: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text('Rules: ${rules.toString()}'),
+          child: Text('${loc.rules}: ${rules.toLocalizedString(loc)}'),
         ),
         if (handicap > 1)
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Handicap: $handicap'),
+            child: Text('${loc.handicap}: $handicap'),
           ),
         if (handicap < 2)
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Komi: $komi'),
+            child: Text('${loc.komi}: $komi'),
           ),
         Divider(thickness: 1, height: 1),
         if (!isGameOver)
           MenuItemButton(
             leadingIcon: Icon(Icons.fast_forward),
             onPressed: onPass,
-            child: const Text('Pass'),
+            child: Text(loc.pass),
           ),
         if (!isGameOver && features.manualCounting)
           MenuItemButton(
@@ -67,25 +69,25 @@ class GameplayMenu extends StatelessWidget {
           MenuItemButton(
             leadingIcon: Icon(Icons.calculate),
             onPressed: onAutomaticCounting,
-            child: const Text('Automatic Counting'),
+            child: Text(loc.autoCounting),
           ),
         if (!isGameOver && features.aiReferee)
           MenuItemButton(
             leadingIcon: Icon(Icons.smart_toy),
             onPressed: onAIReferee,
-            child: const Text('AI Referee'),
+            child: Text(loc.aiReferee),
           ),
         if (!isGameOver && features.forcedCounting)
           MenuItemButton(
             leadingIcon: Icon(Icons.sports),
             onPressed: onForceCounting,
-            child: const Text('Force Counting'),
+            child: Text(loc.forceCounting),
           ),
         if (!isGameOver)
           MenuItemButton(
             leadingIcon: Icon(Icons.flag),
             onPressed: onResign,
-            child: const Text('Resign'),
+            child: Text(loc.resign),
           ),
         if (isGameOver)
           MenuItemButton(

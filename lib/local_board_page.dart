@@ -260,7 +260,7 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
                 leadingIcon: Icon(_boardSize == size
                     ? Icons.check_box
                     : Icons.check_box_outline_blank),
-                child: Text('${size}×$size'),
+                child: Text(loc.nxnBoardSize(size)),
               )
           ],
           child: Text(loc.boardSize),

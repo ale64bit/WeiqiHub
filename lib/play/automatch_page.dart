@@ -3,6 +3,7 @@ import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/game_page.dart';
 
 class AutomatchRouteArguments {
@@ -60,9 +61,10 @@ class _AutomatchPageState extends State<AutomatchPage> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Auto-Match'),
+        title: Text(loc.autoMatch),
         automaticallyImplyLeading: false,
       ),
       body: FutureBuilder(
@@ -73,7 +75,7 @@ class _AutomatchPageState extends State<AutomatchPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text('Searching for a game...'),
+                Text(loc.msgSearchingForGame),
                 SizedBox(height: 16),
                 CircularProgressIndicator(),
                 SizedBox(height: 16),
@@ -81,7 +83,7 @@ class _AutomatchPageState extends State<AutomatchPage> {
                     onPressed: () {
                       widget.gameClient.stopAutomatch();
                     },
-                    child: const Text('Cancel')),
+                    child: Text(loc.cancel)),
               ],
             ),
           );

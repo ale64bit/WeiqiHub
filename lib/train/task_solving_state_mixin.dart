@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/board/board_annotation.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/response_delay.dart';
 import 'package:wqhub/train/task_repository.dart';
@@ -172,6 +173,7 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   }
 
   void notifySolveStatus(VariationStatus status, bool wideLayout) {
+    final loc = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -180,7 +182,8 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
           Icon(status == VariationStatus.correct
               ? Icons.check_circle
               : Icons.sentiment_very_dissatisfied),
-          Text(status.toString(), style: TextTheme.of(context).titleMedium),
+          Text(status.toLocalizedString(loc),
+              style: TextTheme.of(context).titleMedium),
         ],
       ),
       behavior: wideLayout ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
@@ -193,13 +196,14 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   }
 
   void notifySolveTimeout(bool wideLayout) {
+    final loc = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 16,
         children: [
           Icon(Icons.timer),
-          Text('Timeout', style: TextTheme.of(context).titleMedium),
+          Text(loc.taskTimeout, style: TextTheme.of(context).titleMedium),
         ],
       ),
       behavior: wideLayout ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
@@ -211,8 +215,9 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   }
 
   void notifyTaskLinkCopied() {
+    final loc = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Task link copied.')));
+        .showSnackBar(SnackBar(content: Text(loc.msgTaskLinkCopied)));
   }
 
   EdgeInsetsGeometry? _snackBarMargin(bool wideLayout) {

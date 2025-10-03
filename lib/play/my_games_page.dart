@@ -80,8 +80,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
               },
             );
           } else if (snapshot.hasError) {
-            return Center(
-                child: Text('Failed to load game list. Please try again.'));
+            return Center(child: Text(loc.errFailedToLoadGameList));
           }
           return Center(child: CircularProgressIndicator());
         },
@@ -90,10 +89,11 @@ class _MyGamesPageState extends State<MyGamesPage> {
   }
 
   void onTapGame(BuildContext context, GameSummary summary) {
+    final loc = AppLocalizations.of(context)!;
     final recordFut = widget.gameClient.getGame(summary.id);
     _GameLoadingDialog.show(
       context,
-      'Downloading game',
+      loc.msgDownloadingGame,
       summary,
       recordFut,
       onRecord: (context, summary, record) {
@@ -110,7 +110,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Failed to download game'),
+            content: Text(loc.errFailedToDownloadGame),
             showCloseIcon: true,
             behavior: SnackBarBehavior.floating,
           ));
@@ -120,8 +120,9 @@ class _MyGamesPageState extends State<MyGamesPage> {
   }
 
   void onDownload(BuildContext context, GameSummary summary) {
+    final loc = AppLocalizations.of(context)!;
     final recordFut = widget.gameClient.getGame(summary.id);
-    _GameLoadingDialog.show(context, 'Downloading game', summary, recordFut,
+    _GameLoadingDialog.show(context, loc.msgDownloadingGame, summary, recordFut,
         onRecord: (context, summary, record) async {
       final fileName =
           '${_dateFormat.format(summary.dateTime)} - ${summary.white.username} vs ${summary.black.username}.${record.type.name}';
@@ -136,7 +137,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
             await f.writeAsBytes(record.rawData);
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text('Game saved to ${result.path}'),
+              content: Text(loc.msgGameSavedTo(result.path)),
               showCloseIcon: true,
               behavior: SnackBarBehavior.floating,
             ));
@@ -169,7 +170,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
       if (context.mounted) {
         ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Failed to download game'),
+          content: Text(loc.errFailedToDownloadGame),
           showCloseIcon: true,
           behavior: SnackBarBehavior.floating,
         ));
@@ -178,10 +179,11 @@ class _MyGamesPageState extends State<MyGamesPage> {
   }
 
   void onAISensei(BuildContext context, GameSummary summary) {
+    final loc = AppLocalizations.of(context)!;
     final recordFut = widget.gameClient.getGame(summary.id);
     _GameLoadingDialog.show(
       context,
-      'Downloading game',
+      loc.msgDownloadingGame,
       summary,
       recordFut,
       onRecord: (context, summary, record) async {
@@ -198,7 +200,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Failed to upload game to AI Sensei'),
+            content: Text(loc.errFailedToUploadGameToAISensei),
             showCloseIcon: true,
             behavior: SnackBarBehavior.floating,
           ));
@@ -229,6 +231,7 @@ class _GameListTile extends StatefulWidget {
 class _GameListTileState extends WindowClassAwareState<_GameListTile> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     if (isWindowClassCompact) {
       return Slidable(
         key: ValueKey<String>(widget.summary.id),
@@ -238,14 +241,14 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
             SlidableAction(
               backgroundColor: Colors.green,
               icon: Icons.download,
-              label: 'Download',
+              label: loc.download,
               padding: EdgeInsets.all(8),
               onPressed: (context) => widget.onDownload(),
             ),
             SlidableAction(
               backgroundColor: Colors.blue,
               icon: Icons.smart_toy,
-              label: 'AI Sensei',
+              label: loc.aiSensei,
               padding: EdgeInsets.all(8),
               onPressed: (context) => widget.onAISensei(),
             ),
@@ -291,12 +294,12 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
         children: [
           IconButton(
             icon: const Icon(Icons.download),
-            tooltip: 'Download game',
+            tooltip: loc.tooltipDownloadGame,
             onPressed: widget.onDownload,
           ),
           IconButton(
             icon: const Icon(Icons.smart_toy),
-            tooltip: 'Analyze with AI Sensei',
+            tooltip: loc.tooltipAnalyzeWithAISensei,
             onPressed: widget.onAISensei,
           ),
         ],
