@@ -139,61 +139,69 @@ class OGSGame extends Game {
 
   void _handleMessage(Map<String, dynamic> message) {
     final event = message['event'] as String;
+    final gamePrefix = 'game/$id/';
 
-    // Check if this is an error event for our game
-    if (event == 'game/$id/error') {
-      final data = message['data'];
-      _logger.warning('Error received for game $id: $data');
+    // Only handle messages for this specific game
+    if (!event.startsWith(gamePrefix)) {
       return;
     }
 
-    // Check if this is a gamedata event for our game
-    if (event == 'game/$id/gamedata') {
-      _handleGameData(message['data'] as Map<String, dynamic>);
+    final suffix = event.substring(gamePrefix.length);
+
+    switch (suffix) {
+      case 'error':
+        _handleError(message['data']);
+
+      case 'gamedata':
+        _handleGameData(message['data'] as Map<String, dynamic>);
+
+      case 'removed_stones_accepted':
+        _handleRemovedStonesAccepted(message['data'] as Map<String, dynamic>);
+
+      case 'move':
+        _handleMove(message['data'] as Map<String, dynamic>);
+
+      default:
+        _logger.fine('Unhandled game event for game $id: $suffix');
+    }
+  }
+
+  void _handleError(dynamic data) {
+    _logger.warning('Error received for game $id: $data');
+  }
+
+  void _handleMove(Map<String, dynamic> data) {
+    final gameId = data['game_id'] as int;
+    final moveNumber = data['move_number'] as int;
+    final moveData = data['move'] as dynamic;
+
+    _logger.fine(
+        'Received move: game_id=$gameId, move_number=$moveNumber, move=$moveData');
+
+    // Determine the color based on move number (odd = black, even = white)
+    // TODO: make sure we're accounting for handicap!!
+    final color = moveNumber % 2 == 1 ? wq.Color.black : wq.Color.white;
+
+    wq.Point point;
+
+    if (moveData is List && moveData.length >= 2) {
+      // Numeric format: [row, col, time] where -1,-1 is pass
+      final row = moveData[1] as int;
+      final col = moveData[0] as int;
+      point = (row, col);
+    } else {
+      _logger.severe('Unknown move format: $moveData');
       return;
     }
 
-    // Check if this is a stone removal acceptance event for our game
-    if (event == 'game/$id/removed_stones_accepted') {
-      _handleRemovedStonesAccepted(message['data'] as Map<String, dynamic>);
+    if (point == (-1, -1)) {
+      _moveController.add(null);
       return;
     }
 
-    // Check if this is a move event for our game
-    if (event == 'game/$id/move') {
-      final data = message['data'] as Map<String, dynamic>;
-      final gameId = data['game_id'] as int;
-      final moveNumber = data['move_number'] as int;
-      final moveData = data['move'] as dynamic;
-
-      _logger.fine(
-          'Received move: game_id=$gameId, move_number=$moveNumber, move=$moveData');
-
-      // Determine the color based on move number (odd = black, even = white)
-      // TODO: make sure we're accounting for handicap!!
-      final color = moveNumber % 2 == 1 ? wq.Color.black : wq.Color.white;
-
-      wq.Point point;
-
-      if (moveData is List && moveData.length >= 2) {
-        // Numeric format: [row, col, time] where -1,-1 is pass
-        final row = moveData[1] as int;
-        final col = moveData[0] as int;
-        point = (row, col);
-      } else {
-        _logger.severe('Unknown move format: $moveData');
-        return;
-      }
-
-      if (point == (-1, -1)) {
-        _moveController.add(null);
-        return;
-      }
-
-      final move = (col: color, p: point);
-      _allMoves.add(move);
-      _moveController.add(move);
-    }
+    final move = (col: color, p: point);
+    _allMoves.add(move);
+    _moveController.add(move);
   }
 
   void _handleGameData(Map<String, dynamic> gameData) {
