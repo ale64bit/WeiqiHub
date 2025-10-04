@@ -12,6 +12,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get about => 'Acerca de WeiqiHub';
 
   @override
+  String get accuracy => 'Precisión';
+
+  @override
   String get aiReferee => 'Árbitro IA';
 
   @override
@@ -35,6 +38,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get behaviour => 'Comportamiento';
+
+  @override
+  String get bestResult => 'Mejor resultado';
 
   @override
   String get board => 'Tablero';
@@ -221,6 +227,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'No es posible forzar el conteo automático todavía';
 
   @override
+  String get msgConfirmDeleteCollectionProgress =>
+      '¿Estás seguro(a) de que quieres abandonar el intento anterior?';
+
+  @override
   String get msgConfirmResignation =>
       '¿Estás seguro(a) de que quieres abandonar?';
 
@@ -272,6 +282,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get myMistakes => 'Mis errores';
 
   @override
+  String nTasks(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString problemas',
+      one: '1 problema',
+      zero: 'No hay problemas',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String nTasksAvailable(int count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -286,6 +312,9 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get newBestResult => 'Nuevo record!';
 
   @override
   String get no => 'No';
@@ -1278,33 +1307,4 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get yes => 'Sí';
-
-  @override
-  String get msgConfirmDeleteCollectionProgress =>
-      '¿Estás seguro(a) de que quieres abandonar el intento anterior?';
-
-  @override
-  String nTasks(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$countString problemas',
-      one: '1 problema',
-      zero: 'No hay problemas',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get bestResult => 'Mejor resultado';
-
-  @override
-  String get newBestResult => 'Nuevo record!';
-
-  @override
-  String get accuracy => 'Precisión';
 }
