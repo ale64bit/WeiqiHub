@@ -6,6 +6,7 @@ import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
+import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/grid.dart';
 import 'package:wqhub/wq/rank.dart';
@@ -160,6 +161,9 @@ class OGSGame extends Game {
 
       case 'move':
         _handleMove(message['data'] as Map<String, dynamic>);
+
+      case 'clock':
+        _handleClock(message['data'] as Map<String, dynamic>);
 
       default:
         _logger.fine('Unhandled game event for game $id: $suffix');
@@ -327,6 +331,63 @@ class OGSGame extends Game {
       _logger.warning(
           'Error handling removed stones accepted for game $id: $error');
     }
+  }
+
+  void _handleClock(Map<String, dynamic> data) {
+    _logger.fine('Received clock update for game $id');
+
+    try {
+      final currentPlayer = data['current_player'] as int?;
+      final blackPlayerId = data['black_player_id'] as int?;
+      final whitePlayerId = data['white_player_id'] as int?;
+      final blackTimeData = data['black_time'] as Map<String, dynamic>?;
+      final whiteTimeData = data['white_time'] as Map<String, dynamic>?;
+
+      // Increment tick ID to signal time update
+      final currentBlackTime = blackTime.value;
+      final currentWhiteTime = whiteTime.value;
+
+      if (blackTimeData != null) {
+        final timeState = _parseOGSTimeData(blackTimeData);
+        // Use current tick ID + 1 if this is the current player, otherwise keep same tick ID
+        final isCurrentPlayer = currentPlayer == blackPlayerId;
+        final tickId =
+            isCurrentPlayer ? currentBlackTime.$1 + 1 : currentBlackTime.$1;
+        blackTime.value = (tickId, timeState);
+      }
+
+      if (whiteTimeData != null) {
+        final timeState = _parseOGSTimeData(whiteTimeData);
+        // Use current tick ID + 1 if this is the current player, otherwise keep same tick ID
+        final isCurrentPlayer = currentPlayer == whitePlayerId;
+        final tickId =
+            isCurrentPlayer ? currentWhiteTime.$1 + 1 : currentWhiteTime.$1;
+        whiteTime.value = (tickId, timeState);
+      }
+
+      _logger.fine('Updated clock for game $id: current_player=$currentPlayer');
+    } catch (error) {
+      _logger.warning('Error handling clock update for game $id: $error');
+    }
+  }
+
+  /// Helper function to safely convert dynamic value to double
+  static Duration _parseSeconds(dynamic value) {
+    if (value is double) return Duration(milliseconds: (value * 1000).toInt());
+    if (value is int) return Duration(seconds: value);
+    return Duration.zero;
+  }
+
+  TimeState _parseOGSTimeData(Map<String, dynamic> timeData) {
+    final thinkingTime = _parseSeconds(timeData['thinking_time']);
+    final periods = timeData['periods'] as int? ?? 0;
+    final periodTime = _parseSeconds(timeData['period_time']);
+
+    return TimeState(
+      mainTimeLeft: thinkingTime,
+      periodTimeLeft: periodTime,
+      periodCount: periods,
+    );
   }
 
   /// Calculate territory ownership and score from OGS ownership data
