@@ -106,6 +106,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @accuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get accuracy;
+
   /// No description provided for @aiReferee.
   ///
   /// In en, this message translates to:
@@ -153,6 +159,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Behaviour'**
   String get behaviour;
+
+  /// No description provided for @bestResult.
+  ///
+  /// In en, this message translates to:
+  /// **'Best result'**
+  String get bestResult;
 
   /// No description provided for @board.
   ///
@@ -496,6 +508,12 @@ abstract class AppLocalizations {
   /// **'Forced counting cannot be used yet'**
   String get msgCannotUseForcedCountingYet;
 
+  /// No description provided for @msgConfirmDeleteCollectionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure that you want to delete the previous attempt?'**
+  String get msgConfirmDeleteCollectionProgress;
+
   /// No description provided for @msgConfirmResignation.
   ///
   /// In en, this message translates to:
@@ -580,11 +598,23 @@ abstract class AppLocalizations {
   /// **'My mistakes'**
   String get myMistakes;
 
+  /// No description provided for @nTasks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No tasks} =1{1 task} other{{count} tasks}}'**
+  String nTasks(int count);
+
   /// No description provided for @nTasksAvailable.
   ///
   /// In en, this message translates to:
   /// **'{count, plural, =0{No tasks available} =1{1 task available} other{{count} tasks available}}'**
   String nTasksAvailable(int count);
+
+  /// No description provided for @newBestResult.
+  ///
+  /// In en, this message translates to:
+  /// **'New best!'**
+  String get newBestResult;
 
   /// No description provided for @no.
   ///
@@ -2517,36 +2547,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yes'**
   String get yes;
-
-  /// No description provided for @msgConfirmDeleteCollectionProgress.
-  ///
-  /// In en, this message translates to:
-  /// **'Are you sure that you want to delete the previous attempt?'**
-  String get msgConfirmDeleteCollectionProgress;
-
-  /// No description provided for @nTasks.
-  ///
-  /// In en, this message translates to:
-  /// **'{count, plural, =0{No tasks} =1{1 task} other{{count} tasks}}'**
-  String nTasks(int count);
-
-  /// No description provided for @bestResult.
-  ///
-  /// In en, this message translates to:
-  /// **'Best result'**
-  String get bestResult;
-
-  /// No description provided for @newBestResult.
-  ///
-  /// In en, this message translates to:
-  /// **'New best!'**
-  String get newBestResult;
-
-  /// No description provided for @accuracy.
-  ///
-  /// In en, this message translates to:
-  /// **'Accuracy'**
-  String get accuracy;
 }
 
 class _AppLocalizationsDelegate

@@ -12,6 +12,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get about => 'About';
 
   @override
+  String get accuracy => 'Accuracy';
+
+  @override
   String get aiReferee => 'AI referee';
 
   @override
@@ -35,6 +38,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get behaviour => 'Behaviour';
+
+  @override
+  String get bestResult => 'Best result';
 
   @override
   String get board => 'Board';
@@ -219,6 +225,10 @@ class AppLocalizationsZh extends AppLocalizations {
       'Forced counting cannot be used yet';
 
   @override
+  String get msgConfirmDeleteCollectionProgress =>
+      'Are you sure that you want to delete the previous attempt?';
+
+  @override
   String get msgConfirmResignation => 'Are you sure that you want to resign?';
 
   @override
@@ -268,6 +278,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get myMistakes => 'My mistakes';
 
   @override
+  String nTasks(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString tasks',
+      one: '1 task',
+      zero: 'No tasks',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String nTasksAvailable(int count) {
     final intl.NumberFormat countNumberFormat =
         intl.NumberFormat.decimalPattern(localeName);
@@ -282,6 +308,9 @@ class AppLocalizationsZh extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get newBestResult => 'New best!';
 
   @override
   String get no => 'No';
@@ -1255,33 +1284,4 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get yes => 'Yes';
-
-  @override
-  String get msgConfirmDeleteCollectionProgress =>
-      'Are you sure that you want to delete the previous attempt?';
-
-  @override
-  String nTasks(int count) {
-    final intl.NumberFormat countNumberFormat =
-        intl.NumberFormat.decimalPattern(localeName);
-    final String countString = countNumberFormat.format(count);
-
-    String _temp0 = intl.Intl.pluralLogic(
-      count,
-      locale: localeName,
-      other: '$countString tasks',
-      one: '1 task',
-      zero: 'No tasks',
-    );
-    return '$_temp0';
-  }
-
-  @override
-  String get bestResult => 'Best result';
-
-  @override
-  String get newBestResult => 'New best!';
-
-  @override
-  String get accuracy => 'Accuracy';
 }
