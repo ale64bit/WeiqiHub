@@ -497,12 +497,12 @@ class StatsDB {
   }
 
   List<ExamEntry> examsSince(DateTime since) {
-    final date = DateFormat('yyyy-MM-dd HH:mm:ss').format(since);
-    final resultSet = _examsSince.select([date]);
+    final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final resultSet = _examsSince.select([dateFormat.format(since.toUtc())]);
     final entries = <ExamEntry>[];
     for (final row in resultSet) {
       entries.add(ExamEntry(
-        date: DateTime.parse(row['date'] as String),
+        date: dateFormat.parseUTC(row['date'] as String).toLocal(),
         type: row['type'] as String,
         rankRange: RankRange(
           from: Rank.values[row['from_rank'] as int],
@@ -518,8 +518,9 @@ class StatsDB {
   }
 
   (int, int) taskDailyStatsSince(DateTime since) {
-    final date = DateFormat('yyyy-MM-dd').format(since);
-    final resultSet = _taskDailyStatsSince.select([date]);
+    final dateFormat = DateFormat('yyyy-MM-dd');
+    final resultSet =
+        _taskDailyStatsSince.select([dateFormat.format(since.toUtc())]);
     for (final row in resultSet) {
       return (
         row['total_correct_count'] as int,
