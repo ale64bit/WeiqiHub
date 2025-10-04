@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/wq/rank.dart';
 
 class SaveSgfFormResult {
@@ -65,6 +66,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Container(
       margin: EdgeInsets.all(8),
       child: Form(
@@ -78,7 +80,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                     controller: _blackNickController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                      hintText: 'Black player',
+                      hintText: loc.black,
                     ),
                   ),
                 ),
@@ -89,7 +91,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                     textAlign: TextAlign.center,
                     controller: _blackRankController,
                     requestFocusOnTap: true,
-                    label: const Text('Rank'),
+                    label: Text(loc.rank),
                     onSelected: (rank) {
                       setState(() {
                         blackRank = rank;
@@ -112,7 +114,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                     controller: _whiteNickController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                      hintText: 'White player',
+                      hintText: loc.white,
                     ),
                   ),
                 ),
@@ -123,7 +125,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                     textAlign: TextAlign.center,
                     controller: _whiteRankController,
                     requestFocusOnTap: true,
-                    label: const Text('Rank'),
+                    label: Text(loc.rank),
                     onSelected: (rank) {
                       setState(() {
                         whiteRank = rank;
@@ -143,7 +145,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
               controller: _rulesController,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
-                hintText: 'Rules (e.g. chinese)',
+                hintText: '${loc.rules} (e.g. chinese)',
               ),
             ),
             TextFormField(
@@ -158,14 +160,14 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                 return null;
               },
               decoration: InputDecoration(
-                hintText: 'Komi (e.g. 6.5)',
+                hintText: '${loc.komi} (e.g. 6.5)',
               ),
             ),
             TextFormField(
               controller: _resultController,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
-                hintText: 'Game result (e.g. B+R)',
+                hintText: '${loc.result} (e.g. B+R)',
               ),
             ),
             SizedBox(height: 8),
@@ -185,7 +187,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                       ));
                 }
               },
-              child: const Text('Save'),
+              child: Text(loc.save),
             ),
           ],
         ),

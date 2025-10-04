@@ -10,6 +10,7 @@
   "autoMatch": "Buscar partida",
   "behaviour": "Comportamiento",
   "bestResult": "Mejor resultado",
+  "black": "Negras",
   "board": "Tablero",
   "boardSize": "Tamaño del tablero",
   "boardTheme": "Tema del tablero",
@@ -181,6 +182,7 @@
   "rulesChinese": "Chinas",
   "rulesJapanese": "Japonesas",
   "rulesKorean": "Coreanas",
+  "save": "Guardar",
   "saveSGF": "Guardar SGF",
   "seconds": "Segundos",
   "settings": "Preferencias",
@@ -474,5 +476,6 @@
   "username": "Nombre de usuario",
   "voice": "Voz",
   "week": "Semana",
+  "white": "Blancas",
   "yes": "Sí"
 }

@@ -43,6 +43,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bestResult => 'Mejor resultado';
 
   @override
+  String get black => 'Negras';
+
+  @override
   String get board => 'Tablero';
 
   @override
@@ -405,6 +408,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rulesKorean => 'Coreanas';
+
+  @override
+  String get save => 'Guardar';
 
   @override
   String get saveSGF => 'Guardar SGF';
@@ -1304,6 +1310,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get week => 'Semana';
+
+  @override
+  String get white => 'Blancas';
 
   @override
   String get yes => 'Sí';

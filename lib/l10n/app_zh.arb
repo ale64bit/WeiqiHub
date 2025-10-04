@@ -10,6 +10,7 @@
   "autoMatch": "Auto-Match",
   "behaviour": "Behaviour",
   "bestResult": "Best result",
+  "black": "Black",
   "board": "Board",
   "boardSize": "Board size",
   "boardTheme": "Board theme",
@@ -181,6 +182,7 @@
   "rulesChinese": "Chinese",
   "rulesJapanese": "Japanese",
   "rulesKorean": "Korean",
+  "save": "Save",
   "saveSGF": "Save SGF",
   "seconds": "Seconds",
   "settings": "Settings",
@@ -474,5 +476,6 @@
   "username": "Username",
   "voice": "Voice",
   "week": "Week",
+  "white": "White",
   "yes": "Yes"
 }
