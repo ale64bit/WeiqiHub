@@ -286,11 +286,9 @@ class OGSGameClient extends GameClient {
         return null;
       }
 
-      // Get the first ongoing game
       final gameData = results.first;
       final gameId = gameData['id'].toString();
 
-      // Use the getGameFromId method to create the game instance
       return await getGameFromId(gameId);
     } catch (e) {
       _logger.warning('Failed to get ongoing game: $e');
@@ -305,7 +303,6 @@ class OGSGameClient extends GameClient {
       throw Exception('Not logged in');
     }
 
-    // Fetch game data from OGS API
     final response = await _httpClient.get(
       Uri.parse('$serverUrl/api/v1/games/$gameId'),
       headers: {
@@ -357,7 +354,6 @@ class OGSGameClient extends GameClient {
       throw Exception('Unable to determine player color for game $gameId');
     }
 
-    // Parse move history from game data
     final previousMoves = _parseMovesFromGameData(gameData);
 
     return OGSGame(
