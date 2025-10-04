@@ -249,7 +249,129 @@ class OGSGameClient extends GameClient {
 
   @override
   Future<Game?> ongoingGame() async {
-    return null;
+    try {
+      // Get the current user ID for the games API endpoint
+      final userInfo = _userInfo.value;
+      if (userInfo == null) {
+        throw Exception('Not logged in');
+      }
+
+      // Query: all ongoing games where the user is a player and "time per move" is less than 1 hour
+      final response = await _httpClient.get(
+        Uri.parse('$serverUrl/api/v1/players/${userInfo.userId}/games/')
+            .replace(
+          queryParameters: {
+            'page_size': '10',
+            'page': '1',
+            'source': 'play',
+            'ended__isnull': 'true',
+            'time_per_move__lt': '3600',
+          },
+        ),
+        headers: {
+          'User-Agent': _userAgent,
+          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to fetch ongoing games: ${response.statusCode}');
+      }
+
+      final data = jsonDecode(response.body);
+      final List<dynamic> results = data['results'] ?? [];
+
+      if (results.isEmpty) {
+        return null;
+      }
+
+      // Get the first ongoing game
+      final gameData = results.first;
+      final gameId = gameData['id'].toString();
+
+      // Use the getGameFromId method to create the game instance
+      return await getGameFromId(gameId);
+    } catch (e) {
+      _logger.warning('Failed to get ongoing game: $e');
+      return null;
+    }
+  }
+
+  /// Creates an OGSGame instance by fetching game data from the OGS API
+  Future<Game> getGameFromId(String gameId) async {
+    final userInfo = _userInfo.value;
+    if (userInfo == null) {
+      throw Exception('Not logged in');
+    }
+
+    // Fetch game data from OGS API
+    final response = await _httpClient.get(
+      Uri.parse('$serverUrl/api/v1/games/$gameId'),
+      headers: {
+        'User-Agent': _userAgent,
+        if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to fetch game details: ${response.statusCode}');
+    }
+
+    final gameData =
+        jsonDecode(response.body)['gamedata'] as Map<String, dynamic>;
+
+    // Parse game information
+    final boardSize = gameData['width'] as int? ?? 19;
+    final handicap = gameData['handicap'] as int? ?? 0;
+    final komi = (gameData['komi'] as num?)?.toDouble() ?? 6.5;
+
+    // Parse rules
+    final rulesString = gameData['rules'] as String? ?? 'japanese';
+    final rules = switch (rulesString.toLowerCase()) {
+      'chinese' => Rules.chinese,
+      'korean' => Rules.korean,
+      _ => Rules.japanese,
+    };
+
+    // Parse time control
+    final timeControlData = gameData['time_control'] as Map<String, dynamic>?;
+    final timeControl = TimeControl(
+      mainTime: Duration(seconds: timeControlData?['main_time'] as int? ?? 300),
+      timePerPeriod:
+          Duration(seconds: timeControlData?['period_time'] as int? ?? 30),
+      periodCount: timeControlData?['periods'] as int? ?? 5,
+    );
+
+    // Determine our color
+    final players = gameData['players'] as Map<String, dynamic>?;
+    final blackPlayerId = players?['black']?['id']?.toString();
+    final whitePlayerId = players?['white']?['id']?.toString();
+
+    wq.Color myColor;
+    if (userInfo.userId == blackPlayerId) {
+      myColor = wq.Color.black;
+    } else if (userInfo.userId == whitePlayerId) {
+      myColor = wq.Color.white;
+    } else {
+      throw Exception('Unable to determine player color for game $gameId');
+    }
+
+    // Parse move history from game data
+    final previousMoves = _parseMovesFromGameData(gameData);
+
+    return OGSGame(
+      id: gameId,
+      boardSize: boardSize,
+      rules: rules,
+      handicap: handicap,
+      komi: komi,
+      myColor: myColor,
+      timeControl: timeControl,
+      previousMoves: previousMoves,
+      webSocketManager: _webSocketManager,
+      myUserId: userInfo.userId,
+    );
   }
 
   @override
@@ -296,44 +418,8 @@ class OGSGameClient extends GameClient {
       _messageSubscription = null;
       _currentAutomatchUuid = null;
 
-      final response = await _httpClient.get(
-        Uri.parse('$serverUrl/api/v1/games/$gameId'),
-        headers: {
-          'User-Agent': _userAgent,
-          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
-        },
-      );
-
-      Map<String, dynamic> gameData = {};
-      if (response.statusCode == 200) {
-        gameData = jsonDecode(response.body)['gamedata'];
-      } else {
-        throw Exception('Failed to fetch game details: ${response.statusCode}');
-      }
-
       try {
-        final game = OGSGame(
-          id: gameId.toString(),
-          boardSize: gameData['width'] as int? ?? 19,
-          rules: Rules.japanese,
-          handicap: gameData['handicap'] as int? ?? 0,
-          komi: gameData['komi'] as double? ?? 6.5,
-          myColor: gameData['players']['black']['id'].toString() ==
-                  _userInfo.value?.userId
-              ? wq.Color.black
-              : wq.Color.white,
-          timeControl: TimeControl(
-            mainTime: Duration(
-                seconds: gameData['time_control']?['main_time'] as int? ?? 300),
-            timePerPeriod: Duration(
-                seconds:
-                    gameData['time_control']?['period_time'] as int? ?? 30),
-            periodCount: gameData['time_control']?['periods'] as int? ?? 5,
-          ),
-          previousMoves: [],
-          webSocketManager: _webSocketManager,
-          myUserId: _userInfo.value?.userId ?? '',
-        );
+        final game = await getGameFromId(gameId.toString());
 
         // TODO: there's chance of a race where the automatch may have been created, but
         // the user has already cancelled it.  We should think about how to
@@ -342,6 +428,8 @@ class OGSGameClient extends GameClient {
         _automatchCompleter = null;
       } catch (e) {
         _logger.warning("Error creating game: $e");
+        _automatchCompleter?.completeError(e);
+        _automatchCompleter = null;
       }
     }
   }
@@ -498,6 +586,34 @@ class OGSGameClient extends GameClient {
       return Rank.values[clampedRankNum];
     }
     return Rank.k6; // Default
+  }
+
+  List<wq.Move> _parseMovesFromGameData(Map<String, dynamic> gameData) {
+    final moves = <wq.Move>[];
+
+    final movesData = gameData['moves'] as List<dynamic>?;
+    if (movesData == null) {
+      return moves;
+    }
+
+    // TODO: Handle handicap games properly - handicap stones are placed first (black),
+    // then normal alternating play starts with white. This requires careful consideration
+    // of how OGS stores handicap stones vs regular moves.
+
+    for (int i = 0; i < movesData.length; i++) {
+      final moveData = movesData[i];
+
+      final color = i % 2 == 0 ? wq.Color.black : wq.Color.white;
+
+      if (moveData is List && moveData.length >= 2) {
+        // OGS format: [col, row, time] where -1,-1 is pass
+        final col = moveData[0] as int;
+        final row = moveData[1] as int;
+        moves.add((col: color, p: (row, col)));
+      }
+    }
+
+    return moves;
   }
 
   void dispose() {
