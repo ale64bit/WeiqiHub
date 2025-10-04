@@ -14,15 +14,18 @@ class TagCompletionRate extends StatefulWidget {
 }
 
 class _TagCompletionRateState extends PopAwareState<TagCompletionRate> {
-  late final Future<int> completionRateFut;
+  Future<int>? completionRateFut;
 
   @override
   void initState() {
-    completionRateFut = Future(() {
-      final (total, passed) = compute(context, widget.tag);
-      return (100 * passed / total).floor();
-    });
+    _updateFut();
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateFut();
   }
 
   @override
@@ -54,5 +57,12 @@ class _TagCompletionRateState extends PopAwareState<TagCompletionRate> {
       passed += p;
     }
     return (total, passed);
+  }
+
+  _updateFut() {
+    completionRateFut = Future(() {
+      final (total, passed) = compute(context, widget.tag);
+      return (100 * passed / total).floor();
+    });
   }
 }
