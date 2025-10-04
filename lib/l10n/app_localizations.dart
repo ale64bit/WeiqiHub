@@ -166,6 +166,12 @@ abstract class AppLocalizations {
   /// **'Best result'**
   String get bestResult;
 
+  /// No description provided for @black.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get black;
+
   /// No description provided for @board.
   ///
   /// In en, this message translates to:
@@ -783,6 +789,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Korean'**
   String get rulesKorean;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
 
   /// No description provided for @saveSGF.
   ///
@@ -2541,6 +2553,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Week'**
   String get week;
+
+  /// No description provided for @white.
+  ///
+  /// In en, this message translates to:
+  /// **'White'**
+  String get white;
 
   /// No description provided for @yes.
   ///

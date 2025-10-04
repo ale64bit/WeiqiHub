@@ -43,6 +43,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bestResult => 'Best result';
 
   @override
+  String get black => 'Black';
+
+  @override
   String get board => 'Board';
 
   @override
@@ -401,6 +404,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get rulesKorean => 'Korean';
+
+  @override
+  String get save => 'Save';
 
   @override
   String get saveSGF => 'Save SGF';
@@ -1281,6 +1287,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get week => 'Week';
+
+  @override
+  String get white => 'White';
 
   @override
   String get yes => 'Yes';
