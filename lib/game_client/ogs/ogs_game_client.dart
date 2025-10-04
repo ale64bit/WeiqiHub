@@ -324,8 +324,8 @@ class OGSGameClient extends GameClient {
     final komi = (gameData['komi'] as num?)?.toDouble() ?? 6.5;
 
     // Parse rules
-    final rulesString = gameData['rules'] as String? ?? 'japanese';
-    final rules = switch (rulesString.toLowerCase()) {
+    final rulesString = gameData['rules'] as String?;
+    final rules = switch (rulesString?.toLowerCase()) {
       'chinese' => Rules.chinese,
       'korean' => Rules.korean,
       _ => Rules.japanese,
@@ -599,7 +599,7 @@ class OGSGameClient extends GameClient {
     for (int i = 0; i < movesData.length; i++) {
       final moveData = movesData[i];
 
-      final color = i % 2 == 0 ? wq.Color.black : wq.Color.white;
+      final color = wq.Color.values[i % 2];
 
       if (moveData is List && moveData.length >= 2) {
         // OGS format: [col, row, time] where -1,-1 is pass
