@@ -337,35 +337,21 @@ class OGSGame extends Game {
     _logger.fine('Received clock update for game $id');
 
     try {
-      final currentPlayer = data['current_player'] as int?;
-      final blackPlayerId = data['black_player_id'] as int?;
-      final whitePlayerId = data['white_player_id'] as int?;
       final blackTimeData = data['black_time'] as Map<String, dynamic>?;
       final whiteTimeData = data['white_time'] as Map<String, dynamic>?;
 
-      // Increment tick ID to signal time update
-      final currentBlackTime = blackTime.value;
-      final currentWhiteTime = whiteTime.value;
-
       if (blackTimeData != null) {
-        final timeState = _parseOGSTimeData(blackTimeData);
-        // Use current tick ID + 1 if this is the current player, otherwise keep same tick ID
-        final isCurrentPlayer = currentPlayer == blackPlayerId;
-        final tickId =
-            isCurrentPlayer ? currentBlackTime.$1 + 1 : currentBlackTime.$1;
-        blackTime.value = (tickId, timeState);
+        blackTime.value =
+            (blackTime.value.$1 + 1, _parseOGSTimeData(blackTimeData));
       }
 
       if (whiteTimeData != null) {
-        final timeState = _parseOGSTimeData(whiteTimeData);
-        // Use current tick ID + 1 if this is the current player, otherwise keep same tick ID
-        final isCurrentPlayer = currentPlayer == whitePlayerId;
-        final tickId =
-            isCurrentPlayer ? currentWhiteTime.$1 + 1 : currentWhiteTime.$1;
-        whiteTime.value = (tickId, timeState);
+        whiteTime.value =
+            (whiteTime.value.$1 + 1, _parseOGSTimeData(whiteTimeData));
       }
 
-      _logger.fine('Updated clock for game $id: current_player=$currentPlayer');
+      _logger.fine(
+          'Updated clock for game $id: blackTime=${blackTime.value}, whiteTime=${whiteTime.value}');
     } catch (error) {
       _logger.warning('Error handling clock update for game $id: $error');
     }
