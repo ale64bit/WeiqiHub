@@ -63,7 +63,7 @@ class CustomExamPage extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
     return ExamPage(
       title: loc.customExam,
-      examType: 'Custom',
+      examEvent: ExamEvent(type: ExamType.custom),
       rankRange: rankRange,
       taskCount: taskCount,
       timePerTask: timePerTask,

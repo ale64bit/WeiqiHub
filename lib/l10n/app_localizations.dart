@@ -2458,6 +2458,12 @@ abstract class AppLocalizations {
   /// **'Topic'**
   String get topic;
 
+  /// No description provided for @topicExam.
+  ///
+  /// In en, this message translates to:
+  /// **'Topic exam'**
+  String get topicExam;
+
   /// No description provided for @topics.
   ///
   /// In en, this message translates to:

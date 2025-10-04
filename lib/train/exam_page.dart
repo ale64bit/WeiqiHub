@@ -24,7 +24,7 @@ class ExamPage extends StatefulWidget {
   const ExamPage({
     super.key,
     required this.title,
-    required this.examType,
+    required this.examEvent,
     required this.rankRange,
     required this.taskCount,
     required this.timePerTask,
@@ -40,7 +40,7 @@ class ExamPage extends StatefulWidget {
   });
 
   final String title;
-  final String examType;
+  final ExamEvent examEvent;
   final RankRange rankRange;
   final int taskCount;
   final Duration timePerTask;
@@ -168,7 +168,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                     final curCount =
                         _taskNumber - (solveStatus == null ? 1 : 0);
                     StatsDB().addExamAttempt(
-                        widget.examType,
+                        widget.examEvent,
                         widget.rankRange,
                         curCount - _mistakeCount,
                         _mistakeCount + widget.taskCount - curCount,
@@ -213,7 +213,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                         final curCount =
                             _taskNumber - (solveStatus == null ? 1 : 0);
                         StatsDB().addExamAttempt(
-                            widget.examType,
+                            widget.examEvent,
                             widget.rankRange,
                             curCount - _mistakeCount,
                             _mistakeCount + widget.taskCount - curCount,
@@ -284,7 +284,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
       }
       if (widget.collectStats) {
         StatsDB().addExamAttempt(
-            widget.examType,
+            widget.examEvent,
             widget.rankRange,
             widget.taskCount - _mistakeCount,
             _mistakeCount,

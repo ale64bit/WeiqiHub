@@ -120,7 +120,7 @@ class _TimePeriodTabState extends State<_TimePeriodTab> {
                     DataRow(
                       cells: <DataCell>[
                         DataCell(Text(widget.dateFormat.format(entry.date))),
-                        DataCell(Text(entry.type,
+                        DataCell(Text(entry.event.toLocalizedString(loc),
                             softWrap: false, overflow: TextOverflow.fade)),
                         DataCell(Text(entry.rankRange.toString())),
                         DataCell(

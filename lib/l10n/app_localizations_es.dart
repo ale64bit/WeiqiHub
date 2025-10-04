@@ -1263,6 +1263,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get topic => 'Tema';
 
   @override
+  String get topicExam => 'Examen temático';
+
+  @override
   String get topics => 'Temas';
 
   @override

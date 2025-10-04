@@ -4,6 +4,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
+import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/exam_page.dart';
 import 'package:wqhub/train/grading_exam_selection_page.dart';
 import 'package:wqhub/train/rank_range.dart';
@@ -43,7 +44,7 @@ class GradingExamPage extends StatelessWidget {
     final nextRank = Rank.values[min(rank.index + 1, Rank.p10.index)];
     return ExamPage(
       title: loc.gradingExam,
-      examType: 'Grading',
+      examEvent: ExamEvent(type: ExamType.grading),
       rankRange: RankRange.single(rank),
       taskCount: taskCount,
       timePerTask: timePerTask,

@@ -1240,6 +1240,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get topic => 'Topic';
 
   @override
+  String get topicExam => 'Topic exam';
+
+  @override
   String get topics => 'Topics';
 
   @override
