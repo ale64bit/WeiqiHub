@@ -333,6 +333,7 @@ class OGSGameClient extends GameClient {
           previousMoves: [],
           webSocketManager: _webSocketManager,
           myUserId: _userInfo.value?.userId ?? '',
+          jwtToken: _jwtToken ?? '',
         );
 
         // TODO: there's chance of a race where the automatch may have been created, but

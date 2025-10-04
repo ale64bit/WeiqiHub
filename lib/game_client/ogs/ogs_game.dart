@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
@@ -16,6 +18,7 @@ class OGSGame extends Game {
   final Logger _logger = Logger('OGSGame');
   final OGSWebSocketManager _webSocketManager;
   final String _myUserId;
+  final String _jwtToken;
   late final StreamController<wq.Move?> _moveController;
   late final StreamController<CountingResult> _countingResultController;
   late final Completer<GameResult> _resultCompleter;
@@ -38,8 +41,10 @@ class OGSGame extends Game {
     required super.previousMoves,
     required OGSWebSocketManager webSocketManager,
     required String myUserId,
+    required String jwtToken,
   })  : _webSocketManager = webSocketManager,
-        _myUserId = myUserId {
+        _myUserId = myUserId,
+        _jwtToken = jwtToken {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
     _countingResultController = StreamController<CountingResult>.broadcast();
@@ -82,8 +87,41 @@ class OGSGame extends Game {
   Future<void> aiReferee() => Future.value();
 
   @override
-  Future<AutomaticCountingInfo> automaticCounting() =>
-      Future.value(AutomaticCountingInfo(timeout: Duration.zero));
+  Future<AutomaticCountingInfo> automaticCounting() async {
+    _logger.info('Starting automatic counting for game $id');
+
+    try {
+      // Get current board state
+      final boardState = _getCurrentBoardState();
+
+      // Determine whose turn it is (for player_to_move)
+      final nextToMove =
+          _allMoves.length % 2 == 0 ? wq.Color.black : wq.Color.white;
+      final playerToMove = nextToMove == wq.Color.black ? 'black' : 'white';
+
+      // Call AI server for scoring
+      final aiResponse = await _callAIServer(boardState, playerToMove);
+
+      if (aiResponse != null) {
+        // Store the removed stones and generate counting result
+        final removedStones =
+            aiResponse['autoscored_removed'] as List<dynamic>? ?? [];
+        _storeRemovedStones(removedStones);
+
+        // Generate counting result from AI response
+        final countingResult = _generateCountingResultFromAI(aiResponse);
+        _countingResultController.add(countingResult);
+
+        _logger.info('Automatic counting completed successfully for game $id');
+        return AutomaticCountingInfo(timeout: Duration(seconds: 30));
+      } else {
+        throw Exception('AI server did not return valid scoring data');
+      }
+    } catch (error) {
+      _logger.warning('Automatic counting failed for game $id: $error');
+      rethrow;
+    }
+  }
 
   @override
   Stream<bool> automaticCountingResponses() => Stream.empty();
@@ -381,6 +419,130 @@ class OGSGame extends Game {
       winner: winner,
       scoreLead: scoreLead,
       ownership: ownership,
+    );
+  }
+
+  /// Convert current game state to 2D array format expected by AI server
+  /// 0 = empty, 1 = black, 2 = white
+  List<List<int>> _getCurrentBoardState() {
+    final boardState = BoardState(size: boardSize);
+
+    // Replay all moves to get current board state
+    for (final move in _allMoves) {
+      boardState.move(move);
+    }
+
+    // Convert to 2D array format
+    final board = List.generate(
+        boardSize,
+        (row) => List.generate(boardSize, (col) {
+              final stone = boardState[(row, col)];
+              if (stone == null) return 0;
+              return stone == wq.Color.black ? 1 : 2;
+            }));
+
+    return board;
+  }
+
+  /// Make HTTP request to OGS AI server for automatic scoring
+  Future<Map<String, dynamic>?> _callAIServer(
+      List<List<int>> boardState, String playerToMove) async {
+    _logger.fine('Calling AI server for game $id');
+
+    const aiHost = 'https://beta-ai.online-go.com';
+    final url = Uri.parse('$aiHost/api/score');
+
+    final payload = {
+      'player_to_move': playerToMove,
+      'width': boardSize,
+      'height': boardSize,
+      'rules': 'japanese', // OGS uses Japanese rules
+      'board_state': boardState,
+      'autoscore': true,
+      'jwt': _jwtToken,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'WeiqiHub/1.0',
+        },
+        body: jsonEncode(payload),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        _logger.fine('AI server response received for game $id');
+        return responseData;
+      } else {
+        _logger.warning(
+            'AI server request failed for game $id: ${response.statusCode} ${response.body}');
+        return null;
+      }
+    } catch (error) {
+      _logger.warning('Error calling AI server for game $id: $error');
+      return null;
+    }
+  }
+
+  /// Store removed stones from AI server response for later acceptance
+  void _storeRemovedStones(List<dynamic> removedStones) {
+    _logger.fine('Storing removed stones for game $id');
+
+    // Convert AI response format to OGS stones string format
+    // AI returns: [{"x":7,"y":2,"removal_reason":"..."}]
+    // OGS expects: comma-separated list of coordinates like "7,2"
+    final stonesList = <String>[];
+    for (final stone in removedStones) {
+      if (stone is Map<String, dynamic>) {
+        final x = stone['x'] as int?;
+        final y = stone['y'] as int?;
+        if (x != null && y != null) {
+          stonesList.add('$x,$y');
+        }
+      }
+    }
+
+    final stonesString = stonesList.join(',');
+    _recentlyRemovedStonesString = stonesString;
+
+    _logger.fine('Stored removed stones for game $id: $stonesString');
+  }
+
+  /// Generate counting result from AI server response
+  CountingResult _generateCountingResultFromAI(
+      Map<String, dynamic> aiResponse) {
+    _logger.fine('Generating counting result from AI response for game $id');
+
+    // Get ownership data from AI response
+    final ownershipData = aiResponse['ownership'] as List<dynamic>?;
+    List<List<wq.Color?>>? ownership;
+
+    if (ownershipData != null) {
+      ownership = generate2D<wq.Color?>(boardSize, (i, j) {
+        final value = (ownershipData[i] as List<dynamic>)[j] as int;
+        return switch (value) {
+          -1 => wq.Color.white,
+          1 => wq.Color.black,
+          _ => null,
+        };
+      });
+    }
+
+    // Calculate score from AI response
+    final score = aiResponse['score'] as double? ?? 0.0;
+    final scoreLead = score.abs();
+    final winner = score > 0 ? wq.Color.black : wq.Color.white;
+
+    _logger.fine(
+        'AI counting result for game $id: Winner=$winner, Lead=$scoreLead');
+
+    return CountingResult(
+      winner: winner,
+      scoreLead: scoreLead,
+      ownership: ownership ?? generate2D<wq.Color?>(boardSize, (i, j) => null),
     );
   }
 
