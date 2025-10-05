@@ -542,6 +542,11 @@ class _GamePageState extends State<GamePage> {
 
     // Send automatic counting command to game client
     widget.game.automaticCounting().then((info) {
+      if (info.timeout == Duration.zero) {
+        // No need to show a dialog if there is no timeout
+        return;
+      }
+
       if (context.mounted) {
         showDialog(
           context: context,

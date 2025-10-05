@@ -113,8 +113,7 @@ class OGSGame extends Game {
         final countingResult = _generateCountingResultFromAI(aiResponse);
         _countingResultController.add(countingResult);
 
-        _logger.info('Automatic counting completed successfully for game $id');
-        return AutomaticCountingInfo(timeout: Duration(seconds: 30));
+        return AutomaticCountingInfo(timeout: Duration.zero);
       } else {
         throw Exception('AI server did not return valid scoring data');
       }
