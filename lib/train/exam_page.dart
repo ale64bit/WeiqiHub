@@ -24,7 +24,7 @@ class ExamPage extends StatefulWidget {
   const ExamPage({
     super.key,
     required this.title,
-    required this.examType,
+    required this.examEvent,
     required this.rankRange,
     required this.taskCount,
     required this.timePerTask,
@@ -40,7 +40,7 @@ class ExamPage extends StatefulWidget {
   });
 
   final String title;
-  final String examType;
+  final ExamEvent examEvent;
   final RankRange rankRange;
   final int taskCount;
   final Duration timePerTask;
@@ -168,7 +168,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                     final curCount =
                         _taskNumber - (solveStatus == null ? 1 : 0);
                     StatsDB().addExamAttempt(
-                        widget.examType,
+                        widget.examEvent,
                         widget.rankRange,
                         curCount - _mistakeCount,
                         _mistakeCount + widget.taskCount - curCount,
@@ -206,15 +206,14 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                   context: context,
                   builder: (context) => ConfirmDialog(
                     title: loc.confirm,
-                    content:
-                        'Are you sure that you want to stop the ${widget.title}?',
+                    content: loc.msgConfirmStopEvent(widget.title),
                     onYes: () {
                       widget.onFail();
                       if (widget.collectStats) {
                         final curCount =
                             _taskNumber - (solveStatus == null ? 1 : 0);
                         StatsDB().addExamAttempt(
-                            widget.examType,
+                            widget.examEvent,
                             widget.rankRange,
                             curCount - _mistakeCount,
                             _mistakeCount + widget.taskCount - curCount,
@@ -285,7 +284,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
       }
       if (widget.collectStats) {
         StatsDB().addExamAttempt(
-            widget.examType,
+            widget.examEvent,
             widget.rankRange,
             widget.taskCount - _mistakeCount,
             _mistakeCount,
@@ -413,8 +412,7 @@ class _SideBar extends StatelessWidget {
                       context: context,
                       builder: (context) => ConfirmDialog(
                         title: loc.confirm,
-                        content:
-                            'Are you sure that you want to stop the $title?',
+                        content: loc.msgConfirmStopEvent(title),
                         onYes: onCancelExam,
                         onNo: () {
                           Navigator.pop(context);
@@ -475,30 +473,34 @@ class _ResultDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return AlertDialog(
       title: passed
           ? Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Icon(Icons.verified), const Text('Passed')],
+              children: <Widget>[
+                Icon(Icons.verified),
+                Text(loc.trainingPassed)
+              ],
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Icon(Icons.cancel), const Text('Failed')],
+              children: <Widget>[Icon(Icons.cancel), Text(loc.trainingFailed)],
             ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text('Total time'),
+            title: Text(loc.trainingTotalTime),
             trailing: Text(totalTime.toString().substring(2, 7)),
           ),
           ListTile(
-            title: const Text('Avg time per task'),
+            title: Text(loc.trainingAvgTimePerTask),
             trailing: Text(
                 '${(totalTime.inSeconds / taskCount).toStringAsFixed(1)}s'),
           ),
           ListTile(
-            title: const Text('Mistakes'),
+            title: Text(loc.trainingMistakes),
             trailing: Text('$mistakeCount'),
           ),
         ],
@@ -507,16 +509,16 @@ class _ResultDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: onExit,
-          child: const Text('Exit'),
+          child: Text(loc.exit),
         ),
         TextButton(
           onPressed: onRedo,
-          child: const Text('Redo'),
+          child: Text(loc.taskRedo),
         ),
         if (onNext != null)
           TextButton(
             onPressed: onNext,
-            child: const Text('Next'),
+            child: Text(loc.taskNext),
           ),
       ],
     );

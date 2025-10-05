@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/upsolve_mode.dart';
 
 class TaskActionBar extends StatelessWidget {
@@ -27,6 +28,7 @@ class TaskActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final backButton = Expanded(
       child: IconButton(
         icon: Icon(Icons.undo),
@@ -44,7 +46,7 @@ class TaskActionBar extends StatelessWidget {
               spacing: 8.0,
               children: <Widget>[
                 Icon(Icons.share),
-                const Text('Copy task link'),
+                Text(loc.copyTaskLink),
               ],
             ),
           ),
@@ -56,11 +58,11 @@ class TaskActionBar extends StatelessWidget {
               children: switch (upsolveMode) {
                 UpsolveMode.auto => <Widget>[
                     Icon(Icons.touch_app),
-                    const Text('Try custom moves'),
+                    Text(loc.tryCustomMoves),
                   ],
                 UpsolveMode.manual => <Widget>[
                     Icon(Icons.touch_app),
-                    const Text('Exit try mode'),
+                    Text(loc.exitTryMode),
                   ],
               },
             ),

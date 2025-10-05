@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -6,8 +7,10 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -43,10 +46,58 @@ class TaskStatEntry {
   }
 }
 
+enum ExamType {
+  grading,
+  endgame,
+  custom,
+  topic,
+  legacy;
+}
+
+@immutable
+class ExamEvent {
+  final ExamType type;
+  final TaskTag? tag;
+  final String? raw;
+
+  const ExamEvent({required this.type, this.tag, this.raw});
+
+  ExamEvent.fromJson(Map<String, dynamic> json)
+      : type = ExamType.values[json['type'] as int],
+        tag = _maybeAt(TaskTag.values, json['tag']),
+        raw = null;
+
+  Map<String, dynamic> toJson() => {
+        'type': type.index,
+        if (tag != null) 'tag': tag!.index,
+      };
+
+  @override
+  int get hashCode => Object.hash(type, tag);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+
+    return other is ExamEvent && other.type == type && other.tag == tag;
+  }
+
+  String toLocalizedString(AppLocalizations loc) => switch (type) {
+        ExamType.grading => loc.gradingExam,
+        ExamType.endgame => loc.endgameExam,
+        ExamType.custom => loc.customExam,
+        ExamType.topic => '${loc.topic} (${tag?.toLocalizedString(loc)})',
+        ExamType.legacy => raw!,
+      };
+
+  static T? _maybeAt<T>(List<T> l, dynamic i) => i == null ? null : l[i as int];
+}
+
 @immutable
 class ExamEntry {
   final DateTime date;
-  final String type;
+  final ExamEvent event;
   final RankRange rankRange;
   final int correctCount;
   final int wrongCount;
@@ -55,7 +106,7 @@ class ExamEntry {
 
   const ExamEntry(
       {required this.date,
-      required this.type,
+      required this.event,
       required this.rankRange,
       required this.correctCount,
       required this.wrongCount,
@@ -64,7 +115,7 @@ class ExamEntry {
 
   @override
   int get hashCode => Object.hash(
-      date, type, rankRange, correctCount, wrongCount, passed, duration);
+      date, event, rankRange, correctCount, wrongCount, passed, duration);
 
   @override
   bool operator ==(Object other) {
@@ -73,7 +124,7 @@ class ExamEntry {
 
     return other is ExamEntry &&
         other.date == date &&
-        other.type == type &&
+        other.event == event &&
         other.rankRange == rankRange &&
         other.correctCount == correctCount &&
         other.wrongCount == wrongCount &&
@@ -483,10 +534,10 @@ class StatsDB {
     ]);
   }
 
-  addExamAttempt(String examType, RankRange rankRange, int correctCount,
+  addExamAttempt(ExamEvent examType, RankRange rankRange, int correctCount,
       int wrongCount, bool passed, Duration duration) {
     _addExamAttempt.execute([
-      examType,
+      jsonEncode(examType),
       rankRange.from.index,
       rankRange.to.index,
       correctCount,
@@ -497,13 +548,19 @@ class StatsDB {
   }
 
   List<ExamEntry> examsSince(DateTime since) {
-    final date = DateFormat('yyyy-MM-dd HH:mm:ss').format(since);
-    final resultSet = _examsSince.select([date]);
+    final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final resultSet = _examsSince.select([dateFormat.format(since.toUtc())]);
     final entries = <ExamEntry>[];
     for (final row in resultSet) {
+      var typeStr = row['type'] as String;
+      var event = ExamEvent(type: ExamType.legacy, raw: typeStr);
+      try {
+        final type = jsonDecode(typeStr) as Map<String, dynamic>;
+        event = ExamEvent.fromJson(type);
+      } catch (e) {}
       entries.add(ExamEntry(
-        date: DateTime.parse(row['date'] as String),
-        type: row['type'] as String,
+        date: dateFormat.parseUTC(row['date'] as String).toLocal(),
+        event: event,
         rankRange: RankRange(
           from: Rank.values[row['from_rank'] as int],
           to: Rank.values[row['to_rank'] as int],
@@ -518,8 +575,9 @@ class StatsDB {
   }
 
   (int, int) taskDailyStatsSince(DateTime since) {
-    final date = DateFormat('yyyy-MM-dd').format(since);
-    final resultSet = _taskDailyStatsSince.select([date]);
+    final dateFormat = DateFormat('yyyy-MM-dd');
+    final resultSet =
+        _taskDailyStatsSince.select([dateFormat.format(since.toUtc())]);
     for (final row in resultSet) {
       return (
         row['total_correct_count'] as int,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/blinking_icon.dart';
 import 'package:wqhub/game_client/user_info.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/turn_icon.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
@@ -24,6 +25,7 @@ class PlayerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Card(
       clipBehavior: Clip.hardEdge,
       child: InkWell(
@@ -42,7 +44,7 @@ class PlayerCard extends StatelessWidget {
                     overflow: TextOverflow.fade,
                     softWrap: false,
                   ),
-                  Text('Captures: $captureCount',
+                  Text('${loc.captures}: $captureCount',
                       style: TextTheme.of(context).labelSmall),
                 ],
               ),

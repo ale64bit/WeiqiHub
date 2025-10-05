@@ -49,8 +49,9 @@ class _TagTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return ListTile(
-      title: Text(tag.toString()),
+      title: Text(tag.toLocalizedString(loc)),
       trailing: TagCompletionRate(tag: tag),
       onTap: () {
         Navigator.pushNamed(

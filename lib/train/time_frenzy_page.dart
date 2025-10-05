@@ -159,8 +159,7 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
                   context: context,
                   builder: (context) => ConfirmDialog(
                     title: loc.confirm,
-                    content:
-                        'Are you sure that you want to stop the Time Frenzy?',
+                    content: loc.msgConfirmStopEvent(loc.timeFrenzy),
                     onYes: () =>
                         Navigator.popUntil(context, (route) => route.isFirst),
                     onNo: () => Navigator.pop(context),
@@ -257,8 +256,7 @@ class _SideBar extends StatelessWidget {
                       context: context,
                       builder: (context) => ConfirmDialog(
                         title: loc.confirm,
-                        content:
-                            'Are you sure that you want to stop the Time Frenzy?',
+                        content: loc.msgConfirmStopEvent(loc.timeFrenzy),
                         onYes: () => Navigator.popUntil(
                             context, (route) => route.isFirst),
                         onNo: () => Navigator.pop(context),
@@ -300,7 +298,7 @@ class _ResultDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            title: const Text('Tasks solved'),
+            title: Text(loc.tasksSolved),
             trailing: Text('$solveCount'),
           ),
           ListTile(

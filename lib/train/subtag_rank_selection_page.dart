@@ -1,5 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/exam_rank_card.dart';
@@ -30,11 +31,12 @@ class _SubtagRankSelectionPageState
     extends PopAndWindowClassAwareState<SubtagRankSelectionPage> {
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final rankRanges = widget.subtag.ranks();
     final stats = loadStats(rankRanges);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.subtag.toString()),
+        title: Text(widget.subtag.toLocalizedString(loc)),
       ),
       body: Center(
         child: ConstrainedBox(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
+import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/exam_page.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/subtag_rank_selection_page.dart';
@@ -30,14 +32,15 @@ class TagExamPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     final ranks = tag.ranks();
     final currentIndex = ranks.indexWhere(
         (rank) => rank.from == rankRange.from && rank.to == rankRange.to);
     final hasNextRank = currentIndex != -1 && currentIndex + 1 < ranks.length;
 
     return ExamPage(
-      title: 'Topic Exam',
-      examType: 'Topic (${tag.toString()})',
+      title: loc.topicExam,
+      examEvent: ExamEvent(type: ExamType.topic, tag: tag),
       rankRange: rankRange,
       taskCount: taskCount,
       timePerTask: timePerTask,
