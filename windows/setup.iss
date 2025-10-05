@@ -23,7 +23,6 @@ end;
 [Files]
 Source: "x64/runner/Release/wqhub.exe"; DestDir: "{app}"; DestName: "WeiqiHub.exe"
 Source: "x64/runner/Release/*.dll"; DestDir: "{app}"
-Source: "x64/runner/Release/blobs/libtensorflowlite_c-win.dll"; DestDir: "{app}\blobs"
 Source: "x64/runner/Release/data/*"; DestDir: "{app}/data"; Flags: recursesubdirs
 Source: "{#VCRedistPath}\msvcp140.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#VCRedistPath}\vcruntime140.dll"; DestDir: "{app}"; Flags: ignoreversion
