@@ -636,6 +636,11 @@ class _GamePageState extends State<GamePage> {
     _log.fine(
         '[${_state.name}] got counting result: winner=${res.winner} lead=${res.scoreLead}');
 
+    if (_state == GameState.over) {
+      print('Ignoring counting result received after game over');
+      return;
+    }
+
     // Build the territory annotations, if provided.
     _territoryAnnotations = IMapOfSets.empty();
     for (int i = 0; i < widget.game.boardSize; ++i) {
