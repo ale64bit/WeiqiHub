@@ -31,6 +31,9 @@ class OGSGame extends Game {
   // Track stone removal proposals from our opponent or server
   String _recentlyRemovedStonesString = '';
 
+  // Track the current game phase
+  String _gamePhase = 'play'; // Default to play phase
+
   OGSGame({
     required super.id,
     required super.boardSize,
@@ -90,6 +93,12 @@ class OGSGame extends Game {
   @override
   Future<AutomaticCountingInfo> automaticCounting() async {
     _logger.info('Starting automatic counting for game $id');
+
+    // Only allow AI counting during stone removal phase
+    if (_gamePhase != 'stone removal') {
+      throw Exception(
+          'AI counting is only available during the stone removal phase');
+    }
 
     try {
       // Get current board state
@@ -202,6 +211,9 @@ class OGSGame extends Game {
       case 'clock':
         _handleClock(message['data'] as Map<String, dynamic>);
 
+      case 'phase':
+        _handlePhase(message['data']);
+
       default:
         _logger.fine('Unhandled game event for game $id: $suffix');
     }
@@ -257,6 +269,10 @@ class OGSGame extends Game {
 
       // Update game result if the game has ended
       final phase = gameData['phase'] as String?;
+      if (phase != null && phase != _gamePhase) {
+        _logger.info('Game $id phase updated: $_gamePhase -> $phase');
+        _gamePhase = phase;
+      }
       if (phase == 'finished' && !_resultCompleter.isCompleted) {
         final winner = gameData['winner'] as int?;
         final outcome = gameData['outcome'] as String?;
@@ -398,6 +414,21 @@ class OGSGame extends Game {
           'Updated clock for game $id: blackTime=${blackTime.value}, whiteTime=${whiteTime.value}');
     } catch (error) {
       _logger.warning('Error handling clock update for game $id: $error');
+    }
+  }
+
+  void _handlePhase(dynamic data) {
+    _logger.fine('Received phase update for game $id');
+
+    try {
+      if (data is String) {
+        _logger.info('Game $id phase updated: $_gamePhase -> $data');
+        _gamePhase = data;
+      } else {
+        _logger.warning('Unexpected phase data format for game $id: $data');
+      }
+    } catch (error) {
+      _logger.warning('Error handling phase update for game $id: $error');
     }
   }
 
@@ -546,19 +577,22 @@ class OGSGame extends Game {
 
     // Convert AI response format to OGS stones string format
     // AI returns: [{"x":7,"y":2,"removal_reason":"..."}]
-    // OGS expects: comma-separated list of coordinates like "7,2"
+    // OGS expects: concatenated SGF representations
     final stonesList = <String>[];
     for (final stone in removedStones) {
       if (stone is Map<String, dynamic>) {
         final x = stone['x'] as int?;
         final y = stone['y'] as int?;
         if (x != null && y != null) {
-          stonesList.add('$x,$y');
+          // Convert to SGF coordinate format
+          final point =
+              (y, x); // Note: AI response uses (x,y) but our Point is (row,col)
+          stonesList.add(point.toSgf());
         }
       }
     }
 
-    final stonesString = stonesList.join(',');
+    final stonesString = stonesList.join('');
     _recentlyRemovedStonesString = stonesString;
 
     _logger.fine('Stored removed stones for game $id: $stonesString');
