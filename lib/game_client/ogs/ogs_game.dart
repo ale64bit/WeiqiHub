@@ -354,7 +354,14 @@ class OGSGame extends Game {
     _logger.fine('Received removed stones accepted for game $id');
 
     try {
-      // Check if this is just the server telling us about our own acceptance
+      // A stone acceptance is still sent when both players agreed to end the game
+      if (data['phase'] == 'finished') {
+        _logger
+            .fine('Game already finished, ignoring stone removal acceptance');
+        return;
+      }
+
+      // Check if this is just the server confirming our own acceptance
       final playerId = data['player_id'] as int?;
       if (playerId?.toString() == _myUserId) {
         _logger.fine('Ignoring our own stone removal acceptance');
