@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/local_board_page.dart';
 import 'package:wqhub/main_page.dart';
-import 'package:wqhub/play/ai_game_page.dart';
-import 'package:wqhub/play/ai_lobby_page.dart';
 import 'package:wqhub/play/automatch_page.dart';
 import 'package:wqhub/play/game_page.dart';
 import 'package:wqhub/play/game_record_page.dart';
@@ -45,7 +43,6 @@ final Map<String, WidgetBuilder> routes = {
   // Local board
   LocalBoardPage.routeName: (context) => LocalBoardPage(),
   // Play
-  AILobbyPage.routeName: (context) => AILobbyPage(),
   // Train
   GradingExamSelectionPage.routeName: (context) => GradingExamSelectionPage(),
   EndgameExamSelectionPage.routeName: (context) => EndgameExamSelectionPage(),
@@ -167,19 +164,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             game: args.game,
             gameListener: args.gameListener,
           ));
-    case AIGamePage.routeName:
-      final args = settings.arguments as AIGameRouteArguments;
-      return _mprNoPop(
-        settings,
-        AIGamePage(
-          rules: args.rules,
-          boardSize: args.boardSize,
-          myColor: args.myColor,
-          handicap: args.handicap,
-          komi: args.komi,
-          moveSelection: args.moveSelection,
-        ),
-      );
   }
   assert(false, 'Missing named route implementation: ${settings.name}');
   return null;
