@@ -8,6 +8,7 @@ import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
+import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/grid.dart';
@@ -20,6 +21,7 @@ class OGSGame extends Game {
   final OGSWebSocketManager _webSocketManager;
   final String _myUserId;
   final String _jwtToken;
+  final String _aiServerUrl;
   late final StreamController<wq.Move?> _moveController;
   late final StreamController<CountingResult> _countingResultController;
   late final Completer<GameResult> _resultCompleter;
@@ -29,10 +31,11 @@ class OGSGame extends Game {
   final List<wq.Move> _allMoves = [];
 
   // Track stone removal proposals from our opponent or server
+  // This is formatted as concatenated SGF representations like "ddpq" where "dd" is (3,3) and "pq" is (15,16)
   String _recentlyRemovedStonesString = '';
 
-  // Track the current game phase
-  String _gamePhase = 'play'; // Default to play phase
+  // We track game phase because certain actions are only allowed in specific phases
+  String _gamePhase = 'play';
 
   OGSGame({
     required super.id,
@@ -46,9 +49,11 @@ class OGSGame extends Game {
     required OGSWebSocketManager webSocketManager,
     required String myUserId,
     required String jwtToken,
+    required String aiServerUrl,
   })  : _webSocketManager = webSocketManager,
         _myUserId = myUserId,
-        _jwtToken = jwtToken {
+        _jwtToken = jwtToken,
+        _aiServerUrl = aiServerUrl {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
     _countingResultController = StreamController<CountingResult>.broadcast();
@@ -94,31 +99,23 @@ class OGSGame extends Game {
   Future<AutomaticCountingInfo> automaticCounting() async {
     _logger.info('Starting automatic counting for game $id');
 
-    // Only allow AI counting during stone removal phase
     if (_gamePhase != 'stone removal') {
       throw Exception(
           'AI counting is only available during the stone removal phase');
     }
 
     try {
-      // Get current board state
       final boardState = _getCurrentBoardState();
 
-      // Determine whose turn it is (for player_to_move)
-      final nextToMove =
-          _allMoves.length % 2 == 0 ? wq.Color.black : wq.Color.white;
-      final playerToMove = nextToMove == wq.Color.black ? 'black' : 'white';
+      final playerToMove = _allMoves.length % 2 == 0 ? "black" : "white";
 
-      // Call AI server for scoring
       final aiResponse = await _callAIServer(boardState, playerToMove);
 
       if (aiResponse != null) {
-        // Store the removed stones and generate counting result
         final removedStones =
             aiResponse['autoscored_removed'] as List<dynamic>? ?? [];
-        _storeRemovedStones(removedStones);
+        _storeRemovedStonesFromAIServer(removedStones);
 
-        // Generate counting result from AI response
         final countingResult = _generateCountingResultFromAI(aiResponse);
         _countingResultController.add(countingResult);
 
@@ -369,7 +366,7 @@ class OGSGame extends Game {
     _logger.fine('Received removed stones accepted for game $id');
 
     try {
-      // A stone acceptance is still sent when both players agreed to end the game
+      // A stone acceptance message is still sent when both players agreed to end the game
       if (data['phase'] == 'finished') {
         _logger
             .fine('Game already finished, ignoring stone removal acceptance');
@@ -516,31 +513,36 @@ class OGSGame extends Game {
       boardState.move(move);
     }
 
-    // Convert to 2D array format
-    final board = List.generate(
+    final board = generate2D<int>(
         boardSize,
-        (row) => List.generate(boardSize, (col) {
-              final stone = boardState[(row, col)];
-              if (stone == null) return 0;
-              return stone == wq.Color.black ? 1 : 2;
-            }));
+        (row, col) => switch (boardState[(row, col)]) {
+              null => 0,
+              wq.Color.black => 1,
+              wq.Color.white => 2,
+            });
 
     return board;
   }
 
-  /// Make HTTP request to OGS AI server for automatic scoring
+  /// Gives the rules string expected by OGS APIs
+  String _rulesToString(Rules rules) => switch (rules) {
+        Rules.chinese => 'chinese',
+        Rules.japanese => 'japanese',
+        Rules.korean => 'korean',
+      };
+
+  /// Gets a score evaluation from the server
   Future<Map<String, dynamic>?> _callAIServer(
       List<List<int>> boardState, String playerToMove) async {
     _logger.fine('Calling AI server for game $id');
 
-    const aiHost = 'https://beta-ai.online-go.com';
-    final url = Uri.parse('$aiHost/api/score');
+    final url = Uri.parse('$_aiServerUrl/api/score');
 
     final payload = {
       'player_to_move': playerToMove,
       'width': boardSize,
       'height': boardSize,
-      'rules': 'japanese', // OGS uses Japanese rules
+      'rules': _rulesToString(rules),
       'board_state': boardState,
       'autoscore': true,
       'jwt': _jwtToken,
@@ -571,13 +573,11 @@ class OGSGame extends Game {
     }
   }
 
-  /// Store removed stones from AI server response for later acceptance
-  void _storeRemovedStones(List<dynamic> removedStones) {
+  void _storeRemovedStonesFromAIServer(List<dynamic> removedStones) {
     _logger.fine('Storing removed stones for game $id');
 
     // Convert AI response format to OGS stones string format
     // AI returns: [{"x":7,"y":2,"removal_reason":"..."}]
-    // OGS expects: concatenated SGF representations
     final stonesList = <String>[];
     for (final stone in removedStones) {
       if (stone is Map<String, dynamic>) {
@@ -610,12 +610,10 @@ class OGSGame extends Game {
     }
   }
 
-  /// Generate counting result from AI server response
   CountingResult _generateCountingResultFromAI(
       Map<String, dynamic> aiResponse) {
     _logger.fine('Generating counting result from AI response for game $id');
 
-    // Get ownership data from AI response
     final ownershipData = aiResponse['ownership'] as List<dynamic>?;
     List<List<wq.Color?>>? ownership;
 
@@ -630,7 +628,6 @@ class OGSGame extends Game {
       });
     }
 
-    // Calculate score from AI response
     final score = aiResponse['score'] as double? ?? 0.0;
     final scoreLead = score.abs();
     final winner = score > 0 ? wq.Color.black : wq.Color.white;
