@@ -596,6 +596,18 @@ class OGSGame extends Game {
     _recentlyRemovedStonesString = stonesString;
 
     _logger.fine('Stored removed stones for game $id: $stonesString');
+
+    // This serves two purposes:
+    // 1. It updates the "staged" set of removed stones, which are shared with opponents using the web client
+    // 2. It ensures the server updates the ownership arrays appropriately. (apparently these are not updated by the "accept" message)
+    if (stonesString.isNotEmpty) {
+      _webSocketManager.send('game/removed_stones/set', {
+        'game_id': int.parse(id),
+        'removed': true,
+        'stones': stonesString,
+      });
+      _logger.fine('Sent removed stones to server for game $id: $stonesString');
+    }
   }
 
   /// Generate counting result from AI server response
