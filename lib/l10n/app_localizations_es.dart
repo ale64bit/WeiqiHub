@@ -99,6 +99,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dark => 'Oscuro';
 
   @override
+  String get dontShowAgain => 'No volver a mostrar';
+
+  @override
   String get download => 'Descargar';
 
   @override
@@ -173,6 +176,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get handicap => 'Handicap';
+
+  @override
+  String get help => 'Ayuda';
+
+  @override
+  String get helpDialogCollections =>
+      'Las colecciones son libros clásicos de problemas de alta calidad que tienen un valor especial para el entrenamiento.\n\nEl objectivo principal es resolver una colección con un alto porcentaje de éxito. El objetivo secundario es resolver una colección lo más rápido posible.\n\nPara comenzar o continuar resolviendo una colección, desliza la colección hacia la izquierda en modo retrato, o haz click en el botón Comenzar/Continuar en modo paisaje.';
+
+  @override
+  String get helpDialogEndgameExam =>
+      '- El examen de finales consiste de 10 problemas de finales y tienes 45 segundos para cada problema.\n\n- Apruebas el examen si resuelves 8 o más problemas correctamente (porcentaje de éxito de 80%).\n\n- Si apruebas el examen de un rango, desbloqueas el examen del rango siguiente.';
+
+  @override
+  String get helpDialogGradingExam =>
+      '- El examen de rango consiste de 10 problemas y tienes 45 segundos para cada problema.\n\n- Apruebas el examen si resuelves 8 o más problemas correctamente (porcentaje de éxito de 80%).\n\n- Si apruebas el examen de un rango, desbloqueas el examen del rango siguiente.';
+
+  @override
+  String get helpDialogRankedMode =>
+      '- Resuelve problemas sin límite de tiempo.\n\n- La dificultad de los problemas aumenta de acuerdo a qué tan rápido los resuelves.\n\n- Concéntrate en resolver problemas correctamente y alcanzar el rango más alto posible.';
+
+  @override
+  String get helpDialogTimeFrenzy =>
+      '- Tienes 3 minutos para resolver tantos problemas como sea posible.\n\n- La dificultad de los problemas aumenta a medida que los resuelves.\n\n- Si fallas 3 problemas, el contrarreloj termina.';
 
   @override
   String get home => 'Inicio';

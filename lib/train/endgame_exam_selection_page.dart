@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:wqhub/help/endgame_exam_help_dialog.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
@@ -24,6 +25,19 @@ class EndgameExamSelectionPage extends StatefulWidget {
 
 class _EndgameExamSelectionPageState
     extends PopAndWindowClassAwareState<EndgameExamSelectionPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.settings.showEndgameExamHelp) {
+        showDialog(
+          context: context,
+          builder: (context) => EndgameExamHelpDialog(),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;

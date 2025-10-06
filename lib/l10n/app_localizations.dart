@@ -274,6 +274,12 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get dark;
 
+  /// No description provided for @dontShowAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t show again'**
+  String get dontShowAgain;
+
   /// No description provided for @download.
   ///
   /// In en, this message translates to:
@@ -411,6 +417,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Handicap'**
   String get handicap;
+
+  /// No description provided for @help.
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get help;
+
+  /// No description provided for @helpDialogCollections.
+  ///
+  /// In en, this message translates to:
+  /// **'Collections are classic, curated sets of high-quality tasks which hold special value together as a training resource.\n\nThe main goal is to solve a collection with a high success rate. A secondary goal is to solve it as fast as possible.\n\nTo start or continue solving a collection, slide left on the collection tile while in portrait mode or click the Start/Continue buttons while in landscape mode.'**
+  String get helpDialogCollections;
+
+  /// No description provided for @helpDialogEndgameExam.
+  ///
+  /// In en, this message translates to:
+  /// **'- Endgame exams are sets of 10 endgame tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.'**
+  String get helpDialogEndgameExam;
+
+  /// No description provided for @helpDialogGradingExam.
+  ///
+  /// In en, this message translates to:
+  /// **'- Grading exams are sets of 10 tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.'**
+  String get helpDialogGradingExam;
+
+  /// No description provided for @helpDialogRankedMode.
+  ///
+  /// In en, this message translates to:
+  /// **'- Solve tasks without a time limit.\n\n- Task difficulty increases according to how fast you solve them.\n\n- Focus on solving correctly and reach the highest rank possible.'**
+  String get helpDialogRankedMode;
+
+  /// No description provided for @helpDialogTimeFrenzy.
+  ///
+  /// In en, this message translates to:
+  /// **'- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.'**
+  String get helpDialogTimeFrenzy;
 
   /// No description provided for @home.
   ///

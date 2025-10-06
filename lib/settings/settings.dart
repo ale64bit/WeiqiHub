@@ -27,6 +27,7 @@ class Settings {
   static const _boardEdgeLine = 'settings.board.edge_line';
   static const _saveDirectory = 'settings.save_dir';
   static const _locale = 'settings.language.locale';
+  static const _helpDialogPrefix = 'settings.help';
 
   // Internal preferences
   bool getVersionPatchStatus(String version) =>
@@ -127,4 +128,26 @@ class Settings {
   void setPassword(String serverId, String password) {
     prefs.setString('$_credentialsPrefix.$serverId.password', password);
   }
+
+  // Help
+  bool get showCollectionsHelp =>
+      prefs.getBool('$_helpDialogPrefix.collections') ?? true;
+  set showCollectionsHelp(bool b) =>
+      prefs.setBool('$_helpDialogPrefix.collections', b);
+  bool get showGradingExamHelp =>
+      prefs.getBool('$_helpDialogPrefix.grading_exam') ?? true;
+  set showGradingExamHelp(bool b) =>
+      prefs.setBool('$_helpDialogPrefix.grading_exam', b);
+  bool get showEndgameExamHelp =>
+      prefs.getBool('$_helpDialogPrefix.endgame_exam') ?? true;
+  set showEndgameExamHelp(bool b) =>
+      prefs.setBool('$_helpDialogPrefix.endgame_exam', b);
+  bool get showTimeFrenzyHelp =>
+      prefs.getBool('$_helpDialogPrefix.time_frenzy') ?? true;
+  set showTimeFrenzyHelp(bool b) =>
+      prefs.setBool('$_helpDialogPrefix.time_frenzy', b);
+  bool get showRankedModeHelp =>
+      prefs.getBool('$_helpDialogPrefix.ranked_mode') ?? true;
+  set showRankedModeHelp(bool b) =>
+      prefs.setBool('$_helpDialogPrefix.ranked_mode', b);
 }
