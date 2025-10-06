@@ -3,6 +3,7 @@ import 'package:animated_tree_view/tree_view/tree_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:wqhub/confirm_dialog.dart';
+import 'package:wqhub/help/collections_help_dialog.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
@@ -12,10 +13,28 @@ import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/collection_task_source.dart';
 
-class CollectionsPage extends StatelessWidget {
+class CollectionsPage extends StatefulWidget {
   static const routeName = '/train/collections';
 
   const CollectionsPage({super.key});
+
+  @override
+  State<CollectionsPage> createState() => _CollectionsPageState();
+}
+
+class _CollectionsPageState extends State<CollectionsPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.settings.showCollectionsHelp) {
+        showDialog(
+          context: context,
+          builder: (context) => CollectionsHelpDialog(),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

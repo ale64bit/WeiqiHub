@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/game_client_list.dart';
+import 'package:wqhub/help/ranked_mode_help_dialog.dart';
+import 'package:wqhub/help/time_frenzy_help_dialog.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/main_page_bottom_navigation_bar.dart';
 import 'package:wqhub/main_page_navigation_rail.dart';
@@ -205,33 +207,47 @@ class _Train extends StatelessWidget {
               icon: Icons.bolt,
               label: loc.timeFrenzy,
               onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  TimeFrenzyPage.routeName,
-                  arguments: TimeFrenzyRouteArguments(
-                    taskSource: BlackToPlaySource(
-                      source: TimeFrenzyTaskSource(),
-                      blackToPlay: context.settings.alwaysBlackToPlay,
+                if (context.settings.showTimeFrenzyHelp) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => TimeFrenzyHelpDialog(),
+                  );
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    TimeFrenzyPage.routeName,
+                    arguments: TimeFrenzyRouteArguments(
+                      taskSource: BlackToPlaySource(
+                        source: TimeFrenzyTaskSource(),
+                        blackToPlay: context.settings.alwaysBlackToPlay,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
             ),
             SectionButton(
               icon: Icons.trending_up,
               label: loc.rankedMode,
               onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  RankedModePage.routeName,
-                  arguments: RankedModeRouteArguments(
-                    taskSource: BlackToPlaySource(
-                      source:
-                          RankedModeTaskSource(context.stats.rankedModeRank),
-                      blackToPlay: context.settings.alwaysBlackToPlay,
+                if (context.settings.showRankedModeHelp) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => RankedModeHelpDialog(),
+                  );
+                } else {
+                  Navigator.pushNamed(
+                    context,
+                    RankedModePage.routeName,
+                    arguments: RankedModeRouteArguments(
+                      taskSource: BlackToPlaySource(
+                        source:
+                            RankedModeTaskSource(context.stats.rankedModeRank),
+                        blackToPlay: context.settings.alwaysBlackToPlay,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
             ),
             SectionButton(

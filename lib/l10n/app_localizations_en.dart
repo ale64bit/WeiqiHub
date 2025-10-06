@@ -99,6 +99,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dark => 'Dark';
 
   @override
+  String get dontShowAgain => 'Don\'t show again';
+
+  @override
   String get download => 'Download';
 
   @override
@@ -172,6 +175,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get handicap => 'Handicap';
+
+  @override
+  String get help => 'Help';
+
+  @override
+  String get helpDialogCollections =>
+      'Collections are classic, curated sets of high-quality tasks which hold special value together as a training resource.\n\nThe main goal is to solve a collection with a high success rate. A secondary goal is to solve it as fast as possible.\n\nTo start or continue solving a collection, slide left on the collection tile while in portrait mode or click the Start/Continue buttons while in landscape mode.';
+
+  @override
+  String get helpDialogEndgameExam =>
+      '- Endgame exams are sets of 10 endgame tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+
+  @override
+  String get helpDialogGradingExam =>
+      '- Grading exams are sets of 10 tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+
+  @override
+  String get helpDialogRankedMode =>
+      '- Solve tasks without a time limit.\n\n- Task difficulty increases according to how fast you solve them.\n\n- Focus on solving correctly and reach the highest rank possible.';
+
+  @override
+  String get helpDialogTimeFrenzy =>
+      '- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.';
 
   @override
   String get home => 'Home';
