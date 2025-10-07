@@ -18,6 +18,7 @@ class _LanguagePageState extends State<LanguagePage> {
     'en': 'English',
     'es': 'Español',
     'zh': '中文 – 简体',
+    'ru': 'Русский',
   };
   @override
   Widget build(BuildContext context) {
