@@ -9,7 +9,7 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get about => 'About';
+  String get about => '关于';
 
   @override
   String get accuracy => 'Accuracy';
@@ -40,25 +40,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get behaviour => 'Behaviour';
 
   @override
-  String get bestResult => 'Best result';
+  String get bestResult => '最优结果';
 
   @override
   String get black => 'Black';
 
   @override
-  String get board => 'Board';
+  String get board => '棋盘';
 
   @override
-  String get boardSize => 'Board size';
+  String get boardSize => '棋盘颜色';
 
   @override
-  String get boardTheme => 'Board theme';
+  String get boardTheme => '棋盘主题';
 
   @override
   String get byRank => 'By rank';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => '取消';
 
   @override
   String get captures => 'Captures';
@@ -70,10 +70,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get collections => 'Collections';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => '确认';
 
   @override
-  String get confirmBoardSize => 'Confirm board size';
+  String get confirmBoardSize => '确认棋盘大小';
 
   @override
   String get confirmBoardSizeDesc =>
@@ -87,7 +87,7 @@ class AppLocalizationsZh extends AppLocalizations {
       'Double-tap to confirm moves on large boards to avoid misclicks';
 
   @override
-  String get continue_ => 'Continue';
+  String get continue_ => '继续';
 
   @override
   String get copyTaskLink => 'Copy task link';
@@ -99,10 +99,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dark => 'Dark';
 
   @override
-  String get dontShowAgain => 'Don\'t show again';
+  String get dontShowAgain => '不再显示';
 
   @override
-  String get download => 'Download';
+  String get download => '下载';
 
   @override
   String get edgeLine => 'Edge line';
@@ -144,13 +144,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get errMustBeInteger => 'Must be an integer';
 
   @override
-  String get exit => 'Exit';
+  String get exit => '退出';
 
   @override
   String get exitTryMode => 'Exit try mode';
 
   @override
-  String get find => 'Find';
+  String get find => '查找';
 
   @override
   String get findTask => 'Find task';
@@ -177,7 +177,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get handicap => 'Handicap';
 
   @override
-  String get help => 'Help';
+  String get help => '帮助';
 
   @override
   String get helpDialogCollections =>
@@ -392,7 +392,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get recentRecord => 'Recent record';
 
   @override
-  String get register => 'Register';
+  String get register => '注册';
 
   @override
   String get resign => 'Resign';
@@ -417,31 +417,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get responseDelayShort => 'Short';
 
   @override
-  String get result => 'Result';
+  String get result => '结果';
 
   @override
-  String get rules => 'Rules';
+  String get rules => '规则';
 
   @override
-  String get rulesChinese => 'Chinese';
+  String get rulesChinese => '中国规则';
 
   @override
-  String get rulesJapanese => 'Japanese';
+  String get rulesJapanese => '日本规则';
 
   @override
-  String get rulesKorean => 'Korean';
+  String get rulesKorean => '韩国规则';
 
   @override
-  String get save => 'Save';
+  String get save => '保存';
 
   @override
-  String get saveSGF => 'Save SGF';
+  String get saveSGF => '保存SGF';
 
   @override
-  String get seconds => 'Seconds';
+  String get seconds => '秒';
 
   @override
-  String get settings => 'Settings';
+  String get settings => '设置';
 
   @override
   String get short => 'Short';
@@ -459,10 +459,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sortModeRecent => 'Recent';
 
   @override
-  String get sound => 'Sound';
+  String get sound => '声音';
 
   @override
-  String get start => 'Start';
+  String get start => '开始';
 
   @override
   String get statistics => 'Statistics';
@@ -486,10 +486,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get subtopic => 'Subtopic';
 
   @override
-  String get system => 'System';
+  String get system => '系统';
 
   @override
-  String get task => 'Task';
+  String get task => '任务';
 
   @override
   String get taskCorrect => 'Correct';
