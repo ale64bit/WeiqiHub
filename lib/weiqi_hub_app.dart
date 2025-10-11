@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/main_page.dart';
 import 'package:wqhub/routes.dart';
@@ -14,21 +15,13 @@ class WeiqiHubApp extends StatefulWidget {
 class _WeiqiHubAppState extends State<WeiqiHubApp> {
   @override
   Widget build(BuildContext context) {
-    final lightTheme = ThemeData(
-      colorSchemeSeed: Colors.blueAccent,
-      brightness: Brightness.light,
-    );
-    final darkTheme = ThemeData(
-      colorSchemeSeed: Colors.blueAccent,
-      brightness: Brightness.dark,
-    );
     return MaterialApp(
       title: 'WeiqiHub',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: context.settings.locale,
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: _buildTheme(Brightness.light),
+      darkTheme: _buildTheme(Brightness.dark),
       themeMode: context.settings.themeMode,
       home: MainPage(
         destination: MainPageDestination.home,
@@ -40,6 +33,16 @@ class _WeiqiHubAppState extends State<WeiqiHubApp> {
       onGenerateRoute: onGenerateRoute,
       navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
+    );
+  }
+
+  ThemeData _buildTheme(Brightness brightness) {
+    final theme = ThemeData(
+      colorSchemeSeed: Colors.blueAccent,
+      brightness: brightness,
+    );
+    return theme.copyWith(
+      textTheme: GoogleFonts.notoSansTextTheme(theme.textTheme),
     );
   }
 }
