@@ -23,7 +23,7 @@ class SaveSgfFormResult {
 
   String suggestedFilename() {
     final buf =
-        StringBuffer(DateFormat('yyyy.MM.dd hh:mm').format(DateTime.now()));
+        StringBuffer(DateFormat('yyyy.MM.dd hh.mm').format(DateTime.now()));
     if (blackNick != null && whiteNick != null) {
       buf.write(' $blackNick vs $whiteNick');
     }
