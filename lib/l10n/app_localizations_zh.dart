@@ -21,14 +21,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aiSensei => 'AI Sensei';
 
   @override
-  String get alwaysBlackToPlay => 'Always black-to-play';
+  String get alwaysBlackToPlay => '总是执黑先行';
 
   @override
-  String get alwaysBlackToPlayDesc =>
-      'Set all tasks as black-to-play to avoid confusion';
+  String get alwaysBlackToPlayDesc => '永远执黑先行，防止混淆';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => '外观';
 
   @override
   String get autoCounting => 'Auto counting';
@@ -37,7 +36,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoMatch => 'Auto-Match';
 
   @override
-  String get behaviour => 'Behaviour';
+  String get behaviour => '操作';
 
   @override
   String get bestResult => '最优结果';
@@ -80,11 +79,10 @@ class AppLocalizationsZh extends AppLocalizations {
       'Boards this size or larger require move confirmation';
 
   @override
-  String get confirmMoves => 'Confirm moves';
+  String get confirmMoves => '确定落子';
 
   @override
-  String get confirmMovesDesc =>
-      'Double-tap to confirm moves on large boards to avoid misclicks';
+  String get confirmMovesDesc => '在较大的棋盘上双击以确认落子，避免误操作';
 
   @override
   String get continue_ => '继续';
@@ -105,7 +103,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get download => '下载';
 
   @override
-  String get edgeLine => 'Edge line';
+  String get edgeLine => '棋盘边缘';
 
   @override
   String get endgameExam => 'Endgame exam';
@@ -174,7 +172,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gradingExam => 'Grading exam';
 
   @override
-  String get handicap => 'Handicap';
+  String get handicap => '让子数';
 
   @override
   String get help => '帮助';
@@ -200,25 +198,25 @@ class AppLocalizationsZh extends AppLocalizations {
       '- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.';
 
   @override
-  String get home => 'Home';
+  String get home => '主界面';
 
   @override
   String get komi => 'Komi';
 
   @override
-  String get language => 'Language';
+  String get language => '语言';
 
   @override
   String get leave => 'Leave';
 
   @override
-  String get light => 'Light';
+  String get light => '浅色';
 
   @override
-  String get login => 'Login';
+  String get login => '登录';
 
   @override
-  String get logout => 'Logout';
+  String get logout => '退出';
 
   @override
   String get long => 'Long';
@@ -369,10 +367,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pass => 'Pass';
 
   @override
-  String get password => 'Password';
+  String get password => '密码';
 
   @override
-  String get play => 'Play';
+  String get play => '对局';
 
   @override
   String get promotionRequirements => 'Promotion requirements';
@@ -398,23 +396,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resign => 'Resign';
 
   @override
-  String get responseDelay => 'Response delay';
+  String get responseDelay => '响应延迟';
 
   @override
-  String get responseDelayDesc =>
-      'Duration of the delay before the response appears while solving tasks';
+  String get responseDelayDesc => '解题时响应前的延迟时长';
 
   @override
-  String get responseDelayLong => 'Long';
+  String get responseDelayLong => '长';
 
   @override
-  String get responseDelayMedium => 'Medium';
+  String get responseDelayMedium => '中';
 
   @override
-  String get responseDelayNone => 'None';
+  String get responseDelayNone => '无';
 
   @override
-  String get responseDelayShort => 'Short';
+  String get responseDelayShort => '短';
 
   @override
   String get result => '结果';
@@ -447,10 +444,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get short => 'Short';
 
   @override
-  String get showCoordinates => 'Show coordinates';
+  String get showCoordinates => '显示坐标';
 
   @override
-  String get simple => 'Simple';
+  String get simple => '普通';
 
   @override
   String get sortModeDifficult => 'Difficult';
@@ -477,7 +474,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get statsTimeColumn => 'Time';
 
   @override
-  String get stoneShadows => 'Stone shadows';
+  String get stoneShadows => '棋子阴影';
 
   @override
   String get stones => 'Stones';
@@ -1242,10 +1239,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get test => 'Test';
 
   @override
-  String get theme => 'Theme';
+  String get theme => '主题';
 
   @override
-  String get thick => 'Thick';
+  String get thick => '粗线';
 
   @override
   String get timeFrenzy => 'Time frenzy';
@@ -1272,7 +1269,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get topics => 'Topics';
 
   @override
-  String get train => 'Train';
+  String get train => '练习';
 
   @override
   String get trainingAvgTimePerTask => 'Avg time per task';
@@ -1306,10 +1303,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ui => 'UI';
 
   @override
-  String get userInfo => 'User info';
+  String get userInfo => '用户信息';
 
   @override
-  String get username => 'Username';
+  String get username => '用户名';
 
   @override
   String get voice => 'Voice';
