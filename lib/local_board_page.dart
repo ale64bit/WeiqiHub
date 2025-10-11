@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:file_selector/file_selector.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' show dirname;
@@ -176,20 +176,20 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
       final fileName = res.suggestedFilename();
 
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-        final FileSaveLocation? result = await getSaveLocation(
-          suggestedName: fileName,
+        final savePath = await FilePicker.platform.saveFile(
+          fileName: fileName,
           initialDirectory: context.settings.getSaveDirectory(),
         );
-        if (result != null) {
-          final f = File(result.path);
+        if (savePath != null) {
+          final f = File(savePath);
           await f.writeAsBytes(utf8.encode(sgfData));
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('SGF saved to ${result.path}'),
+            content: Text('SGF saved to $savePath'),
             showCloseIcon: true,
             behavior: SnackBarBehavior.floating,
           ));
-          context.settings.saveDirectory = dirname(result.path);
+          context.settings.saveDirectory = dirname(savePath);
         }
       } else {
         Rect? sharePositionOrigin;

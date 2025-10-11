@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:file_selector/file_selector.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -128,20 +128,20 @@ class _MyGamesPageState extends State<MyGamesPage> {
           '${_dateFormat.format(summary.dateTime)} - ${summary.white.username} vs ${summary.black.username}.${record.type.name}';
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
         if (context.mounted) {
-          final FileSaveLocation? result = await getSaveLocation(
-            suggestedName: fileName,
+          final savePath = await FilePicker.platform.saveFile(
+            fileName: fileName,
             initialDirectory: context.settings.getSaveDirectory(),
           );
-          if (result != null) {
-            final f = File(result.path);
+          if (savePath != null) {
+            final f = File(savePath);
             await f.writeAsBytes(record.rawData);
             ScaffoldMessenger.of(context).removeCurrentSnackBar();
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(loc.msgGameSavedTo(result.path)),
+              content: Text(loc.msgGameSavedTo(savePath)),
               showCloseIcon: true,
               behavior: SnackBarBehavior.floating,
             ));
-            context.settings.saveDirectory = dirname(result.path);
+            context.settings.saveDirectory = dirname(savePath);
           }
         }
       } else {
