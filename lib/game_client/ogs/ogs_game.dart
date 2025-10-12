@@ -142,6 +142,12 @@ class OGSGame extends Game {
     final event = message['event'] as String;
     final gamePrefix = 'game/$id/';
 
+    // Handle chat presence messages for this game's channel
+    if (event == 'chat-join' || event == 'chat-part') {
+      _handleChatPresence(message);
+      return;
+    }
+
     // Only handle messages for this specific game
     if (!event.startsWith(gamePrefix)) {
       return;
@@ -172,6 +178,51 @@ class OGSGame extends Game {
 
   void _handleError(dynamic data) {
     _logger.warning('Error received for game $id: $data');
+  }
+
+  void _handleChatPresence(Map<String, dynamic> message) {
+    final event = message['event'] as String;
+    final data = message['data'] as Map<String, dynamic>;
+    final channel = data['channel'] as String;
+
+    // Only handle presence for this game's chat channel
+    if (channel != 'game-$id') {
+      return;
+    }
+
+    if (event == 'chat-join') {
+      // Handle users joining the chat
+      final users = data['users'] as List<dynamic>;
+      for (final user in users) {
+        final userId = user['id'].toString();
+        _logger.fine('User $userId joined game-$id chat');
+
+        // Update player presence directly
+        _updatePlayerOnlineStatus(userId, true);
+      }
+    } else if (event == 'chat-part') {
+      // Handle user leaving the chat
+      final user = data['user'] as Map<String, dynamic>;
+      final userId = user['id'].toString();
+      _logger.fine('User $userId left game-$id chat');
+
+      // Update player presence directly
+      _updatePlayerOnlineStatus(userId, false);
+    }
+  }
+
+  void _updatePlayerOnlineStatus(String userId, bool isOnline) {
+    // Update black player if this is them
+    if (black.value.userId == userId && black.value.online != isOnline) {
+      black.value = black.value.copyWith(online: isOnline);
+      _logger.fine('Updated black player presence: $isOnline');
+    }
+
+    // Update white player if this is them
+    if (white.value.userId == userId && white.value.online != isOnline) {
+      white.value = white.value.copyWith(online: isOnline);
+      _logger.fine('Updated white player presence: $isOnline');
+    }
   }
 
   void _handleMove(Map<String, dynamic> data) {
