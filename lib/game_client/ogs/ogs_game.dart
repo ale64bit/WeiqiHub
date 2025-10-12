@@ -81,6 +81,32 @@ class OGSGame extends Game {
     }
   }
 
+  Future<void> toggleManuallyRemovedStones(
+      List<wq.Point> stones, bool removed) async {
+    if (_currentPhase != 'stone removal') {
+      _logger.warning(
+          'toggleManuallyRemovedStones called outside of stone removal phase');
+      return;
+    }
+
+    try {
+      final stonesString = stones.map((point) => point.toSgf()).join();
+
+      _webSocketManager.send('game/removed_stones/set', {
+        'game_id': int.parse(id),
+        'stones': stonesString,
+        'removed': removed,
+      });
+
+      _logger.fine(
+          'Sent stone removal proposal for game $id: stones=$stonesString, removed=$removed');
+    } catch (error) {
+      _logger.warning(
+          'Failed to send stone removal proposal for game $id: $error');
+      rethrow;
+    }
+  }
+
   @override
   Future<void> agreeToAutomaticCounting(bool agree) => Future.value();
 
