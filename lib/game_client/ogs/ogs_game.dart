@@ -142,6 +142,11 @@ class OGSGame extends Game {
     final event = message['event'] as String;
     final gamePrefix = 'game/$id/';
 
+    if (event == 'chat-join' || event == 'chat-part') {
+      _handleChatPresence(message);
+      return;
+    }
+
     // Only handle messages for this specific game
     if (!event.startsWith(gamePrefix)) {
       return;
@@ -172,6 +177,44 @@ class OGSGame extends Game {
 
   void _handleError(dynamic data) {
     _logger.warning('Error received for game $id: $data');
+  }
+
+  void _handleChatPresence(Map<String, dynamic> message) {
+    final event = message['event'] as String;
+    final data = message['data'] as Map<String, dynamic>;
+    final channel = data['channel'] as String;
+
+    if (channel != 'game-$id') {
+      return;
+    }
+
+    if (event == 'chat-join') {
+      final users = data['users'] as List<dynamic>;
+      for (final user in users) {
+        final userId = user['id'].toString();
+        _logger.fine('User $userId joined game-$id chat');
+
+        _updatePlayerOnlineStatus(userId, true);
+      }
+    } else if (event == 'chat-part') {
+      final user = data['user'] as Map<String, dynamic>;
+      final userId = user['id'].toString();
+      _logger.fine('User $userId left game-$id chat');
+
+      _updatePlayerOnlineStatus(userId, false);
+    }
+  }
+
+  void _updatePlayerOnlineStatus(String userId, bool isOnline) {
+    if (black.value.userId == userId && black.value.online != isOnline) {
+      black.value = black.value.copyWith(online: isOnline);
+      _logger.fine('Updated black player presence: $isOnline');
+    }
+
+    if (white.value.userId == userId && white.value.online != isOnline) {
+      white.value = white.value.copyWith(online: isOnline);
+      _logger.fine('Updated white player presence: $isOnline');
+    }
   }
 
   void _handleMove(Map<String, dynamic> data) {
