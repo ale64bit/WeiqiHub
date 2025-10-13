@@ -1,6 +1,5 @@
 import 'dart:convert';
-
-import 'package:wqhub/parse/parse_ext.dart';
+import 'package:petitparser/petitparser.dart';
 
 class GibGameCmd {
   final String cmd;
@@ -40,65 +39,108 @@ class Gib {
     'WIT',
   };
 
-  final Map<String, Map<String, List<int>>> headers;
+  final Map<String, Map<String, String>> headers;
   final List<GibGameCmd> game;
 
   Gib._({required this.headers, required this.game});
 
+  static final _parser = _GibDefinition().build();
+
   factory Gib.parse(List<int> gib) {
-    final (it, headers) = _parseHeaders(gib);
-    final (_, game) = _parseGame(it);
-    final cmds = game.split('\n').map((s) {
-      final parts = s.trim().split(' ');
-      if (parts.isNotEmpty && commands.contains(parts.first)) {
-        return GibGameCmd(cmd: parts.first, args: parts.sublist(1));
-      }
-      return GibGameCmd(cmd: '', args: parts);
-    });
-    return Gib._(
-      headers: headers,
-      game: cmds.toList(growable: false),
-    );
+    final str = utf8.decode(gib, allowMalformed: true);
+    return _parser.parse(str).value;
   }
+}
 
-  static (Iterable<int>, Map<String, Map<String, List<int>>>) _parseHeaders(
-      Iterable<int> it) {
-    return it.skipSpace().tag(r'\HS', r'\HE', (it) {
-      Map<String, Map<String, List<int>>> headers = {};
-      while (utf8.decode(it.take(3).toList(), allowMalformed: true) != r'\HE') {
-        final (nextIt, (name, hdr)) = _parseHeader(it);
-        headers[name] = hdr;
-        it = nextIt.skipSpace();
-      }
-      return (it, headers);
-    });
-  }
+class _GibDefinition extends GrammarDefinition {
+  @override
+  Parser<Gib> start() => (ref0(headersSection) & ref0(gameSection))
+      .map((tuple) => Gib._(
+            headers: tuple[0],
+            game: tuple[1],
+          ));
 
-  static (Iterable<int>, (String, Map<String, List<int>>)) _parseHeader(
-      Iterable<int> it) {
-    return it.skipSpace().tag(r'\[', r'\]', (it) {
-      final (itAfterName, name) = it.propName();
-      it = itAfterName.matchEqual();
-      Map<String, List<int>> header = {};
-      while (!it.isBackslash()) {
-        final (itAfterKey, key) = it.collectUntil(':'.codeUnitAt(0));
-        it = itAfterKey.matchColon();
-        final (itAfterValue, value) =
-            it.collectUntilCond((it) => it.isComma() || it.isBackslash());
-        it = itAfterValue;
-        header[utf8.decode(key)] = value;
-        if (it.isBackslash()) break;
-        it = it.matchComma();
-      }
-      return (it, (name, header));
-    });
-  }
+  // Whitespace helpers  
+  Parser<void> ws() => (whitespace() | newline()).star();
 
-  static (Iterable<int>, String) _parseGame(Iterable<int> it) {
-    return it.skipSpace().tag(r'\GS', r'\GE', (it) {
-      final (itAfterGame, data) =
-          it.skipSpace().collectUntil(r'\'.codeUnitAt(0));
-      return (itAfterGame, utf8.decode(data).trim());
-    });
+  // Headers section: \HS ... \HE
+  Parser<Map<String, Map<String, String>>> headersSection() =>
+      ref0(header)
+          .star()
+          .skip(before: string(r'\HS') & ref0(ws), after: string(r'\HE') & ref0(ws))
+          .map((list) => {for (final (name, hdr) in list) name: hdr});
+
+  // Single header: \[HEADERNAME=key1:value1,key2:value2,simplevalue\]
+  Parser<(String, Map<String, String>)> header() =>
+      ref0(headerContent)
+          .skip(
+            before: string(r'\[') & ref0(ws),
+            after: string(r'\]') & ref0(ws),
+          )
+          .cast<(String, Map<String, String>)>();
+
+  Parser<(String, Map<String, String>)> headerContent() =>
+      (ref0(headerName) & char('=') & ref0(headerValues)).map((tuple) {
+        return (tuple[0] as String, tuple[2] as Map<String, String>);
+      });
+
+  Parser<String> headerName() => uppercase().plus().flatten();
+
+  // Header values: can be key:value pairs OR just plain values
+  Parser<Map<String, String>> headerValues() =>
+      ref0(headerValue)
+          .separatedBy(char(','), includeSeparators: false)
+          .map((list) {
+        final map = <String, String>{};
+        for (int i = 0; i < list.length; i++) {
+          final entry = list[i];
+          if (entry is MapEntry<String, String>) {
+            map[entry.key] = entry.value;
+          } else {
+            // Plain value without key - use index as key
+            map[i.toString()] = entry as String;
+          }
+        }
+        return map;
+      });
+
+  Parser<dynamic> headerValue() =>
+      ref0(keyValuePair) | ref0(plainValue);
+
+  Parser<MapEntry<String, String>> keyValuePair() =>
+      (ref0(keyName) & char(':') & ref0(valueName)).map((tuple) {
+        return MapEntry(tuple[0] as String, tuple[2] as String);
+      });
+
+  Parser<String> plainValue() =>
+      pattern(r'^:,\]\\').plus().flatten();
+
+  // Key name: any chars except :,\]
+  Parser<String> keyName() =>
+      pattern(r'^:,\]\\').plus().flatten();
+
+  // Value name: any chars except ,\] (can be empty, can contain colons for URLs)
+  Parser<String> valueName() =>
+      pattern(r'^,\]\\').star().flatten();
+
+  // Game section: \GS ... \GE
+  Parser<List<GibGameCmd>> gameSection() {
+    final rawContent = pattern(r'^\').star().flatten();
+    return rawContent
+        .skip(before: string(r'\GS'), after: string(r'\GE'))
+        .map((content) {
+          return content
+              .split('\n')
+              .map((line) => line.trim())
+              .where((line) => line.isNotEmpty)
+              .map((line) {
+                final parts = line.split(RegExp(r'\s+'));
+                if (parts.isNotEmpty && Gib.commands.contains(parts.first)) {
+                  return GibGameCmd(cmd: parts.first, args: parts.sublist(1));
+                }
+                return GibGameCmd(cmd: '', args: parts);
+              })
+              .toList(growable: false);
+        });
   }
 }
