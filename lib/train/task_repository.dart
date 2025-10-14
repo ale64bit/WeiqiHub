@@ -277,22 +277,21 @@ class _TaskBucket {
     IMap<wq.Point, wq.Color> wantStones,
     IMap<wq.Point, wq.Color> gotStones,
   ) {
-    for (final ex in wantStones.entries) {
-      final (rx, cx) = ex.key;
-      for (final ey in gotStones.entries) {
-        final (ry, cy) = ey.key;
-        // Assume ex and ey represent the same stone and check if the remaining stones match.
-        var ok = true;
-        for (final ez in wantStones.entries) {
-          final (rz, cz) = ez.key;
-          final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
-          if (zz == null || ((ex.value == ey.value) != (zz == ez.value))) {
-            ok = false;
-            break;
-          }
+    final ex = wantStones.entries.first;
+    final (rx, cx) = ex.key;
+    for (final ey in gotStones.entries) {
+      final (ry, cy) = ey.key;
+      // Assume ex and ey represent the same stone and check if the remaining stones match.
+      var ok = true;
+      for (final ez in wantStones.entries) {
+        final (rz, cz) = ez.key;
+        final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
+        if (zz == null || ((ex.value == ey.value) != (zz == ez.value))) {
+          ok = false;
+          break;
         }
-        if (ok) return true;
       }
+      if (ok) return true;
     }
     return false;
   }
