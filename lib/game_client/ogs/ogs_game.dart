@@ -19,6 +19,7 @@ class OGSGame extends Game {
   final String _myUserId;
   late final StreamController<wq.Move?> _moveController;
   late final StreamController<CountingResult> _countingResultController;
+  late final StreamController<bool> _countingResultResponsesController;
   late final Completer<GameResult> _resultCompleter;
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
 
@@ -27,6 +28,9 @@ class OGSGame extends Game {
 
   // Track stone removal proposals from our opponent or server
   String _recentlyRemovedStonesString = '';
+
+  // Track current phase to detect transitions
+  String _currentPhase = "play";
 
   OGSGame({
     required super.id,
@@ -44,6 +48,7 @@ class OGSGame extends Game {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
     _countingResultController = StreamController<CountingResult>.broadcast();
+    _countingResultResponsesController = StreamController<bool>.broadcast();
     _resultCompleter = Completer<GameResult>();
 
     _allMoves.addAll(previousMoves);
@@ -76,6 +81,32 @@ class OGSGame extends Game {
     }
   }
 
+  Future<void> toggleManuallyRemovedStones(
+      List<wq.Point> stones, bool removed) async {
+    if (_currentPhase != 'stone removal') {
+      _logger.warning(
+          'toggleManuallyRemovedStones called outside of stone removal phase');
+      return;
+    }
+
+    try {
+      final stonesString = stones.map((point) => point.toSgf()).join();
+
+      _webSocketManager.send('game/removed_stones/set', {
+        'game_id': int.parse(id),
+        'stones': stonesString,
+        'removed': removed,
+      });
+
+      _logger.fine(
+          'Sent stone removal proposal for game $id: stones=$stonesString, removed=$removed');
+    } catch (error) {
+      _logger.warning(
+          'Failed to send stone removal proposal for game $id: $error');
+      rethrow;
+    }
+  }
+
   @override
   Future<void> agreeToAutomaticCounting(bool agree) => Future.value();
 
@@ -90,7 +121,8 @@ class OGSGame extends Game {
   Stream<bool> automaticCountingResponses() => Stream.empty();
 
   @override
-  Stream<bool> countingResultResponses() => Stream.empty();
+  Stream<bool> countingResultResponses() =>
+      _countingResultResponsesController.stream;
 
   @override
   Stream<CountingResult> countingResults() => _countingResultController.stream;
@@ -163,6 +195,9 @@ class OGSGame extends Game {
 
       case 'removed_stones_accepted':
         _handleRemovedStonesAccepted(message['data'] as Map<String, dynamic>);
+
+      case 'removed_stones_set':
+        _handleRemovedStonesSet(message['data'] as Map<String, dynamic>);
 
       case 'move':
         _handleMove(message['data'] as Map<String, dynamic>);
@@ -261,9 +296,19 @@ class OGSGame extends Game {
         _updatePlayerInfo(players);
       }
 
-      // Update game result if the game has ended
-      final phase = gameData['phase'] as String?;
+      // Check for phase changes
+      final phase = gameData['phase'] as String;
+      if (phase != _currentPhase) {
+        if (_currentPhase == 'stone removal' && phase == 'play') {
+          // Transition from counting/stone removal back to play - this indicates
+          // that one of the players sent the game/removed_stones/reject message
+          _countingResultResponsesController.add(false);
+        }
+        _currentPhase = phase;
+      }
+
       if (phase == 'finished' && !_resultCompleter.isCompleted) {
+        // Update game result if the game has ended
         final winner = gameData['winner'] as int?;
         final outcome = gameData['outcome'] as String?;
 
@@ -366,13 +411,31 @@ class OGSGame extends Game {
         return;
       }
 
+      // Signal that opponent accepted the counting result
+      _countingResultResponsesController.add(true);
+    } catch (error) {
+      _logger.warning(
+          'Error handling removed stones accepted for game $id: $error');
+    }
+  }
+
+  void _handleRemovedStonesSet(Map<String, dynamic> data) {
+    _logger.fine('Received removed stones set for game $id');
+
+    try {
+      // Check if this is our own stones set
+      final playerId = data['player_id'] as int?;
+      if (playerId?.toString() == _myUserId) {
+        _logger.fine('Ignoring our own stone removal set');
+        return;
+      }
+
       _recentlyRemovedStonesString = data['stones'] as String? ?? '';
 
       final countingResult = _calculateCountingResultFromOwnership(data);
       _countingResultController.add(countingResult);
     } catch (error) {
-      _logger.warning(
-          'Error handling removed stones accepted for game $id: $error');
+      _logger.warning('Error handling removed stones set for game $id: $error');
     }
   }
 
@@ -479,6 +542,7 @@ class OGSGame extends Game {
     _webSocketManager.leaveGame(id);
     _moveController.close();
     _countingResultController.close();
+    _countingResultResponsesController.close();
 
     // Complete the result future if not already completed
     if (!_resultCompleter.isCompleted) {
