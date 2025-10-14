@@ -17,6 +17,7 @@ import 'package:wqhub/train/endgame_exam_selection_page.dart';
 import 'package:wqhub/train/my_mistakes_page.dart';
 import 'package:wqhub/train/ranked_mode_page.dart';
 import 'package:wqhub/train/single_task_page.dart';
+import 'package:wqhub/train/task_pattern_search_page.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/ranked_mode_task_source.dart';
@@ -274,46 +275,7 @@ class _Train extends StatelessWidget {
             SectionButton(
               icon: Icons.search,
               label: loc.findTask,
-              onPressed: () {
-                showDialog<(Task?, bool)>(
-                  context: context,
-                  builder: (context) => _FindTaskDialog(),
-                ).then((res) {
-                  if (res != null) {
-                    final (task, dismissed) = res;
-                    if (dismissed) return;
-                    if (task != null) {
-                      if (context.mounted) {
-                        Navigator.pushNamed(
-                          context,
-                          SingleTaskPage.routeName,
-                          arguments: SingleTaskRouteArguments(
-                            task: context.settings.alwaysBlackToPlay
-                                ? task.withBlackToPlay()
-                                : task,
-                          ),
-                        );
-                      }
-                    } else {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: const Text('Task not found.'),
-                          dismissDirection: DismissDirection.horizontal,
-                          showCloseIcon: true,
-                        ));
-                      }
-                    }
-                  }
-                }, onError: (err) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: const Text('Task not found.'),
-                      dismissDirection: DismissDirection.horizontal,
-                      showCloseIcon: true,
-                    ));
-                  }
-                });
-              },
+              onPressed: () => showFindTaskDialog(context),
             ),
             SectionButton(
               icon: Icons.sentiment_very_dissatisfied,
@@ -333,6 +295,94 @@ class _Train extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  showFindTaskDialog(BuildContext parentContext) {
+    final loc = AppLocalizations.of(parentContext)!;
+    showDialog(
+      context: parentContext,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(loc.findTask),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: 8.0,
+            children: [
+              ElevatedButton.icon(
+                icon: Icon(Icons.link),
+                label: Text('By link'),
+                onPressed: () {
+                  Navigator.of(parentContext).pop();
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => showFindTaskByLinkDialog(parentContext));
+                },
+              ),
+              ElevatedButton.icon(
+                icon: Icon(Icons.pattern),
+                label: Text('By pattern'),
+                onPressed: () {
+                  Navigator.of(parentContext).pop();
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    Navigator.pushNamed(
+                      context,
+                      TaskPatternSearchPage.routeName,
+                    );
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, (null, true)),
+              child: Text(loc.cancel),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showFindTaskByLinkDialog(BuildContext context) {
+    showDialog<(Task?, bool)>(
+      context: context,
+      builder: (context) => _FindTaskDialog(),
+    ).then((res) {
+      if (res != null) {
+        final (task, dismissed) = res;
+        if (dismissed) return;
+        if (task != null) {
+          if (context.mounted) {
+            Navigator.pushNamed(
+              context,
+              SingleTaskPage.routeName,
+              arguments: SingleTaskRouteArguments(
+                task: context.settings.alwaysBlackToPlay
+                    ? task.withBlackToPlay()
+                    : task,
+              ),
+            );
+          }
+        } else {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text('Task not found.'),
+              dismissDirection: DismissDirection.horizontal,
+              showCloseIcon: true,
+            ));
+          }
+        }
+      }
+    }, onError: (err) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text('Task not found.'),
+          dismissDirection: DismissDirection.horizontal,
+          showCloseIcon: true,
+        ));
+      }
+    });
   }
 }
 

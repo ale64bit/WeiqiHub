@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:isolate';
+
 import 'package:animated_tree_view/tree_view/tree_node.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:logging/logging.dart';
+import 'package:wqhub/cancellable_isolate_stream.dart';
 import 'package:wqhub/random_util.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_source/distribution_task_source.dart';
@@ -185,6 +189,36 @@ class _TaskBucket {
     );
   }
 
+  IMap<wq.Point, wq.Color> _stonesAt(int index) {
+    assert(0 <= index && index < size);
+    var offset = data.getInt32(2 + index * 8 + 4);
+
+    // Read header info
+    data.getUint8(offset++);
+    data.getUint8(offset++);
+    String.fromCharCodes([data.getUint8(offset++), data.getUint8(offset++)]);
+
+    var stones = const IMap<wq.Point, wq.Color>.empty();
+
+    // Read initial black stones
+    final initialBlackStoneCount = data.getUint8(offset++);
+    for (int i = 0; i < initialBlackStoneCount; ++i) {
+      final p = String.fromCharCodes(
+          [data.getUint8(offset++), data.getUint8(offset++)]);
+      stones = stones.add(wq.parseSgfPoint(p), wq.Color.black);
+    }
+
+    // Read initial white stones
+    final initialWhiteStoneCount = data.getUint8(offset++);
+    for (int i = 0; i < initialWhiteStoneCount; ++i) {
+      final p = String.fromCharCodes(
+          [data.getUint8(offset++), data.getUint8(offset++)]);
+      stones = stones.add(wq.parseSgfPoint(p), wq.Color.white);
+    }
+
+    return stones;
+  }
+
   int _idAt(int index) {
     assert(0 <= index && index < size);
     return data.getInt32(2 + index * 8);
@@ -230,6 +264,37 @@ class _TaskBucket {
       children = children.add(p, child);
       offset = newOffset;
     }
+  }
+
+  Stream<Task> find(IMap<wq.Point, wq.Color> wantStones) async* {
+    for (int i = 0; i < size; ++i) {
+      final gotStones = _stonesAt(i);
+      if (_matchStones(wantStones, gotStones)) yield at(i);
+    }
+  }
+
+  bool _matchStones(
+    IMap<wq.Point, wq.Color> wantStones,
+    IMap<wq.Point, wq.Color> gotStones,
+  ) {
+    for (final ex in wantStones.entries) {
+      final (rx, cx) = ex.key;
+      for (final ey in gotStones.entries) {
+        final (ry, cy) = ey.key;
+        // Assume ex and ey represent the same stone and check if the remaining stones match.
+        var ok = true;
+        for (final ez in wantStones.entries) {
+          final (rz, cz) = ez.key;
+          final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
+          if (zz == null || ((ex.value == ey.value) != (zz == ez.value))) {
+            ok = false;
+            break;
+          }
+        }
+        if (ok) return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -536,4 +601,100 @@ class TaskRepository {
       node.add(childNode);
     }
   }
+
+  Stream<Task> _find(RankRange rankRange, ISet<TaskType> types,
+      IMap<wq.Point, wq.Color> stones) async* {
+    for (final e in _buckets.entries) {
+      final (rank, type) = e.key;
+      if (!rankRange.contains(rank) || !types.contains(type)) continue;
+      yield* e.value.find(stones);
+      await Future.delayed(
+          Duration.zero); // yield control to handle cancellation
+    }
+  }
+}
+
+class _FindTaskRequest {
+  final TaskRepository taskRepo;
+  final RankRange rankRange;
+  final ISet<TaskType> taskTypes;
+  final IMap<wq.Point, wq.Color> stones;
+  final SendPort sendPort;
+
+  const _FindTaskRequest({
+    required this.taskRepo,
+    required this.rankRange,
+    required this.taskTypes,
+    required this.stones,
+    required this.sendPort,
+  });
+}
+
+CancellableIsolateStream<Task> findTasks(RankRange rankRange,
+    ISet<TaskType> taskTypes, IMap<wq.Point, wq.Color> stones) {
+  final mainRecvPort = ReceivePort();
+  final ctrl = StreamController<Task>();
+  SendPort? isoSendPort;
+
+  void cancel() {
+    isoSendPort?.send('cancel');
+    mainRecvPort.close();
+    ctrl.close();
+  }
+
+  final req = _FindTaskRequest(
+    taskRepo: TaskRepository(),
+    rankRange: rankRange,
+    taskTypes: taskTypes,
+    stones: stones,
+    sendPort: mainRecvPort.sendPort,
+  );
+
+  Isolate.spawn(_findTaskOnIsolate, req).then((isolate) {
+    // Nothing to do
+  }).catchError((err) {
+    ctrl.addError(err);
+    ctrl.close();
+  });
+
+  mainRecvPort.listen((msg) {
+    if (msg is SendPort) {
+      isoSendPort = msg;
+    } else if (msg == null) {
+      mainRecvPort.close();
+      ctrl.close();
+    } else if (msg is Task) {
+      ctrl.add(msg);
+    }
+  });
+
+  return CancellableIsolateStream(stream: ctrl.stream, cancel: cancel);
+}
+
+void _findTaskOnIsolate(_FindTaskRequest req) async {
+  final recvPort = ReceivePort();
+  StreamSubscription? sub;
+
+  req.sendPort.send(recvPort.sendPort);
+
+  void cancelSearch() {
+    recvPort.close();
+    sub?.cancel();
+  }
+
+  recvPort.listen((msg) {
+    if (msg == 'cancel') cancelSearch();
+  });
+
+  sub =
+      req.taskRepo._find(req.rankRange, req.taskTypes, req.stones).listen((t) {
+    req.sendPort.send(t);
+  }, onError: (err) {
+    // TODO send error?
+    req.sendPort.send(null);
+    cancelSearch();
+  }, onDone: () {
+    req.sendPort.send(null);
+    cancelSearch();
+  }, cancelOnError: true);
 }
