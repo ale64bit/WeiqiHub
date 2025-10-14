@@ -15,6 +15,7 @@ class RankRange {
   bool isSingle() => from == to;
 
   bool isInside(RankRange that) => that.from <= from && to <= that.to;
+  bool contains(Rank rank) => from <= rank && rank <= to;
 
   @override
   int get hashCode => Object.hash(from, to);

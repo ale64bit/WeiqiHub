@@ -11,8 +11,13 @@ import 'package:wqhub/wq/wq.dart' as wq;
 class TaskPreviewTile extends StatefulWidget {
   final TaskStatEntry task;
   final Function()? onHideTask;
+  final bool showSolveRatio;
 
-  const TaskPreviewTile({super.key, required this.task, this.onHideTask});
+  const TaskPreviewTile(
+      {super.key,
+      required this.task,
+      this.onHideTask,
+      this.showSolveRatio = true});
 
   @override
   State<TaskPreviewTile> createState() => _TaskPreviewTileState();
@@ -115,9 +120,10 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(widget.task.rank.toString()),
-                    Text(
-                        '${widget.task.correctCount} / ${widget.task.correctCount + widget.task.wrongCount}',
-                        style: TextTheme.of(context).labelSmall),
+                    if (widget.showSolveRatio)
+                      Text(
+                          '${widget.task.correctCount} / ${widget.task.correctCount + widget.task.wrongCount}',
+                          style: TextTheme.of(context).labelSmall),
                   ],
                 )
               ],

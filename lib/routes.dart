@@ -29,6 +29,8 @@ import 'package:wqhub/train/subtag_rank_selection_page.dart';
 import 'package:wqhub/train/subtags_page.dart';
 import 'package:wqhub/train/tag_exam_page.dart';
 import 'package:wqhub/train/tags_page.dart';
+import 'package:wqhub/train/task_pattern_search_page.dart';
+import 'package:wqhub/train/task_pattern_search_results_page.dart';
 import 'package:wqhub/train/time_frenzy_page.dart';
 import 'package:wqhub/train/train_stats_page.dart';
 
@@ -51,6 +53,7 @@ final Map<String, WidgetBuilder> routes = {
   CustomExamSelectionPage.routeName: (context) => CustomExamSelectionPage(),
   MyMistakesPage.routeName: (context) => MyMistakesPage(),
   TrainStatsPage.routeName: (context) => TrainStatsPage(),
+  TaskPatternSearchPage.routeName: (context) => TaskPatternSearchPage(),
 };
 
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -164,6 +167,16 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             game: args.game,
             gameListener: args.gameListener,
           ));
+    case TaskPatternSearchResultsPage.routeName:
+      final args = settings.arguments as TaskPatternSearchResultsRouteArguments;
+      return _mpr(
+        settings,
+        TaskPatternSearchResultsPage(
+          rankRange: args.rankRange,
+          taskTypes: args.taskTypes,
+          stones: args.stones,
+        ),
+      );
   }
   assert(false, 'Missing named route implementation: ${settings.name}');
   return null;

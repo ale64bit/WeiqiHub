@@ -44,6 +44,13 @@ class TaskStatEntry {
         other.correctCount == correctCount &&
         other.wrongCount == wrongCount;
   }
+
+  TaskStatEntry.ofTask(Task task)
+      : rank = task.rank,
+        type = task.type,
+        id = task.id,
+        correctCount = 0,
+        wrongCount = 0;
 }
 
 enum ExamType {
