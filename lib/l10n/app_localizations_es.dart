@@ -64,6 +64,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get captures => 'Capturas';
 
   @override
+  String get clearBoard => 'Limpiar';
+
+  @override
   String get collectStats => 'Añadir a las estadísticas';
 
   @override
@@ -106,6 +109,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get edgeLine => 'Línea de borde';
+
+  @override
+  String get empty => 'Vacío';
 
   @override
   String get endgameExam => 'Examen de finales';
@@ -155,6 +161,18 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get findTask => 'Buscar problema';
+
+  @override
+  String get findTaskByLink => 'Con enlace';
+
+  @override
+  String get findTaskByPattern => 'Con patrón';
+
+  @override
+  String get findTaskResults => 'Resultados de búsqueda';
+
+  @override
+  String get findTaskSearching => 'Buscando...';
 
   @override
   String get forceCounting => 'Forzar conteo';
@@ -500,6 +518,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get taskNext => 'Siguiente';
+
+  @override
+  String get taskNotFound => 'No se encontró el problema';
 
   @override
   String get taskRedo => 'Reintentar';

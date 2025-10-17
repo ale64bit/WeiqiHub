@@ -1,6 +1,7 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/cancellable_isolate_stream.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_preview_tile.dart';
@@ -13,9 +14,13 @@ class TaskPatternSearchResultsRouteArguments {
   final RankRange rankRange;
   final ISet<TaskType> taskTypes;
   final IMap<wq.Point, wq.Color> stones;
+  final ISet<wq.Point> empty;
 
   TaskPatternSearchResultsRouteArguments(
-      {required this.rankRange, required this.taskTypes, required this.stones});
+      {required this.rankRange,
+      required this.taskTypes,
+      required this.stones,
+      required this.empty});
 }
 
 class TaskPatternSearchResultsPage extends StatefulWidget {
@@ -24,12 +29,14 @@ class TaskPatternSearchResultsPage extends StatefulWidget {
   final RankRange rankRange;
   final ISet<TaskType> taskTypes;
   final IMap<wq.Point, wq.Color> stones;
+  final ISet<wq.Point> empty;
 
   const TaskPatternSearchResultsPage({
     super.key,
     required this.rankRange,
     required this.taskTypes,
     required this.stones,
+    required this.empty,
   });
 
   @override
@@ -47,7 +54,8 @@ class _TaskPatternSearchResultsPageState
   @override
   void initState() {
     super.initState();
-    _results = findTasks(widget.rankRange, widget.taskTypes, widget.stones);
+    _results = findTasks(
+        widget.rankRange, widget.taskTypes, widget.stones, widget.empty);
   }
 
   @override
@@ -62,6 +70,7 @@ class _TaskPatternSearchResultsPageState
     return StreamBuilder(
       stream: _results.stream,
       builder: (context, snapshot) {
+        final loc = AppLocalizations.of(context)!;
         if (snapshot.connectionState == ConnectionState.done) {
           _searchComplete = true;
         }
@@ -75,7 +84,8 @@ class _TaskPatternSearchResultsPageState
         }
         return Scaffold(
           appBar: AppBar(
-            title: Text(_searchComplete ? 'Search results' : 'Searching...'),
+            title: Text(
+                _searchComplete ? loc.findTaskResults : loc.findTaskSearching),
             actions: [
               if (!_searchComplete)
                 Padding(

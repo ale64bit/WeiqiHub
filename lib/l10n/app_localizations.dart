@@ -210,6 +210,12 @@ abstract class AppLocalizations {
   /// **'Captures'**
   String get captures;
 
+  /// No description provided for @clearBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearBoard;
+
   /// No description provided for @collectStats.
   ///
   /// In en, this message translates to:
@@ -294,6 +300,12 @@ abstract class AppLocalizations {
   /// **'Edge line'**
   String get edgeLine;
 
+  /// No description provided for @empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get empty;
+
   /// No description provided for @endgameExam.
   ///
   /// In en, this message translates to:
@@ -377,6 +389,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find task'**
   String get findTask;
+
+  /// No description provided for @findTaskByLink.
+  ///
+  /// In en, this message translates to:
+  /// **'By link'**
+  String get findTaskByLink;
+
+  /// No description provided for @findTaskByPattern.
+  ///
+  /// In en, this message translates to:
+  /// **'By pattern'**
+  String get findTaskByPattern;
+
+  /// No description provided for @findTaskResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Search results'**
+  String get findTaskResults;
+
+  /// No description provided for @findTaskSearching.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching...'**
+  String get findTaskSearching;
 
   /// No description provided for @forceCounting.
   ///
@@ -965,6 +1001,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next'**
   String get taskNext;
+
+  /// No description provided for @taskNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Task not found'**
+  String get taskNotFound;
 
   /// No description provided for @taskRedo.
   ///

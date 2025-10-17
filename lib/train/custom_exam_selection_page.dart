@@ -24,7 +24,8 @@ class CustomExamSelectionPage extends StatefulWidget {
 
 class _CustomExamSelectionPageState
     extends PopAwareState<CustomExamSelectionPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey =
+      GlobalKey<FormState>(debugLabel: 'custom_exam_selection_page');
   var _taskCount = 10;
   var _maxMistakes = 2;
   var _timePerTask = Duration(seconds: 45);
