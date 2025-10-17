@@ -1,6 +1,8 @@
+import 'package:extension_type_unions/extension_type_unions.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/board/board.dart';
+import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/input/rank_range_form_field.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
@@ -21,8 +23,9 @@ class TaskPatternSearchPage extends StatefulWidget {
 class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
   final _formKey = GlobalKey<FormState>(debugLabel: 'task_pattern_search_page');
   var _boardSize = 13;
-  var _turn = wq.Color.black;
+  wq.Color? _turn = wq.Color.black;
   var _stones = const IMap<wq.Point, wq.Color>.empty();
+  var _empty = const ISet<wq.Point>.empty();
   var _rankRange = RankRange(from: Rank.k15, to: Rank.d7);
   var _selectedTaskTypes = ISet(TaskType.values);
 
@@ -35,6 +38,15 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
       edgeLine: context.settings.edgeLine,
       stoneShadows: context.settings.stoneShadows,
     );
+    final annotations = IMapOfSets.from(IMap({
+      for (final p in _empty)
+        p: ISet({
+          (
+            type: AnnotationShape.circle.u21,
+            color: Colors.blueAccent,
+          )
+        })
+    }));
     final board = LayoutBuilder(
       builder: (context, constraints) {
         final boardSize = constraints.biggest.shortestSide -
@@ -45,7 +57,7 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
           onPointClicked: _onPointClicked,
           turn: _turn,
           stones: _stones,
-          annotations: IMapOfSets.empty(),
+          annotations: annotations,
           confirmTap: context.settings.confirmMoves,
         );
       },
@@ -70,22 +82,27 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
         setState(() {
           _boardSize = newSelection.first;
           _stones = const IMap.empty();
+          _empty = const ISet.empty();
         });
       },
     );
     final turnSegmentedButton = SegmentedButton(
-      segments: <ButtonSegment<wq.Color>>[
-        ButtonSegment<wq.Color>(
+      segments: <ButtonSegment<wq.Color?>>[
+        ButtonSegment<wq.Color?>(
           value: wq.Color.black,
           label: Text(loc.black),
         ),
-        ButtonSegment<wq.Color>(
+        ButtonSegment<wq.Color?>(
           value: wq.Color.white,
           label: Text(loc.white),
         ),
+        ButtonSegment<wq.Color?>(
+          value: null,
+          label: Text(loc.empty),
+        ),
       ],
-      selected: <wq.Color>{_turn},
-      onSelectionChanged: (Set<wq.Color> newSelection) {
+      selected: <wq.Color?>{_turn},
+      onSelectionChanged: (Set<wq.Color?> newSelection) {
         setState(() {
           _turn = newSelection.first;
         });
@@ -94,6 +111,18 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.findTask),
+        actions: [
+          TextButton.icon(
+            icon: const Icon(Icons.clear),
+            label: const Text('Clear'),
+            onPressed: () {
+              setState(() {
+                _stones = const IMap.empty();
+                _empty = const ISet.empty();
+              });
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -169,13 +198,14 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
                             rankRange: _rankRange,
                             taskTypes: _selectedTaskTypes,
                             stones: _stones,
+                            empty: _empty,
                           ),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text(
-                                'Invalid exam settings. Please fix the errors.'),
+                                'Invalid task search settings. Please fix the errors.'),
                             showCloseIcon: true,
                           ),
                         );
@@ -193,10 +223,16 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
 
   void _onPointClicked(wq.Point p) {
     setState(() {
-      if (_stones.contains(p, _turn))
+      if (_turn == null) {
         _stones = _stones.remove(p);
-      else
-        _stones = _stones.add(p, _turn);
+        _empty = _empty.toggle(p);
+      } else {
+        _empty = _empty.remove(p);
+        if (_stones.contains(p, _turn!))
+          _stones = _stones.remove(p);
+        else
+          _stones = _stones.add(p, _turn!);
+      }
     });
   }
 }

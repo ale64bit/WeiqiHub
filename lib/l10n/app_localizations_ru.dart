@@ -64,6 +64,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get captures => 'Захваты';
 
   @override
+  String get clearBoard => 'Clear';
+
+  @override
   String get collectStats => 'Collect statistics';
 
   @override
@@ -106,6 +109,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get edgeLine => 'Линия края';
+
+  @override
+  String get empty => 'Empty';
 
   @override
   String get endgameExam => 'Endgame exam';
@@ -155,6 +161,18 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get findTask => 'Найти задачу';
+
+  @override
+  String get findTaskByLink => 'By link';
+
+  @override
+  String get findTaskByPattern => 'By pattern';
+
+  @override
+  String get findTaskResults => 'Search results';
+
+  @override
+  String get findTaskSearching => 'Searching...';
 
   @override
   String get forceCounting => 'Force counting';
@@ -498,6 +516,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get taskNext => 'Следующая';
+
+  @override
+  String get taskNotFound => 'Task not found';
 
   @override
   String get taskRedo => 'Переделать';

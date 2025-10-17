@@ -311,7 +311,7 @@ class _Train extends StatelessWidget {
             children: [
               ElevatedButton.icon(
                 icon: Icon(Icons.link),
-                label: Text('By link'),
+                label: Text(loc.findTaskByLink),
                 onPressed: () {
                   Navigator.of(parentContext).pop();
                   WidgetsBinding.instance.addPostFrameCallback(
@@ -320,7 +320,7 @@ class _Train extends StatelessWidget {
               ),
               ElevatedButton.icon(
                 icon: Icon(Icons.pattern),
-                label: Text('By pattern'),
+                label: Text(loc.findTaskByPattern),
                 onPressed: () {
                   Navigator.of(parentContext).pop();
                   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -366,8 +366,9 @@ class _Train extends StatelessWidget {
           }
         } else {
           if (context.mounted) {
+            final loc = AppLocalizations.of(context)!;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: const Text('Task not found.'),
+              content: Text(loc.taskNotFound),
               dismissDirection: DismissDirection.horizontal,
               showCloseIcon: true,
             ));
@@ -376,8 +377,9 @@ class _Train extends StatelessWidget {
       }
     }, onError: (err) {
       if (context.mounted) {
+        final loc = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('Task not found.'),
+          content: Text(loc.taskNotFound),
           dismissDirection: DismissDirection.horizontal,
           showCloseIcon: true,
         ));

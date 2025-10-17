@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:isolate';
 
 import 'package:animated_tree_view/tree_view/tree_node.dart';
+import 'package:crypto/crypto.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -125,8 +127,9 @@ class _TaskBucket {
   final wq.Rank rank;
   final TaskType type;
   final ByteData data;
+  final ByteData patternIndexData;
 
-  _TaskBucket(this.rank, this.type, this.data);
+  _TaskBucket(this.rank, this.type, this.data, this.patternIndexData);
 
   int get size => data.getInt16(0);
 
@@ -266,35 +269,79 @@ class _TaskBucket {
     }
   }
 
-  Stream<Task> find(IMap<wq.Point, wq.Color> wantStones) async* {
+  static final int _patternHashSizeInBytes = 32;
+
+  Stream<Task> find(IMap<wq.Point, wq.Color> wantStones,
+      ISet<wq.Point> wantEmpty, Set<int> wantFeatures) async* {
     for (int i = 0; i < size; ++i) {
       final gotStones = _stonesAt(i);
-      if (_matchStones(wantStones, gotStones)) yield at(i);
+      final h = patternIndexData.buffer
+          .asUint8List(_patternHashSizeInBytes * i, _patternHashSizeInBytes)
+          .reversedView;
+      if (_matchFingerprint(h, wantFeatures) &&
+          _matchStones(wantStones, wantEmpty, gotStones)) {
+        yield at(i);
+      }
     }
+  }
+
+  bool _matchFingerprint(List<int> h, Set<int> wantFeatures) {
+    for (final fp in wantFeatures) {
+      final x = h[fp >> 3];
+      if ((x & (1 << (fp & 7))) == 0) return false;
+    }
+    return true;
   }
 
   bool _matchStones(
     IMap<wq.Point, wq.Color> wantStones,
+    ISet<wq.Point> wantEmpty,
     IMap<wq.Point, wq.Color> gotStones,
   ) {
     final ex = wantStones.entries.first;
-    final (rx, cx) = ex.key;
-    for (final ey in gotStones.entries) {
-      final (ry, cy) = ey.key;
-      // Assume ex and ey represent the same stone and check if the remaining stones match.
-      var ok = true;
-      for (final ez in wantStones.entries) {
-        final (rz, cz) = ez.key;
-        final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
-        if (zz == null || ((ex.value == ey.value) != (zz == ez.value))) {
-          ok = false;
-          break;
+    for (final f in [
+      _rot90,
+      _rot180,
+      _rot270,
+      _hFlip,
+      _vFlip,
+      _mirrorMain,
+      _mirrorAnti,
+    ]) {
+      final (rx, cx) = f(ex.key);
+      for (final ey in gotStones.entries) {
+        final (ry, cy) = ey.key;
+        // Assume ex and ey represent the same stone and check if the remaining stones match.
+        var ok = true;
+        for (final pz in wantEmpty) {
+          final (rz, cz) = f(pz);
+          final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
+          if (zz != null) {
+            ok = false;
+            break;
+          }
         }
+        for (final ez in wantStones.entries) {
+          final (rz, cz) = f(ez.key);
+          final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
+          if (zz == null || ((ex.value == ey.value) != (zz == ez.value))) {
+            ok = false;
+            break;
+          }
+        }
+        if (ok) return true;
       }
-      if (ok) return true;
     }
     return false;
   }
+
+  wq.Point _rot90(wq.Point p) => (p.$2, 19 - 1 - p.$1);
+  wq.Point _rot180(wq.Point p) => (19 - 1 - p.$1, 19 - 1 - p.$2);
+  wq.Point _rot270(wq.Point p) => (19 - 1 - p.$2, p.$1);
+  wq.Point _hFlip(wq.Point p) => (p.$1, 19 - 1 - p.$2);
+  wq.Point _vFlip(wq.Point p) => (19 - 1 - p.$1, p.$2);
+  wq.Point _mirrorMain(wq.Point p) => (p.$2, p.$1);
+  wq.Point _mirrorAnti(wq.Point p) => (19 - 1 - p.$2, 19 - 1 - p.$1);
 }
 
 class _TagBucket {
@@ -461,7 +508,9 @@ class TaskRepository {
       final (rank, typ) = rt;
       final data =
           await rootBundle.load('assets/tasks/${rank.index}_${typ.index}.bin');
-      return (rt, _TaskBucket(rank, typ, data));
+      final patternIndexData =
+          await rootBundle.load('assets/tasks/${rank.index}_${typ.index}.idx');
+      return (rt, _TaskBucket(rank, typ, data, patternIndexData));
     }));
     final buckets = <(wq.Rank, TaskType), _TaskBucket>{
       for (final (rt, bucket) in entries) rt: bucket
@@ -602,14 +651,41 @@ class TaskRepository {
   }
 
   Stream<Task> _find(RankRange rankRange, ISet<TaskType> types,
-      IMap<wq.Point, wq.Color> stones) async* {
+      IMap<wq.Point, wq.Color> stones, ISet<wq.Point> empty) async* {
+    final features = _computePatternFeatures(stones);
     for (final e in _buckets.entries) {
       final (rank, type) = e.key;
       if (!rankRange.contains(rank) || !types.contains(type)) continue;
-      yield* e.value.find(stones);
+      yield* e.value.find(stones, empty, features);
       await Future.delayed(
           Duration.zero); // yield control to handle cancellation
     }
+  }
+
+  Set<int> _computePatternFeatures(IMap<wq.Point, wq.Color> stones) {
+    final features = <int>{};
+    for (final ex in stones.entries) {
+      final (rx, cx) = ex.key;
+      final xCol = ex.value;
+      for (final ey in stones.entries) {
+        final (ry, cy) = ey.key;
+        final yCol = ey.value;
+
+        if (ex.key == ey.key) continue;
+        features.add(_fingerprint(rx, cx, xCol, ry, cy, yCol));
+      }
+    }
+    return features;
+  }
+
+  int _fingerprint(
+      int rx, int cx, wq.Color xCol, int ry, int cy, wq.Color yCol) {
+    final lens = [(rx - ry).abs(), (cx - cy).abs()];
+    lens.sort();
+    final sameCol = xCol == yCol ? 1 : 0;
+    final digest =
+        sha256.convert(utf8.encode('${lens[0]}.${lens[1]}.$sameCol'));
+    return digest.bytes[0];
   }
 }
 
@@ -618,6 +694,7 @@ class _FindTaskRequest {
   final RankRange rankRange;
   final ISet<TaskType> taskTypes;
   final IMap<wq.Point, wq.Color> stones;
+  final ISet<wq.Point> empty;
   final SendPort sendPort;
 
   const _FindTaskRequest({
@@ -625,12 +702,16 @@ class _FindTaskRequest {
     required this.rankRange,
     required this.taskTypes,
     required this.stones,
+    required this.empty,
     required this.sendPort,
   });
 }
 
-CancellableIsolateStream<Task> findTasks(RankRange rankRange,
-    ISet<TaskType> taskTypes, IMap<wq.Point, wq.Color> stones) {
+CancellableIsolateStream<Task> findTasks(
+    RankRange rankRange,
+    ISet<TaskType> taskTypes,
+    IMap<wq.Point, wq.Color> stones,
+    ISet<wq.Point> empty) {
   final mainRecvPort = ReceivePort();
   final ctrl = StreamController<Task>();
   SendPort? isoSendPort;
@@ -646,6 +727,7 @@ CancellableIsolateStream<Task> findTasks(RankRange rankRange,
     rankRange: rankRange,
     taskTypes: taskTypes,
     stones: stones,
+    empty: empty,
     sendPort: mainRecvPort.sendPort,
   );
 
@@ -685,11 +767,11 @@ void _findTaskOnIsolate(_FindTaskRequest req) async {
     if (msg == 'cancel') cancelSearch();
   });
 
-  sub =
-      req.taskRepo._find(req.rankRange, req.taskTypes, req.stones).listen((t) {
+  sub = req.taskRepo
+      ._find(req.rankRange, req.taskTypes, req.stones, req.empty)
+      .listen((t) {
     req.sendPort.send(t);
   }, onError: (err) {
-    // TODO send error?
     req.sendPort.send(null);
     cancelSearch();
   }, onDone: () {

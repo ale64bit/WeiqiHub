@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.10
+- task search by pattern
 
 ## 0.1.9
 - add Next button for topic exams 

@@ -63,6 +63,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get captures => 'Captures';
 
   @override
+  String get clearBoard => 'Clear';
+
+  @override
   String get collectStats => 'Collect statistics';
 
   @override
@@ -104,6 +107,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get edgeLine => '棋盘边缘';
+
+  @override
+  String get empty => 'Empty';
 
   @override
   String get endgameExam => 'Endgame exam';
@@ -152,6 +158,18 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get findTask => 'Find task';
+
+  @override
+  String get findTaskByLink => 'By link';
+
+  @override
+  String get findTaskByPattern => 'By pattern';
+
+  @override
+  String get findTaskResults => 'Search results';
+
+  @override
+  String get findTaskSearching => 'Searching...';
 
   @override
   String get forceCounting => 'Force counting';
@@ -493,6 +511,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get taskNext => 'Next';
+
+  @override
+  String get taskNotFound => 'Task not found';
 
   @override
   String get taskRedo => 'Redo';

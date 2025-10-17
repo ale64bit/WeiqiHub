@@ -175,6 +175,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           rankRange: args.rankRange,
           taskTypes: args.taskTypes,
           stones: args.stones,
+          empty: args.empty,
         ),
       );
   }
