@@ -1,7 +1,15 @@
 # Changelog
 
 ## 0.1.10
-- task search by pattern
+- now available in Chinese (simplified), Russian and Spanish
+- add task search by pattern
+- add help dialogs for several pages
+- show current rank for each topic
+- fix topic progress display bug when returning to topic page
+- fix timezone bug in statistics
+- new theme: BadukTV
+- remove experimental 9x9 human-like AI bot 
+- remove a few broken tasks
 
 ## 0.1.9
 - add Next button for topic exams 
