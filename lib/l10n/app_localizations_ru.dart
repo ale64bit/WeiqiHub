@@ -28,16 +28,16 @@ class AppLocalizationsRu extends AppLocalizations {
       'Устанавливать все задачи как ход чёрных, чтобы избежать путаницы';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Интерфейс';
 
   @override
   String get autoCounting => 'Автоподсчёт';
 
   @override
-  String get autoMatch => 'Auto-Match';
+  String get autoMatch => 'Автоподбор';
 
   @override
-  String get behaviour => 'Behaviour';
+  String get behaviour => 'Поведение';
 
   @override
   String get bestResult => 'Лучший результат';
@@ -67,27 +67,27 @@ class AppLocalizationsRu extends AppLocalizations {
   String get clearBoard => 'Clear';
 
   @override
-  String get collectStats => 'Collect statistics';
+  String get collectStats => 'Добавлять в статистику';
 
   @override
   String get collections => 'Коллекции';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'Подтвердить';
 
   @override
-  String get confirmBoardSize => 'Confirm board size';
+  String get confirmBoardSize => 'Минимальный размер доски';
 
   @override
   String get confirmBoardSizeDesc =>
-      'Boards this size or larger require move confirmation';
+      'Подтверждение ходов требуется для досок этого размера и больше';
 
   @override
-  String get confirmMoves => 'Confirm moves';
+  String get confirmMoves => 'Подтверждение ходов';
 
   @override
   String get confirmMovesDesc =>
-      'Double-tap to confirm moves on large boards to avoid misclicks';
+      'Двойное нажатие на один и тот же пункт для подтверждения хода, чтобы избежать случайных нажатий';
 
   @override
   String get continue_ => 'Продолжить';
@@ -96,7 +96,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get copyTaskLink => 'Копировать ссылку на задачу';
 
   @override
-  String get customExam => 'Custom exam';
+  String get customExam => 'Пользовательский экзамен';
 
   @override
   String get dark => 'Тёмная';
@@ -114,13 +114,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get empty => 'Empty';
 
   @override
-  String get endgameExam => 'Endgame exam';
+  String get endgameExam => 'Экзамены по йосе';
 
   @override
   String get enterTaskLink => 'Введите ссылку на задачу';
 
   @override
-  String get errCannotBeEmpty => 'Cannot be empty';
+  String get errCannotBeEmpty => 'Обязательное поле';
 
   @override
   String get errFailedToDownloadGame => 'Не удалось скачать партию';
@@ -139,22 +139,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String errMustBeAtLeast(num n) {
-    return 'Must be at least $n';
+    return 'Должно быть не менее $n';
   }
 
   @override
   String errMustBeAtMost(num n) {
-    return 'Must be at most $n';
+    return 'Должно быть не более $n';
   }
 
   @override
-  String get errMustBeInteger => 'Must be an integer';
+  String get errMustBeInteger => 'Должно быть целым числом';
 
   @override
-  String get exit => 'Exit';
+  String get exit => 'Выход';
 
   @override
-  String get exitTryMode => 'Exit try mode';
+  String get exitTryMode => 'Выйти из режима пробных ходов';
 
   @override
   String get find => 'Найти';
@@ -175,7 +175,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get findTaskSearching => 'Searching...';
 
   @override
-  String get forceCounting => 'Force counting';
+  String get forceCounting => 'Принудительный подсчёт';
 
   @override
   String get foxwqDesc => 'Самый популярный сервер в Китае и в мире.';
@@ -190,7 +190,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get gameRecord => 'Запись партии';
 
   @override
-  String get gradingExam => 'Grading exam';
+  String get gradingExam => 'Контрольный экзамен';
 
   @override
   String get handicap => 'Фора';
@@ -200,23 +200,23 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get helpDialogCollections =>
-      'Collections are classic, curated sets of high-quality tasks which hold special value together as a training resource.\n\nThe main goal is to solve a collection with a high success rate. A secondary goal is to solve it as fast as possible.\n\nTo start or continue solving a collection, slide left on the collection tile while in portrait mode or click the Start/Continue buttons while in landscape mode.';
+      'Коллекции — это классические, тщательно отобранные наборы высококачественных задач, которые вместе представляют особую ценность как учебный ресурс.\n\nОсновная цель — решить коллекцию с высоким процентом успеха. Вторичная цель — решить её как можно быстрее.\n\nЧтобы начать или продолжить решение коллекции, смахните влево по плитке коллекции в портретном режиме или нажмите кнопки «Начать»/«Продолжить» в ландшафтном режиме.';
 
   @override
   String get helpDialogEndgameExam =>
-      '- Endgame exams are sets of 10 endgame tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+      '- Экзамены по йосе — это наборы из 10 задач по йосе, и у вас есть 45 секунд на каждую задачу.\n\n- Вы сдаёте экзамен, если решаете 8 или более задач правильно (80% успеха).\n\n- Сдача экзамена для данного ранга открывает экзамен для следующего ранга.';
 
   @override
   String get helpDialogGradingExam =>
-      '- Grading exams are sets of 10 tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+      '- Контрольные экзамены — это наборы из 10 задач, и у вас есть 45 секунд на каждую задачу.\n\n- Вы сдаёте экзамен, если решаете 8 или более задач правильно (80% успеха).\n\n- Сдача экзамена для данного ранга открывает экзамен для следующего ранга.';
 
   @override
   String get helpDialogRankedMode =>
-      '- Solve tasks without a time limit.\n\n- Task difficulty increases according to how fast you solve them.\n\n- Focus on solving correctly and reach the highest rank possible.';
+      '- Решайте задачи без ограничения по времени.\n\n- Сложность задач увеличивается в зависимости от того, насколько быстро вы их решаете.\n\n- Сосредоточьтесь на правильном решении и достигните максимально возможного ранга.';
 
   @override
   String get helpDialogTimeFrenzy =>
-      '- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.';
+      '- У вас есть 3 минуты, чтобы решить как можно больше задач.\n\n- Задачи становятся всё сложнее по мере их решения.\n\n- Если вы допустите 3 ошибки, вы проиграете.';
 
   @override
   String get home => 'Главная';
@@ -228,7 +228,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get language => 'Язык';
 
   @override
-  String get leave => 'Leave';
+  String get leave => 'Покинуть';
 
   @override
   String get light => 'Светлая';
@@ -240,7 +240,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get logout => 'Выйти';
 
   @override
-  String get long => 'Long';
+  String get long => 'Длинная';
 
   @override
   String mMinutes(int m) {
@@ -254,7 +254,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get maxRank => 'Макс. ранг';
 
   @override
-  String get medium => 'Medium';
+  String get medium => 'Средняя';
 
   @override
   String get minRank => 'Мин. ранг';
@@ -263,18 +263,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get minutes => 'Минуты';
 
   @override
-  String get month => 'Month';
+  String get month => 'Месяц';
 
   @override
   String get msgCannotUseAIRefereeYet => 'ИИ-судья ещё нельзя использовать';
 
   @override
   String get msgCannotUseForcedCountingYet =>
-      'Forced counting cannot be used yet';
+      'Принудительный подсчёт ещё нельзя использовать';
 
   @override
   String get msgConfirmDeleteCollectionProgress =>
-      'Are you sure that you want to delete the previous attempt?';
+      'Вы уверены, что хотите начать коллекцию заново? Текущий прогресс будет удалён.';
 
   @override
   String get msgConfirmResignation => 'Вы уверены, что хотите сдаться?';
@@ -395,7 +395,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get play => 'Играть';
 
   @override
-  String get promotionRequirements => 'Promotion requirements';
+  String get promotionRequirements => 'Требования для повышения';
 
   @override
   String pxsByoyomi(int p, int s) {
@@ -406,10 +406,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get rank => 'Ранг';
 
   @override
-  String get rankedMode => 'Ranked mode';
+  String get rankedMode => 'Рейтинговый режим';
 
   @override
-  String get recentRecord => 'Recent record';
+  String get recentRecord => 'Недавние результаты';
 
   @override
   String get register => 'Зарегистрироваться';
@@ -418,11 +418,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get resign => 'Сдаться';
 
   @override
-  String get responseDelay => 'Response delay';
+  String get responseDelay => 'Задержка ответа';
 
   @override
   String get responseDelayDesc =>
-      'Duration of the delay before the response appears while solving tasks';
+      'Задержка перед показом ответного хода при решении задач';
 
   @override
   String get responseDelayLong => 'Длинная';
@@ -464,13 +464,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get settings => 'Настройки';
 
   @override
-  String get short => 'Short';
+  String get short => 'Короткая';
 
   @override
   String get showCoordinates => 'Показывать координаты';
 
   @override
-  String get simple => 'Simple';
+  String get simple => 'Простая';
 
   @override
   String get sortModeDifficult => 'Сложные';
@@ -518,13 +518,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskNext => 'Следующая';
 
   @override
-  String get taskNotFound => 'Task not found';
+  String get taskNotFound => 'Задача не найдена';
 
   @override
   String get taskRedo => 'Переделать';
 
   @override
-  String get taskSource => 'Task source';
+  String get taskSource => 'Происхождение задач';
 
   @override
   String get taskSourceFromMyMistakes => 'Из моих ошибок';
@@ -539,35 +539,35 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_afterJoseki => 'После джосеки';
 
   @override
-  String get taskTag_aiOpening => 'AI opening';
+  String get taskTag_aiOpening => 'Фусеки от ИИ';
 
   @override
-  String get taskTag_aiVariations => 'AI variations';
+  String get taskTag_aiVariations => 'Варианты от ИИ';
 
   @override
   String get taskTag_attack => 'Атака';
 
   @override
-  String get taskTag_attackAndDefenseInKo => 'Attack and defense in a ko';
+  String get taskTag_attackAndDefenseInKo => 'Атака и защита в ко';
 
   @override
   String get taskTag_attackAndDefenseOfCuts => 'Атака и защита разрезаний';
 
   @override
   String get taskTag_attackAndDefenseOfInvadingStones =>
-      'Attack and defense of invading stones';
+      'Атака и защита вторгающихся камней';
 
   @override
   String get taskTag_avoidKo => 'Избежать ко';
 
   @override
-  String get taskTag_avoidMakingDeadShape => 'Avoid making dead shape';
+  String get taskTag_avoidMakingDeadShape => 'Избегать создания мёртвой формы';
 
   @override
-  String get taskTag_avoidTrap => 'Avoid trap';
+  String get taskTag_avoidTrap => 'Избегать ловушки';
 
   @override
-  String get taskTag_basicEndgame => 'Endgame: basic';
+  String get taskTag_basicEndgame => 'Базовые задачи на Йосе';
 
   @override
   String get taskTag_basicLifeAndDeath => 'Базовые задачи на жизнь и смерть';
@@ -576,13 +576,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_basicMoves => 'Базовые ходы';
 
   @override
-  String get taskTag_basicTesuji => 'Tesuji';
+  String get taskTag_basicTesuji => 'Тесуджи';
 
   @override
   String get taskTag_beginner => 'Базовые приемы';
 
   @override
-  String get taskTag_bend => 'Bend';
+  String get taskTag_bend => 'Изгиб';
 
   @override
   String get taskTag_bentFour => 'Изогнутая четверка';
@@ -594,7 +594,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_bentThree => 'Изогнутая тройка';
 
   @override
-  String get taskTag_bigEyeLiberties => 'Big eye\'s liberties';
+  String get taskTag_bigEyeLiberties => 'Время жизни большого глаза';
 
   @override
   String get taskTag_bigEyeVsSmallEye =>
@@ -616,19 +616,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_breakEyeInSente => 'Разрушение глаза в сенте';
 
   @override
-  String get taskTag_breakOut => 'Break out';
+  String get taskTag_breakOut => 'Прорыв';
 
   @override
-  String get taskTag_breakPoints => 'Break points';
+  String get taskTag_breakPoints => 'Пункты разрыва';
 
   @override
   String get taskTag_breakShape => 'Разрушить форму';
 
   @override
-  String get taskTag_bridgeUnder => 'Bridge under';
+  String get taskTag_bridgeUnder => 'Подмостки';
 
   @override
-  String get taskTag_brilliantSequence => 'Brilliant sequence';
+  String get taskTag_brilliantSequence => 'Блестящая последовательность';
 
   @override
   String get taskTag_bulkyFive => 'Машинка';
@@ -649,7 +649,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_captureOnTheSide => 'Захват на стороне';
 
   @override
-  String get taskTag_captureToLive => 'Capture to live';
+  String get taskTag_captureToLive => 'Захватить, чтобы жить';
 
   @override
   String get taskTag_captureTwoRecaptureOne => 'Захвати два - верни один';
@@ -671,38 +671,38 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_clamp => 'Зажим';
 
   @override
-  String get taskTag_clampCapture => 'Clamp capture';
+  String get taskTag_clampCapture => 'Захват зажимом';
 
   @override
-  String get taskTag_closeInCapture => 'Closing-in capture';
+  String get taskTag_closeInCapture => 'Захват окружением';
 
   @override
   String get taskTag_combination => 'Комбинация';
 
   @override
-  String get taskTag_commonLifeAndDeath => 'Life & death: common shapes';
+  String get taskTag_commonLifeAndDeath => 'Жизнь и смерть: обычные формы';
 
   @override
-  String get taskTag_compareSize => 'Compare size';
+  String get taskTag_compareSize => 'Сравнить размер';
 
   @override
-  String get taskTag_compareValue => 'Compare value';
+  String get taskTag_compareValue => 'Сравнить ценность';
 
   @override
   String get taskTag_completeKoToSecureEndgameAdvantage =>
-      'Complete ko to secure endgame advantage';
+      'Завершить ко для обеспечения преимущества в йосе';
 
   @override
-  String get taskTag_compositeProblems => 'Composite tasks';
+  String get taskTag_compositeProblems => 'Составные задачи';
 
   @override
-  String get taskTag_comprehensiveTasks => 'Comprehensive tasks';
+  String get taskTag_comprehensiveTasks => 'Комплексные задачи';
 
   @override
   String get taskTag_connect => 'Соединение';
 
   @override
-  String get taskTag_connectAndDie => 'Connect and die';
+  String get taskTag_connectAndDie => 'Дамэзумари';
 
   @override
   String get taskTag_connectInOneMove => 'Соединение в один ход';
@@ -711,7 +711,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_contactFightTesuji => 'Техника ближнего боя';
 
   @override
-  String get taskTag_contactPlay => 'Contact play';
+  String get taskTag_contactPlay => 'Контактная игра';
 
   @override
   String get taskTag_corner => 'Угол';
@@ -721,13 +721,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Угол - золото, сторона - серебро, центр - трава.';
 
   @override
-  String get taskTag_counter => 'Counter';
+  String get taskTag_counter => 'Контрудар';
 
   @override
   String get taskTag_counterAttack => 'Контратака';
 
   @override
-  String get taskTag_cranesNest => 'Crane\'s nest';
+  String get taskTag_cranesNest => 'Гнездо аиста';
 
   @override
   String get taskTag_crawl => 'Crawl';
@@ -1246,10 +1246,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTimeout => 'Время вышло';
 
   @override
-  String get taskTypeAppreciation => 'Appreciation';
+  String get taskTypeAppreciation => 'Оценка позиции';
 
   @override
-  String get taskTypeCapture => 'Capture stones';
+  String get taskTypeCapture => 'Захват камней';
 
   @override
   String get taskTypeCaptureRace => 'Семеай';
@@ -1288,13 +1288,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get theme => 'Тема';
 
   @override
-  String get thick => 'Thick';
+  String get thick => 'Толстая';
 
   @override
   String get timeFrenzy => 'Time frenzy';
 
   @override
-  String get timePerTask => 'Time per task';
+  String get timePerTask => 'Время на задачу';
 
   @override
   String get today => 'Сегодня';
@@ -1309,7 +1309,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get topic => 'Тема';
 
   @override
-  String get topicExam => 'Topic exam';
+  String get topicExam => 'Тематический экзамен';
 
   @override
   String get topics => 'Темы';
@@ -1318,16 +1318,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get train => 'Тренироваться';
 
   @override
-  String get trainingAvgTimePerTask => 'Avg time per task';
+  String get trainingAvgTimePerTask => 'Ср. время на задачу';
 
   @override
-  String get trainingFailed => 'Failed';
+  String get trainingFailed => 'Не сдано';
 
   @override
   String get trainingMistakes => 'Ошибки';
 
   @override
-  String get trainingPassed => 'Passed';
+  String get trainingPassed => 'Сдано';
 
   @override
   String get trainingTotalTime => 'Общее время';
