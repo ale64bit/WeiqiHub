@@ -300,6 +300,7 @@ class _TaskBucket {
   ) {
     final ex = wantStones.entries.first;
     for (final f in [
+      (wq.Point x) => x,
       _rot90,
       _rot180,
       _rot270,
