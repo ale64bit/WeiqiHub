@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class CountingResultBottomSheet extends StatelessWidget {
@@ -17,6 +18,7 @@ class CountingResultBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -28,8 +30,8 @@ class CountingResultBottomSheet extends StatelessWidget {
           Expanded(
             child: Text('${winner.toString()}+ $scoreLead'),
           ),
-          FilledButton(onPressed: onAccept, child: const Text('Accept')),
-          FilledButton(onPressed: onReject, child: const Text('Reject')),
+          FilledButton(onPressed: onAccept, child: Text(loc.resultAccept)),
+          FilledButton(onPressed: onReject, child: Text(loc.resultReject)),
         ],
       ),
     );

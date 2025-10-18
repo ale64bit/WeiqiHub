@@ -846,6 +846,18 @@ abstract class AppLocalizations {
   /// **'Result'**
   String get result;
 
+  /// No description provided for @resultAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get resultAccept;
+
+  /// No description provided for @resultReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get resultReject;
+
   /// No description provided for @rules.
   ///
   /// In en, this message translates to:

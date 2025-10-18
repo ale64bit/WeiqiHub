@@ -438,6 +438,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get result => 'Result';
 
   @override
+  String get resultAccept => 'Accept';
+
+  @override
+  String get resultReject => 'Reject';
+
+  @override
   String get rules => 'Rules';
 
   @override

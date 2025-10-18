@@ -440,6 +440,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get result => 'Результат';
 
   @override
+  String get resultAccept => 'Принять';
+
+  @override
+  String get resultReject => 'Отказаться';
+
+  @override
   String get rules => 'Правила';
 
   @override
