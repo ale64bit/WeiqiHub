@@ -1179,7 +1179,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_typesOfKo => 'Tipos de ko';
 
   @override
-  String get taskTag_underTheStones => 'Sacrificio con contracaptura';
+  String get taskTag_underTheStones => 'Sacrificio y contracaptura';
 
   @override
   String get taskTag_underneathAttachment => 'Apego submarino';

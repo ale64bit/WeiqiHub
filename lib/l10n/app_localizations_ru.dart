@@ -64,7 +64,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get captures => 'Захваты';
 
   @override
-  String get clearBoard => 'Clear';
+  String get clearBoard => 'Очистить';
 
   @override
   String get collectStats => 'Добавлять в статистику';
@@ -111,7 +111,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get edgeLine => 'Линия края';
 
   @override
-  String get empty => 'Empty';
+  String get empty => 'Пусто';
 
   @override
   String get endgameExam => 'Экзамены по йосе';
@@ -163,16 +163,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get findTask => 'Найти задачу';
 
   @override
-  String get findTaskByLink => 'By link';
+  String get findTaskByLink => 'По ссылке';
 
   @override
-  String get findTaskByPattern => 'By pattern';
+  String get findTaskByPattern => 'По позиции';
 
   @override
-  String get findTaskResults => 'Search results';
+  String get findTaskResults => 'Результаты поиска';
 
   @override
-  String get findTaskSearching => 'Searching...';
+  String get findTaskSearching => 'Поиск...';
 
   @override
   String get forceCounting => 'Принудительный подсчёт';
@@ -536,10 +536,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskSourceFromTaskTypes => 'Из типов задач';
 
   @override
-  String get taskTag_afterJoseki => 'После джосеки';
+  String get taskTag_afterJoseki => 'После дзёсэки';
 
   @override
-  String get taskTag_aiOpening => 'Фусеки от ИИ';
+  String get taskTag_aiOpening => 'Фусэки от ИИ';
 
   @override
   String get taskTag_aiVariations => 'Варианты от ИИ';
@@ -567,10 +567,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_avoidTrap => 'Избегать ловушки';
 
   @override
-  String get taskTag_basicEndgame => 'Базовые задачи на Йосе';
+  String get taskTag_basicEndgame => 'Йосе: базовые задачи';
 
   @override
-  String get taskTag_basicLifeAndDeath => 'Базовые задачи на жизнь и смерть';
+  String get taskTag_basicLifeAndDeath => 'Жизнь и смерть: базовые задачи';
 
   @override
   String get taskTag_basicMoves => 'Базовые ходы';
@@ -613,7 +613,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_breakEyeInOneStep => 'Разрушение глаза в один ход';
 
   @override
-  String get taskTag_breakEyeInSente => 'Разрушение глаза в сенте';
+  String get taskTag_breakEyeInSente => 'Разрушение глаза в сэнтэ';
 
   @override
   String get taskTag_breakOut => 'Прорыв';
@@ -702,7 +702,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_connect => 'Соединение';
 
   @override
-  String get taskTag_connectAndDie => 'Дамэзумари';
+  String get taskTag_connectAndDie => 'Дамэдзумари';
 
   @override
   String get taskTag_connectInOneMove => 'Соединение в один ход';
@@ -730,13 +730,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_cranesNest => 'Гнездо аиста';
 
   @override
-  String get taskTag_crawl => 'Crawl';
+  String get taskTag_crawl => 'Ползать';
 
   @override
   String get taskTag_createShortageOfLiberties => 'Создание нехватки дыханий';
 
   @override
-  String get taskTag_crossedFive => 'Crossed five';
+  String get taskTag_crossedFive => 'Перекрёстная пятёрка';
 
   @override
   String get taskTag_cut => 'Разрезание';
@@ -745,19 +745,19 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_cut2 => 'Разрезание';
 
   @override
-  String get taskTag_cutAcross => 'Cut across';
+  String get taskTag_cutAcross => 'Разрез поперёк';
 
   @override
   String get taskTag_defendFromInvasion => 'Защита от вторжения';
 
   @override
-  String get taskTag_defendPoints => 'Defend points';
+  String get taskTag_defendPoints => 'Защитить очки';
 
   @override
-  String get taskTag_defendWeakPoint => 'Defend weak point';
+  String get taskTag_defendWeakPoint => 'Защитить слабый пункт';
 
   @override
-  String get taskTag_descent => 'Descent';
+  String get taskTag_descent => 'Спуск';
 
   @override
   String get taskTag_diagonal => 'Косуми';
@@ -779,22 +779,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_doubleAtari => 'Двойное атари';
 
   @override
-  String get taskTag_doubleCapture => 'Double capture';
+  String get taskTag_doubleCapture => 'Двойной захват';
 
   @override
   String get taskTag_doubleKo => 'Двойное ко';
 
   @override
-  String get taskTag_doubleSenteEndgame => 'Двойное сенте в йосе';
+  String get taskTag_doubleSenteEndgame => 'Двойное сэнтэ в йосе';
 
   @override
   String get taskTag_doubleSnapback => 'Двойная защелка';
 
   @override
-  String get taskTag_endgame => 'Endgame: general';
+  String get taskTag_endgame => 'Йосе';
 
   @override
-  String get taskTag_endgameFundamentals => 'Endgame fundamentals';
+  String get taskTag_endgameFundamentals => 'Фундаментальное йосе';
 
   @override
   String get taskTag_endgameIn5x5 => '5х5 йосе';
@@ -806,7 +806,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_endgameTesuji => 'Йосе-тесуджи';
 
   @override
-  String get taskTag_engulfingAtari => 'Engulfing atari';
+  String get taskTag_engulfingAtari => 'Окружающее атари';
 
   @override
   String get taskTag_escape => 'Побег';
@@ -815,7 +815,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_escapeInOneMove => 'Побег в один ход';
 
   @override
-  String get taskTag_exploitShapeWeakness => 'Exploit shape weakness';
+  String get taskTag_exploitShapeWeakness => 'Использовать слабость формы';
 
   @override
   String get taskTag_eyeVsNoEye => 'Группа с глазом против группы без глаза';
@@ -824,26 +824,26 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_fillNeutralPoints => 'Заполнение нейтральных пунктов';
 
   @override
-  String get taskTag_findTheRoot => 'Find the root';
+  String get taskTag_findTheRoot => 'Найти корень';
 
   @override
   String get taskTag_firstLineBrilliantMove => 'Блестящий ход на 1-й линии';
 
   @override
-  String get taskTag_flowerSix => 'Flower six';
+  String get taskTag_flowerSix => 'Цветок-шестёрка';
 
   @override
   String get taskTag_goldenChickenStandingOnOneLeg =>
-      'Golden rooster standing on one leg';
+      'Золотой петух на одной ноге';
 
   @override
-  String get taskTag_groupLiberties => 'Group liberties';
+  String get taskTag_groupLiberties => 'Даме группы';
 
   @override
-  String get taskTag_groupsBase => 'Group\'s base';
+  String get taskTag_groupsBase => 'База группы';
 
   @override
-  String get taskTag_hane => 'Хане';
+  String get taskTag_hane => 'Ханэ';
 
   @override
   String get taskTag_increaseEyeSpace => 'Увеличить глазное пространство';
@@ -855,58 +855,59 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_indirectAttack => 'Косвенная атака';
 
   @override
-  String get taskTag_influenceKeyPoints => 'Influence key points';
+  String get taskTag_influenceKeyPoints => 'Ключевые пункты влияния';
 
   @override
-  String get taskTag_insideKill => 'Inside kill';
+  String get taskTag_insideKill => 'Убить изнутри';
 
   @override
-  String get taskTag_insideMoves => 'Inside moves';
+  String get taskTag_insideMoves => 'Ходы внутри';
 
   @override
   String get taskTag_interestingTasks => 'Интересные задания';
 
   @override
-  String get taskTag_internalLibertyShortage => 'Internal liberty shortage';
+  String get taskTag_internalLibertyShortage => 'Внутренняя нехватка даме';
 
   @override
-  String get taskTag_invadingTechnique => 'Invading technique';
+  String get taskTag_invadingTechnique => 'Техника вторжения';
 
   @override
   String get taskTag_invasion => 'Вторжение';
 
   @override
-  String get taskTag_jGroupAndSimilar => 'J-group and similar';
+  String get taskTag_jGroupAndSimilar => 'Группа «рыло» и подобные';
 
   @override
-  String get taskTag_josekiFundamentals => 'Joseki fundamentals';
+  String get taskTag_josekiFundamentals => 'Основы дзёсэки';
 
   @override
   String get taskTag_jump => 'Прыжок';
 
   @override
-  String get taskTag_keepSente => 'Сохранить сенте';
+  String get taskTag_keepSente => 'Сохранить сэнтэ';
 
   @override
   String get taskTag_killAfterCapture => 'Убийство после захвата';
 
   @override
-  String get taskTag_killByEyePointPlacement => 'Kill by eye point placement';
+  String get taskTag_killByEyePointPlacement =>
+      'Убить постановкой в глазную точку';
 
   @override
-  String get taskTag_knightsMove => 'Knight\'s move';
+  String get taskTag_knightsMove => 'Ход конём (Кэйма)';
 
   @override
   String get taskTag_ko => 'Ко';
 
   @override
-  String get taskTag_kosumiWedge => 'Kosumi wedge';
+  String get taskTag_kosumiWedge => 'Косуми-варикоми';
 
   @override
-  String get taskTag_largeKnightsMove => 'Large knight move';
+  String get taskTag_largeKnightsMove => 'Большой ход конём (Огэйма)';
 
   @override
-  String get taskTag_largeMoyoFight => 'Large moyo fight';
+  String get taskTag_largeMoyoFight => 'Борьба за большое мойо';
 
   @override
   String get taskTag_lifeAndDeath => 'Жизнь и смерть';
@@ -915,13 +916,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_lifeAndDeathOn4x4 => '4х4 жизнь и смерть';
 
   @override
-  String get taskTag_lookForLeverage => 'Look for leverage';
+  String get taskTag_lookForLeverage => 'Искать рычаг';
 
   @override
-  String get taskTag_looseLadder => 'Loose ladder';
+  String get taskTag_looseLadder => 'Незакрепленная лестница';
 
   @override
-  String get taskTag_lovesickCut => 'Lovesick cut';
+  String get taskTag_lovesickCut => 'Отсечение влюблённых';
 
   @override
   String get taskTag_makeEye => 'Построение глаза';
@@ -930,7 +931,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_makeEyeInOneStep => 'Построение глаза в один ход';
 
   @override
-  String get taskTag_makeEyeInSente => 'Построение глаза в сенте';
+  String get taskTag_makeEyeInSente => 'Построение глаза в сэнтэ';
 
   @override
   String get taskTag_makeKo => 'Начать ко';
@@ -942,10 +943,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_middlegame => 'Середина игры';
 
   @override
-  String get taskTag_monkeyClimbingMountain => 'Monkey climbing the mountain';
+  String get taskTag_monkeyClimbingMountain => 'Обезьяна карабкается на гору';
 
   @override
-  String get taskTag_mouseStealingOil => 'Mouse stealing oil';
+  String get taskTag_mouseStealingOil => 'Мышь ворует масло';
 
   @override
   String get taskTag_moveOut => 'Убегание';
@@ -955,32 +956,32 @@ class AppLocalizationsRu extends AppLocalizations {
       'Двигаться к пустому пространству';
 
   @override
-  String get taskTag_multipleBrilliantMoves => 'Multiple brilliant moves';
+  String get taskTag_multipleBrilliantMoves => 'Несколько блестящих ходов';
 
   @override
-  String get taskTag_net => 'Net';
+  String get taskTag_net => 'Ловушка';
 
   @override
-  String get taskTag_netCapture => 'Net capture';
+  String get taskTag_netCapture => 'Захват в ловушку';
 
   @override
   String get taskTag_observeSubtleDifference => 'Заметить тонкую разницу';
 
   @override
   String get taskTag_occupyEncloseAndApproachCorner =>
-      'Occupy, enclose and approach corners';
+      'Занять, окружить и приблизиться к углу';
 
   @override
   String get taskTag_oneStoneTwoPurposes => 'Один ход, две цели';
 
   @override
-  String get taskTag_opening => 'Фусеки';
+  String get taskTag_opening => 'Фусэки';
 
   @override
-  String get taskTag_openingChoice => 'Opening choice';
+  String get taskTag_openingChoice => 'Выбор фусэки';
 
   @override
-  String get taskTag_openingFundamentals => 'Opening fundamentals';
+  String get taskTag_openingFundamentals => 'Фундаментальные фусэки';
 
   @override
   String get taskTag_orderOfEndgameMoves => 'Порядок ходов в йосе';
@@ -992,38 +993,39 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_orderOfMovesInKo => 'Порядок ходов в ко';
 
   @override
-  String get taskTag_orioleCapturesButterfly => 'Oriole captures the butterfly';
+  String get taskTag_orioleCapturesButterfly => 'Иволга ловит бабочку';
 
   @override
-  String get taskTag_pincer => 'Pincer';
+  String get taskTag_pincer => 'Клещи';
 
   @override
-  String get taskTag_placement => 'Placement';
+  String get taskTag_placement => 'Вторжение';
 
   @override
-  String get taskTag_plunderingTechnique => 'Plundering technique';
+  String get taskTag_plunderingTechnique => 'Техника грабежа';
 
   @override
-  String get taskTag_preventBambooJoint => 'Prevent the bamboo joint';
+  String get taskTag_preventBambooJoint => 'Предотвратить бамбук';
 
   @override
-  String get taskTag_preventBridgingUnder => 'Prevent bridging under';
+  String get taskTag_preventBridgingUnder => 'Предотвратить подмостки';
 
   @override
   String get taskTag_preventOpponentFromApproaching =>
-      'Prevent opponent from approaching';
+      'Не дать оппоненту приблизиться';
 
   @override
-  String get taskTag_probe => 'Probe';
+  String get taskTag_probe => 'Пробный ход';
 
   @override
-  String get taskTag_profitInSente => 'Прибыль в сенте';
+  String get taskTag_profitInSente => 'Прибыль в сэнтэ';
 
   @override
-  String get taskTag_profitUsingLifeAndDeath => 'Profit using life and death';
+  String get taskTag_profitUsingLifeAndDeath =>
+      'Прибыль с использованием жизни и смерти';
 
   @override
-  String get taskTag_push => 'Push';
+  String get taskTag_push => 'Толкать';
 
   @override
   String get taskTag_pyramidFour => 'Пирамида';
@@ -1032,7 +1034,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_realEyeAndFalseEye => 'Глаз против ложного глаза';
 
   @override
-  String get taskTag_rectangularSix => 'Rectangular six';
+  String get taskTag_rectangularSix => 'Прямоугольная шестёрка';
 
   @override
   String get taskTag_reduceEyeSpace => 'Уменьшить глазное пространство';
@@ -1041,41 +1043,41 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_reduceLiberties => 'Сокращение дыханий';
 
   @override
-  String get taskTag_reduction => 'Reduction';
+  String get taskTag_reduction => 'Уменьшение';
 
   @override
   String get taskTag_runWeakGroup => 'Побег слабой группы';
 
   @override
   String get taskTag_sabakiAndUtilizingInfluence =>
-      'Sabaki and utilizing influence';
+      'Сабаки и использование влияния';
 
   @override
   String get taskTag_sacrifice => 'Жертва';
 
   @override
-  String get taskTag_sacrificeAndSqueeze => 'Sacrifice and squeeze';
+  String get taskTag_sacrificeAndSqueeze => 'Жертва и сжатие';
 
   @override
-  String get taskTag_sealIn => 'Seal in';
+  String get taskTag_sealIn => 'Запечатывание';
 
   @override
   String get taskTag_secondLine => '2-я линия';
 
   @override
-  String get taskTag_seizeTheOpportunity => 'Seize the opportunity';
+  String get taskTag_seizeTheOpportunity => 'Воспользоваться возможностью';
 
   @override
-  String get taskTag_seki => 'Секи';
+  String get taskTag_seki => 'Сэки';
 
   @override
-  String get taskTag_senteAndGote => 'Сенте и готе';
+  String get taskTag_senteAndGote => 'Сэнтэ и готэ';
 
   @override
-  String get taskTag_settleShape => 'Settle shape';
+  String get taskTag_settleShape => 'Стабилизировать форму';
 
   @override
-  String get taskTag_settleShapeInSente => 'Settle shape in sente';
+  String get taskTag_settleShapeInSente => 'Стабилизировать форму в сэнтэ';
 
   @override
   String get taskTag_shape => 'Форма';
@@ -1093,25 +1095,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_snapback => 'Защелка';
 
   @override
-  String get taskTag_solidConnection => 'Solid connection';
+  String get taskTag_solidConnection => 'Прочное соединение';
 
   @override
-  String get taskTag_solidExtension => 'Solid extension';
+  String get taskTag_solidExtension => 'Ноби';
 
   @override
   String get taskTag_splitInOneMove => 'Разделение в один ход';
 
   @override
-  String get taskTag_splittingMove => 'Splitting move';
+  String get taskTag_splittingMove => 'Разделяющий ход';
 
   @override
-  String get taskTag_squareFour => 'Square four';
+  String get taskTag_squareFour => 'Квадратная четвёрка';
 
   @override
   String get taskTag_squeeze => 'Сжатие';
 
   @override
-  String get taskTag_standardCapturingRaces => 'Standard capturing races';
+  String get taskTag_standardCapturingRaces => 'Стандартные семеай';
 
   @override
   String get taskTag_standardCornerAndSideEndgame =>
@@ -1124,7 +1126,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_straightThree => 'Три в ряд';
 
   @override
-  String get taskTag_surroundTerritory => 'Surround territory';
+  String get taskTag_surroundTerritory => 'Окружить территорию';
 
   @override
   String get taskTag_symmetricShape => 'Симметричная форма';
@@ -1140,17 +1142,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_textbookTasks => 'Задачи из книг';
 
   @override
-  String get taskTag_thirdAndFourthLine => 'Third and fourth line';
+  String get taskTag_thirdAndFourthLine => '3-я и 4-я линия';
 
   @override
-  String get taskTag_threeEyesTwoActions => 'Three eyes, two actions';
+  String get taskTag_threeEyesTwoActions => 'Три глаза, два хода';
 
   @override
   String get taskTag_threeSpaceExtensionFromTwoStones =>
-      'Three-space extension from two stones';
+      'Расширение на три пункта от двух камней';
 
   @override
-  String get taskTag_throwIn => 'Throw-in';
+  String get taskTag_throwIn => 'Подкладка';
 
   @override
   String get taskTag_tigersMouth => 'Пасть тигра';
@@ -1160,48 +1162,49 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get taskTag_tripodGroupWithExtraLegAndSimilar =>
-      'Tripod group with extra leg and similar';
+      'Группа «рыльце» и подобные';
 
   @override
-  String get taskTag_twoHaneGainOneLiberty => 'Double hane grows one liberty';
+  String get taskTag_twoHaneGainOneLiberty => 'Двойное ханэ даёт одно даме';
 
   @override
   String get taskTag_twoHeadedDragon => 'Двухглавый дракон';
 
   @override
-  String get taskTag_twoSpaceExtension => 'Two-space extension';
+  String get taskTag_twoSpaceExtension => 'Расширение на два пункта';
 
   @override
-  String get taskTag_typesOfKo => 'Types of ko';
+  String get taskTag_typesOfKo => 'Типы ко';
 
   @override
-  String get taskTag_underTheStones => 'Under the stones';
+  String get taskTag_underTheStones => 'Под камнями';
 
   @override
-  String get taskTag_underneathAttachment => 'Underneath attachment';
+  String get taskTag_underneathAttachment => 'Прикрепление снизу';
 
   @override
-  String get taskTag_urgentPointOfAFight => 'Urgent point of a fight';
+  String get taskTag_urgentPointOfAFight => 'Срочный пункт борьбы';
 
   @override
   String get taskTag_urgentPoints => 'Срочный пункт';
 
   @override
-  String get taskTag_useConnectAndDie => 'Use connect and die';
+  String get taskTag_useConnectAndDie => 'Использовать дамэдзумари';
 
   @override
   String get taskTag_useCornerSpecialProperties =>
       'Использование особых свойств угла';
 
   @override
-  String get taskTag_useDescentToFirstLine => 'Use descent to first line';
+  String get taskTag_useDescentToFirstLine =>
+      'Использовать спуск на первую линию';
 
   @override
   String get taskTag_useInfluence => 'Использовать влияние';
 
   @override
   String get taskTag_useOpponentsLifeAndDeath =>
-      'Use opponent\'s life and death';
+      'Использовать жизнь и смерть оппонента';
 
   @override
   String get taskTag_useShortageOfLiberties => 'Использовать нехватку дыханий';
@@ -1219,12 +1222,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTag_vitalPointForBothSides => 'Важный пункт для обеих сторон';
 
   @override
-  String get taskTag_vitalPointForCapturingRace =>
-      'Vital point for capturing race';
+  String get taskTag_vitalPointForCapturingRace => 'Важный пункт для семеай';
 
   @override
   String get taskTag_vitalPointForIncreasingLiberties =>
-      'Vital point for increasing liberties';
+      'Важный пункт для увеличения даме';
 
   @override
   String get taskTag_vitalPointForKill => 'Жизненно важный пункт для убийства';
@@ -1237,10 +1239,10 @@ class AppLocalizationsRu extends AppLocalizations {
       'Важная точка для сокращения дыханий';
 
   @override
-  String get taskTag_wedge => 'Клин';
+  String get taskTag_wedge => 'Варикоми';
 
   @override
-  String get taskTag_wedgingCapture => 'Wedging capture';
+  String get taskTag_wedgingCapture => 'Захват варикоми';
 
   @override
   String get taskTimeout => 'Время вышло';
@@ -1258,7 +1260,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTypeEndgame => 'Йосе';
 
   @override
-  String get taskTypeJoseki => 'Джосеки';
+  String get taskTypeJoseki => 'Дзёсэки';
 
   @override
   String get taskTypeLifeAndDeath => 'Жизнь и смерть';
@@ -1267,7 +1269,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskTypeMiddlegame => 'Середина игры';
 
   @override
-  String get taskTypeOpening => 'Фусеки';
+  String get taskTypeOpening => 'Фусэки';
 
   @override
   String get taskTypeTesuji => 'Тесуджи';
@@ -1291,7 +1293,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get thick => 'Толстая';
 
   @override
-  String get timeFrenzy => 'Time frenzy';
+  String get timeFrenzy => 'Временной раж';
 
   @override
   String get timePerTask => 'Время на задачу';
