@@ -36,13 +36,8 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   void setupCurrentTask() {
     continuationAnnotations = null;
     _vtreeIt = VariationTreeIterator(tree: currentTask.variationTree);
-    gameTree = AnnotatedGameTree(currentTask.boardSize);
-    for (final entry in currentTask.initialStones.entries) {
-      for (final p in entry.value) {
-        gameTree
-            .moveAnnotated((col: entry.key, p: p), mode: AnnotationMode.none);
-      }
-    }
+    gameTree = AnnotatedGameTree(currentTask.boardSize,
+        initialStones: currentTask.initialStones);
     turn = currentTask.first;
     solveStatusNotified = false;
     upsolveMode = UpsolveMode.auto;
