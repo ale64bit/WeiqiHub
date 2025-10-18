@@ -12,10 +12,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get about => '关于';
 
   @override
-  String get accuracy => 'Accuracy';
+  String get accuracy => '答题准确率';
 
   @override
-  String get aiReferee => 'AI referee';
+  String get aiReferee => 'AI 裁判';
 
   @override
   String get aiSensei => 'AI Sensei';
@@ -30,10 +30,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get appearance => '外观';
 
   @override
-  String get autoCounting => 'Auto counting';
+  String get autoCounting => '自动点目';
 
   @override
-  String get autoMatch => 'Auto-Match';
+  String get autoMatch => '自动匹配';
 
   @override
   String get behaviour => '操作';
@@ -42,7 +42,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bestResult => '最优结果';
 
   @override
-  String get black => 'Black';
+  String get black => '黑';
 
   @override
   String get board => '棋盘';
@@ -54,22 +54,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get boardTheme => '棋盘主题';
 
   @override
-  String get byRank => 'By rank';
+  String get byRank => '按段位';
 
   @override
   String get cancel => '取消';
 
   @override
-  String get captures => 'Captures';
+  String get captures => '吃子';
 
   @override
-  String get clearBoard => 'Clear';
+  String get clearBoard => '清空';
 
   @override
-  String get collectStats => 'Collect statistics';
+  String get collectStats => '计入统计';
 
   @override
-  String get collections => 'Collections';
+  String get collections => '棋书';
 
   @override
   String get confirm => '确认';
@@ -78,8 +78,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get confirmBoardSize => '确认棋盘大小';
 
   @override
-  String get confirmBoardSizeDesc =>
-      'Boards this size or larger require move confirmation';
+  String get confirmBoardSizeDesc => '此尺寸及更大的棋盘需要确认落子';
 
   @override
   String get confirmMoves => '确定落子';
@@ -91,13 +90,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get continue_ => '继续';
 
   @override
-  String get copyTaskLink => 'Copy task link';
+  String get copyTaskLink => '复制题目链接';
 
   @override
-  String get customExam => 'Custom exam';
+  String get customExam => '自定义测试';
 
   @override
-  String get dark => 'Dark';
+  String get dark => '深色';
 
   @override
   String get dontShowAgain => '不再显示';
@@ -109,85 +108,83 @@ class AppLocalizationsZh extends AppLocalizations {
   String get edgeLine => '棋盘边缘';
 
   @override
-  String get empty => 'Empty';
+  String get empty => '空';
 
   @override
-  String get endgameExam => 'Endgame exam';
+  String get endgameExam => '官子测试';
 
   @override
-  String get enterTaskLink => 'Enter the task link';
+  String get enterTaskLink => '输入题目链接';
 
   @override
-  String get errCannotBeEmpty => 'Cannot be empty';
+  String get errCannotBeEmpty => '不能为空';
 
   @override
-  String get errFailedToDownloadGame => 'Failed to download game';
+  String get errFailedToDownloadGame => '下载棋局失败';
 
   @override
-  String get errFailedToLoadGameList =>
-      'Failed to load game list. Please try again.';
+  String get errFailedToLoadGameList => '加载棋局列表失败，请重试。';
 
   @override
-  String get errFailedToUploadGameToAISensei =>
-      'Failed to upload game to AI Sensei';
+  String get errFailedToUploadGameToAISensei => '上传棋局到 AI Sensei 失败';
 
   @override
-  String get errIncorrectUsernameOrPassword => 'Incorrect username or password';
+  String get errIncorrectUsernameOrPassword => '用户名或密码错误';
 
   @override
   String errMustBeAtLeast(num n) {
-    return 'Must be at least $n';
+    return '必须至少$n';
   }
 
   @override
   String errMustBeAtMost(num n) {
-    return 'Must be at most $n';
+    return '必须最多$n';
   }
 
   @override
-  String get errMustBeInteger => 'Must be an integer';
+  String get errMustBeInteger => '必须为整数';
 
   @override
   String get exit => '退出';
 
   @override
-  String get exitTryMode => 'Exit try mode';
+  String get exitTryMode => '退出试下模式';
 
   @override
   String get find => '查找';
 
   @override
-  String get findTask => 'Find task';
+  String get findTask => '搜题';
 
   @override
-  String get findTaskByLink => 'By link';
+  String get findTaskByLink => '链接搜题';
 
   @override
-  String get findTaskByPattern => 'By pattern';
+  String get findTaskByPattern => '棋形搜题';
 
   @override
-  String get findTaskResults => 'Search results';
+  String get findTaskResults => '搜题结果';
 
   @override
-  String get findTaskSearching => 'Searching...';
+  String get findTaskSearching => '搜题中...';
 
   @override
-  String get forceCounting => 'Force counting';
+  String get forceCounting => '强制数子';
 
   @override
-  String get foxwqDesc => 'The most popular server in China and the world.';
+  String get foxwqDesc => '野狐围棋是精心打造的专业围棋对弈、社交软件。';
 
   @override
   String get foxwqName => 'Fox Weiqi';
 
   @override
-  String get gameInfo => 'Game info';
+  String get gameInfo => '信息';
 
   @override
-  String get gameRecord => 'Game record';
+  String get gameRecord => '棋谱';
 
   @override
-  String get gradingExam => 'Grading exam';
+  String get gradingExam => '棋力测试';
 
   @override
   String get handicap => '让子数';
@@ -197,35 +194,35 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get helpDialogCollections =>
-      'Collections are classic, curated sets of high-quality tasks which hold special value together as a training resource.\n\nThe main goal is to solve a collection with a high success rate. A secondary goal is to solve it as fast as possible.\n\nTo start or continue solving a collection, slide left on the collection tile while in portrait mode or click the Start/Continue buttons while in landscape mode.';
+      '棋书是经典的、精选的高质量题目合集，作为训练资源具有特殊价值。\n\n主要目标是以高成功率解完一本棋书。次要目标是尽可能快地完成。\n\n要开始或继续解答棋书，请在竖屏模式下向左滑动棋书图块，或在横屏模式下点击「开始」/「继续」按钮。';
 
   @override
   String get helpDialogEndgameExam =>
-      '- Endgame exams are sets of 10 endgame tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+      '- 官子测试包含10道官子题，每题限时45秒。\n\n- 答对8题及以上（80%正确率）即为通过。\n\n- 通过当前级别测试将解锁下一级别。';
 
   @override
   String get helpDialogGradingExam =>
-      '- Grading exams are sets of 10 tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+      '- 棋力测试包含10道题，每题限时45秒。\n\n- 答对8题及以上（80%正确率）即为通过。\n\n- 通过当前级别测试将解锁下一级别。';
 
   @override
   String get helpDialogRankedMode =>
-      '- Solve tasks without a time limit.\n\n- Task difficulty increases according to how fast you solve them.\n\n- Focus on solving correctly and reach the highest rank possible.';
+      '- 无时间限制答题。\n\n- 题目难度会根据您的解题速度动态调整。\n\n- 专注于正确答题，冲击最高等级。';
 
   @override
   String get helpDialogTimeFrenzy =>
-      '- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.';
+      '- 3分钟内解答尽可能多的题。\n\n- 题目难度会随着您的进度逐渐增加。\n\n- 累计答错3题即结束。';
 
   @override
   String get home => '主界面';
 
   @override
-  String get komi => 'Komi';
+  String get komi => '贴目';
 
   @override
   String get language => '语言';
 
   @override
-  String get leave => 'Leave';
+  String get leave => '退出房间';
 
   @override
   String get light => '浅色';
@@ -237,90 +234,85 @@ class AppLocalizationsZh extends AppLocalizations {
   String get logout => '退出';
 
   @override
-  String get long => 'Long';
+  String get long => '长';
 
   @override
   String mMinutes(int m) {
-    return '${m}min';
+    return '$m分钟';
   }
 
   @override
-  String get maxNumberOfMistakes => 'Maximum number of mistakes';
+  String get maxNumberOfMistakes => '最大错误数';
 
   @override
-  String get maxRank => 'Max rank';
+  String get maxRank => '最高段位';
 
   @override
-  String get medium => 'Medium';
+  String get medium => '中';
 
   @override
-  String get minRank => 'Min rank';
+  String get minRank => '最低段位';
 
   @override
-  String get minutes => 'Minutes';
+  String get minutes => '分';
 
   @override
-  String get month => 'Month';
+  String get month => '月';
 
   @override
-  String get msgCannotUseAIRefereeYet => 'AI referee cannot be used yet';
+  String get msgCannotUseAIRefereeYet => '您还不能使用 AI 裁判';
 
   @override
-  String get msgCannotUseForcedCountingYet =>
-      'Forced counting cannot be used yet';
+  String get msgCannotUseForcedCountingYet => '手数不足，不可强制数子或强制点目';
 
   @override
-  String get msgConfirmDeleteCollectionProgress =>
-      'Are you sure that you want to delete the previous attempt?';
+  String get msgConfirmDeleteCollectionProgress => '确定要删除之前的棋书进度吗？';
 
   @override
-  String get msgConfirmResignation => 'Are you sure that you want to resign?';
+  String get msgConfirmResignation => '确认认输？';
 
   @override
   String msgConfirmStopEvent(String event) {
-    return 'Are you sure that you want to stop the $event?';
+    return '确定要停止$event吗？';
   }
 
   @override
-  String get msgDownloadingGame => 'Downloading game';
+  String get msgDownloadingGame => '下载棋局中';
 
   @override
   String msgGameSavedTo(String path) {
-    return 'Game saved to $path';
+    return '棋局已保存至$path';
   }
 
   @override
-  String get msgPleaseWaitForYourTurn => 'Please, wait for your turn';
+  String get msgPleaseWaitForYourTurn => '请等待您的回合';
 
   @override
-  String get msgSearchingForGame => 'Searching for a game...';
+  String get msgSearchingForGame => '正在寻找对局...';
 
   @override
-  String get msgTaskLinkCopied => 'Task link copied.';
+  String get msgTaskLinkCopied => '题目链接已复制';
 
   @override
-  String get msgWaitingForOpponentsDecision =>
-      'Waiting for your opponent\'s decision...';
+  String get msgWaitingForOpponentsDecision => '等待决定...';
 
   @override
-  String get msgYouCannotPass => 'You cannot pass';
+  String get msgYouCannotPass => '本局您已经不能再停一手了。';
 
   @override
-  String get msgYourOpponentDisagreesWithCountingResult =>
-      'Your opponent disagrees with the counting result';
+  String get msgYourOpponentDisagreesWithCountingResult => '有人不同意点目结果。';
 
   @override
-  String get msgYourOpponentRefusesToCount => 'Your opponent refuses to count';
+  String get msgYourOpponentRefusesToCount => '对方不同意点目。';
 
   @override
-  String get msgYourOpponentRequestsAutomaticCounting =>
-      'Your opponent requests automatic counting. Do you agree?';
+  String get msgYourOpponentRequestsAutomaticCounting => '对方要求自动点目，是否同意？';
 
   @override
-  String get myGames => 'My games';
+  String get myGames => '我的棋局';
 
   @override
-  String get myMistakes => 'My mistakes';
+  String get myMistakes => '我的错题本';
 
   @override
   String nTasks(int count) {
@@ -331,9 +323,8 @@ class AppLocalizationsZh extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString tasks',
-      one: '1 task',
-      zero: 'No tasks',
+      other: '$countString题',
+      zero: '无题',
     );
     return '$_temp0';
   }
@@ -347,24 +338,23 @@ class AppLocalizationsZh extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString tasks available',
-      one: '1 task available',
-      zero: 'No tasks available',
+      other: '$countString题',
+      zero: '无题',
     );
     return '$_temp0';
   }
 
   @override
-  String get newBestResult => 'New best!';
+  String get newBestResult => '新纪录！';
 
   @override
-  String get no => 'No';
+  String get no => '取消';
 
   @override
-  String get none => 'None';
+  String get none => '无';
 
   @override
-  String get numberOfTasks => 'Number of tasks';
+  String get numberOfTasks => '题目数量';
 
   @override
   String nxnBoardSize(int n) {
@@ -373,16 +363,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ogsDesc =>
-      'The premier online Go platform with tournaments, AI analysis, and a vibrant community.';
+      'Online Go Server (OGS) 是功能强大的国际性围棋对弈平台，提供丰富的比赛和AI分析工具。';
 
   @override
   String get ogsName => 'Online Go Server';
 
   @override
-  String get ok => 'OK';
+  String get ok => '确定';
 
   @override
-  String get pass => 'Pass';
+  String get pass => '虚手';
 
   @override
   String get password => '密码';
@@ -391,7 +381,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get play => '对局';
 
   @override
-  String get promotionRequirements => 'Promotion requirements';
+  String get promotionRequirements => '升级要求';
 
   @override
   String pxsByoyomi(int p, int s) {
@@ -399,19 +389,19 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get rank => 'Rank';
+  String get rank => '段位';
 
   @override
-  String get rankedMode => 'Ranked mode';
+  String get rankedMode => '等级模式';
 
   @override
-  String get recentRecord => 'Recent record';
+  String get recentRecord => '当前战绩';
 
   @override
-  String get register => '注册';
+  String get register => '创建帐号';
 
   @override
-  String get resign => 'Resign';
+  String get resign => '认输并退出';
 
   @override
   String get responseDelay => '响应延迟';
@@ -433,6 +423,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get result => '结果';
+
+  @override
+  String get resultAccept => '接受';
+
+  @override
+  String get resultReject => '拒绝';
 
   @override
   String get rules => '规则';
@@ -459,7 +455,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings => '设置';
 
   @override
-  String get short => 'Short';
+  String get short => '短';
 
   @override
   String get showCoordinates => '显示坐标';
@@ -468,10 +464,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get simple => '普通';
 
   @override
-  String get sortModeDifficult => 'Difficult';
+  String get sortModeDifficult => '困难';
 
   @override
-  String get sortModeRecent => 'Recent';
+  String get sortModeRecent => '最近';
 
   @override
   String get sound => '声音';
@@ -480,55 +476,55 @@ class AppLocalizationsZh extends AppLocalizations {
   String get start => '开始';
 
   @override
-  String get statistics => 'Statistics';
+  String get statistics => '统计';
 
   @override
-  String get statsDateColumn => 'Date';
+  String get statsDateColumn => '日期';
 
   @override
-  String get statsDurationColumn => 'Time';
+  String get statsDurationColumn => '用时';
 
   @override
-  String get statsTimeColumn => 'Time';
+  String get statsTimeColumn => '时间';
 
   @override
   String get stoneShadows => '棋子阴影';
 
   @override
-  String get stones => 'Stones';
+  String get stones => '棋子';
 
   @override
-  String get subtopic => 'Subtopic';
+  String get subtopic => '子主题';
 
   @override
   String get system => '系统';
 
   @override
-  String get task => '任务';
+  String get task => '题';
 
   @override
-  String get taskCorrect => 'Correct';
+  String get taskCorrect => '答对了！';
 
   @override
-  String get taskNext => 'Next';
+  String get taskNext => '下一题';
 
   @override
-  String get taskNotFound => 'Task not found';
+  String get taskNotFound => '未找到该题';
 
   @override
-  String get taskRedo => 'Redo';
+  String get taskRedo => '重做题';
 
   @override
-  String get taskSource => 'Task source';
+  String get taskSource => '题库来源';
 
   @override
-  String get taskSourceFromMyMistakes => 'From my mistakes';
+  String get taskSourceFromMyMistakes => '来自我的错题';
 
   @override
-  String get taskSourceFromTaskTopic => 'From task topic';
+  String get taskSourceFromTaskTopic => '来自专题题库';
 
   @override
-  String get taskSourceFromTaskTypes => 'From task types';
+  String get taskSourceFromTaskTypes => '来自题型分类';
 
   @override
   String get taskTag_afterJoseki => '定式之后';
@@ -1218,46 +1214,46 @@ class AppLocalizationsZh extends AppLocalizations {
   String get taskTag_wedgingCapture => '挖吃';
 
   @override
-  String get taskTimeout => 'Timeout';
+  String get taskTimeout => '答题超时';
 
   @override
-  String get taskTypeAppreciation => 'Appreciation';
+  String get taskTypeAppreciation => '欣赏题';
 
   @override
-  String get taskTypeCapture => 'Capture stones';
+  String get taskTypeCapture => '吃子题';
 
   @override
-  String get taskTypeCaptureRace => 'Capture race';
+  String get taskTypeCaptureRace => '对杀题';
 
   @override
-  String get taskTypeEndgame => 'Endgame';
+  String get taskTypeEndgame => '官子题';
 
   @override
-  String get taskTypeJoseki => 'Joseki';
+  String get taskTypeJoseki => '定式题';
 
   @override
-  String get taskTypeLifeAndDeath => 'Life & death';
+  String get taskTypeLifeAndDeath => '死活题';
 
   @override
-  String get taskTypeMiddlegame => 'Middlegame';
+  String get taskTypeMiddlegame => '中盘作战题';
 
   @override
-  String get taskTypeOpening => 'Opening';
+  String get taskTypeOpening => '布局题';
 
   @override
-  String get taskTypeTesuji => 'Tesuji';
+  String get taskTypeTesuji => '手筋题';
 
   @override
-  String get taskTypeTheory => 'Theory';
+  String get taskTypeTheory => '棋理题';
 
   @override
-  String get taskWrong => 'Wrong';
+  String get taskWrong => '答错了';
 
   @override
-  String get tasksSolved => 'Tasks solved';
+  String get tasksSolved => '解题数';
 
   @override
-  String get test => 'Test';
+  String get test => '测试';
 
   @override
   String get theme => '主题';
@@ -1266,62 +1262,61 @@ class AppLocalizationsZh extends AppLocalizations {
   String get thick => '粗线';
 
   @override
-  String get timeFrenzy => 'Time frenzy';
+  String get timeFrenzy => '限时挑战';
 
   @override
-  String get timePerTask => 'Time per task';
+  String get timePerTask => '单题用时';
 
   @override
-  String get today => 'Today';
+  String get today => '今日';
 
   @override
-  String get tooltipAnalyzeWithAISensei => 'Analyze with AI Sensei';
+  String get tooltipAnalyzeWithAISensei => '使用 AI Sensei 分析';
 
   @override
-  String get tooltipDownloadGame => 'Download game';
+  String get tooltipDownloadGame => '下载棋局';
 
   @override
-  String get topic => 'Topic';
+  String get topic => '主题';
 
   @override
-  String get topicExam => 'Topic exam';
+  String get topicExam => '主题测试';
 
   @override
-  String get topics => 'Topics';
+  String get topics => '主题';
 
   @override
   String get train => '练习';
 
   @override
-  String get trainingAvgTimePerTask => 'Avg time per task';
+  String get trainingAvgTimePerTask => '平均单题用时';
 
   @override
-  String get trainingFailed => 'Failed';
+  String get trainingFailed => '未通过';
 
   @override
-  String get trainingMistakes => 'Mistakes';
+  String get trainingMistakes => '错误';
 
   @override
-  String get trainingPassed => 'Passed';
+  String get trainingPassed => '通过';
 
   @override
-  String get trainingTotalTime => 'Total time';
+  String get trainingTotalTime => '总用时';
 
   @override
-  String get tryCustomMoves => 'Try custom moves';
+  String get tryCustomMoves => '试下';
 
   @override
-  String get tygemDesc =>
-      'The most popular server in Korea and one of the most popular in the world.';
+  String get tygemDesc => 'Tygem 是韩国最受欢迎的围棋对弈平台，以其激烈的在线对局氛围而闻名世界。';
 
   @override
   String get tygemName => 'Tygem Baduk';
 
   @override
-  String get type => 'Type';
+  String get type => '类型';
 
   @override
-  String get ui => 'UI';
+  String get ui => '界面';
 
   @override
   String get userInfo => '用户信息';
@@ -1330,14 +1325,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get username => '用户名';
 
   @override
-  String get voice => 'Voice';
+  String get voice => '声音';
 
   @override
-  String get week => 'Week';
+  String get week => '周';
 
   @override
-  String get white => 'White';
+  String get white => '白';
 
   @override
-  String get yes => 'Yes';
+  String get yes => '确定';
 }

@@ -114,7 +114,7 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
         actions: [
           TextButton.icon(
             icon: const Icon(Icons.clear),
-            label: const Text('Clear'),
+            label: Text(loc.clearBoard),
             onPressed: () {
               setState(() {
                 _stones = const IMap.empty();

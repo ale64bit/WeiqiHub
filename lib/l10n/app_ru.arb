@@ -191,6 +191,8 @@
   "responseDelayNone": "Нет",
   "responseDelayShort": "Короткая",
   "result": "Результат",
+  "resultAccept": "Принять",
+  "resultReject": "Отказаться",
   "rules": "Правила",
   "rulesChinese": "Китайские",
   "rulesJapanese": "Японские",

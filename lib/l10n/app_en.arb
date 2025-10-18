@@ -191,6 +191,8 @@
   "responseDelayNone": "None",
   "responseDelayShort": "Short",
   "result": "Result",
+  "resultAccept": "Accept",
+  "resultReject": "Reject",
   "rules": "Rules",
   "rulesChinese": "Chinese",
   "rulesJapanese": "Japanese",

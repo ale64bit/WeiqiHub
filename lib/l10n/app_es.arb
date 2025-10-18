@@ -191,6 +191,8 @@
   "responseDelayNone": "Sin demora",
   "responseDelayShort": "Corta",
   "result": "Resultado",
+  "resultAccept": "Aceptar",
+  "resultReject": "Rechazar",
   "rules": "Reglas",
   "rulesChinese": "Chinas",
   "rulesJapanese": "Japonesas",

@@ -442,6 +442,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get result => 'Resultado';
 
   @override
+  String get resultAccept => 'Aceptar';
+
+  @override
+  String get resultReject => 'Rechazar';
+
+  @override
   String get rules => 'Reglas';
 
   @override
