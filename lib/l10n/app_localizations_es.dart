@@ -251,13 +251,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get maxNumberOfMistakes => 'Número máximo de errores';
 
   @override
-  String get maxRank => 'Rango máximo';
+  String get maxRank => 'Rango máx.';
 
   @override
   String get medium => 'Media';
 
   @override
-  String get minRank => 'Rango mínimo';
+  String get minRank => 'Rango mín.';
 
   @override
   String get minutes => 'Minutos';
@@ -361,7 +361,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get newBestResult => 'Nuevo record!';
+  String get newBestResult => '¡Nuevo record!';
 
   @override
   String get no => 'No';
@@ -617,7 +617,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_breakEyeInSente => 'Destruir ojo en sente';
 
   @override
-  String get taskTag_breakOut => 'Break out';
+  String get taskTag_breakOut => 'Escapar';
 
   @override
   String get taskTag_breakPoints => 'Destruir puntos';
@@ -626,16 +626,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_breakShape => 'Destruir forma';
 
   @override
-  String get taskTag_bridgeUnder => 'Bridge under';
+  String get taskTag_bridgeUnder => 'Conección submarina';
 
   @override
   String get taskTag_brilliantSequence => 'Secuencia brillante';
 
   @override
-  String get taskTag_bulkyFive => 'Maquinita';
+  String get taskTag_bulkyFive => 'Auto';
 
   @override
-  String get taskTag_bump => 'Bump';
+  String get taskTag_bump => 'Golpe';
 
   @override
   String get taskTag_captureBySnapback => 'Captura mediante contracaptura';
@@ -675,7 +675,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_clampCapture => 'Captura con pinza';
 
   @override
-  String get taskTag_closeInCapture => 'Closing-in capture';
+  String get taskTag_closeInCapture => 'Captura de cierre';
 
   @override
   String get taskTag_combination => 'Combinación';
@@ -731,7 +731,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_cranesNest => 'Nido de grulla';
 
   @override
-  String get taskTag_crawl => 'Crawl';
+  String get taskTag_crawl => 'Arrastre';
 
   @override
   String get taskTag_createShortageOfLiberties => 'Crear falta de libertades';
@@ -746,7 +746,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_cut2 => 'Corte';
 
   @override
-  String get taskTag_cutAcross => 'Atravesar';
+  String get taskTag_cutAcross => 'Corte transversal';
 
   @override
   String get taskTag_defendFromInvasion => 'Defensa contra invasiones';
@@ -806,7 +806,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_endgameTesuji => 'Tesuji de finales';
 
   @override
-  String get taskTag_engulfingAtari => 'Engulfing atari';
+  String get taskTag_engulfingAtari => 'Atari de envoltura';
 
   @override
   String get taskTag_escape => 'Escape';
@@ -824,7 +824,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_fillNeutralPoints => 'Jugar puntos neutrales';
 
   @override
-  String get taskTag_findTheRoot => 'Find the root';
+  String get taskTag_findTheRoot => 'Encuentra la raíz';
 
   @override
   String get taskTag_firstLineBrilliantMove =>
@@ -858,10 +858,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_influenceKeyPoints => 'Puntos clave de la influencia';
 
   @override
-  String get taskTag_insideKill => 'Inside kill';
+  String get taskTag_insideKill => 'Mata con jugada interna';
 
   @override
-  String get taskTag_insideMoves => 'Inside moves';
+  String get taskTag_insideMoves => 'Jugadas internas';
 
   @override
   String get taskTag_interestingTasks => 'Problemas de interés especial';
@@ -876,7 +876,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_invasion => 'Invasión';
 
   @override
-  String get taskTag_jGroupAndSimilar => 'Grupo-J y similares';
+  String get taskTag_jGroupAndSimilar => 'Hocico de gran cerdo y similares';
 
   @override
   String get taskTag_josekiFundamentals => 'Fundamentos de joseki';
@@ -891,7 +891,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_killAfterCapture => 'Matar mediante captura';
 
   @override
-  String get taskTag_killByEyePointPlacement => 'Kill by eye point placement';
+  String get taskTag_killByEyePointPlacement =>
+      'Mata con jugada en ojo interno';
 
   @override
   String get taskTag_knightsMove => 'Salto de caballo';
@@ -906,7 +907,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_largeKnightsMove => 'Salto grande de caballo';
 
   @override
-  String get taskTag_largeMoyoFight => 'Large moyo fight';
+  String get taskTag_largeMoyoFight => 'Peleas de moyo de larga escala';
 
   @override
   String get taskTag_lifeAndDeath => 'Vida y muerte: general';
@@ -915,13 +916,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_lifeAndDeathOn4x4 => 'Vida y muerte en 4x4';
 
   @override
-  String get taskTag_lookForLeverage => 'Look for leverage';
+  String get taskTag_lookForLeverage => 'Busca palanca';
 
   @override
   String get taskTag_looseLadder => 'Escalera larga';
 
   @override
-  String get taskTag_lovesickCut => 'Lovesick cut';
+  String get taskTag_lovesickCut => 'Corte del amor';
 
   @override
   String get taskTag_makeEye => 'Hacer ojo';
@@ -942,16 +943,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_middlegame => 'Medio-juego';
 
   @override
-  String get taskTag_monkeyClimbingMountain => 'Monkey climbing the mountain';
+  String get taskTag_monkeyClimbingMountain => 'El mono escala la montaña';
 
   @override
-  String get taskTag_mouseStealingOil => 'Mouse stealing oil';
+  String get taskTag_mouseStealingOil => 'El ratón roba aceite';
 
   @override
-  String get taskTag_moveOut => 'Move out';
+  String get taskTag_moveOut => 'Moverse al exterior';
 
   @override
-  String get taskTag_moveTowardsEmptySpace => 'Move towards empty space';
+  String get taskTag_moveTowardsEmptySpace => 'Moverse hacia el espacio vacío';
 
   @override
   String get taskTag_multipleBrilliantMoves => 'Múltiples jugadas brillantes';
@@ -991,26 +992,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_orderOfMovesInKo => 'Orden de jugadas en un ko';
 
   @override
-  String get taskTag_orioleCapturesButterfly => 'Oriole captures the butterfly';
+  String get taskTag_orioleCapturesButterfly =>
+      'El turpial captura a la mariposa';
 
   @override
   String get taskTag_pincer => 'Pinza';
 
   @override
-  String get taskTag_placement => 'Placement';
+  String get taskTag_placement => 'Jugada de colocación';
 
   @override
-  String get taskTag_plunderingTechnique => 'Plundering technique';
+  String get taskTag_plunderingTechnique => 'Técnica de saqueo';
 
   @override
   String get taskTag_preventBambooJoint => 'Prevén la conección de bambú';
 
   @override
-  String get taskTag_preventBridgingUnder => 'Prevent bridging under';
+  String get taskTag_preventBridgingUnder => 'Prevén la conección submarina';
 
   @override
   String get taskTag_preventOpponentFromApproaching =>
-      'Prevent opponent from approaching';
+      'Prevén que el oponente se acerque';
 
   @override
   String get taskTag_probe => 'Jugada de prueba';
@@ -1023,7 +1025,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ganancia utilizando vida y muerte';
 
   @override
-  String get taskTag_push => 'Push';
+  String get taskTag_push => 'Empuje';
 
   @override
   String get taskTag_pyramidFour => 'Pirámide';
@@ -1148,10 +1150,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get taskTag_threeSpaceExtensionFromTwoStones =>
-      'Three-space extension from two stones';
+      'Extensión de tres puntos desde dos piedras';
 
   @override
-  String get taskTag_throwIn => 'Throw-in';
+  String get taskTag_throwIn => 'Sacrificio interno';
 
   @override
   String get taskTag_tigersMouth => 'Boca de tigre';
@@ -1161,10 +1163,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get taskTag_tripodGroupWithExtraLegAndSimilar =>
-      'Tripod group with extra leg and similar';
+      'Hocico de cerdito y similares';
 
   @override
-  String get taskTag_twoHaneGainOneLiberty => 'Double hane grows one liberty';
+  String get taskTag_twoHaneGainOneLiberty =>
+      'Gana una libertad con doble hane';
 
   @override
   String get taskTag_twoHeadedDragon => 'Dragón de dos cabezas';
@@ -1176,10 +1179,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get taskTag_typesOfKo => 'Tipos de ko';
 
   @override
-  String get taskTag_underTheStones => 'Under the stones';
+  String get taskTag_underTheStones => 'Sacrificio con contracaptura';
 
   @override
-  String get taskTag_underneathAttachment => 'Underneath attachment';
+  String get taskTag_underneathAttachment => 'Apego submarino';
 
   @override
   String get taskTag_urgentPointOfAFight => 'Punto urgente de una pelea';
