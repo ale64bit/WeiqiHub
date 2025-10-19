@@ -521,7 +521,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get taskCorrect => 'Верно';
 
   @override
-  String get taskNext => 'Следующая';
+  String get taskNext => 'Следующий';
 
   @override
   String get taskNotFound => 'Задача не найдена';
