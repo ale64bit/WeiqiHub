@@ -197,8 +197,8 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
           DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
           IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
           if (iosInfo.model.toLowerCase().contains('ipad')) {
-            final box = context.findRenderObject() as RenderBox?;
-            sharePositionOrigin = box!.localToGlobal(Offset.zero) & box.size;
+            // see https://github.com/fluttercommunity/plus_plugins/issues/3645#issuecomment-3360156193
+            sharePositionOrigin = Rect.fromLTWH(0, 0, 1, 1);
           }
         }
         final params = ShareParams(
