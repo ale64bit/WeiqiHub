@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.1.11
+
 ## 0.1.10
 - now available in Chinese (simplified), Russian and Spanish
 - add task search by pattern
