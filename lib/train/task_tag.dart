@@ -1944,7 +1944,7 @@ enum TaskTag {
         TaskTag.jGroupAndSimilar => IList([
             RankRange(from: Rank.k7, to: Rank.k4),
             RankRange(from: Rank.k3, to: Rank.k1),
-            RankRange(from: Rank.k3, to: Rank.d1),
+            RankRange(from: Rank.d1, to: Rank.d3),
             RankRange(from: Rank.d4, to: Rank.d6),
           ]),
         TaskTag.josekiFundamentals => IList([
@@ -3006,7 +3006,7 @@ enum TaskTag {
             RankRange(from: Rank.d4, to: Rank.d5)
           ]),
         TaskTag.tripodGroupWithExtraLegAndSimilar => IList([
-            RankRange(from: Rank.k10, to: Rank.d5),
+            RankRange(from: Rank.k10, to: Rank.k5),
             RankRange(from: Rank.k4, to: Rank.d1),
           ]),
         TaskTag.twoHaneGainOneLiberty => IList([
