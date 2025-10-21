@@ -40,7 +40,7 @@ wq.Color colorToMove(
   //  - Without free placement, white plays first (black's stones are pre-placed)
   // Once all handicap stones are placed, the game alternates as normal
   if (handicap <= 1) {
-    return moveNumber % 2 == 0 ? wq.Color.black : wq.Color.white;
+    return moveNumber.isEven ? wq.Color.black : wq.Color.white;
   } else {
     if (freeHandicapPlacement) {
       moveNumber -= handicap;
@@ -48,6 +48,6 @@ wq.Color colorToMove(
         return wq.Color.black;
       }
     }
-    return moveNumber % 2 == 0 ? wq.Color.white : wq.Color.black;
+    return moveNumber.isEven ? wq.Color.white : wq.Color.black;
   }
 }
