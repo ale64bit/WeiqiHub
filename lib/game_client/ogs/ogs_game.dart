@@ -5,6 +5,7 @@ import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/ogs/game_utils.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
@@ -17,6 +18,7 @@ class OGSGame extends Game {
   final Logger _logger = Logger('OGSGame');
   final OGSWebSocketManager _webSocketManager;
   final String _myUserId;
+  final bool _freeHandicapPlacement;
   late final StreamController<wq.Move?> _moveController;
   late final StreamController<CountingResult> _countingResultController;
   late final StreamController<bool> _countingResultResponsesController;
@@ -43,8 +45,10 @@ class OGSGame extends Game {
     required super.previousMoves,
     required OGSWebSocketManager webSocketManager,
     required String myUserId,
+    required bool freeHandicapPlacement,
   })  : _webSocketManager = webSocketManager,
-        _myUserId = myUserId {
+        _myUserId = myUserId,
+        _freeHandicapPlacement = freeHandicapPlacement {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
     _countingResultController = StreamController<CountingResult>.broadcast();
@@ -260,9 +264,11 @@ class OGSGame extends Game {
     _logger.fine(
         'Received move: game_id=$gameId, move_number=$moveNumber, move=$moveData');
 
-    // Determine the color based on move number (odd = black, even = white)
-    // TODO: make sure we're accounting for handicap!!
-    final color = moveNumber % 2 == 1 ? wq.Color.black : wq.Color.white;
+    final color = colorToMove(
+        // move number from the server is 1-indexed
+        moveNumber - 1,
+        handicap: handicap,
+        freeHandicapPlacement: _freeHandicapPlacement);
 
     wq.Point point;
 
