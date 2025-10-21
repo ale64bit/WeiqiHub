@@ -10,6 +10,7 @@ import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/ogs/game_utils.dart';
 import 'package:wqhub/game_client/ogs/ogs_game.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 import 'package:wqhub/game_client/rules.dart';
@@ -321,6 +322,8 @@ class OGSGameClient extends GameClient {
     // Parse game information
     final boardSize = gameData['width'] as int? ?? 19;
     final handicap = gameData['handicap'] as int? ?? 0;
+    final freeHandicapPlacement =
+        gameData['free_handicap_placement'] as bool? ?? false;
     final komi = (gameData['komi'] as num?)?.toDouble() ?? 6.5;
 
     // Parse rules
@@ -354,7 +357,8 @@ class OGSGameClient extends GameClient {
       throw Exception('Unable to determine player color for game $gameId');
     }
 
-    final previousMoves = _parseMovesFromGameData(gameData);
+    final previousMoves =
+        _parseMovesFromGameData(gameData, handicap, freeHandicapPlacement);
 
     return OGSGame(
       id: gameId,
@@ -367,6 +371,7 @@ class OGSGameClient extends GameClient {
       previousMoves: previousMoves,
       webSocketManager: _webSocketManager,
       myUserId: userInfo.userId,
+      freeHandicapPlacement: freeHandicapPlacement,
     );
   }
 
@@ -584,22 +589,29 @@ class OGSGameClient extends GameClient {
     return Rank.k6; // Default
   }
 
-  List<wq.Move> _parseMovesFromGameData(Map<String, dynamic> gameData) {
+  List<wq.Move> _parseMovesFromGameData(
+      Map<String, dynamic> gameData, int handicap, bool freeHandicapPlacement) {
     final moves = <wq.Move>[];
+
+    // Extract initial_state - this powers "forked" games, and, more importantly, handicap stones
+    final initialState = gameData['initial_state'] as Map<String, dynamic>?;
+    if (initialState != null) {
+      moves.addAll(parseStonesString(
+          initialState['black'] as String? ?? "", wq.Color.black));
+      moves.addAll(parseStonesString(
+          initialState['white'] as String? ?? "", wq.Color.white));
+    }
 
     final movesData = gameData['moves'] as List<dynamic>?;
     if (movesData == null) {
       return moves;
     }
 
-    // TODO: Handle handicap games properly - handicap stones are placed first (black),
-    // then normal alternating play starts with white. This requires careful consideration
-    // of how OGS stores handicap stones vs regular moves.
-
     for (int i = 0; i < movesData.length; i++) {
       final moveData = movesData[i];
 
-      final color = wq.Color.values[i % 2];
+      final color = colorToMove(i,
+          handicap: handicap, freeHandicapPlacement: freeHandicapPlacement);
 
       if (moveData is List && moveData.length >= 2) {
         // OGS format: [col, row, time] where -1,-1 is pass
