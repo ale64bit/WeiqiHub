@@ -15,6 +15,7 @@ import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/counting_result_bottom_sheet.dart';
+import 'package:wqhub/play/game_counting_bar.dart';
 import 'package:wqhub/play/game_navigation_bar.dart';
 import 'package:wqhub/play/gameplay_bar.dart';
 import 'package:wqhub/play/gameplay_menu.dart';
@@ -29,6 +30,8 @@ import 'package:wqhub/wq/annotated_game_tree.dart';
 import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
+import 'package:wqhub/wq/grid.dart';
+import 'package:wqhub/wq/region.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 abstract class GameListener {
@@ -119,6 +122,9 @@ class _GamePageState extends State<GamePage> {
   late AnnotatedGameTree _gameTree;
   var _turn = wq.Color.black;
   var _state = GameState.playing;
+  var _ownership = List<List<wq.Color?>>.empty();
+  var _acceptedDeadStones = false;
+  var _opponentAcceptedDeadStones = false;
   // End state
 
   IMapOfSets<wq.Point, Annotation>? _territoryAnnotations;
@@ -268,6 +274,21 @@ class _GamePageState extends State<GamePage> {
       },
     );
 
+    final acceptStatus = [
+      (
+        widget.game.white.value.username,
+        widget.game.myColor == wq.Color.white
+            ? _acceptedDeadStones
+            : _opponentAcceptedDeadStones
+      ),
+      (
+        widget.game.black.value.username,
+        widget.game.myColor == wq.Color.black
+            ? _acceptedDeadStones
+            : _opponentAcceptedDeadStones
+      ),
+    ];
+
     return Scaffold(
       body: wideLayout
           ? Row(
@@ -287,28 +308,36 @@ class _GamePageState extends State<GamePage> {
                       whitePlayerCard,
                       blackPlayerCard,
                       SizedBox(height: 8),
-                      if (_state == GameState.over)
-                        GameNavigationBar(
-                          gameTree: _gameTree,
-                          onMovesSkipped: (n) {
-                            setState(() {
-                              _turn = (_gameTree.curNode.move?.col ??
-                                      wq.Color.white)
-                                  .opposite;
-                            });
-                          },
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        ),
-                      if (_state != GameState.over)
-                        GameplayBar(
-                          features: widget.serverFeatures,
-                          onPass: onPassClicked,
-                          onManualCounting: onManualCountingClicked,
-                          onAutomaticCounting: onAutomaticCountingClicked,
-                          onAIReferee: onAIRefereeClicked,
-                          onForceCounting: onForceCountingClicked,
-                          onResign: onResignClicked,
-                        )
+                      switch (_state) {
+                        GameState.playing ||
+                        GameState.acking ||
+                        GameState.agreeToCounting =>
+                          GameplayBar(
+                            features: widget.serverFeatures,
+                            onPass: onPassClicked,
+                            onAutomaticCounting: onAutomaticCountingClicked,
+                            onAIReferee: onAIRefereeClicked,
+                            onForceCounting: onForceCountingClicked,
+                            onResign: onResignClicked,
+                          ),
+                        GameState.counting => GameCountingBar(
+                            onAcceptDeadStones:
+                                _acceptedDeadStones ? null : onAcceptDeadStones,
+                            onRejectDeadStones: onRejectDeadStones,
+                            acceptStatus: acceptStatus,
+                          ),
+                        GameState.over => GameNavigationBar(
+                            gameTree: _gameTree,
+                            onMovesSkipped: (n) {
+                              setState(() {
+                                _turn = (_gameTree.curNode.move?.col ??
+                                        wq.Color.white)
+                                    .opposite;
+                              });
+                            },
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          ),
+                      },
                     ],
                   ),
                 ),
@@ -325,6 +354,38 @@ class _GamePageState extends State<GamePage> {
                   widget.game.myColor == wq.Color.black
                       ? blackPlayerCard
                       : whitePlayerCard,
+                  if (_state == GameState.counting) ...[
+                    Divider(),
+                    Text(
+                      loc.pleaseMarkDeadStones,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 8.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        spacing: 4.0,
+                        children: [
+                          if (!_acceptedDeadStones)
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                icon: Icon(Icons.check_circle),
+                                label: Text(loc.acceptDeadStones),
+                                onPressed: onAcceptDeadStones,
+                              ),
+                            ),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              icon: Icon(Icons.cancel),
+                              label: Text(loc.rejectDeadStones),
+                              onPressed: onRejectDeadStones,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                  ],
                   Stack(
                     children: [
                       if (_state == GameState.over)
@@ -339,20 +400,20 @@ class _GamePageState extends State<GamePage> {
                           },
                           mainAxisAlignment: MainAxisAlignment.center,
                         ),
-                      GameplayMenu(
-                        features: widget.serverFeatures,
-                        rules: widget.game.rules,
-                        handicap: widget.game.handicap,
-                        komi: widget.game.komi,
-                        isGameOver: _state == GameState.over,
-                        onPass: onPassClicked,
-                        onManualCounting: onManualCountingClicked,
-                        onAutomaticCounting: onAutomaticCountingClicked,
-                        onAIReferee: onAIRefereeClicked,
-                        onForceCounting: onForceCountingClicked,
-                        onResign: onResignClicked,
-                        onLeave: onLeaveClicked,
-                      ),
+                      if (_state != GameState.counting)
+                        GameplayMenu(
+                          features: widget.serverFeatures,
+                          rules: widget.game.rules,
+                          handicap: widget.game.handicap,
+                          komi: widget.game.komi,
+                          isGameOver: _state == GameState.over,
+                          onPass: onPassClicked,
+                          onAutomaticCounting: onAutomaticCountingClicked,
+                          onAIReferee: onAIRefereeClicked,
+                          onForceCounting: onForceCountingClicked,
+                          onResign: onResignClicked,
+                          onLeave: onLeaveClicked,
+                        ),
                     ],
                   ),
                 ],
@@ -368,11 +429,27 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  void onAcceptDeadStones() {
+    setState(() {
+      _acceptedDeadStones = true;
+    });
+    widget.game.acceptCountingResult(true);
+  }
+
+  void onRejectDeadStones() {
+    widget.game.acceptCountingResult(false);
+  }
+
   void onPointClicked(wq.Point p) {
     // A move can only processed in one of the following cases:
     //  - game is ongoing and it's our turn
+    //  - game is in manual counting state where we can toggle groups' status
     //  - game is over
-    if (!((_state == GameState.playing && _turn == widget.game.myColor) ||
+    if (_state == GameState.counting) {
+      onGroupStatusToggled(p);
+      return;
+    } else if (!((_state == GameState.playing &&
+            _turn == widget.game.myColor) ||
         _state == GameState.over)) {
       return;
     }
@@ -524,10 +601,6 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
-  void onManualCountingClicked() {
-    // TODO implement
-  }
-
   void onAutomaticCountingClicked() {
     final loc = AppLocalizations.of(context)!;
     // We can only request automatic counting if we are playing and it's our turn.
@@ -586,6 +659,8 @@ class _GamePageState extends State<GamePage> {
                 widget.game.agreeToAutomaticCounting(true);
                 setState(() {
                   _state = GameState.counting;
+                  _acceptedDeadStones = false;
+                  _opponentAcceptedDeadStones = false;
                 });
                 Navigator.of(context).pop();
               },
@@ -605,6 +680,8 @@ class _GamePageState extends State<GamePage> {
       // If opponent agrees, go into counting state
       setState(() {
         _state = GameState.counting;
+        _acceptedDeadStones = false;
+        _opponentAcceptedDeadStones = false;
       });
     } else {
       // If opponent refuses, go back into playing state
@@ -638,60 +715,58 @@ class _GamePageState extends State<GamePage> {
 
       setState(() {
         _state = GameState.playing;
+        _acceptedDeadStones = false;
+        _opponentAcceptedDeadStones = false;
         _territoryAnnotations = null;
       });
     } else {
-      // Nothing to do. We should receive the game result event shortly if we also
-      // accepted the counting result.
+      _opponentAcceptedDeadStones = true;
     }
   }
 
   void onCountingResult(CountingResult res) {
     _log.fine(
-        '[${_state.name}] got counting result: winner=${res.winner} lead=${res.scoreLead}');
+        '[${_state.name}] got counting result: winner=${res.winner} lead=${res.scoreLead} isFinal=${res.isFinal}');
 
-    // Build the territory annotations, if provided.
-    _territoryAnnotations = IMapOfSets.empty();
-    for (int i = 0; i < widget.game.boardSize; ++i) {
-      for (int j = 0; j < widget.game.boardSize; ++j) {
-        if (res.ownership[i][j] != null) {
-          final p = (i, j);
-          final col = res.ownership[i][j];
-          _territoryAnnotations = _territoryAnnotations?.add(p, (
-            type: AnnotationShape.territory.u21,
-            color: col == wq.Color.black ? Colors.black : Colors.white,
-          ));
-        }
+    // Build the territory annotations.
+    _ownership = res.ownership;
+    if (_ownership.isEmpty) _ownership = _defaultOwnership();
+    _territoryAnnotations = _territoryAnnotationsFromOwnership(_ownership);
+
+    // Show counting result confirmation bottom sheet
+    if (res.isFinal) {
+      if (context.mounted) {
+        showModalBottomSheet(
+            context: context,
+            isDismissible: false,
+            routeSettings: RouteSettings(name: _countingResultBottomSheetName),
+            builder: (context) {
+              return CountingResultBottomSheet(
+                scoreLead: res.scoreLead,
+                winner: res.winner,
+                onAccept: () {
+                  widget.game.acceptCountingResult(true);
+                  maybeDismissRoute(_countingResultBottomSheetName);
+                },
+                onReject: () {
+                  widget.game.acceptCountingResult(false);
+                  maybeDismissRoute(_countingResultBottomSheetName);
+                  setState(() {
+                    _state = GameState.playing;
+                    _territoryAnnotations = null;
+                  });
+                },
+              );
+            });
       }
     }
 
-    // Show counting result confirmation bottom sheet
-    if (context.mounted) {
-      showModalBottomSheet(
-          context: context,
-          isDismissible: false,
-          routeSettings: RouteSettings(name: _countingResultBottomSheetName),
-          builder: (context) {
-            return CountingResultBottomSheet(
-              scoreLead: res.scoreLead,
-              winner: res.winner,
-              onAccept: () {
-                widget.game.acceptCountingResult(true);
-                maybeDismissRoute(_countingResultBottomSheetName);
-              },
-              onReject: () {
-                widget.game.acceptCountingResult(false);
-                maybeDismissRoute(_countingResultBottomSheetName);
-                setState(() {
-                  _state = GameState.playing;
-                  _territoryAnnotations = null;
-                });
-              },
-            );
-          });
-    }
-
     setState(() {
+      // Clear acceptance status if we just got into counting state
+      if (_state != GameState.counting) {
+        _acceptedDeadStones = false;
+        _opponentAcceptedDeadStones = false;
+      }
       _state = GameState.counting;
     });
   }
@@ -866,6 +941,107 @@ class _GamePageState extends State<GamePage> {
         );
       },
     );
+  }
+
+  void onGroupStatusToggled(wq.Point p) {
+    final col = _gameTree.stones.get(p);
+    if (col == null) return;
+
+    final stones = _collectGroup(_gameTree.stones, p);
+    final (r, c) = p;
+    final removed = _ownership[r][c] == col;
+    for (final (i, j) in stones) {
+      _ownership[i][j] = _ownership[i][j]?.opposite;
+    }
+    _updateEmptyRegionOwnership(_ownership);
+    setState(() {
+      _territoryAnnotations = _territoryAnnotationsFromOwnership(_ownership);
+      _acceptedDeadStones = false;
+    });
+    widget.game.toggleManuallyRemovedStones(stones.toList(), removed);
+  }
+
+  List<List<wq.Color?>> _defaultOwnership() {
+    final ownership = generate2D(
+        widget.game.boardSize, (i, j) => _gameTree.stones.get((i, j)));
+    _updateEmptyRegionOwnership(ownership);
+    return ownership;
+  }
+
+  void _updateEmptyRegionOwnership(List<List<wq.Color?>> ownership) {
+    // Clear empty regions' ownership.
+    for (int i = 0; i < ownership.length; ++i) {
+      for (int j = 0; j < ownership[i].length; ++j) {
+        final col = _gameTree.stones.get((i, j));
+        if (col == null) ownership[i][j] = null;
+      }
+    }
+    // Recalculate empty regions' ownership according to current group ownership.
+    var allPoints = const ISet<wq.Point>.empty();
+    for (int i = 0; i < ownership.length; ++i) {
+      for (int j = 0; j < ownership[i].length; ++j) {
+        if (ownership[i][j] != null || allPoints.contains((i, j))) continue;
+
+        var points = const ISet<wq.Point>.empty();
+        var bordersColors = const ISet<wq.Color>.empty();
+        visitRegion(
+          (i, j),
+          shouldVisit: (p) {
+            final (r, c) = p;
+            if (r < 0 ||
+                r >= widget.game.boardSize ||
+                c < 0 ||
+                c >= widget.game.boardSize ||
+                points.contains(p)) return false;
+            final col = _gameTree.stones.get(p);
+            final isEmpty = ownership[r][c] == null;
+            final isDead = ownership[r][c] != col;
+            if (col != null && !isDead) bordersColors = bordersColors.add(col);
+            return isEmpty || isDead;
+          },
+          visit: (p) => points = points.add(p),
+        );
+
+        if (bordersColors.length == 1) {
+          for (final (r, c) in points) ownership[r][c] = bordersColors.first;
+        }
+
+        allPoints = allPoints.addAll(points);
+      }
+    }
+  }
+
+  static ISet<wq.Point> _collectGroup(
+      IMap<wq.Point, wq.Color> stones, wq.Point p) {
+    final groupCol = stones.get(p);
+    var points = const ISet<wq.Point>.empty();
+    if (groupCol == null) return points;
+
+    visitRegion(
+      p,
+      shouldVisit: (p) => stones.get(p) == groupCol && !points.contains(p),
+      visit: (p) => points = points.add(p),
+    );
+
+    return points;
+  }
+
+  static IMapOfSets<wq.Point, Annotation> _territoryAnnotationsFromOwnership(
+      List<List<wq.Color?>> ownership) {
+    var annotations = IMapOfSets<wq.Point, Annotation>();
+    for (int i = 0; i < ownership.length; ++i) {
+      for (int j = 0; j < ownership[i].length; ++j) {
+        if (ownership[i][j] != null) {
+          final p = (i, j);
+          final col = ownership[i][j];
+          annotations = annotations.add(p, (
+            type: AnnotationShape.territory.u21,
+            color: col == wq.Color.black ? Colors.black : Colors.white,
+          ));
+        }
+      }
+    }
+    return annotations;
   }
 }
 

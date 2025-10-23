@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:extension_type_unions/extension_type_unions.dart';
 
 enum AnnotationShape {
@@ -9,6 +9,7 @@ enum AnnotationShape {
   triangle,
   territory,
   variation,
+  fill,
 }
 
 typedef Annotation = ({Union2<AnnotationShape, String> type, Color color});
@@ -98,16 +99,19 @@ class _AnnotationShapePainter extends CustomPainter {
         canvas.drawPath(path, paint);
       case AnnotationShape.territory:
         final center = Offset(size.width / 2, size.height / 2);
-        final paint = Paint()
+        final borderPaint = Paint()
+          ..style = PaintingStyle.stroke
+          ..color = Colors.grey;
+        final fillPaint = Paint()
           ..style = PaintingStyle.fill
           ..color = color;
-        canvas.drawRect(
-            Rect.fromCenter(
-              center: center,
-              width: size.width / 2.5,
-              height: size.height / 2.5,
-            ),
-            paint);
+        final rect = Rect.fromCenter(
+          center: center,
+          width: size.width / 2.5,
+          height: size.height / 2.5,
+        );
+        canvas.drawRect(rect, fillPaint);
+        canvas.drawRect(rect, borderPaint);
       case AnnotationShape.variation:
         final paint = Paint()
           ..style = PaintingStyle.fill
@@ -118,6 +122,18 @@ class _AnnotationShapePainter extends CustomPainter {
         path.lineTo(side, 0);
         path.close();
         canvas.drawPath(path, paint);
+      case AnnotationShape.fill:
+        final paint = Paint()
+          ..style = PaintingStyle.fill
+          ..color = color;
+        canvas.drawRect(
+            Rect.fromLTWH(
+              0,
+              0,
+              size.width,
+              size.height,
+            ),
+            paint);
     }
   }
 

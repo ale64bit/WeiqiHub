@@ -12,6 +12,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get about => 'Acerca de WeiqiHub';
 
   @override
+  String get acceptDeadStones => 'Aceptar piedras muertas';
+
+  @override
   String get accuracy => 'Precisión';
 
   @override
@@ -397,6 +400,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get play => 'Jugar';
 
   @override
+  String get pleaseMarkDeadStones => 'Por favor, marca las piedras muertas.';
+
+  @override
   String get promotionRequirements => 'Requisitos de promoción';
 
   @override
@@ -415,6 +421,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get register => 'Registrarse';
+
+  @override
+  String get rejectDeadStones => 'Rechazar piedras muertas';
 
   @override
   String get resign => 'Abandonar';

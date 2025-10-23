@@ -5,7 +5,6 @@ import 'package:wqhub/l10n/app_localizations.dart';
 class GameplayBar extends StatelessWidget {
   final ServerFeatures features;
   final Function() onPass;
-  final Function() onManualCounting;
   final Function() onAutomaticCounting;
   final Function() onAIReferee;
   final Function() onForceCounting;
@@ -15,7 +14,6 @@ class GameplayBar extends StatelessWidget {
     super.key,
     required this.features,
     required this.onPass,
-    required this.onManualCounting,
     required this.onAutomaticCounting,
     required this.onAIReferee,
     required this.onForceCounting,

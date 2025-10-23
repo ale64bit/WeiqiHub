@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get about;
 
+  /// No description provided for @acceptDeadStones.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept dead stones'**
+  String get acceptDeadStones;
+
   /// No description provided for @accuracy.
   ///
   /// In en, this message translates to:
@@ -764,6 +770,12 @@ abstract class AppLocalizations {
   /// **'Play'**
   String get play;
 
+  /// No description provided for @pleaseMarkDeadStones.
+  ///
+  /// In en, this message translates to:
+  /// **'Please mark the dead stones.'**
+  String get pleaseMarkDeadStones;
+
   /// No description provided for @promotionRequirements.
   ///
   /// In en, this message translates to:
@@ -799,6 +811,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Register'**
   String get register;
+
+  /// No description provided for @rejectDeadStones.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject dead stones'**
+  String get rejectDeadStones;
 
   /// No description provided for @resign.
   ///

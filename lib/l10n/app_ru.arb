@@ -1,5 +1,6 @@
 {
   "about": "О приложении",
+  "acceptDeadStones": "Принять мёртвые камни",
   "accuracy": "Точность",
   "aiReferee": "ИИ-судья",
   "aiSensei": "AI Sensei",
@@ -167,6 +168,7 @@
   "pass": "Пас",
   "password": "Пароль",
   "play": "Играть",
+  "pleaseMarkDeadStones": "Пожалуйста, отметьте мёртвые камни.",
   "promotionRequirements": "Требования для повышения",
   "pxsByoyomi": "{p}×{s}с",
   "@pxsByoyomi": {
@@ -183,6 +185,7 @@
   "rankedMode": "Рейтинговый режим",
   "recentRecord": "Недавние результаты",
   "register": "Зарегистрироваться",
+  "rejectDeadStones": "Отклонить мёртвые камни",
   "resign": "Сдаться",
   "responseDelay": "Задержка ответа",
   "responseDelayDesc": "Задержка перед показом ответного хода при решении задач",

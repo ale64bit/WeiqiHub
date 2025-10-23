@@ -50,9 +50,9 @@ abstract class Game {
   Future<void> pass();
   Future<void> resign();
   Future<AutomaticCountingInfo> automaticCounting();
-  Future<void> manualCounting();
   Future<void> aiReferee();
   Future<void> forceCounting();
   Future<void> agreeToAutomaticCounting(bool agree);
   Future<void> acceptCountingResult(bool agree);
+  Future<void> toggleManuallyRemovedStones(List<wq.Point> stones, bool removed);
 }

@@ -12,6 +12,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get about => 'Despre';
 
   @override
+  String get acceptDeadStones => 'Acceptă pietrele moarte';
+
+  @override
   String get accuracy => 'Precizie';
 
   @override
@@ -394,6 +397,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get play => 'Joacă';
 
   @override
+  String get pleaseMarkDeadStones => 'Te rog marchează pietrele moarte.';
+
+  @override
   String get promotionRequirements => 'Cerințe pentru promovare';
 
   @override
@@ -412,6 +418,9 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get register => 'Înregistrare';
+
+  @override
+  String get rejectDeadStones => 'Respinge pietrele moarte';
 
   @override
   String get resign => 'Renunță';

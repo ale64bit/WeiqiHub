@@ -12,6 +12,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get about => '关于';
 
   @override
+  String get acceptDeadStones => '确认死子';
+
+  @override
   String get accuracy => '答题准确率';
 
   @override
@@ -381,6 +384,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get play => '对局';
 
   @override
+  String get pleaseMarkDeadStones => '请标记死子。';
+
+  @override
   String get promotionRequirements => '升级要求';
 
   @override
@@ -399,6 +405,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get register => '创建帐号';
+
+  @override
+  String get rejectDeadStones => '取消死子';
 
   @override
   String get resign => '认输并退出';

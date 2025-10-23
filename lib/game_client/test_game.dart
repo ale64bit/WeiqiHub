@@ -16,7 +16,9 @@ class TestGame extends Game {
     required super.myColor,
     required super.timeControl,
     required super.previousMoves,
-  });
+  }) : _countingResultController = StreamController.broadcast();
+
+  final StreamController<CountingResult> _countingResultController;
 
   @override
   Future<void> acceptCountingResult(bool agree) => Future.value();
@@ -38,13 +40,15 @@ class TestGame extends Game {
   Stream<bool> countingResultResponses() => Stream.empty();
 
   @override
-  Stream<CountingResult> countingResults() => Stream.empty();
+  Stream<CountingResult> countingResults() => _countingResultController.stream;
+
+  @override
+  Future<void> toggleManuallyRemovedStones(
+          List<wq.Point> stones, bool removed) =>
+      Future.value();
 
   @override
   Future<void> forceCounting() => Future.value();
-
-  @override
-  Future<void> manualCounting() => Future.value();
 
   @override
   Future<void> move(wq.Move move) => Future.value();
@@ -53,7 +57,15 @@ class TestGame extends Game {
   Stream<wq.Move> moves() => Stream.empty();
 
   @override
-  Future<void> pass() => Future.value();
+  Future<void> pass() {
+    _countingResultController.add(CountingResult(
+      winner: wq.Color.black,
+      scoreLead: 0,
+      ownership: List.empty(),
+      isFinal: false,
+    ));
+    return Future.value();
+  }
 
   @override
   Future<void> resign() => Future.value();
