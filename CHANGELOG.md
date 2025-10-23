@@ -1,6 +1,7 @@
 # Changelog
 
 ## 0.1.11
+- Romanian localization (@adudenamedruby)
 
 ## 0.1.10
 - now available in Chinese (simplified), Russian and Spanish
