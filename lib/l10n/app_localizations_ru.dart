@@ -12,6 +12,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get about => 'О приложении';
 
   @override
+  String get acceptDeadStones => 'Принять мёртвые камни';
+
+  @override
   String get accuracy => 'Точность';
 
   @override
@@ -395,6 +398,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get play => 'Играть';
 
   @override
+  String get pleaseMarkDeadStones => 'Пожалуйста, отметьте мёртвые камни.';
+
+  @override
   String get promotionRequirements => 'Требования для повышения';
 
   @override
@@ -413,6 +419,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get register => 'Зарегистрироваться';
+
+  @override
+  String get rejectDeadStones => 'Отклонить мёртвые камни';
 
   @override
   String get resign => 'Сдаться';

@@ -135,9 +135,6 @@ class OGSGame extends Game {
   Future<void> forceCounting() => Future.value();
 
   @override
-  Future<void> manualCounting() => Future.value();
-
-  @override
   Future<void> move(wq.Move move) {
     final sgfMove = move.p.toSgf();
     return _sendMove(sgfMove, move.col);
@@ -429,15 +426,7 @@ class OGSGame extends Game {
     _logger.fine('Received removed stones set for game $id');
 
     try {
-      // Check if this is our own stones set
-      final playerId = data['player_id'] as int?;
-      if (playerId?.toString() == _myUserId) {
-        _logger.fine('Ignoring our own stone removal set');
-        return;
-      }
-
       _recentlyRemovedStonesString = data['stones'] as String? ?? '';
-
       final countingResult = _calculateCountingResultFromOwnership(data);
       _countingResultController.add(countingResult);
     } catch (error) {
@@ -540,6 +529,7 @@ class OGSGame extends Game {
       winner: winner,
       scoreLead: scoreLead,
       ownership: ownership,
+      isFinal: false,
     );
   }
 

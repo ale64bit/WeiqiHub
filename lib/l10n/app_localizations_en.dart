@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get about => 'About';
 
   @override
+  String get acceptDeadStones => 'Accept dead stones';
+
+  @override
   String get accuracy => 'Accuracy';
 
   @override
@@ -393,6 +396,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get play => 'Play';
 
   @override
+  String get pleaseMarkDeadStones => 'Please mark the dead stones.';
+
+  @override
   String get promotionRequirements => 'Promotion requirements';
 
   @override
@@ -411,6 +417,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get register => 'Register';
+
+  @override
+  String get rejectDeadStones => 'Reject dead stones';
 
   @override
   String get resign => 'Resign';

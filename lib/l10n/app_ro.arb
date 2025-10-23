@@ -1,5 +1,6 @@
 {
   "about": "Despre",
+  "acceptDeadStones": "Acceptă pietrele moarte",
   "accuracy": "Precizie",
   "aiReferee": "Arbitru AI",
   "aiSensei": "AI Sensei",
@@ -167,6 +168,7 @@
   "pass": "Pasează",
   "password": "Parolă",
   "play": "Joacă",
+  "pleaseMarkDeadStones": "Te rog marchează pietrele moarte.",
   "promotionRequirements": "Cerințe pentru promovare",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -183,6 +185,7 @@
   "rankedMode": "Mod clasament",
   "recentRecord": "Rezultate recente",
   "register": "Înregistrare",
+  "rejectDeadStones": "Respinge pietrele moarte",
   "resign": "Renunță",
   "responseDelay": "Întârziere răspuns",
   "responseDelayDesc": "Durata întârzierii înainte ca răspunsul să apară în timpul rezolvării sarcinilor",

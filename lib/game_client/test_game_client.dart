@@ -44,7 +44,16 @@ class TestGameClient extends GameClient {
         periodCount: 3,
         timePerPeriod: Duration(seconds: 30),
       ),
-      previousMoves: [],
+      previousMoves: [
+        (col: wq.Color.black, p: (3, 3)),
+        (col: wq.Color.black, p: (3, 4)),
+        (col: wq.Color.black, p: (5, 4)),
+        (col: wq.Color.white, p: (3, 15)),
+        (col: wq.Color.black, p: (15, 3)),
+        (col: wq.Color.white, p: (15, 15)),
+        (col: wq.Color.black, p: (2, 5)),
+        (col: wq.Color.white, p: (16, 13)),
+      ],
     );
     testGame.black.value = UserInfo(
       userId: 'test_black_id',

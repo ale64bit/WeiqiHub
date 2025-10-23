@@ -10,7 +10,6 @@ class GameplayMenu extends StatelessWidget {
   final double komi;
   final bool isGameOver;
   final Function() onPass;
-  final Function() onManualCounting;
   final Function() onAutomaticCounting;
   final Function() onAIReferee;
   final Function() onForceCounting;
@@ -25,7 +24,6 @@ class GameplayMenu extends StatelessWidget {
     required this.komi,
     required this.isGameOver,
     required this.onPass,
-    required this.onManualCounting,
     required this.onAutomaticCounting,
     required this.onAIReferee,
     required this.onForceCounting,
@@ -58,12 +56,6 @@ class GameplayMenu extends StatelessWidget {
             leadingIcon: Icon(Icons.fast_forward),
             onPressed: onPass,
             child: Text(loc.pass),
-          ),
-        if (!isGameOver && features.manualCounting)
-          MenuItemButton(
-            leadingIcon: Icon(Icons.calculate),
-            onPressed: onManualCounting,
-            child: const Text('Request Counting'),
           ),
         if (!isGameOver && features.automaticCounting)
           MenuItemButton(

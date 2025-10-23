@@ -1,5 +1,6 @@
 {
   "about": "关于",
+  "acceptDeadStones": "确认死子",
   "accuracy": "答题准确率",
   "aiReferee": "AI 裁判",
   "aiSensei": "AI Sensei",
@@ -167,6 +168,7 @@
   "pass": "虚手",
   "password": "密码",
   "play": "对局",
+  "pleaseMarkDeadStones": "请标记死子。",
   "promotionRequirements": "升级要求",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -183,6 +185,7 @@
   "rankedMode": "等级模式",
   "recentRecord": "当前战绩",
   "register": "创建帐号",
+  "rejectDeadStones": "取消死子",
   "resign": "认输并退出",
   "responseDelay": "响应延迟",
   "responseDelayDesc": "解题时响应前的延迟时长",

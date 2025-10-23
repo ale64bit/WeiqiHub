@@ -1,5 +1,6 @@
 {
   "about": "Acerca de WeiqiHub",
+  "acceptDeadStones": "Aceptar piedras muertas",
   "accuracy": "Precisión",
   "aiReferee": "Árbitro IA",
   "aiSensei": "AI Sensei",
@@ -167,6 +168,7 @@
   "pass": "Pasar",
   "password": "Contraseña",
   "play": "Jugar",
+  "pleaseMarkDeadStones": "Por favor, marca las piedras muertas.",
   "promotionRequirements": "Requisitos de promoción",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -183,6 +185,7 @@
   "rankedMode": "Clasificatorio",
   "recentRecord": "Resultados recientes",
   "register": "Registrarse",
+  "rejectDeadStones": "Rechazar piedras muertas",
   "resign": "Abandonar",
   "responseDelay": "Demora de respuesta",
   "responseDelayDesc": "Demora de la respuesta del oponente mientras resuelves problemas",

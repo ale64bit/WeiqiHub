@@ -1,5 +1,6 @@
 {
   "about": "About",
+  "acceptDeadStones": "Accept dead stones",
   "accuracy": "Accuracy",
   "aiReferee": "AI referee",
   "aiSensei": "AI Sensei",
@@ -167,6 +168,7 @@
   "pass": "Pass",
   "password": "Password",
   "play": "Play",
+  "pleaseMarkDeadStones": "Please mark the dead stones.",
   "promotionRequirements": "Promotion requirements",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -183,6 +185,7 @@
   "rankedMode": "Ranked mode",
   "recentRecord": "Recent record",
   "register": "Register",
+  "rejectDeadStones": "Reject dead stones",
   "resign": "Resign",
   "responseDelay": "Response delay",
   "responseDelayDesc": "Duration of the delay before the response appears while solving tasks",
