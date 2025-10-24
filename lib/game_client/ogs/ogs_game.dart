@@ -209,7 +209,7 @@ class OGSGame extends Game {
       case 'removed_stones_accepted':
         _handleRemovedStonesAccepted(message['data'] as Map<String, dynamic>);
 
-      case 'removed_stones_set':
+      case 'removed_stones':
         _handleRemovedStonesSet(message['data'] as Map<String, dynamic>);
 
       case 'move':
