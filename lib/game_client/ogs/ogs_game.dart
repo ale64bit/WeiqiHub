@@ -146,6 +146,18 @@ class OGSGame extends Game {
     return _sendMove('..', myColor);
   }
 
+  @override
+  Future<void> resign() async {
+    try {
+      _webSocketManager.send('game/resign', {
+        'game_id': int.parse(id),
+      });
+    } catch (error) {
+      _logger.warning('Failed to send resignation for game $id: $error');
+      rethrow;
+    }
+  }
+
   Future<void> _sendMove(String sgfMove, wq.Color color) async {
     try {
       await _webSocketManager.sendAndGetResponse('game/move', {
@@ -545,9 +557,6 @@ class OGSGame extends Game {
       _resultCompleter.completeError('Game disposed before completion');
     }
   }
-
-  @override
-  Future<void> resign() => Future.value();
 
   @override
   Future<GameResult> result() => _resultCompleter.future;
