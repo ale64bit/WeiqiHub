@@ -46,6 +46,7 @@ class Board extends StatefulWidget with BoardGeometry {
 class _BoardState extends State<Board> {
   wq.Point? lastHoverPoint;
   wq.Point? confirmPoint;
+  wq.Point? lastPointPressed;
 
   @override
   void didUpdateWidget(covariant Board oldWidget) {
@@ -156,6 +157,7 @@ class _BoardState extends State<Board> {
       cursor: widget.cursor,
       onExit: _onPointerExit,
       child: Listener(
+        onPointerUp: _onPointerUp,
         onPointerDown: _onPointerDown,
         onPointerHover: _onPointerHover,
         child: SizedBox.square(
@@ -261,10 +263,22 @@ class _BoardState extends State<Board> {
     ];
   }
 
-  void _onPointerDown(PointerDownEvent event) {
-    if (event.buttons != kPrimaryButton) return;
+  void _onPointerUp(PointerUpEvent event) {
     final wq.Point? p = widget.offsetPoint(event.localPosition);
     if (p == null) return;
+
+    if (p != lastPointPressed) {
+      setState(() {
+        lastPointPressed = null;
+      });
+      pointerHoverUpdate(event);
+      return;
+    }
+
+    setState(() {
+      lastPointPressed = null;
+    });
+
     if (widget.confirmTap && boardIsLarge()) {
       if (widget.stones.containsKey(p)) {
         setState(() {
@@ -291,15 +305,23 @@ class _BoardState extends State<Board> {
     }
   }
 
-  bool boardIsLarge() {
-    final int confirmMoveboardSize = context.settings.confirmMovesBoardSize;
-    final int currentBoardSize = widget.settings.visibleSize;
-    return confirmMoveboardSize <= currentBoardSize;
+  void _onPointerDown(PointerDownEvent event) {
+    if (event.buttons != kPrimaryButton) return;
+    final wq.Point? p = widget.offsetPoint(event.localPosition);
+    setState(() {
+      lastPointPressed = p;
+    });
   }
 
-  void _onPointerHover(PointerHoverEvent event) {
+  void pointerHoverUpdate(PointerEvent event) {
     final p = widget.offsetPoint(event.localPosition);
-    if (p == lastHoverPoint || p == confirmPoint) return;
+
+    if (confirmPoint != null) {
+      setState(() {
+        lastHoverPoint = null;
+      });
+    }
+
     if (p != null && widget.stones.containsKey(p)) {
       if (lastHoverPoint != null) {
         setState(() {
@@ -313,10 +335,30 @@ class _BoardState extends State<Board> {
     });
   }
 
+  bool boardIsLarge() {
+    final int confirmMoveboardSize = context.settings.confirmMovesBoardSize;
+    final int currentBoardSize = widget.settings.visibleSize;
+    return confirmMoveboardSize <= currentBoardSize;
+  }
+
+  void _onPointerHover(PointerHoverEvent event) {
+    final p = widget.offsetPoint(event.localPosition);
+    if (p == confirmPoint) {
+      lastHoverPoint = null;
+    } else if (p == lastHoverPoint || lastPointPressed != null) return;
+    pointerHoverUpdate(event);
+  }
+
   void _onPointerExit(PointerExitEvent event) {
     if (lastHoverPoint != null) {
       setState(() {
         lastHoverPoint = null;
+      });
+    }
+
+    if (lastPointPressed != null) {
+      setState(() {
+        lastPointPressed = null;
       });
     }
   }
