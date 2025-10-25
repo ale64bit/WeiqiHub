@@ -473,6 +473,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get saveSGF => 'Сохранить SGF';
 
   @override
+  String get copySGF => 'Копировать SGF';
+
+  @override
   String get seconds => 'Секунды';
 
   @override

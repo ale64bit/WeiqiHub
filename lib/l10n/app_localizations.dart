@@ -914,6 +914,12 @@ abstract class AppLocalizations {
   /// **'Save SGF'**
   String get saveSGF;
 
+  /// No description provided for @copySGF.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy SGF'**
+  String get copySGF;
+
   /// No description provided for @seconds.
   ///
   /// In en, this message translates to:

@@ -158,6 +158,20 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
     });
   }
 
+  void onCopySgf() {
+    final sgfData = gameTree.sgf();
+    Clipboard.setData(ClipboardData(text: sgfData)).then((void _) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('SGF copied to clipboard'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    });
+  }
+
   void onUpdateUpsolveMode(UpsolveMode newMode) {
     if (upsolveMode != newMode) {
       setupCurrentTask();
