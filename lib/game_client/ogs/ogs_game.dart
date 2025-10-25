@@ -218,6 +218,9 @@ class OGSGame extends Game {
       case 'clock':
         _handleClock(message['data'] as Map<String, dynamic>);
 
+      case 'phase':
+        _handlePhase(message['data']);
+
       default:
         _logger.fine('Unhandled game event for game $id: $suffix');
     }
@@ -313,14 +316,7 @@ class OGSGame extends Game {
 
       // Check for phase changes
       final phase = gameData['phase'] as String;
-      if (phase != _currentPhase) {
-        if (_currentPhase == 'stone removal' && phase == 'play') {
-          // Transition from counting/stone removal back to play - this indicates
-          // that one of the players sent the game/removed_stones/reject message
-          _countingResultResponsesController.add(false);
-        }
-        _currentPhase = phase;
-      }
+      _updatePhase(phase);
 
       if (phase == 'finished' && !_resultCompleter.isCompleted) {
         // Update game result if the game has ended
@@ -487,6 +483,29 @@ class OGSGame extends Game {
       periodTimeLeft: periodTime,
       periodCount: periods,
     );
+  }
+
+  void _handlePhase(dynamic data) {
+    _logger.fine('Received phase message for game $id: $data');
+
+    try {
+      final phase = data as String;
+      _updatePhase(phase);
+    } catch (error) {
+      _logger.warning('Error handling phase message for game $id: $error');
+    }
+  }
+
+  void _updatePhase(String phase) {
+    if (phase != _currentPhase) {
+      if (_currentPhase == 'stone removal' && phase == 'play') {
+        // Transition from counting/stone removal back to play - this indicates
+        // that one of the players sent the game/removed_stones/reject message
+        _countingResultResponsesController.add(false);
+      }
+      _currentPhase = phase;
+      _logger.fine('Phase changed to: $phase');
+    }
   }
 
   /// Calculate territory ownership and score from OGS ownership data
