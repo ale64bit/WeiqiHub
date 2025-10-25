@@ -458,6 +458,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get saveSGF => '保存SGF';
 
   @override
+  String get copySGF => '复制SGF';
+
+  @override
   String get seconds => '秒';
 
   @override

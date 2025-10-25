@@ -160,6 +160,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                 upsolveMode: upsolveMode,
                 onShowSolution: onShowContinuations,
                 onShareTask: onShareTask,
+                onCopySgf: onCopySgf,
                 onResetTask: onResetTask,
                 onNextTask: _onNext,
                 onCancelExam: () {
@@ -243,6 +244,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                   upsolveMode: upsolveMode,
                   onShowSolution: onShowContinuations,
                   onShareTask: onShareTask,
+                  onCopySgf: onCopySgf,
                   onResetTask: onResetTask,
                   onNextTask: _onNext,
                   onPreviousMove: onPreviousMove,
@@ -358,6 +360,7 @@ class _SideBar extends StatelessWidget {
   final UpsolveMode upsolveMode;
   final Function()? onShowSolution;
   final Function()? onShareTask;
+  final Function()? onCopySgf;
   final Function()? onResetTask;
   final Function()? onNextTask;
   final Function() onCancelExam;
@@ -376,6 +379,7 @@ class _SideBar extends StatelessWidget {
     required this.upsolveMode,
     required this.onShowSolution,
     required this.onShareTask,
+    this.onCopySgf,
     required this.onResetTask,
     required this.onNextTask,
     required this.onCancelExam,
@@ -440,6 +444,7 @@ class _SideBar extends StatelessWidget {
                     upsolveMode: upsolveMode,
                     onShowSolution: onShowSolution,
                     onShareTask: onShareTask,
+                    onCopySgf: onCopySgf,
                     onNextTask: onNextTask,
                     onResetTask: onResetTask,
                     onPreviousMove: onPreviousMove,

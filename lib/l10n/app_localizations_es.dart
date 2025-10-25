@@ -475,6 +475,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get saveSGF => 'Guardar SGF';
 
   @override
+  String get copySGF => 'Copiar SGF';
+
+  @override
   String get seconds => 'Segundos';
 
   @override

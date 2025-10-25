@@ -8,6 +8,7 @@ class TaskActionBar extends StatelessWidget {
   final UpsolveMode upsolveMode;
   final Function()? onShowSolution;
   final Function()? onShareTask;
+  final Function()? onCopySgf;
   final Function()? onResetTask;
   final Function()? onNextTask;
   final Function() onPreviousMove;
@@ -19,6 +20,7 @@ class TaskActionBar extends StatelessWidget {
     required this.upsolveMode,
     this.onShowSolution,
     this.onShareTask,
+    this.onCopySgf,
     this.onResetTask,
     this.onNextTask,
     required this.onPreviousMove,
@@ -47,6 +49,17 @@ class TaskActionBar extends StatelessWidget {
               children: <Widget>[
                 Icon(Icons.share),
                 Text(loc.copyTaskLink),
+              ],
+            ),
+          ),
+          PopupMenuItem(
+            onTap: onCopySgf,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 8.0,
+              children: <Widget>[
+                Icon(Icons.copy),
+                Text(loc.copySGF),
               ],
             ),
           ),

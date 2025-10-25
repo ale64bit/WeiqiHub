@@ -472,6 +472,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get saveSGF => 'Salvează SGF';
 
   @override
+  String get copySGF => 'Copiază SGF';
+
+  @override
   String get seconds => 'Secunde';
 
   @override
