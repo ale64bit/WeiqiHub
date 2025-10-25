@@ -596,10 +596,10 @@ class OGSGameClient extends GameClient {
     // Extract initial_state - this powers "forked" games, and, more importantly, handicap stones
     final initialState = gameData['initial_state'] as Map<String, dynamic>?;
     if (initialState != null) {
-      moves.addAll(parseStonesString(
-          initialState['black'] as String? ?? "", wq.Color.black));
-      moves.addAll(parseStonesString(
-          initialState['white'] as String? ?? "", wq.Color.white));
+      moves.addAll(parseStonesString(initialState['black'] as String? ?? "")
+          .map((point) => (col: wq.Color.black, p: point)));
+      moves.addAll(parseStonesString(initialState['white'] as String? ?? "")
+          .map((point) => (col: wq.Color.white, p: point)));
     }
 
     final movesData = gameData['moves'] as List<dynamic>?;

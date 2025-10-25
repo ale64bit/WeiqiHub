@@ -1,22 +1,23 @@
 import 'package:wqhub/wq/wq.dart' as wq;
 
-/// Parse a string of SGF coordinates into a list of moves for a given color.
+/// Parse a string of SGF coordinates into a list of points.
 ///
 /// Parameters:
 ///  - [stonesString]: String containing concatenated SGF coordinates (e.g., "aabbcc")
-///  - [color]: The color of the stones to be parsed
 ///
-/// Returns a list of moves with the specified color and parsed points.
-List<wq.Move> parseStonesString(String stonesString, wq.Color color) {
-  final moves = <wq.Move>[];
+/// Returns a list of points parsed from the SGF coordinates.
+List<wq.Point> parseStonesString(String stonesString) {
+  final points = <wq.Point>[];
 
   for (int i = 0; i < stonesString.length; i += 2) {
-    final sgfCoord = stonesString.substring(i, i + 2);
-    final point = wq.parseSgfPoint(sgfCoord);
-    moves.add((col: color, p: point));
+    if (i + 1 < stonesString.length) {
+      final sgfCoord = stonesString.substring(i, i + 2);
+      final point = wq.parseSgfPoint(sgfCoord);
+      points.add(point);
+    }
   }
 
-  return moves;
+  return points;
 }
 
 /// Determine whose color it is to move given the number of moves played and
