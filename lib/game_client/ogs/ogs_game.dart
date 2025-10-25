@@ -532,9 +532,6 @@ class OGSGame extends Game {
     _logger.fine(
         'Removed stones from message: $allRemovedString -> ${removedStones.length} stones');
 
-    // Ensure living stones are marked as owned by their respective colors
-    _ensureLivingStonesMarkedInOwnership(ownership, removedStones);
-
     final territoryCounts = count2D(ownership);
     final blackTerritory = territoryCounts[wq.Color.black] ?? 0;
     final whiteTerritory = territoryCounts[wq.Color.white] ?? 0;
@@ -561,6 +558,9 @@ class OGSGame extends Game {
 
     final scoreLead = (blackScore - whiteScore).abs();
     final winner = blackScore > whiteScore ? wq.Color.black : wq.Color.white;
+
+    // Ensure living stones are marked as owned by their respective colors
+    _ensureLivingStonesMarkedInOwnership(ownership, removedStones);
 
     _logger.fine(
         'Score from ownership: Black=$blackScore (area: $blackTerritory, captures: $whiteCaptures), '
