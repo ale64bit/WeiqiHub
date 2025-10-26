@@ -511,10 +511,11 @@ class OGSGame extends Game {
   /// Calculate territory ownership and score from OGS ownership data
   CountingResult _calculateCountingResultFromOwnership(
       Map<String, dynamic> data) {
-    _logger.fine('Calculating territory from OGS ownership data');
+    _logger.fine('Calculating area ownership from OGS territory data');
 
     final ownershipData = data['ownership'] as List<dynamic>;
 
+    // First create ownership grid from OGS territory data
     final ownership = generate2D<wq.Color?>(boardSize, (i, j) {
       final value = (ownershipData[i] as List<dynamic>)[j] as int;
       return switch (value) {
@@ -523,6 +524,13 @@ class OGSGame extends Game {
         _ => null,
       };
     });
+
+    // Parse removed stones from the message
+    final allRemovedString = data['all_removed'] as String? ?? '';
+    final removedStones = parseStonesString(allRemovedString).toSet();
+
+    _logger.fine(
+        'Removed stones from message: $allRemovedString -> ${removedStones.length} stones');
 
     final territoryCounts = count2D(ownership);
     final blackTerritory = territoryCounts[wq.Color.black] ?? 0;
@@ -551,9 +559,12 @@ class OGSGame extends Game {
     final scoreLead = (blackScore - whiteScore).abs();
     final winner = blackScore > whiteScore ? wq.Color.black : wq.Color.white;
 
+    // Ensure living stones are marked as owned by their respective colors
+    _ensureLivingStonesMarkedInOwnership(ownership, removedStones);
+
     _logger.fine(
-        'Score from ownership: Black=$blackScore (territory: $blackTerritory, captures: $whiteCaptures), '
-        'White=$whiteScore (territory: $whiteTerritory, captures: $blackCaptures, komi: $komi)');
+        'Score from ownership: Black=$blackScore (area: $blackTerritory, captures: $whiteCaptures), '
+        'White=$whiteScore (area: $whiteTerritory, captures: $blackCaptures, komi: $komi)');
     _logger.fine('Winner: $winner, Lead: $scoreLead');
 
     return CountingResult(
@@ -562,6 +573,31 @@ class OGSGame extends Game {
       ownership: ownership,
       isFinal: false,
     );
+  }
+
+  /// Ensures that living stones are marked as owned by their respective colors in the ownership grid.
+  ///
+  /// OGS ownership may represent territory (stones are neutral) or area, depending on ruleset.
+  /// WQHub ownership expects ownership to represent area regardless (stones belong to their color).
+  void _ensureLivingStonesMarkedInOwnership(
+      List<List<wq.Color?>> ownership, Set<wq.Point> deadStones) {
+    // Reconstruct the current board state to identify living stones
+    final currentBoardState = BoardState(size: boardSize);
+    for (final move in _allMoves) {
+      currentBoardState.move(move);
+    }
+
+    // Mark living stones as owned by their respective colors
+    for (int i = 0; i < boardSize; i++) {
+      for (int j = 0; j < boardSize; j++) {
+        final point = (i, j);
+        final stoneColor = currentBoardState[point];
+        if (stoneColor != null && !deadStones.contains(point)) {
+          // This point has a living stone (not removed), mark it as owned by the stone's color
+          ownership[i][j] = stoneColor;
+        }
+      }
+    }
   }
 
   void dispose() {
