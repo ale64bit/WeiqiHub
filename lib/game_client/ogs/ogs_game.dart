@@ -523,10 +523,11 @@ class OGSGame extends Game {
   /// Calculate territory ownership and score from OGS ownership data
   CountingResult _calculateCountingResultFromOwnership(
       Map<String, dynamic> data) {
-    _logger.fine('Calculating territory from OGS ownership data');
+    _logger.fine('Calculating area ownership from OGS territory data');
 
     final ownershipData = data['ownership'] as List<dynamic>;
 
+    // First create ownership grid from OGS territory data
     final ownership = generate2D<wq.Color?>(boardSize, (i, j) {
       final value = (ownershipData[i] as List<dynamic>)[j] as int;
       return switch (value) {
@@ -535,6 +536,13 @@ class OGSGame extends Game {
         _ => null,
       };
     });
+
+    // Parse removed stones from the message
+    final allRemovedString = data['all_removed'] as String? ?? '';
+    final removedStones = parseStonesString(allRemovedString).toSet();
+
+    _logger.fine(
+        'Removed stones from message: $allRemovedString -> ${removedStones.length} stones');
 
     final territoryCounts = count2D(ownership);
     final blackTerritory = territoryCounts[wq.Color.black] ?? 0;
@@ -563,9 +571,12 @@ class OGSGame extends Game {
     final scoreLead = (blackScore - whiteScore).abs();
     final winner = blackScore > whiteScore ? wq.Color.black : wq.Color.white;
 
+    // Ensure living stones are marked as owned by their respective colors
+    _ensureLivingStonesMarkedInOwnership(ownership, removedStones);
+
     _logger.fine(
-        'Score from ownership: Black=$blackScore (territory: $blackTerritory, captures: $whiteCaptures), '
-        'White=$whiteScore (territory: $whiteTerritory, captures: $blackCaptures, komi: $komi)');
+        'Score from ownership: Black=$blackScore (area: $blackTerritory, captures: $whiteCaptures), '
+        'White=$whiteScore (area: $whiteTerritory, captures: $blackCaptures, komi: $komi)');
     _logger.fine('Winner: $winner, Lead: $scoreLead');
 
     return CountingResult(
@@ -649,12 +660,16 @@ class OGSGame extends Game {
   Future<void> _setAIRemovedStones() async {
     _logger.fine('Requesting AI server analysis for game $id');
 
+    print("Requesting AI server analysis for game $id");
+
     // Get current board state and determine whose turn it is
     final boardState = _getCurrentBoardStateForAIServer();
     final playerToMove = myColor == wq.Color.black ? 'black' : 'white';
 
     // Call AI server
     final aiResponse = await _callAIServer(boardState, playerToMove);
+
+    print("AI server response for game $id: $aiResponse");
 
     if (aiResponse == null) {
       _logger.warning('AI server returned null response for game $id');
@@ -664,7 +679,8 @@ class OGSGame extends Game {
     _logger.fine('Sending removed stones from AI server for game $id');
 
     // Extract removed stones from AI response
-    final removedStones = aiResponse['removed_stones'] as List<dynamic>? ?? [];
+    final removedStones =
+        aiResponse['autoscored_removed'] as List<dynamic>? ?? [];
 
     // Convert AI response format to OGS stones string format
     // AI returns: [{"x":7,"y":2,"removal_reason":"..."}]
@@ -684,26 +700,46 @@ class OGSGame extends Game {
 
     final stonesString = stonesList.join('');
 
-    // Send removed stones to server
-    if (stonesString.isNotEmpty) {
-      // Sending two set messages is a bit strange, but it's the only way to reset
-      // the board.  Compare with OGS code:
-      // https://github.com/online-go/goban/blob/097d741f092387a2067ac40357e566038c3453ee/src/Goban/OGSConnectivity.ts#L1431-L1442
-      // The first message clears any previously staged removed stones
-      _webSocketManager.send('game/removed_stones/set', {
-        'game_id': int.parse(id),
-        'removed': false,
-        'stones': _recentlyRemovedStonesString,
-      });
-      // The second message sends the new set of removed stones
-      _webSocketManager.send('game/removed_stones/set', {
-        'game_id': int.parse(id),
-        'removed': true,
-        'stones': stonesString,
-      });
-      _logger.fine('Sent removed stones to server for game $id: $stonesString');
-    } else {
-      _logger.fine('No stones to remove according to AI server for game $id');
+    // Sending two set messages is a bit strange, but it's the only way to reset
+    // the board.  Compare with OGS code:
+    // https://github.com/online-go/goban/blob/097d741f092387a2067ac40357e566038c3453ee/src/Goban/OGSConnectivity.ts#L1431-L1442
+    // The first message clears any previously staged removed stones
+    _webSocketManager.send('game/removed_stones/set', {
+      'game_id': int.parse(id),
+      'removed': false,
+      'stones': _recentlyRemovedStonesString,
+    });
+    // The second message sends the new set of removed stones
+    _webSocketManager.send('game/removed_stones/set', {
+      'game_id': int.parse(id),
+      'removed': true,
+      'stones': stonesString,
+    });
+    _logger.fine('Sent removed stones to server for game $id: $stonesString');
+  }
+
+  /// Ensures that living stones are marked as owned by their respective colors in the ownership grid.
+  ///
+  /// OGS ownership may represent territory (stones are neutral) or area, depending on ruleset.
+  /// WQHub ownership expects ownership to represent area regardless (stones belong to their color).
+  void _ensureLivingStonesMarkedInOwnership(
+      List<List<wq.Color?>> ownership, Set<wq.Point> deadStones) {
+    // Reconstruct the current board state to identify living stones
+    final currentBoardState = BoardState(size: boardSize);
+    for (final move in _allMoves) {
+      currentBoardState.move(move);
+    }
+
+    // Mark living stones as owned by their respective colors
+    for (int i = 0; i < boardSize; i++) {
+      for (int j = 0; j < boardSize; j++) {
+        final point = (i, j);
+        final stoneColor = currentBoardState[point];
+        if (stoneColor != null && !deadStones.contains(point)) {
+          // This point has a living stone (not removed), mark it as owned by the stone's color
+          ownership[i][j] = stoneColor;
+        }
+      }
     }
   }
 

@@ -5,28 +5,16 @@ import 'package:wqhub/wq/wq.dart' as wq;
 void main() {
   group('parseStonesString', () {
     test('parses valid SGF coordinates correctly', () {
-      // Test basic parsing with black stones
-      final blackMoves = parseStonesString('aabbcc', wq.Color.black);
-      expect(blackMoves.length, equals(3));
-      expect(blackMoves[0].col, equals(wq.Color.black));
-      expect(blackMoves[0].p, equals((0, 0))); // 'aa' -> (0, 0)
-      expect(blackMoves[1].col, equals(wq.Color.black));
-      expect(blackMoves[1].p, equals((1, 1))); // 'bb' -> (1, 1)
-      expect(blackMoves[2].col, equals(wq.Color.black));
-      expect(blackMoves[2].p, equals((2, 2))); // 'cc' -> (2, 2)
-
-      // Test with white stones
-      final whiteMoves = parseStonesString('ddee', wq.Color.white);
-      expect(whiteMoves.length, equals(2));
-      expect(whiteMoves[0].col, equals(wq.Color.white));
-      expect(whiteMoves[0].p, equals((3, 3))); // 'dd' -> (3, 3)
-      expect(whiteMoves[1].col, equals(wq.Color.white));
-      expect(whiteMoves[1].p, equals((4, 4))); // 'ee' -> (4, 4)
+      // Test basic parsing
+      final points = parseStonesString('aabbcc');
+      expect(points.length, equals(3));
+      expect(points[0], equals((0, 0))); // 'aa' -> (0, 0)
+      expect(points[1], equals((1, 1))); // 'bb' -> (1, 1)
+      expect(points[2], equals((2, 2))); // 'cc' -> (2, 2)
     });
 
     test('handles empty strings', () {
-      // Test empty string
-      final emptyResult = parseStonesString('', wq.Color.black);
+      final emptyResult = parseStonesString('');
       expect(emptyResult, isEmpty);
     });
   });
