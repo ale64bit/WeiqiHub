@@ -660,16 +660,12 @@ class OGSGame extends Game {
   Future<void> _setAIRemovedStones() async {
     _logger.fine('Requesting AI server analysis for game $id');
 
-    print("Requesting AI server analysis for game $id");
-
     // Get current board state and determine whose turn it is
     final boardState = _getCurrentBoardStateForAIServer();
     final playerToMove = myColor == wq.Color.black ? 'black' : 'white';
 
     // Call AI server
     final aiResponse = await _callAIServer(boardState, playerToMove);
-
-    print("AI server response for game $id: $aiResponse");
 
     if (aiResponse == null) {
       _logger.warning('AI server returned null response for game $id');
