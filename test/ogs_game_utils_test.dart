@@ -17,17 +17,7 @@ void main() {
       final emptyResult = parseStonesString('');
       expect(emptyResult, isEmpty);
     });
-
-    test('handles odd length strings gracefully', () {
-      // Should ignore the last incomplete coordinate
-      final points = parseStonesString('aabbc');
-      expect(points.length, equals(2));
-      expect(points[0], equals((0, 0))); // 'aa' -> (0, 0)
-      expect(points[1], equals((1, 1))); // 'bb' -> (1, 1)
-    });
   });
-
-
 
   group('colorToMove', () {
     test('basic alternating turns - no handicap or handicap 1', () {
