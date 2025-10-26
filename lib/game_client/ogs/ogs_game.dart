@@ -443,7 +443,7 @@ class OGSGame extends Game {
     _logger.fine('Received removed stones set for game $id');
 
     try {
-      _recentlyRemovedStonesString = data['stones'] as String? ?? '';
+      _recentlyRemovedStonesString = data['all_removed'] as String? ?? '';
       final countingResult = _calculateCountingResultFromOwnership(data);
       _countingResultController.add(countingResult);
     } catch (error) {
