@@ -124,6 +124,7 @@
   },
   "msgPleaseWaitForYourTurn": "Te rog, așteaptă-ți rândul",
   "msgSearchingForGame": "Se caută un joc...",
+  "msgSgfCopied": "SGF copiat în clipboard",
   "msgTaskLinkCopied": "Linkul sarcinii a fost copiat.",
   "msgWaitingForOpponentsDecision": "Se așteaptă decizia adversarului...",
   "msgYouCannotPass": "Nu poți pasa",

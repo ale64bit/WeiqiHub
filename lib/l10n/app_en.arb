@@ -124,6 +124,7 @@
   },
   "msgPleaseWaitForYourTurn": "Please, wait for your turn",
   "msgSearchingForGame": "Searching for a game...",
+  "msgSgfCopied": "SGF copied to clipboard",
   "msgTaskLinkCopied": "Task link copied.",
   "msgWaitingForOpponentsDecision": "Waiting for your opponent's decision...",
   "msgYouCannotPass": "You cannot pass",

@@ -124,6 +124,7 @@
   },
   "msgPleaseWaitForYourTurn": "Пожалуйста, дождитесь своего хода",
   "msgSearchingForGame": "Поиск партии...",
+  "msgSgfCopied": "SGF скопирован в буфер обмена",
   "msgTaskLinkCopied": "Ссылка на задачу скопирована.",
   "msgWaitingForOpponentsDecision": "Ожидание решения вашего оппонента...",
   "msgYouCannotPass": "Вы не можете пасовать",

@@ -644,6 +644,12 @@ abstract class AppLocalizations {
   /// **'Searching for a game...'**
   String get msgSearchingForGame;
 
+  /// No description provided for @msgSgfCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'SGF copied to clipboard'**
+  String get msgSgfCopied;
+
   /// No description provided for @msgTaskLinkCopied.
   ///
   /// In en, this message translates to:

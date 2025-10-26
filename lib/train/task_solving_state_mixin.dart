@@ -162,9 +162,10 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
     final sgfData = gameTree.sgf();
     Clipboard.setData(ClipboardData(text: sgfData)).then((void _) {
       if (context.mounted) {
+        final loc = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('SGF copied to clipboard'),
+            content: Text(loc.msgSgfCopied),
             duration: Duration(seconds: 2),
           ),
         );

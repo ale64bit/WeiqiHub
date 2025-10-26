@@ -294,6 +294,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get msgSearchingForGame => '正在寻找对局...';
 
   @override
+  String get msgSgfCopied => 'SGF已复制到剪贴板';
+
+  @override
   String get msgTaskLinkCopied => '题目链接已复制';
 
   @override
