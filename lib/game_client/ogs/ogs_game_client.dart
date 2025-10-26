@@ -36,9 +36,10 @@ class OGSGameClient extends GameClient {
   final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
 
   final String serverUrl;
+  final String aiServerUrl;
   late final OGSWebSocketManager _webSocketManager;
 
-  OGSGameClient({required this.serverUrl}) {
+  OGSGameClient({required this.serverUrl, required this.aiServerUrl}) {
     _webSocketManager = OGSWebSocketManager(serverUrl: serverUrl);
 
     // Listen to WebSocket connection status
@@ -372,6 +373,8 @@ class OGSGameClient extends GameClient {
       webSocketManager: _webSocketManager,
       myUserId: userInfo.userId,
       freeHandicapPlacement: freeHandicapPlacement,
+      jwtToken: _jwtToken ?? '',
+      aiServerUrl: aiServerUrl,
     );
   }
 

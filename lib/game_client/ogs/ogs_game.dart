@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
@@ -7,6 +9,7 @@ import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/game_utils.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
+import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/grid.dart';
@@ -18,6 +21,8 @@ class OGSGame extends Game {
   final Logger _logger = Logger('OGSGame');
   final OGSWebSocketManager _webSocketManager;
   final String _myUserId;
+  final String _jwtToken;
+  final String _aiServerUrl;
   final bool _freeHandicapPlacement;
   late final StreamController<wq.Move?> _moveController;
   late final StreamController<CountingResult> _countingResultController;
@@ -45,9 +50,13 @@ class OGSGame extends Game {
     required super.previousMoves,
     required OGSWebSocketManager webSocketManager,
     required String myUserId,
+    required String jwtToken,
+    required String aiServerUrl,
     required bool freeHandicapPlacement,
   })  : _webSocketManager = webSocketManager,
         _myUserId = myUserId,
+        _jwtToken = jwtToken,
+        _aiServerUrl = aiServerUrl,
         _freeHandicapPlacement = freeHandicapPlacement {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
@@ -502,6 +511,9 @@ class OGSGame extends Game {
         // Transition from counting/stone removal back to play - this indicates
         // that one of the players sent the game/removed_stones/reject message
         _countingResultResponsesController.add(false);
+      } else if (_currentPhase == 'play' && phase == 'stone removal') {
+        // Transition from play to stone removal - call AI server for auto-scoring
+        _setAIRemovedStones();
       }
       _currentPhase = phase;
       _logger.fine('Phase changed to: $phase');
@@ -562,6 +574,137 @@ class OGSGame extends Game {
       ownership: ownership,
       isFinal: false,
     );
+  }
+
+  /// Convert current game state to 2D array format expected by AI server
+  /// 0 = empty, 1 = black, 2 = white
+  List<List<int>> _getCurrentBoardStateForAIServer() {
+    final boardState = BoardState(size: boardSize);
+
+    // Replay all moves to get current board state
+    for (final move in _allMoves) {
+      boardState.move(move);
+    }
+
+    final board = generate2D<int>(
+        boardSize,
+        (row, col) => switch (boardState[(row, col)]) {
+              null => 0,
+              wq.Color.black => 1,
+              wq.Color.white => 2,
+            });
+
+    return board;
+  }
+
+  /// Gives the rules string expected by OGS APIs
+  String _rulesToOgsString(Rules rules) => switch (rules) {
+        Rules.chinese => 'chinese',
+        Rules.japanese => 'japanese',
+        Rules.korean => 'korean',
+      };
+
+  /// Gets a score evaluation from the server
+  Future<Map<String, dynamic>?> _callAIServer(
+      List<List<int>> boardState, String playerToMove) async {
+    _logger.fine('Calling AI server for game $id');
+
+    final url = Uri.parse('$_aiServerUrl/api/score');
+
+    final payload = {
+      'player_to_move': playerToMove,
+      'width': boardSize,
+      'height': boardSize,
+      'rules': _rulesToOgsString(rules),
+      'board_state': boardState,
+      'autoscore': true,
+      'jwt': _jwtToken,
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'WeiqiHub/1.0',
+        },
+        body: jsonEncode(payload),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
+        _logger.fine('AI server response received for game $id');
+        return responseData;
+      } else {
+        _logger.warning(
+            'AI server request failed for game $id: ${response.statusCode} ${response.body}');
+        return null;
+      }
+    } catch (error) {
+      _logger.warning('Error calling AI server for game $id: $error');
+      return null;
+    }
+  }
+
+  Future<void> _setAIRemovedStones() async {
+    _logger.fine('Requesting AI server analysis for game $id');
+
+    // Get current board state and determine whose turn it is
+    final boardState = _getCurrentBoardStateForAIServer();
+    final playerToMove = myColor == wq.Color.black ? 'black' : 'white';
+
+    // Call AI server
+    final aiResponse = await _callAIServer(boardState, playerToMove);
+
+    if (aiResponse == null) {
+      _logger.warning('AI server returned null response for game $id');
+      return;
+    }
+
+    _logger.fine('Sending removed stones from AI server for game $id');
+
+    // Extract removed stones from AI response
+    final removedStones = aiResponse['removed_stones'] as List<dynamic>? ?? [];
+
+    // Convert AI response format to OGS stones string format
+    // AI returns: [{"x":7,"y":2,"removal_reason":"..."}]
+    final stonesList = <String>[];
+    for (final stone in removedStones) {
+      if (stone is Map<String, dynamic>) {
+        final x = stone['x'] as int?;
+        final y = stone['y'] as int?;
+        if (x != null && y != null) {
+          // Convert to SGF coordinate format
+          final point =
+              (y, x); // Note: AI response uses (x,y) but our Point is (row,col)
+          stonesList.add(point.toSgf());
+        }
+      }
+    }
+
+    final stonesString = stonesList.join('');
+
+    // Send removed stones to server
+    if (stonesString.isNotEmpty) {
+      // Sending two set messages is a bit strange, but it's the only way to reset
+      // the board.  Compare with OGS code:
+      // https://github.com/online-go/goban/blob/097d741f092387a2067ac40357e566038c3453ee/src/Goban/OGSConnectivity.ts#L1431-L1442
+      // The first message clears any previously staged removed stones
+      _webSocketManager.send('game/removed_stones/set', {
+        'game_id': int.parse(id),
+        'removed': false,
+        'stones': _recentlyRemovedStonesString,
+      });
+      // The second message sends the new set of removed stones
+      _webSocketManager.send('game/removed_stones/set', {
+        'game_id': int.parse(id),
+        'removed': true,
+        'stones': stonesString,
+      });
+      _logger.fine('Sent removed stones to server for game $id: $stonesString');
+    } else {
+      _logger.fine('No stones to remove according to AI server for game $id');
+    }
   }
 
   void dispose() {
