@@ -9,9 +9,7 @@ import 'package:wqhub/wq/wq.dart' as wq;
 List<wq.Point> parseStonesString(String stonesString) {
   final points = <wq.Point>[];
 
-  for (int i = 0;
-      i < stonesString.length && i + 1 < stonesString.length;
-      i += 2) {
+  for (int i = 0; i + 1 < stonesString.length; i += 2) {
     final sgfCoord = stonesString.substring(i, i + 2);
     final point = wq.parseSgfPoint(sgfCoord);
     points.add(point);
