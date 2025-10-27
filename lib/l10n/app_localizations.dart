@@ -2546,6 +2546,18 @@ abstract class AppLocalizations {
   /// **'Time frenzy'**
   String get timeFrenzy;
 
+  /// No description provided for @timeFrenzyMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Track Time Frenzy mistakes'**
+  String get timeFrenzyMistakes;
+
+  /// No description provided for @timeFrenzyMistakesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable to save mistakes made in Time Frenzy'**
+  String get timeFrenzyMistakesDesc;
+
   /// No description provided for @timePerTask.
   ///
   /// In en, this message translates to:

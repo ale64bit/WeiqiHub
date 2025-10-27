@@ -474,6 +474,8 @@
   "theme": "主题",
   "thick": "粗线",
   "timeFrenzy": "限时挑战",
+  "timeFrenzyMistakes": "记录限时挑战错误",
+  "timeFrenzyMistakesDesc": "启用以保存限时挑战中的错误",
   "timePerTask": "单题用时",
   "today": "今日",
   "tooltipAnalyzeWithAISensei": "使用 AI Sensei 分析",

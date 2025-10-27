@@ -1307,6 +1307,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeFrenzy => 'Time frenzy';
 
   @override
+  String get timeFrenzyMistakes => 'Track Time Frenzy mistakes';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Enable to save mistakes made in Time Frenzy';
+
+  @override
   String get timePerTask => 'Time per task';
 
   @override

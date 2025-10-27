@@ -474,6 +474,8 @@
   "theme": "Theme",
   "thick": "Thick",
   "timeFrenzy": "Time frenzy",
+  "timeFrenzyMistakes": "Track Time Frenzy mistakes",
+  "timeFrenzyMistakesDesc": "Enable to save mistakes made in Time Frenzy",
   "timePerTask": "Time per task",
   "today": "Today",
   "tooltipAnalyzeWithAISensei": "Analyze with AI Sensei",

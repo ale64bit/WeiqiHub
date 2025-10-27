@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
+import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/time_display.dart';
 import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/train/task_repository.dart';
@@ -184,7 +185,13 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
 
   @override
   void onSolveStatus(VariationStatus status) {
-    if (status == VariationStatus.correct) {
+    final solved = status == VariationStatus.correct;
+
+    if (context.settings.trackTimeFrenzyMistakes) {
+      StatsDB().addTaskAttempt(currentTask.rank, currentTask.type, currentTask.id, solved);
+    }
+    
+    if (solved) {
       _solveCount++;
     } else {
       _mistakeCount++;

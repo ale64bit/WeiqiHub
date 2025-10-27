@@ -1274,6 +1274,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get timeFrenzy => '限时挑战';
 
   @override
+  String get timeFrenzyMistakes => '记录限时挑战错误';
+
+  @override
+  String get timeFrenzyMistakesDesc => '启用以保存限时挑战中的错误';
+
+  @override
   String get timePerTask => '单题用时';
 
   @override
