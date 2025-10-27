@@ -10,6 +10,7 @@ import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
@@ -1026,18 +1027,33 @@ class _GamePageState extends State<GamePage> {
     return points;
   }
 
-  static IMapOfSets<wq.Point, Annotation> _territoryAnnotationsFromOwnership(
+  IMapOfSets<wq.Point, Annotation> _territoryAnnotationsFromOwnership(
       List<List<wq.Color?>> ownership) {
     var annotations = IMapOfSets<wq.Point, Annotation>();
     for (int i = 0; i < ownership.length; ++i) {
       for (int j = 0; j < ownership[i].length; ++j) {
         if (ownership[i][j] != null) {
+          final col = ownership[i][j]!;
           final p = (i, j);
-          final col = ownership[i][j];
-          annotations = annotations.add(p, (
-            type: AnnotationShape.territory.u21,
-            color: col == wq.Color.black ? Colors.black : Colors.white,
-          ));
+          final annotationCol = switch (col) {
+            wq.Color.black => Colors.black,
+            wq.Color.white => Colors.white,
+          };
+          switch (widget.game.rules) {
+            case Rules.chinese: // Area
+              annotations = annotations.add(p, (
+                type: AnnotationShape.territory.u21,
+                color: annotationCol,
+              ));
+            case Rules.japanese: // Territory
+            case Rules.korean:
+              if (col != _gameTree.stones.get(p)) {
+                annotations = annotations.add(p, (
+                  type: AnnotationShape.territory.u21,
+                  color: annotationCol,
+                ));
+              }
+          }
         }
       }
     }
