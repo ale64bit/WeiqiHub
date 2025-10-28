@@ -188,9 +188,10 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     final solved = status == VariationStatus.correct;
 
     if (context.settings.trackTimeFrenzyMistakes) {
-      StatsDB().addTaskAttempt(currentTask.rank, currentTask.type, currentTask.id, solved);
+      StatsDB().addTaskAttempt(
+          currentTask.rank, currentTask.type, currentTask.id, solved);
     }
-    
+
     if (solved) {
       _solveCount++;
     } else {
