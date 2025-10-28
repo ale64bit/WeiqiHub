@@ -97,6 +97,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
                 upsolveMode: upsolveMode,
                 onShowSolution: onShowContinuations,
                 onShareTask: onShareTask,
+                onCopySgf: onCopySgf,
                 onResetTask: onResetTask,
                 onPreviousMove: onPreviousMove,
                 onNextMove: onNextMove,
@@ -127,6 +128,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
             upsolveMode: upsolveMode,
             onShowSolution: onShowContinuations,
             onShareTask: onShareTask,
+            onCopySgf: onCopySgf,
             onResetTask: onResetTask,
             onPreviousMove: onPreviousMove,
             onNextMove: onNextMove,
@@ -150,6 +152,7 @@ class _SideBar extends StatelessWidget {
   final UpsolveMode upsolveMode;
   final Function()? onShowSolution;
   final Function()? onShareTask;
+  final Function()? onCopySgf;
   final Function()? onResetTask;
   final Function() onPreviousMove;
   final Function() onNextMove;
@@ -162,6 +165,7 @@ class _SideBar extends StatelessWidget {
     required this.upsolveMode,
     required this.onShowSolution,
     required this.onShareTask,
+    this.onCopySgf,
     required this.onResetTask,
     required this.onPreviousMove,
     required this.onNextMove,
@@ -202,6 +206,7 @@ class _SideBar extends StatelessWidget {
               upsolveMode: upsolveMode,
               onShowSolution: onShowSolution,
               onShareTask: onShareTask,
+              onCopySgf: onCopySgf,
               onResetTask: onResetTask,
               onPreviousMove: onPreviousMove,
               onNextMove: onNextMove,
