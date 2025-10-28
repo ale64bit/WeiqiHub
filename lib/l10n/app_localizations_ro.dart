@@ -302,6 +302,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get msgSearchingForGame => 'Se caută un joc...';
 
   @override
+  String get msgSgfCopied => 'SGF copiat în clipboard';
+
+  @override
   String get msgTaskLinkCopied => 'Linkul sarcinii a fost copiat.';
 
   @override
@@ -470,6 +473,9 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get saveSGF => 'Salvează SGF';
+
+  @override
+  String get copySGF => 'Copiază SGF';
 
   @override
   String get seconds => 'Secunde';

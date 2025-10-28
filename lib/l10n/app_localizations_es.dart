@@ -304,6 +304,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get msgSearchingForGame => 'Buscando partida...';
 
   @override
+  String get msgSgfCopied => 'SGF copiado al portapapeles';
+
+  @override
   String get msgTaskLinkCopied => 'Enlace al problema copiado.';
 
   @override
@@ -473,6 +476,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get saveSGF => 'Guardar SGF';
+
+  @override
+  String get copySGF => 'Copiar SGF';
 
   @override
   String get seconds => 'Segundos';

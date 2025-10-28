@@ -302,6 +302,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get msgSearchingForGame => 'Поиск партии...';
 
   @override
+  String get msgSgfCopied => 'SGF скопирован в буфер обмена';
+
+  @override
   String get msgTaskLinkCopied => 'Ссылка на задачу скопирована.';
 
   @override
@@ -471,6 +474,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get saveSGF => 'Сохранить SGF';
+
+  @override
+  String get copySGF => 'Копировать SGF';
 
   @override
   String get seconds => 'Секунды';
