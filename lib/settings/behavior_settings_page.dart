@@ -87,6 +87,17 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
               },
             ),
           ),
+          ListTile(
+            title: Text(loc.timeFrenzyMistakes),
+            subtitle: Text(loc.timeFrenzyMistakesDesc),
+            trailing: Switch(
+              value: context.settings.trackTimeFrenzyMistakes,
+              onChanged: (value) {
+                context.settings.trackTimeFrenzyMistakes = value;
+                setState(() {});
+              },
+            ),
+          ),
         ],
       ),
     );
