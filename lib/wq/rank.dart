@@ -48,10 +48,12 @@ enum Rank implements Comparable<Rank> {
   p7,
   p8,
   p9,
-  p10;
+  p10,
+  unknown;
 
   @override
   String toString() {
+    if (this == Rank.unknown) return '?';
     if (index <= k1.index) return '${30 - index}K';
     if (index <= d10.index) return '${index - k1.index}D';
     return '${index - d10.index}P';
