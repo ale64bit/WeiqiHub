@@ -99,7 +99,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get copyTaskLink => 'Copia link';
 
   @override
-  String get customExam => 'Test personalizzato';
+  String get customExam => 'Esame personalizzato';
 
   @override
   String get dark => 'Scuro';
@@ -117,7 +117,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get empty => 'Vuoto';
 
   @override
-  String get endgameExam => 'Prova sui Finali';
+  String get endgameExam => 'Esame sul fine gioco';
 
   @override
   String get enterTaskLink => 'Inserisci il link';
@@ -193,7 +193,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get gameRecord => 'Risultato partita';
 
   @override
-  String get gradingExam => 'Prova di Livello';
+  String get gradingExam => 'Esame di livello';
 
   @override
   String get handicap => 'Handicap';
@@ -207,15 +207,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpDialogEndgameExam =>
-      '- La Prova sui Finali contiene 10 problemi di fine gioco. Hai 45 secondi di tempo per risolvere ogni problema.\n\n- Superi la prova se risolvi correttamente almeno 8 problemi (tasso di successo: 80%).\n\n- Superare un livello sblocca le prove per il livello successivo.';
+      '- L\'esame sul fine gioco contiene 10 problemi di fine gioco. Hai 45 secondi di tempo per risolvere ogni problema.\n\n- Superi la prova se risolvi correttamente almeno 8 problemi (tasso di successo: 80%).\n\n- Superare un livello sblocca l\'esame per il livello successivo.';
 
   @override
   String get helpDialogGradingExam =>
-      '- La Prova di Livello contiene 10 problemi. Hai 45 secondi di tempo per risolvere ogni problema.\n\n- Superi la prova se risolvi correttamente almeno 8 problemi (tasso di successo: 80%).\n\n- Superare un  livello sblocca le prove per il livello successivo.';
+      '- L\'esame di livello contiene 10 problemi. Hai 45 secondi di tempo per risolvere ogni problema.\n\n- Superi la prova se risolvi correttamente almeno 8 problemi (tasso di successo: 80%).\n\n- Superare un livello sblocca l\'esame per il livello successivo.';
 
   @override
   String get helpDialogRankedMode =>
-      '- Risolvi i problemi senza limiti di tempo.\n\n- La difficoltà aumenta in base alla tua velocità.\n\n- Concentrati a risolverli correttamente e raggiungi il grado più alto possibile.';
+      '- Risolvi i problemi senza limiti di tempo.\n\n- La difficoltà aumenta in base alla tua rapidità.\n\n- Impegnati a risolverli correttamente e raggiungi il grado più alto possibile.';
 
   @override
   String get helpDialogTimeFrenzy =>
@@ -285,7 +285,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String msgConfirmStopEvent(String event) {
-    return 'Vuoi davvero terminare la $event?';
+    return 'Vuoi interrompere la prova?';
   }
 
   @override
@@ -325,7 +325,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get msgYourOpponentRequestsAutomaticCounting =>
-      'L\'avversario richiede il conteggio automatico. Sei d\'accordo?';
+      'L\'avversario ha richiesto il conteggio automatico. Sei d\'accordo?';
 
   @override
   String get myGames => 'Le mie partite';
@@ -1277,7 +1277,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get taskTypeCaptureRace => 'Semeai (capturing race)';
 
   @override
-  String get taskTypeEndgame => 'Yose (finali)';
+  String get taskTypeEndgame => 'Yose (fine gioco)';
 
   @override
   String get taskTypeJoseki => 'Joseki';
@@ -1286,10 +1286,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get taskTypeLifeAndDeath => 'Life & death';
 
   @override
-  String get taskTypeMiddlegame => 'Mediogioco';
+  String get taskTypeMiddlegame => 'Chuban (mediogioco)';
 
   @override
-  String get taskTypeOpening => 'Fuseki (aperture)';
+  String get taskTypeOpening => 'Fuseki (apertura)';
 
   @override
   String get taskTypeTesuji => 'Tesuji';
