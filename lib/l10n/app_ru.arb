@@ -6,6 +6,8 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Всегда ход чёрных",
   "alwaysBlackToPlayDesc": "Устанавливать все задачи как ход чёрных, чтобы избежать путаницы",
+  "showMoveErrorsAsCrosses": "Показывать ошибки крестами",
+  "showMoveErrorsAsCrossesDesc": "Отображать неправильные ходы красными крестами вместо красных точек",
   "appearance": "Интерфейс",
   "autoCounting": "Автоподсчёт",
   "autoMatch": "Автоподбор",

@@ -6,6 +6,8 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Întotdeauna negru la mutare",
   "alwaysBlackToPlayDesc": "Setează toate sarcinile ca fiind negru la mutare pentru a evita confuzia",
+  "showMoveErrorsAsCrosses": "Afișează erorile ca cruci",
+  "showMoveErrorsAsCrossesDesc": "Afișează mutările greșite ca cruci roșii în loc de puncte roșii",
   "appearance": "Aspect",
   "autoCounting": "Numărare automată",
   "autoMatch": "Potrivire automată",

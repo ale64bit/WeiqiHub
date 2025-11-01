@@ -146,6 +146,18 @@ abstract class AppLocalizations {
   /// **'Set all tasks as black-to-play to avoid confusion'**
   String get alwaysBlackToPlayDesc;
 
+  /// No description provided for @showMoveErrorsAsCrosses.
+  ///
+  /// In en, this message translates to:
+  /// **'Show move errors as crosses'**
+  String get showMoveErrorsAsCrosses;
+
+  /// No description provided for @showMoveErrorsAsCrossesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Display wrong moves as red crosses instead of red dots'**
+  String get showMoveErrorsAsCrossesDesc;
+
   /// No description provided for @appearance.
   ///
   /// In en, this message translates to:
