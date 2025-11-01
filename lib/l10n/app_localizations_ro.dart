@@ -31,6 +31,13 @@ class AppLocalizationsRo extends AppLocalizations {
       'Setează toate sarcinile ca fiind negru la mutare pentru a evita confuzia';
 
   @override
+  String get showMoveErrorsAsCrosses => 'Afișează erorile ca cruci';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Afișează mutările greșite ca cruci roșii în loc de puncte roșii';
+
+  @override
   String get appearance => 'Aspect';
 
   @override

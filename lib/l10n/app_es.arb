@@ -6,6 +6,8 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Siempre juegan las negras",
   "alwaysBlackToPlayDesc": "Hace que en todos los problemas jueguen las negras para evitar confusión",
+  "showMoveErrorsAsCrosses": "Mostrar errores como cruces",
+  "showMoveErrorsAsCrossesDesc": "Mostrar jugadas incorrectas como cruces rojas en lugar de puntos rojos",
   "appearance": "Apariencia",
   "autoCounting": "Conteo automático",
   "autoMatch": "Buscar partida",

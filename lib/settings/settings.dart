@@ -84,6 +84,12 @@ class Settings {
   set alwaysBlackToPlay(bool val) =>
       prefs.setBool('$_behaviourKeyPrefix.always_black_to_play', val);
 
+  bool get showMoveErrorsAsCrosses =>
+      prefs.getBool('$_behaviourKeyPrefix.show_move_errors_as_crosses') ?? false;
+
+  set showMoveErrorsAsCrosses(bool val) =>
+      prefs.setBool('$_behaviourKeyPrefix.show_move_errors_as_crosses', val);
+
   // Sound
   double get soundStone => prefs.getDouble(_soundStoneKey) ?? 1.0;
   set soundStone(double val) => prefs.setDouble(_soundStoneKey, val).then((_) {
