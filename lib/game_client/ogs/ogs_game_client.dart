@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
@@ -12,6 +10,7 @@ import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/game_client/game_result.dart';
 import 'package:wqhub/game_client/ogs/game_utils.dart';
 import 'package:wqhub/game_client/ogs/ogs_game.dart';
+import 'package:wqhub/game_client/ogs/http_client.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/server_features.dart';
@@ -26,8 +25,6 @@ import 'package:logging/logging.dart';
 class OGSGameClient extends GameClient {
   final Logger _logger = Logger('OGSGameClient');
 
-  static const String _userAgent = 'WeiqiHub/1.0';
-
   /// OGS default rank difference for automatch requests
   /// https://github.com/online-go/online-go.com/blob/b0d661e69cef0ce57c2c5d4e2e04109227ba9a96/src/lib/preferences.ts#L57-L58
   static const int _defaultRankDiff = 3;
@@ -40,6 +37,7 @@ class OGSGameClient extends GameClient {
   late final OGSWebSocketManager _webSocketManager;
 
   OGSGameClient({required this.serverUrl, required this.aiServerUrl}) {
+    _httpClient = HttpClient(serverUrl: serverUrl, defaultApiVersion: 1);
     _webSocketManager = OGSWebSocketManager(serverUrl: serverUrl);
 
     // Listen to WebSocket connection status
@@ -50,14 +48,13 @@ class OGSGameClient extends GameClient {
     });
   }
 
-  String? _csrfToken;
   String? _jwtToken;
 
   String? _currentAutomatchUuid;
 
   Completer<Game>? _automatchCompleter;
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
-  final http.Client _httpClient = http.Client();
+  late final HttpClient _httpClient;
 
   @override
   ServerInfo get serverInfo => ServerInfo(
@@ -178,63 +175,45 @@ class OGSGameClient extends GameClient {
   Future<UserInfo> login(String username, String password) async {
     try {
       // First, get the CSRF token
-      final csrfResponse = await _httpClient.get(
-        Uri.parse('$serverUrl/api/v1/ui/config'),
-        headers: {'User-Agent': _userAgent},
-      );
-
-      if (csrfResponse.statusCode != 200) {
-        throw Exception('Failed to get CSRF token');
-      }
-
-      final csrfData = jsonDecode(csrfResponse.body);
-      _csrfToken = csrfData['csrf_token'];
+      final csrfData = await _httpClient.getJson('/ui/config');
+      final csrfToken = csrfData['csrf_token'] as String?;
+      _httpClient.setCsrfToken(csrfToken);
 
       // Now attempt login
-      final loginResponse = await _httpClient.post(
-        Uri.parse('$serverUrl/api/v0/login'),
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': _userAgent,
-          'X-CSRFToken': _csrfToken!,
-        },
-        body: jsonEncode({
-          'username': username,
-          'password': password,
-        }),
+      final loginData = await _httpClient.postJson(
+          '/login',
+          {
+            'username': username,
+            'password': password,
+          },
+          apiVersion: 0);
+
+      final userData = loginData['user'];
+
+      // Extract JWT token for WebSocket authentication
+      _jwtToken = loginData['user_jwt'] ?? '';
+
+      final user = UserInfo(
+        userId: userData['id'].toString(),
+        username: userData['username'],
+        rank: _ratingToRank(userData['ratings']['overall']['rating']),
+        online: true,
+        winCount: 0,
+        lossCount: 0,
       );
 
-      if (loginResponse.statusCode == 200) {
-        final loginData = jsonDecode(loginResponse.body);
-        final userData = loginData['user'];
+      _userInfo.value = user;
 
-        // Extract JWT token for WebSocket authentication
-        _jwtToken = loginData['user_jwt'] ?? '';
+      await _webSocketManager.connect();
 
-        final user = UserInfo(
-          userId: userData['id'].toString(),
-          username: userData['username'],
-          rank: _ratingToRank(userData['ratings']['overall']['rating']),
-          online: true,
-          winCount: 0,
-          lossCount: 0,
-        );
-
-        _userInfo.value = user;
-
-        await _webSocketManager.connect();
-
-        // Authenticate with WebSocket if JWT token is available
-        if (_jwtToken != null && _jwtToken!.isNotEmpty) {
-          await _webSocketManager.authenticate(jwtToken: _jwtToken!);
-        } else {
-          throw Exception('No JWT token received');
-        }
-
-        return user;
+      // Authenticate with WebSocket if JWT token is available
+      if (_jwtToken != null && _jwtToken!.isNotEmpty) {
+        await _webSocketManager.authenticate(jwtToken: _jwtToken!);
       } else {
-        throw Exception('Login failed: ${loginResponse.statusCode}');
+        throw Exception('No JWT token received');
       }
+
+      return user;
     } catch (e) {
       throw Exception('Login error: $e');
     }
@@ -242,7 +221,7 @@ class OGSGameClient extends GameClient {
 
   @override
   void logout() {
-    _csrfToken = null;
+    _httpClient.setCsrfToken(null);
     _jwtToken = null;
     _currentAutomatchUuid = null;
     _userInfo.value = null;
@@ -259,29 +238,16 @@ class OGSGameClient extends GameClient {
       }
 
       // Query: all ongoing games where the user is a player and "time per move" is less than 1 hour
-      final response = await _httpClient.get(
-        Uri.parse('$serverUrl/api/v1/players/${userInfo.userId}/games/')
-            .replace(
-          queryParameters: {
-            'page_size': '10',
-            'page': '1',
-            'source': 'play',
-            'ended__isnull': 'true',
-            'time_per_move__lt': '3600',
-          },
-        ),
-        headers: {
-          'User-Agent': _userAgent,
-          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+      final data = await _httpClient.getJson(
+        '/players/${userInfo.userId}/games/',
+        queryParameters: {
+          'page_size': '10',
+          'page': '1',
+          'source': 'play',
+          'ended__isnull': 'true',
+          'time_per_move__lt': '3600',
         },
       );
-
-      if (response.statusCode != 200) {
-        throw Exception(
-            'Failed to fetch ongoing games: ${response.statusCode}');
-      }
-
-      final data = jsonDecode(response.body);
       final List<dynamic> results = data['results'] ?? [];
 
       if (results.isEmpty) {
@@ -305,20 +271,8 @@ class OGSGameClient extends GameClient {
       throw Exception('Not logged in');
     }
 
-    final response = await _httpClient.get(
-      Uri.parse('$serverUrl/api/v1/games/$gameId'),
-      headers: {
-        'User-Agent': _userAgent,
-        if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
-      },
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to fetch game details: ${response.statusCode}');
-    }
-
-    final gameData =
-        jsonDecode(response.body)['gamedata'] as Map<String, dynamic>;
+    final responseData = await _httpClient.getJson('/games/$gameId');
+    final gameData = responseData['gamedata'] as Map<String, dynamic>;
 
     // Parse game information
     final boardSize = gameData['width'] as int? ?? 19;
@@ -463,28 +417,16 @@ class OGSGameClient extends GameClient {
         throw Exception('Not logged in');
       }
 
-      final response = await _httpClient.get(
-        Uri.parse('$serverUrl/api/v1/players/${userInfo.userId}/games/')
-            .replace(
-          queryParameters: {
-            'page_size': '50',
-            'page': '1',
-            'source': 'play',
-            'ended__isnull': 'false',
-            'ordering': '-ended',
-          },
-        ),
-        headers: {
-          'User-Agent': _userAgent,
-          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
+      final data = await _httpClient.getJson(
+        '/players/${userInfo.userId}/games/',
+        queryParameters: {
+          'page_size': '50',
+          'page': '1',
+          'source': 'play',
+          'ended__isnull': 'false',
+          'ordering': '-ended',
         },
       );
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to fetch games: ${response.statusCode}');
-      }
-
-      final data = jsonDecode(response.body);
       final List<dynamic> results = data['results'] ?? [];
 
       return results.map<GameSummary>((gameData) {
@@ -556,19 +498,7 @@ class OGSGameClient extends GameClient {
   @override
   Future<GameRecord> getGame(String gameId) async {
     try {
-      final response = await _httpClient.get(
-        Uri.parse('$serverUrl/api/v1/games/$gameId/sgf'),
-        headers: {
-          'User-Agent': _userAgent,
-          if (_csrfToken != null) 'X-CSRFToken': _csrfToken!,
-        },
-      );
-
-      if (response.statusCode != 200) {
-        throw Exception('Failed to fetch SGF: ${response.statusCode}');
-      }
-
-      final sgfContent = response.body;
+      final sgfContent = await _httpClient.getText('/games/$gameId/sgf');
       return GameRecord.fromSgf(sgfContent);
     } catch (e) {
       throw Exception('Failed to get game record: $e');
@@ -628,7 +558,7 @@ class OGSGameClient extends GameClient {
   }
 
   void dispose() {
-    _httpClient.close();
+    _httpClient.dispose();
     _userInfo.dispose();
     _disconnected.dispose();
     _webSocketManager.dispose();
