@@ -108,7 +108,7 @@ class Task {
       final transformedPoints = entry.value.fold<ISet<wq.Point>>(
         const ISet<wq.Point>.empty(),
         (accPoints, point) =>
-            accPoints.add(_transformPoint(point, symmetry, boardSize)),
+            accPoints.add(Symmetry.transformPoint(point, symmetry, boardSize)),
       );
       transformedStonesMap[entry.key] = transformedPoints;
     }
@@ -137,10 +137,10 @@ class Task {
     final wq.Point bottomRight = (x2, y2);
     final wq.Point bottomLeft = (x1, y2);
 
-    final tlS = _transformPoint(topLeft, symmetry, boardSize);
-    final trS = _transformPoint(topRight, symmetry, boardSize);
-    final blS = _transformPoint(bottomRight, symmetry, boardSize);
-    final brS = _transformPoint(bottomLeft, symmetry, boardSize);
+    final tlS = Symmetry.transformPoint(topLeft, symmetry, boardSize);
+    final trS = Symmetry.transformPoint(topRight, symmetry, boardSize);
+    final blS = Symmetry.transformPoint(bottomRight, symmetry, boardSize);
+    final brS = Symmetry.transformPoint(bottomLeft, symmetry, boardSize);
 
     var topLeftS = (
       min(tlS.$1, min(trS.$1, min(blS.$1, brS.$1))),
@@ -150,22 +150,6 @@ class Task {
     topLeftS = (max(0, topLeftS.$1), max(0, topLeftS.$2));
 
     return topLeftS;
-  }
-
-  wq.Point _transformPoint(wq.Point p, Symmetry symmetry, int boardSize) {
-    final (r, c) = p;
-    final maxCoord = boardSize - 1;
-
-    return switch (symmetry) {
-      Symmetry.identity => p,
-      Symmetry.rotate1 => (c, maxCoord - r),
-      Symmetry.rotate2 => (maxCoord - r, maxCoord - c),
-      Symmetry.rotate3 => (maxCoord - c, r),
-      Symmetry.mirror1 => (maxCoord - r, c),
-      Symmetry.mirror2 => (r, maxCoord - c),
-      Symmetry.diagonal1 => (c, r),
-      Symmetry.diagonal2 => (maxCoord - c, maxCoord - r),
-    };
   }
 
   Task withRandomSymmetry() =>

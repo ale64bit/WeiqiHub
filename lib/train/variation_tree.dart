@@ -39,7 +39,7 @@ class VariationTree {
       const IMap<wq.Point, VariationTree>.empty(),
       (acc, entry) {
         final transformedPoint =
-            _transformPoint(entry.key, symmetry, boardSize);
+            Symmetry.transformPoint(entry.key, symmetry, boardSize);
         final transformedChild = entry.value.withSymmetry(symmetry, boardSize);
         return acc.add(transformedPoint, transformedChild);
       },
@@ -49,22 +49,6 @@ class VariationTree {
       status: status,
       children: transformedChildren,
     );
-  }
-
-  wq.Point _transformPoint(wq.Point p, Symmetry symmetry, int boardSize) {
-    final (r, c) = p;
-    final maxCoord = boardSize - 1;
-
-    return switch (symmetry) {
-      Symmetry.identity => p,
-      Symmetry.rotate1 => (c, maxCoord - r),
-      Symmetry.rotate2 => (maxCoord - r, maxCoord - c),
-      Symmetry.rotate3 => (maxCoord - c, r),
-      Symmetry.mirror1 => (maxCoord - r, c),
-      Symmetry.mirror2 => (r, maxCoord - c),
-      Symmetry.diagonal1 => (c, r),
-      Symmetry.diagonal2 => (maxCoord - c, maxCoord - r),
-    };
   }
 }
 
