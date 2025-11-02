@@ -177,7 +177,7 @@ class OGSGameClient extends GameClient {
       // First, get the CSRF token
       final csrfData = await _httpClient.getJson('/ui/config');
       final csrfToken = csrfData['csrf_token'] as String?;
-      _httpClient.setCsrfToken(csrfToken);
+      _httpClient.csrfToken = csrfToken;
 
       // Now attempt login
       final loginData = await _httpClient.postJson(
@@ -221,7 +221,7 @@ class OGSGameClient extends GameClient {
 
   @override
   void logout() {
-    _httpClient.setCsrfToken(null);
+    _httpClient.csrfToken = null;
     _jwtToken = null;
     _currentAutomatchUuid = null;
     _userInfo.value = null;

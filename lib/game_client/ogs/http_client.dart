@@ -17,21 +17,13 @@ class HttpClient {
   final http.Client _httpClient;
   final int? defaultApiVersion;
 
-  String? _csrfToken;
+  String? csrfToken;
 
   HttpClient({
     required this.serverUrl,
     http.Client? httpClient,
     this.defaultApiVersion = 1,
   }) : _httpClient = httpClient ?? http.Client();
-
-  /// Sets the CSRF token for subsequent POST/PUT requests
-  void setCsrfToken(String? token) {
-    _csrfToken = token;
-  }
-
-  /// Gets the current CSRF token
-  String? get csrfToken => _csrfToken;
 
   /// Makes a GET request and returns the parsed JSON response
   Future<Map<String, dynamic>> getJson(
@@ -166,8 +158,8 @@ class HttpClient {
       headers['Content-Type'] = 'application/json';
     }
 
-    if (includeCsrf && _csrfToken != null) {
-      headers['X-CSRFToken'] = _csrfToken!;
+    if (includeCsrf && csrfToken != null) {
+      headers['X-CSRFToken'] = csrfToken!;
     }
 
     return headers;
