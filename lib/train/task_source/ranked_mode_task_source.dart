@@ -21,7 +21,8 @@ final class RankedModeTaskSource extends TaskSource {
       : _rank = rank,
         _cur = TaskRepository()
             .readByTypes(Rank.values[rank.toInt()], _taskTypes, 1)
-            .first;
+            .first
+            .withRandomSymmetry();
 
   @override
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {
@@ -34,7 +35,8 @@ final class RankedModeTaskSource extends TaskSource {
     onRankChanged?.call(_rank);
     _cur = TaskRepository()
         .readByTypes(Rank.values[_rank.toInt()], _taskTypes, 1)
-        .first;
+        .first
+        .withRandomSymmetry();
     return true;
   }
 

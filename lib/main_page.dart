@@ -359,8 +359,8 @@ class _Train extends StatelessWidget {
               SingleTaskPage.routeName,
               arguments: SingleTaskRouteArguments(
                 task: context.settings.alwaysBlackToPlay
-                    ? task.withBlackToPlay()
-                    : task,
+                    ? task.withBlackToPlay().withRandomSymmetry()
+                    : task.withRandomSymmetry(),
               ),
             );
           }

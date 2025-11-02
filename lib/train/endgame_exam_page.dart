@@ -57,7 +57,10 @@ class EndgameExamPage extends StatelessWidget {
   TaskSource createTaskSource(BuildContext context) {
     return BlackToPlaySource(
       source: ConstTaskSource(
-          tasks: TaskRepository().readByTypes(rank, taskTypes, taskCount)),
+          tasks: TaskRepository()
+              .readByTypes(rank, taskTypes, taskCount)
+              .map((task) => task.withRandomSymmetry())
+              .toIList()),
       blackToPlay: context.settings.alwaysBlackToPlay,
     );
   }

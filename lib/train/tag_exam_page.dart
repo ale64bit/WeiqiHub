@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
@@ -60,7 +61,10 @@ class TagExamPage extends StatelessWidget {
   TaskSource createTaskSource(BuildContext context) {
     return BlackToPlaySource(
       source: ConstTaskSource(
-          tasks: TaskRepository().readByTag(tag, rankRange, taskCount)),
+          tasks: TaskRepository()
+              .readByTag(tag, rankRange, taskCount)
+              .map((task) => task.withRandomSymmetry())
+              .toIList()),
       blackToPlay: context.settings.alwaysBlackToPlay,
     );
   }
