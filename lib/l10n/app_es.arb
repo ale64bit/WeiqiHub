@@ -478,6 +478,8 @@
   "theme": "Tema",
   "thick": "Gruesa",
   "timeFrenzy": "Contrarreloj",
+  "timeFrenzyMistakes": "Rastrear errores en Contrarreloj",
+  "timeFrenzyMistakesDesc": "Habilitar para guardar errores cometidos en Contrarreloj",
   "timePerTask": "Tiempo por problema",
   "today": "Hoy",
   "tooltipAnalyzeWithAISensei": "Analizar con AI Sensei",

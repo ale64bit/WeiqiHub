@@ -478,6 +478,8 @@
   "theme": "Тема",
   "thick": "Толстая",
   "timeFrenzy": "Временной раж",
+  "timeFrenzyMistakes": "Отслеживать ошибки во Временном раже",
+  "timeFrenzyMistakesDesc": "Включить для сохранения ошибок, сделанных во Временном раже",
   "timePerTask": "Время на задачу",
   "today": "Сегодня",
   "tooltipAnalyzeWithAISensei": "Анализировать с AI Sensei",

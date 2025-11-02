@@ -1324,6 +1324,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get timeFrenzy => 'Временной раж';
 
   @override
+  String get timeFrenzyMistakes => 'Отслеживать ошибки во Временном раже';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Включить для сохранения ошибок, сделанных во Временном раже';
+
+  @override
   String get timePerTask => 'Время на задачу';
 
   @override

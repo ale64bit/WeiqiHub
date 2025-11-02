@@ -1327,6 +1327,14 @@ class AppLocalizationsRo extends AppLocalizations {
   String get timeFrenzy => 'Go contra cronometru';
 
   @override
+  String get timeFrenzyMistakes =>
+      'Urmărește greșelile din Go contra cronometru';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Activează pentru a salva greșelile făcute în Go contra cronometru';
+
+  @override
   String get timePerTask => 'Timp per sarcină';
 
   @override
