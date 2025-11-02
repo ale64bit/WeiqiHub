@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
+import 'package:wqhub/symmetry.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 enum VariationStatus {
@@ -27,6 +28,44 @@ class VariationTree {
           (cur, t) => t.finalStatus() == VariationStatus.correct
               ? VariationStatus.correct
               : cur);
+
+  VariationTree withSymmetry(Symmetry symmetry, int boardSize) {
+    if (symmetry == Symmetry.identity) {
+      return this;
+    }
+
+    final transformedChildren =
+        children.entries.fold<IMap<wq.Point, VariationTree>>(
+      const IMap<wq.Point, VariationTree>.empty(),
+      (acc, entry) {
+        final transformedPoint =
+            _transformPoint(entry.key, symmetry, boardSize);
+        final transformedChild = entry.value.withSymmetry(symmetry, boardSize);
+        return acc.add(transformedPoint, transformedChild);
+      },
+    );
+
+    return VariationTree(
+      status: status,
+      children: transformedChildren,
+    );
+  }
+
+  wq.Point _transformPoint(wq.Point p, Symmetry symmetry, int boardSize) {
+    final (r, c) = p;
+    final maxCoord = boardSize - 1;
+
+    return switch (symmetry) {
+      Symmetry.identity => p,
+      Symmetry.rotate1 => (c, maxCoord - r),
+      Symmetry.rotate2 => (maxCoord - r, maxCoord - c),
+      Symmetry.rotate3 => (maxCoord - c, r),
+      Symmetry.mirror1 => (maxCoord - r, c),
+      Symmetry.mirror2 => (r, maxCoord - c),
+      Symmetry.diagonal1 => (c, r),
+      Symmetry.diagonal2 => (maxCoord - c, maxCoord - r),
+    };
+  }
 }
 
 class VariationTreeIterator {

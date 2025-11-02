@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate';
+import 'dart:math';
 
 import 'package:animated_tree_view/tree_view/tree_node.dart';
 import 'package:crypto/crypto.dart';
@@ -13,6 +14,7 @@ import 'package:wqhub/random_util.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_source/distribution_task_source.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
+import 'package:wqhub/symmetry.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
@@ -95,6 +97,79 @@ class Task {
             variationTree: variationTree,
           ),
       };
+
+  Task withSymmetry(Symmetry symmetry) {
+    if (symmetry == Symmetry.identity) {
+      return this;
+    }
+
+    final transformedStonesMap = <wq.Color, ISet<wq.Point>>{};
+    for (final entry in initialStones.entries) {
+      final transformedPoints = entry.value.fold<ISet<wq.Point>>(
+        const ISet<wq.Point>.empty(),
+        (accPoints, point) =>
+            accPoints.add(_transformPoint(point, symmetry, boardSize)),
+      );
+      transformedStonesMap[entry.key] = transformedPoints;
+    }
+
+    return Task(
+      id: id,
+      rank: rank,
+      type: type,
+      first: first,
+      boardSize: boardSize,
+      subBoardSize: subBoardSize,
+      topLeft: _transformTopLeft(topLeft, boardSize, subBoardSize, symmetry),
+      initialStones: IMapOfSets(transformedStonesMap),
+      variationTree: variationTree.withSymmetry(symmetry, boardSize),
+    );
+  }
+
+  wq.Point _transformTopLeft(topLeft, boardSize, subBoardSize, symmetry) {
+    if (symmetry == Symmetry.identity) return topLeft;
+
+    final (x1, y1) = topLeft;
+    final (x2, y2) =
+        (topLeft.$1 + subBoardSize - 1, topLeft.$2 + subBoardSize - 1);
+
+    final wq.Point topRight = (x2, y1);
+    final wq.Point bottomRight = (x2, y2);
+    final wq.Point bottomLeft = (x1, y2);
+
+    final tlS = _transformPoint(topLeft, symmetry, boardSize);
+    final trS = _transformPoint(topRight, symmetry, boardSize);
+    final blS = _transformPoint(bottomRight, symmetry, boardSize);
+    final brS = _transformPoint(bottomLeft, symmetry, boardSize);
+
+    var topLeftS = (
+      min(tlS.$1, min(trS.$1, min(blS.$1, brS.$1))),
+      min(tlS.$2, min(trS.$2, min(blS.$2, brS.$2)))
+    );
+
+    topLeftS = (max(0, topLeftS.$1), max(0, topLeftS.$2));
+
+    return topLeftS;
+  }
+
+  wq.Point _transformPoint(wq.Point p, Symmetry symmetry, int boardSize) {
+    final (r, c) = p;
+    final maxCoord = boardSize - 1;
+
+    return switch (symmetry) {
+      Symmetry.identity => p,
+      Symmetry.rotate1 => (c, maxCoord - r),
+      Symmetry.rotate2 => (maxCoord - r, maxCoord - c),
+      Symmetry.rotate3 => (maxCoord - c, r),
+      Symmetry.mirror1 => (maxCoord - r, c),
+      Symmetry.mirror2 => (r, maxCoord - c),
+      Symmetry.diagonal1 => (c, r),
+      Symmetry.diagonal2 => (maxCoord - c, maxCoord - r),
+    };
+  }
+
+  Task withRandomSymmetry() =>
+      withSymmetry(Symmetry.values[Random().nextInt(Symmetry.values.length)]);
 
   String deepLink() {
     final rs = rank.index.toRadixString(16).padLeft(2, '0');
