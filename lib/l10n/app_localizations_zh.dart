@@ -30,6 +30,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get alwaysBlackToPlayDesc => '永远执黑先行，防止混淆';
 
   @override
+  String get showMoveErrorsAsCrosses => '显示错误着法为叉号';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc => '将错误着法显示为红色叉号而非红色圆点';
+
+  @override
   String get appearance => '外观';
 
   @override

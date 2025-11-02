@@ -6,6 +6,8 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Always black-to-play",
   "alwaysBlackToPlayDesc": "Set all tasks as black-to-play to avoid confusion",
+  "showMoveErrorsAsCrosses": "Display wrong moves as crosses",
+  "showMoveErrorsAsCrossesDesc": "Display wrong moves as red crosses instead of red dots",
   "appearance": "Appearance",
   "autoCounting": "Auto counting",
   "autoMatch": "Auto-Match",
