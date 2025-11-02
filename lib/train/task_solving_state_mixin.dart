@@ -134,10 +134,16 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
 
   void onShowContinuations() {
     continuationAnnotations = IMapOfSets.empty();
+    final showErrorsAsCrosses = context.settings.showMoveErrorsAsCrosses;
     for (final (p, st)
         in _vtreeIt?.continuations() ?? <(wq.Point, VariationStatus)>[]) {
       continuationAnnotations = continuationAnnotations?.add(p, (
-        type: AnnotationShape.dot.u21,
+        type: switch (st) {
+          VariationStatus.correct => AnnotationShape.dot.u21,
+          VariationStatus.wrong => showErrorsAsCrosses
+              ? AnnotationShape.cross.u21
+              : AnnotationShape.dot.u21,
+        },
         color: switch (st) {
           VariationStatus.correct => Colors.green,
           VariationStatus.wrong => Colors.red,
