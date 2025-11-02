@@ -140,9 +140,9 @@ class HttpClient {
     // Use provided apiVersion, or default, or none
     final version = apiVersion ?? defaultApiVersion;
 
-    String fullPath = version != null 
-      ? '$serverUrl/api/v$version$path'
-      : '$serverUrl/api$path';
+    String fullPath = version != null
+        ? '$serverUrl/api/v$version$path'
+        : '$serverUrl/api$path';
 
     final uri = Uri.parse(fullPath);
 
