@@ -149,7 +149,7 @@ abstract class AppLocalizations {
   /// No description provided for @showMoveErrorsAsCrosses.
   ///
   /// In en, this message translates to:
-  /// **'Show move errors as crosses'**
+  /// **'Display wrong moves as crosses'**
   String get showMoveErrorsAsCrosses;
 
   /// No description provided for @showMoveErrorsAsCrossesDesc.

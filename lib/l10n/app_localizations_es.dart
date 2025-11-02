@@ -31,7 +31,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'Hace que en todos los problemas jueguen las negras para evitar confusión';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Mostrar errores como cruces';
+  String get showMoveErrorsAsCrosses =>
+      'Mostrar jugadas incorrectas como cruces';
 
   @override
   String get showMoveErrorsAsCrossesDesc =>

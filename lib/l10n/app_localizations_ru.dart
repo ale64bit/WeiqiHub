@@ -31,7 +31,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Устанавливать все задачи как ход чёрных, чтобы избежать путаницы';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Показывать ошибки крестами';
+  String get showMoveErrorsAsCrosses => 'Отображать неправильные ходы крестами';
 
   @override
   String get showMoveErrorsAsCrossesDesc =>

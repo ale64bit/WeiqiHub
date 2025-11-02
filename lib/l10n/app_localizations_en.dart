@@ -31,7 +31,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Set all tasks as black-to-play to avoid confusion';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Show move errors as crosses';
+  String get showMoveErrorsAsCrosses => 'Display wrong moves as crosses';
 
   @override
   String get showMoveErrorsAsCrossesDesc =>
