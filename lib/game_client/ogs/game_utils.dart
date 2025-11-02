@@ -1,5 +1,15 @@
 import 'package:wqhub/wq/wq.dart' as wq;
 
+/// Returns formatted result string with winner prefix (e.g., "B + Resignation", "W + 5.5 points").
+String formatGameResult(wq.Color? winner, String outcome) {
+  String winnerPrefix = switch (winner) {
+    wq.Color.black => 'B + ',
+    wq.Color.white => 'W + ',
+    null => '',
+  };
+  return '$winnerPrefix$outcome';
+}
+
 /// Parse a string of SGF coordinates into a list of points.
 ///
 /// Parameters:
