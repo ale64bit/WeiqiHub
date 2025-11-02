@@ -168,7 +168,7 @@ class HttpClient {
   /// Checks the HTTP response and throws an exception for error status codes
   void _checkResponse(http.Response response) {
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw HttpException(
+      throw HttpStatusException(
         'HTTP ${response.statusCode}: ${response.reasonPhrase}',
         statusCode: response.statusCode,
         responseBody: response.body,
@@ -182,18 +182,18 @@ class HttpClient {
   }
 }
 
-/// Exception thrown when an HTTP request fails
-class HttpException implements Exception {
+/// Exception thrown when an HTTP request fails with a non-2xx status code
+class HttpStatusException implements Exception {
   final String message;
   final int statusCode;
   final String responseBody;
 
-  const HttpException(
+  const HttpStatusException(
     this.message, {
     required this.statusCode,
     required this.responseBody,
   });
 
   @override
-  String toString() => 'HttpException: $message';
+  String toString() => 'HttpStatusException: $message';
 }
