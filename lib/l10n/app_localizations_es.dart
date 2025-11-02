@@ -1319,6 +1319,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get timeFrenzy => 'Contrarreloj';
 
   @override
+  String get timeFrenzyMistakes => 'Rastrear errores en Contrarreloj';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Habilitar para guardar errores cometidos en Contrarreloj';
+
+  @override
   String get timePerTask => 'Tiempo por problema';
 
   @override

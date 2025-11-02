@@ -1,11 +1,16 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wqhub/game_client/foxwq/foxwq_game_client.dart';
+import 'package:wqhub/game_client/ogs/ogs_game_client.dart';
 import 'package:wqhub/game_client/test_game_client.dart';
 import 'package:wqhub/game_client/tygem/tygem_game_client.dart';
 
 final gameClients = IList([
   FoxwqGameClient(),
+  OGSGameClient(
+    serverUrl: "https://online-go.com",
+    aiServerUrl: "https://ai.online-go.com",
+  ),
   TygemGameClient(),
   if (kDebugMode) TestGameClient(),
 ]);

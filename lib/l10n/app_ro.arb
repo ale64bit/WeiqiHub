@@ -476,6 +476,8 @@
   "theme": "Temă",
   "thick": "Gros",
   "timeFrenzy": "Go contra cronometru",
+  "timeFrenzyMistakes": "Urmărește greșelile din Go contra cronometru",
+  "timeFrenzyMistakesDesc": "Activează pentru a salva greșelile făcute în Go contra cronometru",
   "timePerTask": "Timp per sarcină",
   "today": "Astăzi",
   "tooltipAnalyzeWithAISensei": "Analizează cu AI Sensei",
