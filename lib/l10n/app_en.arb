@@ -121,6 +121,7 @@
       }
     }
   },
+  "msgNoGamesFound": "No games found.",
   "msgPleaseWaitForYourTurn": "Please, wait for your turn",
   "msgSearchingForGame": "Searching for a game...",
   "msgTaskLinkCopied": "Task link copied.",

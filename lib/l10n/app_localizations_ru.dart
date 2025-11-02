@@ -293,6 +293,9 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String get msgNoGamesFound => 'Игры не найдены.';
+
+  @override
   String get msgPleaseWaitForYourTurn => 'Пожалуйста, дождитесь своего хода';
 
   @override

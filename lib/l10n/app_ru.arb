@@ -121,6 +121,7 @@
       }
     }
   },
+  "msgNoGamesFound": "Игры не найдены.",
   "msgPleaseWaitForYourTurn": "Пожалуйста, дождитесь своего хода",
   "msgSearchingForGame": "Поиск партии...",
   "msgTaskLinkCopied": "Ссылка на задачу скопирована.",
