@@ -10,13 +10,13 @@ enum Symmetry {
   diagonal1,
   diagonal2;
 
-  // Utilities
+  // Members
 
-  static wq.Point transformPoint(wq.Point p, Symmetry symmetry, int boardSize) {
+  wq.Point transformPoint(wq.Point p, int boardSize) {
     final (r, c) = p;
     final maxCoord = boardSize - 1;
 
-    return switch (symmetry) {
+    return switch (this) {
       Symmetry.identity => p,
       Symmetry.rotate1 => (c, maxCoord - r),
       Symmetry.rotate2 => (maxCoord - r, maxCoord - c),

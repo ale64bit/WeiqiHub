@@ -108,7 +108,7 @@ class Task {
       final transformedPoints = entry.value.fold<ISet<wq.Point>>(
         const ISet<wq.Point>.empty(),
         (accPoints, point) =>
-            accPoints.add(Symmetry.transformPoint(point, symmetry, boardSize)),
+            accPoints.add(symmetry.transformPoint(point, boardSize)),
       );
       transformedStonesMap[entry.key] = transformedPoints;
     }
@@ -126,7 +126,8 @@ class Task {
     );
   }
 
-  wq.Point _transformTopLeft(topLeft, boardSize, subBoardSize, symmetry) {
+  wq.Point _transformTopLeft(
+      topLeft, int boardSize, int subBoardSize, Symmetry symmetry) {
     if (symmetry == Symmetry.identity) return topLeft;
 
     final (x1, y1) = topLeft;
@@ -137,10 +138,10 @@ class Task {
     final wq.Point bottomRight = (x2, y2);
     final wq.Point bottomLeft = (x1, y2);
 
-    final tlS = Symmetry.transformPoint(topLeft, symmetry, boardSize);
-    final trS = Symmetry.transformPoint(topRight, symmetry, boardSize);
-    final blS = Symmetry.transformPoint(bottomRight, symmetry, boardSize);
-    final brS = Symmetry.transformPoint(bottomLeft, symmetry, boardSize);
+    final tlS = symmetry.transformPoint(topLeft, boardSize);
+    final trS = symmetry.transformPoint(topRight, boardSize);
+    final blS = symmetry.transformPoint(bottomRight, boardSize);
+    final brS = symmetry.transformPoint(bottomLeft, boardSize);
 
     var topLeftS = (
       min(tlS.$1, min(trS.$1, min(blS.$1, brS.$1))),
@@ -358,23 +359,14 @@ class _TaskBucket {
     IMap<wq.Point, wq.Color> gotStones,
   ) {
     final ex = wantStones.entries.first;
-    for (final f in [
-      (wq.Point x) => x,
-      _rot90,
-      _rot180,
-      _rot270,
-      _hFlip,
-      _vFlip,
-      _mirrorMain,
-      _mirrorAnti,
-    ]) {
-      final (rx, cx) = f(ex.key);
+    for (final sym in Symmetry.values) {
+      final (rx, cx) = sym.transformPoint(ex.key, 19);
       for (final ey in gotStones.entries) {
         final (ry, cy) = ey.key;
         // Assume ex and ey represent the same stone and check if the remaining stones match.
         var ok = true;
         for (final pz in wantEmpty) {
-          final (rz, cz) = f(pz);
+          final (rz, cz) = sym.transformPoint(pz, 19);
           final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
           if (zz != null) {
             ok = false;
@@ -382,7 +374,7 @@ class _TaskBucket {
           }
         }
         for (final ez in wantStones.entries) {
-          final (rz, cz) = f(ez.key);
+          final (rz, cz) = sym.transformPoint(ez.key, 19);
           final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
           if (zz == null || ((ex.value == ey.value) != (zz == ez.value))) {
             ok = false;
@@ -394,14 +386,6 @@ class _TaskBucket {
     }
     return false;
   }
-
-  wq.Point _rot90(wq.Point p) => (p.$2, 19 - 1 - p.$1);
-  wq.Point _rot180(wq.Point p) => (19 - 1 - p.$1, 19 - 1 - p.$2);
-  wq.Point _rot270(wq.Point p) => (19 - 1 - p.$2, p.$1);
-  wq.Point _hFlip(wq.Point p) => (p.$1, 19 - 1 - p.$2);
-  wq.Point _vFlip(wq.Point p) => (19 - 1 - p.$1, p.$2);
-  wq.Point _mirrorMain(wq.Point p) => (p.$2, p.$1);
-  wq.Point _mirrorAnti(wq.Point p) => (19 - 1 - p.$2, 19 - 1 - p.$1);
 }
 
 class _TagBucket {

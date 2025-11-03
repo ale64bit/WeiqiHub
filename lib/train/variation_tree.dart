@@ -38,8 +38,7 @@ class VariationTree {
         children.entries.fold<IMap<wq.Point, VariationTree>>(
       const IMap<wq.Point, VariationTree>.empty(),
       (acc, entry) {
-        final transformedPoint =
-            Symmetry.transformPoint(entry.key, symmetry, boardSize);
+        final transformedPoint = symmetry.transformPoint(entry.key, boardSize);
         final transformedChild = entry.value.withSymmetry(symmetry, boardSize);
         return acc.add(transformedPoint, transformedChild);
       },
