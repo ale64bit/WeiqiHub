@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/ogs/http_client.dart';
 import 'package:wqhub/game_client/ogs/game_utils.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 import 'package:wqhub/game_client/rules.dart';
@@ -22,7 +21,7 @@ class OGSGame extends Game {
   final OGSWebSocketManager _webSocketManager;
   final String _myUserId;
   final String _jwtToken;
-  final String _aiServerUrl;
+  final HttpClient _aiHttpClient;
   final bool _freeHandicapPlacement;
   late final StreamController<wq.Move?> _moveController;
   late final StreamController<CountingResult> _countingResultController;
@@ -56,7 +55,8 @@ class OGSGame extends Game {
   })  : _webSocketManager = webSocketManager,
         _myUserId = myUserId,
         _jwtToken = jwtToken,
-        _aiServerUrl = aiServerUrl,
+        _aiHttpClient =
+            HttpClient(serverUrl: aiServerUrl, defaultApiVersion: null),
         _freeHandicapPlacement = freeHandicapPlacement {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
@@ -404,18 +404,9 @@ class OGSGame extends Game {
       }
     }
 
-    // Map OGS outcome to our result format
-    final result = switch (outcome.toLowerCase()) {
-      'resignation' => 'Resignation',
-      'timeout' => 'Time',
-      'cancellation' => 'Cancellation',
-      // Score-based results, e.g. "W+5.5"
-      _ => outcome, // Keep original for score-based results
-    };
-
     return GameResult(
       winner: winner,
-      result: result,
+      result: formatGameResult(winner, outcome),
       description: outcome,
     );
   }
@@ -620,8 +611,6 @@ class OGSGame extends Game {
       List<List<int>> boardState, String playerToMove) async {
     _logger.fine('Calling AI server for game $id');
 
-    final url = Uri.parse('$_aiServerUrl/api/score');
-
     final payload = {
       'player_to_move': playerToMove,
       'width': boardSize,
@@ -633,26 +622,11 @@ class OGSGame extends Game {
     };
 
     try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'WeiqiHub/1.0',
-        },
-        body: jsonEncode(payload),
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body) as Map<String, dynamic>;
-        _logger.fine('AI server response received for game $id');
-        return responseData;
-      } else {
-        _logger.warning(
-            'AI server request failed for game $id: ${response.statusCode} ${response.body}');
-        return null;
-      }
-    } catch (error) {
-      _logger.warning('Error calling AI server for game $id: $error');
+      final responseData = await _aiHttpClient.postJson('/score', payload);
+      _logger.fine('AI server response received for game $id');
+      return responseData;
+    } catch (e) {
+      _logger.warning('AI server request failed for game $id: $e');
       return null;
     }
   }
@@ -745,6 +719,7 @@ class OGSGame extends Game {
     _moveController.close();
     _countingResultController.close();
     _countingResultResponsesController.close();
+    _aiHttpClient.dispose();
 
     // Complete the result future if not already completed
     if (!_resultCompleter.isCompleted) {
