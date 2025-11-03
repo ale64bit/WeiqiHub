@@ -404,18 +404,9 @@ class OGSGame extends Game {
       }
     }
 
-    // Map OGS outcome to our result format
-    final result = switch (outcome.toLowerCase()) {
-      'resignation' => 'Resignation',
-      'timeout' => 'Time',
-      'cancellation' => 'Cancellation',
-      // Score-based results, e.g. "W+5.5"
-      _ => outcome, // Keep original for score-based results
-    };
-
     return GameResult(
       winner: winner,
-      result: result,
+      result: formatGameResult(winner, outcome),
       description: outcome,
     );
   }
