@@ -478,7 +478,7 @@ class OGSGameClient extends GameClient {
 
         final result = GameResult(
           winner: winner,
-          result: outcome,
+          result: formatGameResult(winner, outcome),
         );
 
         return GameSummary(
