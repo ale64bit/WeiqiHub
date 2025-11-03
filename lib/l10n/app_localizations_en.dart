@@ -31,6 +31,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Set all tasks as black-to-play to avoid confusion';
 
   @override
+  String get showMoveErrorsAsCrosses => 'Display wrong moves as crosses';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Display wrong moves as red crosses instead of red dots';
+
+  @override
   String get appearance => 'Appearance';
 
   @override
@@ -1311,6 +1318,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeFrenzy => 'Time frenzy';
+
+  @override
+  String get timeFrenzyMistakes => 'Track Time Frenzy mistakes';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Enable to save mistakes made in Time Frenzy';
 
   @override
   String get timePerTask => 'Time per task';

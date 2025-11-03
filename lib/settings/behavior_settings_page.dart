@@ -87,6 +87,28 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
               },
             ),
           ),
+          ListTile(
+            title: Text(loc.showMoveErrorsAsCrosses),
+            subtitle: Text(loc.showMoveErrorsAsCrossesDesc),
+            trailing: Switch(
+              value: context.settings.showMoveErrorsAsCrosses,
+              onChanged: (value) {
+                context.settings.showMoveErrorsAsCrosses = value;
+                setState(() {});
+              },
+            ),
+          ),
+          ListTile(
+            title: Text(loc.timeFrenzyMistakes),
+            subtitle: Text(loc.timeFrenzyMistakesDesc),
+            trailing: Switch(
+              value: context.settings.trackTimeFrenzyMistakes,
+              onChanged: (value) {
+                context.settings.trackTimeFrenzyMistakes = value;
+                setState(() {});
+              },
+            ),
+          ),
         ],
       ),
     );

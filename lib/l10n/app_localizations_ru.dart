@@ -31,6 +31,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Устанавливать все задачи как ход чёрных, чтобы избежать путаницы';
 
   @override
+  String get showMoveErrorsAsCrosses => 'Отображать неправильные ходы крестами';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Отображать неправильные ходы красными крестами вместо красных точек';
+
+  @override
   String get appearance => 'Интерфейс';
 
   @override
@@ -1315,6 +1322,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get timeFrenzy => 'Временной раж';
+
+  @override
+  String get timeFrenzyMistakes => 'Отслеживать ошибки во Временном раже';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Включить для сохранения ошибок, сделанных во Временном раже';
 
   @override
   String get timePerTask => 'Время на задачу';

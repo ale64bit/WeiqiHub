@@ -31,6 +31,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Hace que en todos los problemas jueguen las negras para evitar confusión';
 
   @override
+  String get showMoveErrorsAsCrosses =>
+      'Mostrar jugadas incorrectas como cruces';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Mostrar jugadas incorrectas como cruces rojas en lugar de puntos rojos';
+
+  @override
   String get appearance => 'Apariencia';
 
   @override
@@ -1317,6 +1325,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get timeFrenzy => 'Contrarreloj';
+
+  @override
+  String get timeFrenzyMistakes => 'Rastrear errores en Contrarreloj';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Habilitar para guardar errores cometidos en Contrarreloj';
 
   @override
   String get timePerTask => 'Tiempo por problema';

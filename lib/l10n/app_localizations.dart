@@ -148,6 +148,18 @@ abstract class AppLocalizations {
   /// **'Set all tasks as black-to-play to avoid confusion'**
   String get alwaysBlackToPlayDesc;
 
+  /// No description provided for @showMoveErrorsAsCrosses.
+  ///
+  /// In en, this message translates to:
+  /// **'Display wrong moves as crosses'**
+  String get showMoveErrorsAsCrosses;
+
+  /// No description provided for @showMoveErrorsAsCrossesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Display wrong moves as red crosses instead of red dots'**
+  String get showMoveErrorsAsCrossesDesc;
+
   /// No description provided for @appearance.
   ///
   /// In en, this message translates to:
@@ -2559,6 +2571,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Time frenzy'**
   String get timeFrenzy;
+
+  /// No description provided for @timeFrenzyMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Track Time Frenzy mistakes'**
+  String get timeFrenzyMistakes;
+
+  /// No description provided for @timeFrenzyMistakesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable to save mistakes made in Time Frenzy'**
+  String get timeFrenzyMistakesDesc;
 
   /// No description provided for @timePerTask.
   ///

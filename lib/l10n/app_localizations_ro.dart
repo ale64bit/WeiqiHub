@@ -31,6 +31,13 @@ class AppLocalizationsRo extends AppLocalizations {
       'Setează toate sarcinile ca fiind negru la mutare pentru a evita confuzia';
 
   @override
+  String get showMoveErrorsAsCrosses => 'Afișează mutările greșite ca cruci';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Afișează mutările greșite ca cruci roșii în loc de puncte roșii';
+
+  @override
   String get appearance => 'Aspect';
 
   @override
@@ -1318,6 +1325,14 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get timeFrenzy => 'Go contra cronometru';
+
+  @override
+  String get timeFrenzyMistakes =>
+      'Urmărește greșelile din Go contra cronometru';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Activează pentru a salva greșelile făcute în Go contra cronometru';
 
   @override
   String get timePerTask => 'Timp per sarcină';
