@@ -6,8 +6,6 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Întotdeauna negru la mutare",
   "alwaysBlackToPlayDesc": "Setează toate sarcinile ca fiind negru la mutare pentru a evita confuzia",
-  "showMoveErrorsAsCrosses": "Afișează mutările greșite ca cruci",
-  "showMoveErrorsAsCrossesDesc": "Afișează mutările greșite ca cruci roșii în loc de puncte roșii",
   "appearance": "Aspect",
   "autoCounting": "Numărare automată",
   "autoMatch": "Potrivire automată",
@@ -29,6 +27,7 @@
   "confirmMoves": "Confirmă mutările",
   "confirmMovesDesc": "Atinge de două ori pentru a confirma mutările pe table mari pentru a evita greșelile",
   "continue_": "Continuă",
+  "copySGF": "Copiază SGF",
   "copyTaskLink": "Copiază linkul sarcinii",
   "customExam": "Examen personalizat",
   "dark": "Întunecat",
@@ -203,13 +202,22 @@
   "rulesChinese": "Chineze",
   "rulesJapanese": "Japoneze",
   "rulesKorean": "Coreene",
+  "sSeconds": "{s}s",
+  "@sSeconds": {
+    "placeholders": {
+      "s": {
+        "type": "int"
+      }
+    }
+  },
   "save": "Salvează",
   "saveSGF": "Salvează SGF",
-  "copySGF": "Copiază SGF",
   "seconds": "Secunde",
   "settings": "Setări",
   "short": "Scurt",
   "showCoordinates": "Afișează coordonatele",
+  "showMoveErrorsAsCrosses": "Afișează mutările greșite ca cruci",
+  "showMoveErrorsAsCrossesDesc": "Afișează mutările greșite ca cruci roșii în loc de puncte roșii",
   "simple": "Simplu",
   "sortModeDifficult": "Dificil",
   "sortModeRecent": "Recent",

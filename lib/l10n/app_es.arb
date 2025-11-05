@@ -6,8 +6,6 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Siempre juegan las negras",
   "alwaysBlackToPlayDesc": "Hace que en todos los problemas jueguen las negras para evitar confusión",
-  "showMoveErrorsAsCrosses": "Mostrar jugadas incorrectas como cruces",
-  "showMoveErrorsAsCrossesDesc": "Mostrar jugadas incorrectas como cruces rojas en lugar de puntos rojos",
   "appearance": "Apariencia",
   "autoCounting": "Conteo automático",
   "autoMatch": "Buscar partida",
@@ -29,6 +27,7 @@
   "confirmMoves": "Confirmar jugada",
   "confirmMovesDesc": "Doble tap para confirmar jugadas en tableros grandes para evitar accidentes",
   "continue_": "Continuar",
+  "copySGF": "Copiar SGF",
   "copyTaskLink": "Copiar enlace al problema",
   "customExam": "Examen personalizado",
   "dark": "Oscuro",
@@ -203,13 +202,22 @@
   "rulesChinese": "Chinas",
   "rulesJapanese": "Japonesas",
   "rulesKorean": "Coreanas",
+  "sSeconds": "{s}s",
+  "@sSeconds": {
+    "placeholders": {
+      "s": {
+        "type": "int"
+      }
+    }
+  },
   "save": "Guardar",
   "saveSGF": "Guardar SGF",
-  "copySGF": "Copiar SGF",
   "seconds": "Segundos",
   "settings": "Preferencias",
   "short": "Corta",
   "showCoordinates": "Mostrar coordenadas",
+  "showMoveErrorsAsCrosses": "Mostrar jugadas incorrectas como cruces",
+  "showMoveErrorsAsCrossesDesc": "Mostrar jugadas incorrectas como cruces rojas en lugar de puntos rojos",
   "simple": "Simple",
   "sortModeDifficult": "Difíciles",
   "sortModeRecent": "Recientes",

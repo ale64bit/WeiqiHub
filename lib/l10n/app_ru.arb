@@ -6,8 +6,6 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Всегда ход чёрных",
   "alwaysBlackToPlayDesc": "Устанавливать все задачи как ход чёрных, чтобы избежать путаницы",
-  "showMoveErrorsAsCrosses": "Отображать неправильные ходы крестами",
-  "showMoveErrorsAsCrossesDesc": "Отображать неправильные ходы красными крестами вместо красных точек",
   "appearance": "Интерфейс",
   "autoCounting": "Автоподсчёт",
   "autoMatch": "Автоподбор",
@@ -29,6 +27,7 @@
   "confirmMoves": "Подтверждение ходов",
   "confirmMovesDesc": "Двойное нажатие на один и тот же пункт для подтверждения хода, чтобы избежать случайных нажатий",
   "continue_": "Продолжить",
+  "copySGF": "Копировать SGF",
   "copyTaskLink": "Копировать ссылку на задачу",
   "customExam": "Пользовательский экзамен",
   "dark": "Тёмная",
@@ -203,13 +202,22 @@
   "rulesChinese": "Китайские",
   "rulesJapanese": "Японские",
   "rulesKorean": "Корейские",
+  "sSeconds": "{s} с",
+  "@sSeconds": {
+    "placeholders": {
+      "s": {
+        "type": "int"
+      }
+    }
+  },
   "save": "Сохранить",
   "saveSGF": "Сохранить SGF",
-  "copySGF": "Копировать SGF",
   "seconds": "Секунды",
   "settings": "Настройки",
   "short": "Короткая",
   "showCoordinates": "Показывать координаты",
+  "showMoveErrorsAsCrosses": "Отображать неправильные ходы крестами",
+  "showMoveErrorsAsCrossesDesc": "Отображать неправильные ходы красными крестами вместо красных точек",
   "simple": "Простая",
   "sortModeDifficult": "Сложные",
   "sortModeRecent": "Недавние",
