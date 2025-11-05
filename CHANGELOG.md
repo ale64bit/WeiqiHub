@@ -1,6 +1,11 @@
 # Changelog
 
 ## 0.1.11
+- OGS support (@benjaminpjones)
+- add setting to track Time Frenzy mistakes (@hemme)
+- add option to copy task SGF (@hemme)
+- accessibility: add setting to show wrong moves as crosses (@hemme)
+- Italian localization (@hemme)
 - Romanian localization (@adudenamedruby)
 
 ## 0.1.10
