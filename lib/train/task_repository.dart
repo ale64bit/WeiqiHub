@@ -153,8 +153,9 @@ class Task {
     return topLeftS;
   }
 
-  Task withRandomSymmetry() =>
-      withSymmetry(Symmetry.values[Random().nextInt(Symmetry.values.length)]);
+  Task withRandomSymmetry({required bool randomize}) => randomize
+      ? withSymmetry(Symmetry.values[Random().nextInt(Symmetry.values.length)])
+      : this;
 
   String deepLink() {
     final rs = rank.index.toRadixString(16).padLeft(2, '0');

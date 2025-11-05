@@ -59,7 +59,8 @@ class EndgameExamPage extends StatelessWidget {
       source: ConstTaskSource(
           tasks: TaskRepository()
               .readByTypes(rank, taskTypes, taskCount)
-              .map((task) => task.withRandomSymmetry())
+              .map((task) => task.withRandomSymmetry(
+                  randomize: context.settings.randomizeTzumegoOrientation))
               .toIList()),
       blackToPlay: context.settings.alwaysBlackToPlay,
     );
