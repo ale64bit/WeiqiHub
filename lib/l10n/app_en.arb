@@ -6,8 +6,6 @@
   "aiSensei": "AI Sensei",
   "alwaysBlackToPlay": "Always black-to-play",
   "alwaysBlackToPlayDesc": "Set all tasks as black-to-play to avoid confusion",
-  "showMoveErrorsAsCrosses": "Display wrong moves as crosses",
-  "showMoveErrorsAsCrossesDesc": "Display wrong moves as red crosses instead of red dots",
   "appearance": "Appearance",
   "autoCounting": "Auto counting",
   "autoMatch": "Auto-Match",
@@ -29,6 +27,7 @@
   "confirmMoves": "Confirm moves",
   "confirmMovesDesc": "Double-tap to confirm moves on large boards to avoid misclicks",
   "continue_": "Continue",
+  "copySGF": "Copy SGF",
   "copyTaskLink": "Copy task link",
   "customExam": "Custom exam",
   "dark": "Dark",
@@ -203,13 +202,22 @@
   "rulesChinese": "Chinese",
   "rulesJapanese": "Japanese",
   "rulesKorean": "Korean",
+  "sSeconds": "{s}s",
+  "@sSeconds": {
+    "placeholders": {
+      "s": {
+        "type": "int"
+      }
+    }
+  },
   "save": "Save",
   "saveSGF": "Save SGF",
-  "copySGF": "Copy SGF",
   "seconds": "Seconds",
   "settings": "Settings",
   "short": "Short",
   "showCoordinates": "Show coordinates",
+  "showMoveErrorsAsCrosses": "Display wrong moves as crosses",
+  "showMoveErrorsAsCrossesDesc": "Display wrong moves as red crosses instead of red dots",
   "simple": "Simple",
   "sortModeDifficult": "Difficult",
   "sortModeRecent": "Recent",
