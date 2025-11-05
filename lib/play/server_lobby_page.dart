@@ -4,6 +4,7 @@ import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/automatch_page.dart';
 import 'package:wqhub/game_client/game_client.dart';
+import 'package:wqhub/play/automatch_preset_list_tile.dart';
 import 'package:wqhub/play/game_page.dart';
 import 'package:wqhub/play/my_games_page.dart';
 import 'package:wqhub/play/promotion_card.dart';
@@ -88,22 +89,8 @@ class _ServerLobbyPageState
     final automatchPresetList = ListView(
       children: <Widget>[
         for (final preset in widget.gameClient.automatchPresets)
-          ListTile(
-            leading: Text(loc.nxnBoardSize(preset.boardSize)),
-            title: Text(
-                '${loc.mMinutes(preset.timeControl.mainTime.inMinutes)} ${loc.pxsByoyomi(preset.timeControl.periodCount, preset.timeControl.timePerPeriod.inSeconds)}'),
-            subtitle:
-                Text('${loc.rules}: ${preset.rules.toLocalizedString(loc)}'),
-            trailing: (preset.playerCount != null)
-                ? Row(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 4,
-                    children: <Widget>[
-                      Icon(Icons.people),
-                      Text(preset.playerCount.toString()),
-                    ],
-                  )
-                : null,
+          AutomatchPresetListTile(
+            preset: preset,
             onTap: () {
               Navigator.pushNamed(
                 context,

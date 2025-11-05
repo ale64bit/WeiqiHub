@@ -31,13 +31,6 @@ class AppLocalizationsRo extends AppLocalizations {
       'Setează toate sarcinile ca fiind negru la mutare pentru a evita confuzia';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Afișează mutările greșite ca cruci';
-
-  @override
-  String get showMoveErrorsAsCrossesDesc =>
-      'Afișează mutările greșite ca cruci roșii în loc de puncte roșii';
-
-  @override
   String get appearance => 'Aspect';
 
   @override
@@ -101,6 +94,9 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get continue_ => 'Continuă';
+
+  @override
+  String get copySGF => 'Copiază SGF';
 
   @override
   String get copyTaskLink => 'Copiază linkul sarcinii';
@@ -476,13 +472,15 @@ class AppLocalizationsRo extends AppLocalizations {
   String get rulesKorean => 'Coreene';
 
   @override
+  String sSeconds(int s) {
+    return '${s}s';
+  }
+
+  @override
   String get save => 'Salvează';
 
   @override
   String get saveSGF => 'Salvează SGF';
-
-  @override
-  String get copySGF => 'Copiază SGF';
 
   @override
   String get seconds => 'Secunde';
@@ -495,6 +493,13 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get showCoordinates => 'Afișează coordonatele';
+
+  @override
+  String get showMoveErrorsAsCrosses => 'Afișează mutările greșite ca cruci';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Afișează mutările greșite ca cruci roșii în loc de puncte roșii';
 
   @override
   String get simple => 'Simplu';

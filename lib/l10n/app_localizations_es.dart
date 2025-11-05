@@ -31,14 +31,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Hace que en todos los problemas jueguen las negras para evitar confusión';
 
   @override
-  String get showMoveErrorsAsCrosses =>
-      'Mostrar jugadas incorrectas como cruces';
-
-  @override
-  String get showMoveErrorsAsCrossesDesc =>
-      'Mostrar jugadas incorrectas como cruces rojas en lugar de puntos rojos';
-
-  @override
   String get appearance => 'Apariencia';
 
   @override
@@ -102,6 +94,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get continue_ => 'Continuar';
+
+  @override
+  String get copySGF => 'Copiar SGF';
 
   @override
   String get copyTaskLink => 'Copiar enlace al problema';
@@ -480,13 +475,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rulesKorean => 'Coreanas';
 
   @override
+  String sSeconds(int s) {
+    return '${s}s';
+  }
+
+  @override
   String get save => 'Guardar';
 
   @override
   String get saveSGF => 'Guardar SGF';
-
-  @override
-  String get copySGF => 'Copiar SGF';
 
   @override
   String get seconds => 'Segundos';
@@ -499,6 +496,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get showCoordinates => 'Mostrar coordenadas';
+
+  @override
+  String get showMoveErrorsAsCrosses =>
+      'Mostrar jugadas incorrectas como cruces';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Mostrar jugadas incorrectas como cruces rojas en lugar de puntos rojos';
 
   @override
   String get simple => 'Simple';

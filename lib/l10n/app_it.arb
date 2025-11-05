@@ -27,6 +27,7 @@
   "confirmMoves": "Conferma mossa",
   "confirmMovesDesc": "Doppio tocco per confermare la mossa sui goban più grandi (evita misclick)",
   "continue_": "Continua",
+  "copySGF": "Copia SGF",
   "copyTaskLink": "Copia link",
   "customExam": "Esame personalizzato",
   "dark": "Scuro",
@@ -194,13 +195,22 @@
   "rulesChinese": "Cinesi",
   "rulesJapanese": "Giapponesi",
   "rulesKorean": "Coreane",
+  "sSeconds": "{s}s",
+  "@sSeconds": {
+    "placeholders": {
+      "s": {
+        "type": "int"
+      }
+    }
+  },
   "save": "Salva",
   "saveSGF": "Salva SGF",
-  "copySGF": "Copia SGF",
   "seconds": "Secondi",
   "settings": "Impostazioni",
   "short": "Corta",
   "showCoordinates": "Coordinate",
+  "showMoveErrorsAsCrosses" : "Usa le croci per le mosse sbagliate",
+  "showMoveErrorsAsCrossesDesc": "Indica le mosse sbagliate con una X rossa invece di un pallino",
   "simple": "Sottile",
   "sortModeDifficult": "Difficile",
   "sortModeRecent": "Recente",
@@ -469,6 +479,8 @@
   "theme": "Tema",
   "thick": "Spesso",
   "timeFrenzy": "Frenesia",
+  "timeFrenzyMistakes": "Ricorda gli errori durante la Frenesia",
+  "timeFrenzyMistakesDesc": "Abilita il salvataggio degli errori commessi durante le sessioni di Frenesia",
   "timePerTask": "Tempo problema",
   "today": "Oggi",
   "tooltipAnalyzeWithAISensei": "Analizza con AI Sensei",

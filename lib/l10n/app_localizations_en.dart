@@ -31,13 +31,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Set all tasks as black-to-play to avoid confusion';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Display wrong moves as crosses';
-
-  @override
-  String get showMoveErrorsAsCrossesDesc =>
-      'Display wrong moves as red crosses instead of red dots';
-
-  @override
   String get appearance => 'Appearance';
 
   @override
@@ -101,6 +94,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get continue_ => 'Continue';
+
+  @override
+  String get copySGF => 'Copy SGF';
 
   @override
   String get copyTaskLink => 'Copy task link';
@@ -475,13 +471,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rulesKorean => 'Korean';
 
   @override
+  String sSeconds(int s) {
+    return '${s}s';
+  }
+
+  @override
   String get save => 'Save';
 
   @override
   String get saveSGF => 'Save SGF';
-
-  @override
-  String get copySGF => 'Copy SGF';
 
   @override
   String get seconds => 'Seconds';
@@ -494,6 +492,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get showCoordinates => 'Show coordinates';
+
+  @override
+  String get showMoveErrorsAsCrosses => 'Display wrong moves as crosses';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Display wrong moves as red crosses instead of red dots';
 
   @override
   String get simple => 'Simple';

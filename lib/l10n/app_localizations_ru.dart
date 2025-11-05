@@ -31,13 +31,6 @@ class AppLocalizationsRu extends AppLocalizations {
       'Устанавливать все задачи как ход чёрных, чтобы избежать путаницы';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Отображать неправильные ходы крестами';
-
-  @override
-  String get showMoveErrorsAsCrossesDesc =>
-      'Отображать неправильные ходы красными крестами вместо красных точек';
-
-  @override
   String get appearance => 'Интерфейс';
 
   @override
@@ -101,6 +94,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get continue_ => 'Продолжить';
+
+  @override
+  String get copySGF => 'Копировать SGF';
 
   @override
   String get copyTaskLink => 'Копировать ссылку на задачу';
@@ -477,13 +473,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get rulesKorean => 'Корейские';
 
   @override
+  String sSeconds(int s) {
+    return '$s с';
+  }
+
+  @override
   String get save => 'Сохранить';
 
   @override
   String get saveSGF => 'Сохранить SGF';
-
-  @override
-  String get copySGF => 'Копировать SGF';
 
   @override
   String get seconds => 'Секунды';
@@ -496,6 +494,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get showCoordinates => 'Показывать координаты';
+
+  @override
+  String get showMoveErrorsAsCrosses => 'Отображать неправильные ходы крестами';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Отображать неправильные ходы красными крестами вместо красных точек';
 
   @override
   String get simple => 'Простая';

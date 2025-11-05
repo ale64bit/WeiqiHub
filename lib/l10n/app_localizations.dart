@@ -148,18 +148,6 @@ abstract class AppLocalizations {
   /// **'Set all tasks as black-to-play to avoid confusion'**
   String get alwaysBlackToPlayDesc;
 
-  /// No description provided for @showMoveErrorsAsCrosses.
-  ///
-  /// In en, this message translates to:
-  /// **'Display wrong moves as crosses'**
-  String get showMoveErrorsAsCrosses;
-
-  /// No description provided for @showMoveErrorsAsCrossesDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Display wrong moves as red crosses instead of red dots'**
-  String get showMoveErrorsAsCrossesDesc;
-
   /// No description provided for @appearance.
   ///
   /// In en, this message translates to:
@@ -285,6 +273,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Continue'**
   String get continue_;
+
+  /// No description provided for @copySGF.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy SGF'**
+  String get copySGF;
 
   /// No description provided for @copyTaskLink.
   ///
@@ -922,6 +916,12 @@ abstract class AppLocalizations {
   /// **'Korean'**
   String get rulesKorean;
 
+  /// No description provided for @sSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'{s}s'**
+  String sSeconds(int s);
+
   /// No description provided for @save.
   ///
   /// In en, this message translates to:
@@ -933,12 +933,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save SGF'**
   String get saveSGF;
-
-  /// No description provided for @copySGF.
-  ///
-  /// In en, this message translates to:
-  /// **'Copy SGF'**
-  String get copySGF;
 
   /// No description provided for @seconds.
   ///
@@ -963,6 +957,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show coordinates'**
   String get showCoordinates;
+
+  /// No description provided for @showMoveErrorsAsCrosses.
+  ///
+  /// In en, this message translates to:
+  /// **'Display wrong moves as crosses'**
+  String get showMoveErrorsAsCrosses;
+
+  /// No description provided for @showMoveErrorsAsCrossesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Display wrong moves as red crosses instead of red dots'**
+  String get showMoveErrorsAsCrossesDesc;
 
   /// No description provided for @simple.
   ///

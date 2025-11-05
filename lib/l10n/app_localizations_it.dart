@@ -96,6 +96,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get continue_ => 'Continua';
 
   @override
+  String get copySGF => 'Copia SGF';
+
+  @override
   String get copyTaskLink => 'Copia link';
 
   @override
@@ -471,13 +474,15 @@ class AppLocalizationsIt extends AppLocalizations {
   String get rulesKorean => 'Coreane';
 
   @override
+  String sSeconds(int s) {
+    return '${s}s';
+  }
+
+  @override
   String get save => 'Salva';
 
   @override
   String get saveSGF => 'Salva SGF';
-
-  @override
-  String get copySGF => 'Copia SGF';
 
   @override
   String get seconds => 'Secondi';
@@ -490,6 +495,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get showCoordinates => 'Coordinate';
+
+  @override
+  String get showMoveErrorsAsCrosses => 'Usa le croci per le mosse sbagliate';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc =>
+      'Indica le mosse sbagliate con una X rossa invece di un pallino';
 
   @override
   String get simple => 'Sottile';
@@ -1314,6 +1326,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get timeFrenzy => 'Frenesia';
+
+  @override
+  String get timeFrenzyMistakes => 'Ricorda gli errori durante la Frenesia';
+
+  @override
+  String get timeFrenzyMistakesDesc =>
+      'Abilita il salvataggio degli errori commessi durante le sessioni di Frenesia';
 
   @override
   String get timePerTask => 'Tempo problema';
