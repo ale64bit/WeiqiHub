@@ -30,12 +30,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get alwaysBlackToPlayDesc => '永远执黑先行，防止混淆';
 
   @override
-  String get showMoveErrorsAsCrosses => '显示错误着法为叉号';
-
-  @override
-  String get showMoveErrorsAsCrossesDesc => '将错误着法显示为红色叉号而非红色圆点';
-
-  @override
   String get appearance => '外观';
 
   @override
@@ -97,6 +91,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get continue_ => '继续';
+
+  @override
+  String get copySGF => '复制SGF';
 
   @override
   String get copyTaskLink => '复制题目链接';
@@ -461,13 +458,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get rulesKorean => '韩国规则';
 
   @override
+  String sSeconds(int s) {
+    return '$s秒';
+  }
+
+  @override
   String get save => '保存';
 
   @override
   String get saveSGF => '保存SGF';
-
-  @override
-  String get copySGF => '复制SGF';
 
   @override
   String get seconds => '秒';
@@ -480,6 +479,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get showCoordinates => '显示坐标';
+
+  @override
+  String get showMoveErrorsAsCrosses => '显示错误着法为叉号';
+
+  @override
+  String get showMoveErrorsAsCrossesDesc => '将错误着法显示为红色叉号而非红色圆点';
 
   @override
   String get simple => '普通';
