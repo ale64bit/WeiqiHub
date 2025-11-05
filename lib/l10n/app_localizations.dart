@@ -2590,6 +2590,18 @@ abstract class AppLocalizations {
   /// **'Enable to save mistakes made in Time Frenzy'**
   String get timeFrenzyMistakesDesc;
 
+  /// No description provided for @randomizeTzumegoOrientation.
+  ///
+  /// In en, this message translates to:
+  /// **'Randomize tzumego orientation'**
+  String get randomizeTzumegoOrientation;
+
+  /// No description provided for @randomizeTzumegoOrientationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Randomly rotates and reflects tsumego problems along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.'**
+  String get randomizeTzumegoOrientationDesc;
+
   /// No description provided for @timePerTask.
   ///
   /// In en, this message translates to:

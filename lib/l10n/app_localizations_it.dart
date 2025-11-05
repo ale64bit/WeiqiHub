@@ -497,11 +497,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get showCoordinates => 'Coordinate';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Display wrong moves as crosses';
+  String get showMoveErrorsAsCrosses => 'Usa le croci per le mosse sbagliate';
 
   @override
   String get showMoveErrorsAsCrossesDesc =>
-      'Display wrong moves as red crosses instead of red dots';
+      'Indica le mosse sbagliate con una X rossa invece di un pallino';
 
   @override
   String get simple => 'Sottile';
@@ -1328,11 +1328,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String get timeFrenzy => 'Frenesia';
 
   @override
-  String get timeFrenzyMistakes => 'Track Time Frenzy mistakes';
+  String get timeFrenzyMistakes => 'Ricorda gli errori durante la Frenesia';
 
   @override
   String get timeFrenzyMistakesDesc =>
-      'Enable to save mistakes made in Time Frenzy';
+      'Abilita il salvataggio degli errori commessi durante le sessioni di Frenesia';
+
+  @override
+  String get randomizeTzumegoOrientation => 'Randomize tzumego orientation';
+
+  @override
+  String get randomizeTzumegoOrientationDesc =>
+      'Randomly rotates and reflects tsumego problems along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.';
 
   @override
   String get timePerTask => 'Tempo problema';

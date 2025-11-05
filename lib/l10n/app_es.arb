@@ -488,6 +488,8 @@
   "timeFrenzy": "Contrarreloj",
   "timeFrenzyMistakes": "Rastrear errores en Contrarreloj",
   "timeFrenzyMistakesDesc": "Habilitar para guardar errores cometidos en Contrarreloj",
+  "randomizeTzumegoOrientation": "Orientación aleatoria de tsumego",
+  "randomizeTzumegoOrientationDesc": "Rota y refleja aleatoriamente los problemas de tsumego a lo largo de los ejes horizontal, vertical y diagonal para evitar la memorización y mejorar el reconocimiento de patrones.",
   "timePerTask": "Tiempo por problema",
   "today": "Hoy",
   "tooltipAnalyzeWithAISensei": "Analizar con AI Sensei",

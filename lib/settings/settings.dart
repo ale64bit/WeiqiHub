@@ -84,6 +84,13 @@ class Settings {
   set alwaysBlackToPlay(bool val) =>
       prefs.setBool('$_behaviourKeyPrefix.always_black_to_play', val);
 
+  bool get randomizeTzumegoOrientation =>
+      prefs.getBool('$_behaviourKeyPrefix.randomize_tzumego_orientation') ??
+      false;
+
+  set randomizeTzumegoOrientation(bool val) =>
+      prefs.setBool('$_behaviourKeyPrefix.randomize_tzumego_orientation', val);
+
   bool get showMoveErrorsAsCrosses =>
       prefs.getBool('$_behaviourKeyPrefix.show_move_errors_as_crosses') ??
       false;
