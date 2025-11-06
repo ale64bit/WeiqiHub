@@ -65,7 +65,7 @@ class GradingExamPage extends StatelessWidget {
           tasks: TaskRepository()
               .readByTypes(rank, taskTypes, taskCount)
               .map((task) => task.withRandomSymmetry(
-                  randomize: context.settings.randomizeTzumegoOrientation))
+                  randomize: context.settings.randomizeTaskOrientation))
               .toIList()),
       blackToPlay: context.settings.alwaysBlackToPlay,
     );

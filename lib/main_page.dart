@@ -221,7 +221,7 @@ class _Train extends StatelessWidget {
                       taskSource: BlackToPlaySource(
                         source: TimeFrenzyTaskSource(
                             randomizeLayout:
-                                context.settings.randomizeTzumegoOrientation),
+                                context.settings.randomizeTaskOrientation),
                         blackToPlay: context.settings.alwaysBlackToPlay,
                       ),
                     ),
@@ -246,7 +246,7 @@ class _Train extends StatelessWidget {
                       taskSource: BlackToPlaySource(
                         source: RankedModeTaskSource(
                             context.stats.rankedModeRank,
-                            context.settings.randomizeTzumegoOrientation),
+                            context.settings.randomizeTaskOrientation),
                         blackToPlay: context.settings.alwaysBlackToPlay,
                       ),
                     ),
@@ -361,7 +361,7 @@ class _Train extends StatelessWidget {
               task = task.withBlackToPlay();
             }
             task = task.withRandomSymmetry(
-                randomize: context.settings.randomizeTzumegoOrientation);
+                randomize: context.settings.randomizeTaskOrientation);
 
             Navigator.pushNamed(
               context,

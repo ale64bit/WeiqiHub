@@ -1332,11 +1332,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enable to save mistakes made in Time Frenzy';
 
   @override
-  String get randomizeTzumegoOrientation => 'Randomize tzumego orientation';
+  String get randomizeTaskOrientation => 'Randomize task orientation';
 
   @override
-  String get randomizeTzumegoOrientationDesc =>
-      'Randomly rotates and reflects tsumego problems along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.';
+  String get randomizeTaskOrientationDesc =>
+      'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.';
 
   @override
   String get timePerTask => 'Time per task';

@@ -88,12 +88,12 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
             ),
           ),
           ListTile(
-            title: Text(loc.randomizeTzumegoOrientation),
-            subtitle: Text(loc.randomizeTzumegoOrientationDesc),
+            title: Text(loc.randomizeTaskOrientation),
+            subtitle: Text(loc.randomizeTaskOrientationDesc),
             trailing: Switch(
-              value: context.settings.randomizeTzumegoOrientation,
+              value: context.settings.randomizeTaskOrientation,
               onChanged: (value) {
-                context.settings.randomizeTzumegoOrientation = value;
+                context.settings.randomizeTaskOrientation = value;
                 setState(() {});
               },
             ),

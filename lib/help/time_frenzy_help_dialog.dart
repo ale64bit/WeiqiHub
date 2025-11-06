@@ -48,7 +48,7 @@ class _TimeFrenzyHelpDialogState extends State<TimeFrenzyHelpDialog> {
                 taskSource: BlackToPlaySource(
                   source: TimeFrenzyTaskSource(
                       randomizeLayout:
-                          context.settings.randomizeTzumegoOrientation),
+                          context.settings.randomizeTaskOrientation),
                   blackToPlay: context.settings.alwaysBlackToPlay,
                 ),
               ),

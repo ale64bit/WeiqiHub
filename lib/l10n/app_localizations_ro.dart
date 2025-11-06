@@ -1340,10 +1340,10 @@ class AppLocalizationsRo extends AppLocalizations {
       'Activează pentru a salva greșelile făcute în Go contra cronometru';
 
   @override
-  String get randomizeTzumegoOrientation => 'Orientare aleatoare a tzumego';
+  String get randomizeTaskOrientation => 'Orientare aleatoare a tzumego';
 
   @override
-  String get randomizeTzumegoOrientationDesc =>
+  String get randomizeTaskOrientationDesc =>
       'Rotește și reflectă aleator problemele de tsumego de-a lungul axelor orizontale, verticale și diagonale pentru a preveni memorarea și a îmbunătăți recunoașterea modelelor.';
 
   @override

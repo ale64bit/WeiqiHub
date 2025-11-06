@@ -64,7 +64,7 @@ class TagExamPage extends StatelessWidget {
           tasks: TaskRepository()
               .readByTag(tag, rankRange, taskCount)
               .map((task) => task.withRandomSymmetry(
-                  randomize: context.settings.randomizeTzumegoOrientation))
+                  randomize: context.settings.randomizeTaskOrientation))
               .toIList()),
       blackToPlay: context.settings.alwaysBlackToPlay,
     );

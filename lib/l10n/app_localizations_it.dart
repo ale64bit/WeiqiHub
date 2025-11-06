@@ -1335,10 +1335,10 @@ class AppLocalizationsIt extends AppLocalizations {
       'Abilita il salvataggio degli errori commessi durante le sessioni di Frenesia';
 
   @override
-  String get randomizeTzumegoOrientation => 'Randomizza orientamento tzumego';
+  String get randomizeTaskOrientation => 'Orientamento casuale';
 
   @override
-  String get randomizeTzumegoOrientationDesc =>
+  String get randomizeTaskOrientationDesc =>
       'Ruota e rifletti casualmente i problemi lungo gli assi orizzontale, verticale e diagonale per prevenire la memorizzazione e migliorare il riconoscimento dei pattern.';
 
   @override

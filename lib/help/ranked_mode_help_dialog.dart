@@ -47,7 +47,7 @@ class _RankedModeHelpDialogState extends State<RankedModeHelpDialog> {
               arguments: RankedModeRouteArguments(
                 taskSource: BlackToPlaySource(
                   source: RankedModeTaskSource(context.stats.rankedModeRank,
-                      context.settings.randomizeTzumegoOrientation),
+                      context.settings.randomizeTaskOrientation),
                   blackToPlay: context.settings.alwaysBlackToPlay,
                 ),
               ),

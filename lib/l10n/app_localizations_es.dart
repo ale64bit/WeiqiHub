@@ -1339,11 +1339,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Habilitar para guardar errores cometidos en Contrarreloj';
 
   @override
-  String get randomizeTzumegoOrientation => 'Orientación aleatoria de tsumego';
+  String get randomizeTaskOrientation => 'Orientación aleatoria de problemas';
 
   @override
-  String get randomizeTzumegoOrientationDesc =>
-      'Rota y refleja aleatoriamente los problemas de tsumego a lo largo de los ejes horizontal, vertical y diagonal para evitar la memorización y mejorar el reconocimiento de patrones.';
+  String get randomizeTaskOrientationDesc =>
+      'Rota y refleja aleatoriamente los problemas a lo largo de los ejes horizontal, vertical y diagonal para evitar la memorización y mejorar el reconocimiento de patrones.';
 
   @override
   String get timePerTask => 'Tiempo por problema';
