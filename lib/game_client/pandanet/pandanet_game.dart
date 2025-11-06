@@ -21,8 +21,8 @@ class PandanetGame extends Game {
   StreamSubscription<String>? _sub;
   bool _handicapApplied = false;
   static List<(int, int)> handicapPoints19(int n) {
+    // TODO: refactor this mess.
     const pts = <(int, int)>[
-      // Base star points (SGF-style)
       (3, 15), // 1
       (15, 3), // 2
       (3, 3), // 3
@@ -36,13 +36,13 @@ class PandanetGame extends Game {
 
     final seq = <List<int>>[
       [], // 0
-      [], // 1 (no stones, color only)
+      [], // 1
       [0, 1], // 2
       [0, 1, 2], // 3
       [0, 1, 2, 3], // 4
       [0, 1, 2, 3, 4], // 5
       [0, 1, 2, 3, 5, 6], // 6
-      [5, 4, 6], // 7 (center + sides)
+      [5, 4, 6], // 7
       [0, 1, 2, 3, 5, 6, 7, 8], // 8
       [0, 1, 2, 3, 4, 5, 6, 7, 8], // 9
     ];
