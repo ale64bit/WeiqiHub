@@ -83,14 +83,14 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get confirmBoardSizeDesc =>
-      'Per goban di queste dimensioni o maggiori, chiedi di confermare la mossa';
+      'Per goban di queste dimensioni o maggiori, chiedi di confermare la mossa con un doppio tocco';
 
   @override
-  String get confirmMoves => 'Conferma mossa';
+  String get confirmMoves => 'Conferma la mossa';
 
   @override
   String get confirmMovesDesc =>
-      'Doppio tocco per confermare la mossa sui goban più grandi (evita misclick)';
+      'Richiedi il doppio tocco per confermare la mossa sui goban più grandi (evita misclick)';
 
   @override
   String get continue_ => 'Continua';
@@ -434,11 +434,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get resign => 'Abbandona';
 
   @override
-  String get responseDelay => 'Ritardo risposta';
+  String get responseDelay => 'Ritarda la risposta';
 
   @override
   String get responseDelayDesc =>
-      'Tempo di attesa prima di mostrare la risposta di un problema';
+      'Imposta un tempo di attesa prima di mostrare la risposta di un problema';
 
   @override
   String get responseDelayLong => 'Lungo';
