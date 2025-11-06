@@ -15,6 +15,10 @@ import 'package:wqhub/game_client/time_control.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'pandanet_html_parser.dart';
 import 'pandanet_sgf_parser.dart';
+import 'pandanet_tcp_manager.dart';
+import 'pandanet_game.dart';
+import 'package:wqhub/wq/wq.dart' as wq;
+import 'package:wqhub/wq/rank.dart';
 
 class PandaNetGameClient extends GameClient {
   final Logger _logger = Logger('PandaNetGameClient');
@@ -28,7 +32,8 @@ class PandaNetGameClient extends GameClient {
   final String serverUrl = 'https://pandanet-igs.com/';
   final String apiUrl = 'https://my.pandanet.co.jp/';
   final String snsUrl = 'https://sns.pandanet.co.jp/';
-  
+  final PandanetTcpManager _tcpManager = PandanetTcpManager();
+
   @override
   ServerInfo get serverInfo => ServerInfo(
         id: 'pandanet',
@@ -62,26 +67,28 @@ class PandaNetGameClient extends GameClient {
   static IList<AutomatchPreset> _createAutomatchPresets() {
     const speeds = ['blitz', 'rapid', 'fast', 'slow'];
     final timeControls = {
-      'blitz': TimeControl( // Pandanet has Canadian time controls (only), will need to implement the change app-wide 
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 5),
-          ),//stonesPerPeriod: 25),
+      'blitz': TimeControl(
+        // Pandanet has Canadian time controls (primarily, Japanese rules possible in some hacky workaround
+        // will need to implement the change app-wide or make find how to enforce japanese rules.
+        mainTime: Duration(minutes: 1),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 5),
+      ), //stonesPerPeriod: 25),
       'rapid': TimeControl(
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 7),
-          ),//stonesPerPeriod: 25),
+        mainTime: Duration(minutes: 1),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 7),
+      ), //stonesPerPeriod: 25),
       'fast': TimeControl(
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 10),
-          ),//stonesPerPeriod: 25),
+        mainTime: Duration(minutes: 1),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 10),
+      ), //stonesPerPeriod: 25),
       'slow': TimeControl(
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 15),
-          ),//stonesPerPeriod: 25),
+        mainTime: Duration(minutes: 1),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 15),
+      ), //stonesPerPeriod: 25),
     };
 
     final presets = <AutomatchPreset>[];
@@ -100,11 +107,23 @@ class PandaNetGameClient extends GameClient {
   @override
   Future<ReadyInfo> ready() async => ReadyInfo();
 
+  Future<void> _connectTcp(String username, String password) async {
+    if (_tcpManager.isConnected) return;
+
+    try {
+      await _tcpManager.connect(username, password);
+      _tcpManager.messages.listen((m) => _logger.fine('PandaNet TCP: $m'),
+          onError: (e) => _logger.warning('PandaNet TCP stream error: $e'));
+      _logger.info('TCP connection established');
+    } catch (e) {
+      _logger.warning('Failed to connect to PandaNet TCP: $e');
+    }
+  }
+
   @override
   Future<UserInfo> login(String username, String password) async {
     try {
       _logger.info('Attempting login for user "$username"...');
-
       final loginResponse = await _httpClient.post(
         Uri.parse('${serverUrl}igs_users/jwt_token.json'),
         headers: {'Content-Type': 'application/json'},
@@ -125,6 +144,9 @@ class PandaNetGameClient extends GameClient {
       final user = await _fetchUserInfo(username, password);
       _userInfo.value = user;
       _password.value = password;
+
+      unawaited(_connectTcp(username, password));
+
       return user;
     } catch (e, st) {
       _logger.warning('Login error: $e\n$st');
@@ -168,16 +190,125 @@ class PandaNetGameClient extends GameClient {
   void logout() {
     _userInfo.value = null;
     _password.value = '';
+    try {
+      _tcpManager.close();
+    } catch (e) {
+      _logger.fine('Error closing TCP manager: $e');
+    }
   }
 
   @override
   Future<Game?> ongoingGame() async => null;
+@override
+Future<Game> findGame(String presetId) async {
+  final username = _userInfo.value?.username;
+  if (username == null || username.isEmpty) {
+    throw Exception('Not logged in');
+  }
 
-  @override
-  Future<Game> findGame(String presetId) => throw UnimplementedError();
+  final preset = automatchPresets.firstWhere(
+    (p) => p.id == presetId,
+    orElse: () => automatchPresets.first,
+  );
 
+  if (!_tcpManager.isConnected) {
+    try {
+      await _tcpManager.connect(username, _password.value);
+    } catch (e) {
+      _logger.warning('Failed to connect to TCP server: $e');
+      throw Exception('Failed to connect to game server');
+    }
+  }
+
+  final completer = Completer<Game>();
+  StreamSubscription<String>? subscription;
+  String? gameId;
+  String? blackPlayer;
+  String? whitePlayer;
+  int handicap = 0;
+
+  subscription = _tcpManager.messages.listen((message) {
+    if (message.startsWith('15 Game')) {
+      final match = RegExp(r'15 Game (\d+) I: (\w+) .* vs (\w+)').firstMatch(message);
+      if (match != null) {
+        gameId = match.group(1);
+        blackPlayer = match.group(2);
+        whitePlayer = match.group(3);
+      }
+    } else if (message.contains('Handicap')) {
+      final match = RegExp(r'Handicap (\d+)').firstMatch(message);
+      if (match != null) {
+        handicap = int.parse(match.group(1)!);
+      }
+    } else if (message.contains('Match [') && message.contains('accepted')) {
+      _logger.info('Match accepted: $message');
+      
+      if (gameId != null && blackPlayer != null && whitePlayer != null) {
+        final game = PandanetGame(
+          tcp: _tcpManager,
+          id: gameId!,
+          boardSize: preset.boardSize,
+          timeControl: preset.timeControl,
+          myColor: username == blackPlayer ? wq.Color.black : wq.Color.white,
+        );
+
+        if (username == blackPlayer) {
+          game.black.value = _userInfo.value!;
+          game.white.value = UserInfo.empty().copyWith(
+            userId: whitePlayer,
+            username: whitePlayer,
+            online: true,
+          );
+        } else {
+          game.white.value = _userInfo.value!;
+          game.black.value = UserInfo.empty().copyWith(
+            userId: blackPlayer,
+            username: blackPlayer,
+            online: true,
+          );
+        }
+
+        // Send game command to get initial board state
+        _tcpManager.send('move $gameId');
+
+        subscription?.cancel();
+        completer.complete(game);
+      }
+    } else if (message.contains('declines your request')) {
+      subscription?.cancel();
+      if (!completer.isCompleted) {
+        completer.completeError('Match declined');
+      }
+    }
+  }, onError: (e) {
+    subscription?.cancel();
+    if (!completer.isCompleted) {
+      completer.completeError(e);
+    }
+  });
+
+  try {
+    _tcpManager.sendMatch(
+      'sugadintas',
+      color: 'B', // Request black since we're lower rated
+      main: preset.timeControl.mainTime?.inMinutes ?? 60,
+      overtime: preset.timeControl.timePerPeriod?.inMinutes ?? 5,
+    );
+    _logger.info('Sent match request to sugadintas');
+  } catch (e) {
+    subscription?.cancel();
+    throw Exception('Failed to send match request: $e');
+  }
+
+  return completer.future;
+}
   @override
-  void stopAutomatch() {}
+  void stopAutomatch() {
+    final username = _userInfo.value?.username;
+    if (username != null && username.isNotEmpty) {
+      _tcpManager.sendUnmatch(username);
+    }
+  }
 
   @override
   Future<List<GameSummary>> listGames() async {

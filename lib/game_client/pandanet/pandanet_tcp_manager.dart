@@ -21,16 +21,22 @@ class PandanetTcpManager {
       _connected = true;
       _logger.info('Connected to server.');
 
-      _socket!
-          .cast<List<int>>()
-          .transform(utf8.decoder)
-          .transform(const LineSplitter())
-          .listen(
-            _handleLine,
-            onError: _onError,
-            onDone: _onDone,
-            cancelOnError: false,
+      // Replace the UTF-8 decoder with custom byte handling
+      _socket!.listen(
+        (List<int> data) {
+          // Convert bytes to string, replacing invalid UTF-8 sequences
+          final String text = String.fromCharCodes(
+            data.map((byte) => byte < 128 ? byte : 0xFFFD)
           );
+          
+          for (final line in text.split('\n')) {
+            _handleLine(line);
+          }
+        },
+        onError: _onError,
+        onDone: _onDone,
+        cancelOnError: false,
+      );
 
       _logger.info('Logging in as $username...');
       _socket!.writeln(username);
