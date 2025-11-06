@@ -199,109 +199,102 @@ class PandaNetGameClient extends GameClient {
 
   @override
   Future<Game?> ongoingGame() async => null;
-@override
-Future<Game> findGame(String presetId) async {
-  final username = _userInfo.value?.username;
-  if (username == null || username.isEmpty) {
-    throw Exception('Not logged in');
-  }
 
-  final preset = automatchPresets.firstWhere(
-    (p) => p.id == presetId,
-    orElse: () => automatchPresets.first,
-  );
-
-  if (!_tcpManager.isConnected) {
-    try {
-      await _tcpManager.connect(username, _password.value);
-    } catch (e) {
-      _logger.warning('Failed to connect to TCP server: $e');
-      throw Exception('Failed to connect to game server');
+  @override
+  Future<Game> findGame(String presetId) async {
+    final username = _userInfo.value?.username;
+    if (username == null || username.isEmpty) {
+      throw Exception('Not logged in');
     }
-  }
 
-  final completer = Completer<Game>();
-  StreamSubscription<String>? subscription;
-  String? gameId;
-  String? blackPlayer;
-  String? whitePlayer;
-  int handicap = 0;
+    final preset = automatchPresets.firstWhere(
+      (p) => p.id == presetId,
+      orElse: () => automatchPresets.first,
+    );
 
-  subscription = _tcpManager.messages.listen((message) {
-    if (message.startsWith('15 Game')) {
-      final match = RegExp(r'15 Game (\d+) I: (\w+) .* vs (\w+)').firstMatch(message);
-      if (match != null) {
-        gameId = match.group(1);
-        blackPlayer = match.group(2);
-        whitePlayer = match.group(3);
-      }
-    } else if (message.contains('Handicap')) {
-      final match = RegExp(r'Handicap (\d+)').firstMatch(message);
-      if (match != null) {
-        handicap = int.parse(match.group(1)!);
-      }
-    } else if (message.contains('Match [') && message.contains('accepted')) {
-      _logger.info('Match accepted: $message');
-      
-      if (gameId != null && blackPlayer != null && whitePlayer != null) {
-        final game = PandanetGame(
-          tcp: _tcpManager,
-          id: gameId!,
-          boardSize: preset.boardSize,
-          timeControl: preset.timeControl,
-          myColor: username == blackPlayer ? wq.Color.black : wq.Color.white,
-        );
+    if (!_tcpManager.isConnected) {
+      await _tcpManager.connect(username, _password.value);
+    }
 
-        if (username == blackPlayer) {
-          game.black.value = _userInfo.value!;
-          game.white.value = UserInfo.empty().copyWith(
-            userId: whitePlayer,
-            username: whitePlayer,
-            online: true,
+    final completer = Completer<Game>();
+    StreamSubscription<String>? subscription;
+
+    String? gameId;
+    String? blackPlayer;
+    String? whitePlayer;
+    int handicap = 0;
+
+    subscription = _tcpManager.messages.listen((message) {
+      if (message.startsWith('15 Game')) {
+        final match =
+            RegExp(r'15 Game (\d+) I: (\w+) .* vs (\w+)').firstMatch(message);
+        if (match != null) {
+          gameId = match.group(1);
+          blackPlayer = match.group(2);
+          whitePlayer = match.group(3);
+        }
+      } else if (message.contains('Handicap')) {
+        final m = RegExp(r'Handicap\s+(\d+)').firstMatch(message);
+        if (m != null) {
+          handicap = int.parse(m.group(1)!);
+          _logger.info('Detected handicap: $handicap');
+        }
+      } else if (message.contains('Match [') && message.contains('accepted')) {
+        _logger.info('Match accepted: $message');
+
+        if (gameId != null && blackPlayer != null && whitePlayer != null) {
+          final myColor =
+              username == blackPlayer ? wq.Color.black : wq.Color.white;
+
+          final game = PandanetGame(
+            tcp: _tcpManager,
+            id: gameId!,
+            boardSize: preset.boardSize,
+            timeControl: preset.timeControl,
+            myColor: myColor,
+            handicap: handicap,
+            komi: handicap > 0 ? 0.0 : 6.5,
           );
-        } else {
-          game.white.value = _userInfo.value!;
+
           game.black.value = UserInfo.empty().copyWith(
             userId: blackPlayer,
             username: blackPlayer,
             online: true,
           );
+          game.white.value = UserInfo.empty().copyWith(
+            userId: whitePlayer,
+            username: whitePlayer,
+            online: true,
+          );
+
+          _logger.info(
+            'Game created: id=$gameId, black=$blackPlayer, white=$whitePlayer, '
+            'handicap=$handicap, myColor=${myColor.name}',
+          );
+
+          subscription?.cancel();
+          completer.complete(game);
         }
-
-        // Send game command to get initial board state
-        _tcpManager.send('move $gameId');
-
+      } else if (message.contains('declines your request')) {
         subscription?.cancel();
-        completer.complete(game);
+        if (!completer.isCompleted) completer.completeError('Match declined');
       }
-    } else if (message.contains('declines your request')) {
+    }, onError: (e) {
       subscription?.cancel();
-      if (!completer.isCompleted) {
-        completer.completeError('Match declined');
-      }
-    }
-  }, onError: (e) {
-    subscription?.cancel();
-    if (!completer.isCompleted) {
-      completer.completeError(e);
-    }
-  });
+      if (!completer.isCompleted) completer.completeError(e);
+    });
 
-  try {
     _tcpManager.sendMatch(
       'sugadintas',
-      color: 'B', // Request black since we're lower rated
+      color: 'B',
       main: preset.timeControl.mainTime?.inMinutes ?? 60,
       overtime: preset.timeControl.timePerPeriod?.inMinutes ?? 5,
     );
+
     _logger.info('Sent match request to sugadintas');
-  } catch (e) {
-    subscription?.cancel();
-    throw Exception('Failed to send match request: $e');
+    return completer.future;
   }
 
-  return completer.future;
-}
   @override
   void stopAutomatch() {
     final username = _userInfo.value?.username;
