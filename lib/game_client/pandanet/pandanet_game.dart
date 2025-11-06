@@ -21,20 +21,35 @@ class PandanetGame extends Game {
   StreamSubscription<String>? _sub;
   bool _handicapApplied = false;
   static List<(int, int)> handicapPoints19(int n) {
-    final pts = <(int, int)>[
-      (3, 15), // BL
-      (15, 3), // TR
-      (15, 15), // BR
-      (3, 3), // TL
-      (9, 9), // Center
-      (3, 9), // ML
-      (15, 9), // MR
-      (9, 3), // TM
-      (9, 15), // BM
+    const pts = <(int, int)>[
+      // Base star points (SGF-style)
+      (3, 15), // 1
+      (15, 3), // 2
+      (3, 3), // 3
+      (15, 15), // 4
+      (9, 9), // 5
+      (3, 9), // 6
+      (15, 9), // 7
+      (9, 3), // 8
+      (9, 15), // 9
     ];
-    if (n <= 0) return const [];
-    if (n >= pts.length) return pts;
-    return pts.sublist(0, n);
+
+    final seq = <List<int>>[
+      [], // 0
+      [], // 1 (no stones, color only)
+      [0, 1], // 2
+      [0, 1, 2], // 3
+      [0, 1, 2, 3], // 4
+      [0, 1, 2, 3, 4], // 5
+      [0, 1, 2, 3, 5, 6], // 6
+      [5, 4, 6], // 7 (center + sides)
+      [0, 1, 2, 3, 5, 6, 7, 8], // 8
+      [0, 1, 2, 3, 4, 5, 6, 7, 8], // 9
+    ];
+
+    if (n < 2) return const [];
+    final used = seq[n.clamp(2, 9)];
+    return [for (final i in used) pts[i]];
   }
 
   PandanetGame({
@@ -166,24 +181,23 @@ class PandanetGame extends Game {
     }
   }
 
-(int, int) parseCoordinate(String coord) {
-  final letter = coord[0].toUpperCase();
-  final number = int.tryParse(coord.substring(1)) ?? 1;
+  (int, int) parseCoordinate(String coord) {
+    final letter = coord[0].toUpperCase();
+    final number = int.tryParse(coord.substring(1)) ?? 1;
 
-  final col = _goLetters.indexOf(letter);
-  final row = boardSize - number;
+    final col = _goLetters.indexOf(letter);
+    final row = boardSize - number;
 
-  return (row, col);
-}
+    return (row, col);
+  }
 
-String formatCoordinates((int x, int y) point) {
-  final col = point.$2;
-  final row = boardSize - point.$1;
-  final letter = _goLetters[col];
-  final number = row;
-  return '$letter$number';
-}
-
+  String formatCoordinates((int x, int y) point) {
+    final col = point.$2;
+    final row = boardSize - point.$1;
+    final letter = _goLetters[col];
+    final number = row;
+    return '$letter$number';
+  }
 
   @override
   Stream<wq.Move?> moves() => _moveController.stream;
