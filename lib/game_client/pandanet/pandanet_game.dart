@@ -166,21 +166,24 @@ class PandanetGame extends Game {
     }
   }
 
-  (int, int) parseCoordinate(String coord) {
-    final letter = coord[0].toUpperCase();
-    final number = int.tryParse(coord.substring(1)) ?? 1;
-    final col = _goLetters.indexOf(letter);
-    final row = 19 - number;
-    return (col, row);
-  }
+(int, int) parseCoordinate(String coord) {
+  final letter = coord[0].toUpperCase();
+  final number = int.tryParse(coord.substring(1)) ?? 1;
 
-  String formatCoordinates((int x, int y) point) {
-    final col = point.$1;
-    final row = point.$2;
-    final letter = _goLetters[col];
-    final number = 19 - row;
-    return '$letter$number';
-  }
+  final col = _goLetters.indexOf(letter);
+  final row = boardSize - number;
+
+  return (row, col);
+}
+
+String formatCoordinates((int x, int y) point) {
+  final col = point.$2;
+  final row = boardSize - point.$1;
+  final letter = _goLetters[col];
+  final number = row;
+  return '$letter$number';
+}
+
 
   @override
   Stream<wq.Move?> moves() => _moveController.stream;
