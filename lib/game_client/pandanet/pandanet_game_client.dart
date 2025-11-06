@@ -220,8 +220,8 @@ class PandaNetGameClient extends GameClient {
     StreamSubscription<String>? subscription;
 
     String? gameId;
-    String? blackPlayer;
     String? whitePlayer;
+    String? blackPlayer;
     int handicap = 0;
 
     subscription = _tcpManager.messages.listen((message) {
@@ -230,8 +230,10 @@ class PandaNetGameClient extends GameClient {
             RegExp(r'15 Game (\d+) I: (\w+) .* vs (\w+)').firstMatch(message);
         if (match != null) {
           gameId = match.group(1);
-          blackPlayer = match.group(2);
-          whitePlayer = match.group(3);
+          whitePlayer = match.group(2);
+          blackPlayer = match.group(3);
+          _logger
+              .fine('Parsed players → White=$whitePlayer, Black=$blackPlayer');
         }
       } else if (message.contains('Handicap')) {
         final m = RegExp(r'Handicap\s+(\d+)').firstMatch(message);
@@ -242,34 +244,43 @@ class PandaNetGameClient extends GameClient {
       } else if (message.contains('Match [') && message.contains('accepted')) {
         _logger.info('Match accepted: $message');
 
-        if (gameId != null && blackPlayer != null && whitePlayer != null) {
+        if (gameId != null && whitePlayer != null && blackPlayer != null) {
           final myColor =
-              username == blackPlayer ? wq.Color.black : wq.Color.white;
+              username == whitePlayer ? wq.Color.white : wq.Color.black;
+
+          final previousMoves = <wq.Move>[];
+          if (handicap >= 2) {
+            final pts = PandanetGame.handicapPoints19(handicap.clamp(2, 9));
+            for (final p in pts) {
+              previousMoves.add((col: wq.Color.black, p: p));
+            }
+          }
 
           final game = PandanetGame(
             tcp: _tcpManager,
             id: gameId!,
             boardSize: preset.boardSize,
             timeControl: preset.timeControl,
-            myColor: myColor,
+            myColor: handicap > 0 ? wq.Color.white : myColor,
             handicap: handicap,
             komi: handicap > 0 ? 0.0 : 6.5,
+            previousMoves: previousMoves,
           );
 
-          game.black.value = UserInfo.empty().copyWith(
-            userId: blackPlayer,
-            username: blackPlayer,
-            online: true,
-          );
           game.white.value = UserInfo.empty().copyWith(
             userId: whitePlayer,
             username: whitePlayer,
             online: true,
           );
+          game.black.value = UserInfo.empty().copyWith(
+            userId: blackPlayer,
+            username: blackPlayer,
+            online: true,
+          );
 
           _logger.info(
-            'Game created: id=$gameId, black=$blackPlayer, white=$whitePlayer, '
-            'handicap=$handicap, myColor=${myColor.name}',
+            'Game created: id=$gameId, white=$whitePlayer, black=$blackPlayer, '
+            'handicap=$handicap, myColor=${game.myColor.name}',
           );
 
           subscription?.cancel();
@@ -285,13 +296,13 @@ class PandaNetGameClient extends GameClient {
     });
 
     _tcpManager.sendMatch(
-      'sugadintas',
+      'Hurakami',
       color: 'B',
       main: preset.timeControl.mainTime?.inMinutes ?? 60,
       overtime: preset.timeControl.timePerPeriod?.inMinutes ?? 5,
     );
 
-    _logger.info('Sent match request to sugadintas');
+    _logger.info('Sent match request to Hurakami');
     return completer.future;
   }
 

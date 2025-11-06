@@ -14,10 +14,28 @@ class PandanetGame extends Game {
   late final Completer<GameResult> _resultCompleter;
   final _moveController = StreamController<wq.Move?>.broadcast();
   final _automaticCountingController = StreamController<bool>.broadcast();
-  final _countingResultController = StreamController<CountingResult>.broadcast();
+  final _countingResultController =
+      StreamController<CountingResult>.broadcast();
 
   GameResult? _lastResult;
   StreamSubscription<String>? _sub;
+  bool _handicapApplied = false;
+  static List<(int, int)> handicapPoints19(int n) {
+    final pts = <(int, int)>[
+      (3, 15), // BL
+      (15, 3), // TR
+      (15, 15), // BR
+      (3, 3), // TL
+      (9, 9), // Center
+      (3, 9), // ML
+      (15, 9), // MR
+      (9, 3), // TM
+      (9, 15), // BM
+    ];
+    if (n <= 0) return const [];
+    if (n >= pts.length) return pts;
+    return pts.sublist(0, n);
+  }
 
   PandanetGame({
     required String id,
@@ -27,6 +45,7 @@ class PandanetGame extends Game {
     required this.tcp,
     int handicap = 0,
     double komi = 6.5,
+    List<wq.Move> previousMoves = const [],
   }) : super(
           id: id,
           boardSize: boardSize,
@@ -35,15 +54,21 @@ class PandanetGame extends Game {
           komi: komi,
           myColor: myColor,
           timeControl: timeControl,
-          previousMoves: const [],
+          previousMoves: previousMoves,
         ) {
     _resultCompleter = Completer<GameResult>();
     _sub = tcp.messages.listen(_onMessage, onError: (_) {
-      // If the TCP stream errors out before a result, surface it to the UI.
       if (!_resultCompleter.isCompleted) {
         _resultCompleter.completeError('Connection lost before game finished');
       }
     });
+    if (handicap >= 2) {
+      final pts = handicapPoints19(handicap.clamp(2, 9));
+      for (final p in pts) {
+        _moveController.add((col: wq.Color.black, p: p));
+      }
+      _handicapApplied = true;
+    }
   }
 
   List<String> get _goLetters =>
@@ -54,16 +79,44 @@ class PandanetGame extends Game {
   void _onMessage(String line) {
     final text = line.trim();
 
-    // Only react to this game’s announcements or generic move lines.
+    final handiMatch = RegExp(r'\(B\):\s*Handicap\s+(\d+)').firstMatch(text);
+    if (handiMatch != null) {
+      final handiCount = int.parse(handiMatch.group(1)!);
+      print('Detected handicap: $handiCount (emitting stones)');
+
+      if (handiCount >= 2) {
+        final pts = handicapPoints19(handiCount.clamp(2, 9));
+        for (final p in pts) {
+          _moveController.add((col: wq.Color.black, p: p));
+        }
+      }
+      return;
+    }
+
     final isThisGame = RegExp(r'Game\s+$id\b').hasMatch(text) ||
         RegExp(r'\{Game\s+$id\b').hasMatch(text);
-    final isMoveLine =
-        RegExp(r'^\s*15\s+\d+\s*\([BW]\):').hasMatch(text) ||
+    final isMoveLine = RegExp(r'^\s*15\s+\d+\s*\([BW]\):').hasMatch(text) ||
         RegExp(r'\(\s*[BW]\s*\):\s*[A-Ta-t]\d{1,2}').hasMatch(text);
+
+    if (!_handicapApplied && isThisGame) {
+      final h = RegExp(r'\bHandicap\s+(\d+)\b').firstMatch(text);
+      if (h != null) {
+        final hCount = int.parse(h.group(1)!);
+        if (hCount >= 2) {
+          final pts = handicapPoints19(hCount.clamp(2, 9));
+          for (final p in pts) {
+            _moveController.add((col: wq.Color.black, p: p));
+          }
+        }
+        _handicapApplied = true;
+        return;
+      }
+    }
 
     if (!isThisGame && !isMoveLine) return;
 
-    final mv = RegExp(r'\(\s*([BW])\s*\):\s*([A-Ta-t]\d{1,2})').firstMatch(text);
+    final mv =
+        RegExp(r'\(\s*([BW])\s*\):\s*([A-Ta-t]\d{1,2})').firstMatch(text);
     if (mv != null) {
       final col = mv.group(1) == 'B' ? wq.Color.black : wq.Color.white;
       final parsed = parseCoordinate(mv.group(2)!);
@@ -153,8 +206,7 @@ class PandanetGame extends Game {
       _automaticCountingController.stream;
 
   @override
-  Stream<CountingResult> countingResults() =>
-      _countingResultController.stream;
+  Stream<CountingResult> countingResults() => _countingResultController.stream;
 
   @override
   Stream<bool> countingResultResponses() => const Stream.empty();

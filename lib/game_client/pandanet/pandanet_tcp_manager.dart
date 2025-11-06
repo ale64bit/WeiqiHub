@@ -26,9 +26,8 @@ class PandanetTcpManager {
         (List<int> data) {
           // Convert bytes to string, replacing invalid UTF-8 sequences
           final String text = String.fromCharCodes(
-            data.map((byte) => byte < 128 ? byte : 0xFFFD)
-          );
-          
+              data.map((byte) => byte < 128 ? byte : 0xFFFD));
+
           for (final line in text.split('\n')) {
             _handleLine(line);
           }
@@ -58,7 +57,8 @@ class PandanetTcpManager {
   }
 
   void sendWho() => send('who');
-  void sendMatch(String opponent, {String color = 'B', int main = 60, int overtime = 5}) =>
+  void sendMatch(String opponent,
+          {String color = 'B', int main = 60, int overtime = 5}) =>
       send('match $opponent $color 19 $main $overtime');
   void sendUnmatch(String opponent) => send('unmatch $opponent');
   void sendResign() => send('resign');
@@ -76,11 +76,35 @@ class PandanetTcpManager {
   }
 
   bool _isNoise(String text) {
-    if (text.startsWith('1 ') || text.startsWith('9 File')) return true;
-    if (text.contains('has connected') || text.contains('has disconnected')) return true;
-    if (text.contains('Copyright') || text.contains('PANDANET Inc.')) return true;
-    if (text.contains('Welcome to IGS') || text.contains('~~~~~~~~~~~~~~')) return true;
-    if (text.startsWith('@@') || text.contains('@@@@@@@@')) return true;
+    if (text.isEmpty) return true;
+    final t = text.trim();
+
+    if (t == '1 1' || t == '1 5' || t == '1 6') return true;
+
+    if (t.startsWith('** ') ||
+        t.startsWith('@@') ||
+        t.contains('@@@@@@@@') ||
+        t.contains('Copyright') ||
+        t.contains('PANDANET Inc.') ||
+        t.contains('Welcome to IGS') ||
+        t.contains('Pbot') ||
+        t.contains('IGS entry') ||
+        t.contains('http://') ||
+        t.contains('help ') ||
+        t.contains('m( 00 )m') ||
+        t.contains('Art:') ||
+        t.contains('Lessons:') ||
+        t.contains('glGo')) return true;
+
+    if (t.contains('has connected') || t.contains('has disconnected'))
+      return true;
+
+    if (RegExp(r'^\d+\s+\{(Match|Game)\s+\d+:').hasMatch(t)) return true;
+
+    if (t.startsWith('2 Game saved.') ||
+        t.startsWith('51 Say') ||
+        t.startsWith('19 *')) return true;
+
     return false;
   }
 
