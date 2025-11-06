@@ -570,711 +570,712 @@ class AppLocalizationsIt extends AppLocalizations {
   String get taskSourceFromTaskTypes => 'Tipologia';
 
   @override
-  String get taskTag_afterJoseki => 'After joseki';
+  String get taskTag_afterJoseki => 'Dopo il joseki';
 
   @override
-  String get taskTag_aiOpening => 'AI opening';
+  String get taskTag_aiOpening => 'Aperture AI';
 
   @override
-  String get taskTag_aiVariations => 'AI variations';
+  String get taskTag_aiVariations => 'Varianti AI';
 
   @override
-  String get taskTag_attack => 'Attack';
+  String get taskTag_attack => 'Attaccare';
 
   @override
-  String get taskTag_attackAndDefenseInKo => 'Attack and defense in a ko';
+  String get taskTag_attackAndDefenseInKo => 'Attacco e difesa nel ko';
 
   @override
-  String get taskTag_attackAndDefenseOfCuts => 'Attack and defense of cuts';
+  String get taskTag_attackAndDefenseOfCuts => 'Attacco e difesa dei tagli';
 
   @override
   String get taskTag_attackAndDefenseOfInvadingStones =>
-      'Attack and defense of invading stones';
+      'Attacco e difesa nelle invasioni';
 
   @override
-  String get taskTag_avoidKo => 'Avoid ko';
+  String get taskTag_avoidKo => 'Evita il ko';
 
   @override
-  String get taskTag_avoidMakingDeadShape => 'Avoid making dead shape';
+  String get taskTag_avoidMakingDeadShape => 'Evita di creare una forma morta';
 
   @override
-  String get taskTag_avoidTrap => 'Avoid trap';
+  String get taskTag_avoidTrap => 'Evita le trappole';
 
   @override
-  String get taskTag_basicEndgame => 'Endgame: basic';
+  String get taskTag_basicEndgame => 'Fine gioco: base';
 
   @override
-  String get taskTag_basicLifeAndDeath => 'Life & death: basic';
+  String get taskTag_basicLifeAndDeath => 'Vita e morte: base';
 
   @override
-  String get taskTag_basicMoves => 'Basic moves';
+  String get taskTag_basicMoves => 'Movimenti di base';
 
   @override
   String get taskTag_basicTesuji => 'Tesuji';
 
   @override
-  String get taskTag_beginner => 'Beginner';
+  String get taskTag_beginner => 'Principiante';
 
   @override
-  String get taskTag_bend => 'Bend';
+  String get taskTag_bend => 'Piega (bend)';
 
   @override
-  String get taskTag_bentFour => 'Bent four';
+  String get taskTag_bentFour => 'Quattro piegato (bent four)';
 
   @override
-  String get taskTag_bentFourInTheCorner => 'Bent four in the corner';
+  String get taskTag_bentFourInTheCorner => 'Quattro piegato nell\'angolo';
 
   @override
-  String get taskTag_bentThree => 'Bent three';
+  String get taskTag_bentThree => 'Tre piegato (bent three)';
 
   @override
-  String get taskTag_bigEyeLiberties => 'Big eye\'s liberties';
+  String get taskTag_bigEyeLiberties => 'Libertà degli occhi grandi';
 
   @override
-  String get taskTag_bigEyeVsSmallEye => 'Big eye vs small eye';
+  String get taskTag_bigEyeVsSmallEye => 'Occhio grande vs. occhio piccolo';
 
   @override
-  String get taskTag_bigPoints => 'Big points';
+  String get taskTag_bigPoints => 'Punti grandi';
 
   @override
-  String get taskTag_blindSpot => 'Blind spot';
+  String get taskTag_blindSpot => 'Punto cieco';
 
   @override
-  String get taskTag_breakEye => 'Break eye';
+  String get taskTag_breakEye => 'Distruggi l\'occhio';
 
   @override
-  String get taskTag_breakEyeInOneStep => 'Break eye in one step';
+  String get taskTag_breakEyeInOneStep => 'Distruggi l\'occhio in un passo';
 
   @override
-  String get taskTag_breakEyeInSente => 'Break eye in sente';
+  String get taskTag_breakEyeInSente => 'Distruggi l\'occhio in sente';
 
   @override
-  String get taskTag_breakOut => 'Break out';
+  String get taskTag_breakOut => 'Evadi';
 
   @override
-  String get taskTag_breakPoints => 'Break points';
+  String get taskTag_breakPoints => 'Togli punti';
 
   @override
-  String get taskTag_breakShape => 'Break shape';
+  String get taskTag_breakShape => 'Rovina la forma';
 
   @override
-  String get taskTag_bridgeUnder => 'Bridge under';
+  String get taskTag_bridgeUnder => 'Ponte (watari)';
 
   @override
-  String get taskTag_brilliantSequence => 'Brilliant sequence';
+  String get taskTag_brilliantSequence => 'Sequenze brillanti';
 
   @override
-  String get taskTag_bulkyFive => 'Bulky five';
+  String get taskTag_bulkyFive => 'Cinque a manico di coltello (bulky five)';
 
   @override
   String get taskTag_bump => 'Bump';
 
   @override
-  String get taskTag_captureBySnapback => 'Capture by snapback';
+  String get taskTag_captureBySnapback => 'Cattura con snapback';
 
   @override
-  String get taskTag_captureInLadder => 'Capture in ladder';
+  String get taskTag_captureInLadder => 'Cattura in scala';
 
   @override
-  String get taskTag_captureInOneMove => 'Capture in one move';
+  String get taskTag_captureInOneMove => 'Cattura in una mossa';
 
   @override
-  String get taskTag_captureOnTheSide => 'Capture on the side';
+  String get taskTag_captureOnTheSide => 'Cattura sul lato';
 
   @override
-  String get taskTag_captureToLive => 'Capture to live';
+  String get taskTag_captureToLive => 'Cattura per vivere';
 
   @override
-  String get taskTag_captureTwoRecaptureOne => 'Capture two, recapture one';
+  String get taskTag_captureTwoRecaptureOne => 'Cattura due, ricattura una';
 
   @override
-  String get taskTag_capturingRace => 'Capturing race';
+  String get taskTag_capturingRace => 'Semeai (capturing race)';
 
   @override
-  String get taskTag_capturingTechniques => 'Capturing techniques';
+  String get taskTag_capturingTechniques => 'Tecniche di cattura';
 
   @override
   String get taskTag_carpentersSquareAndSimilar =>
-      'Carpenter\'s square and similar';
+      'Quadrato del carpentiere e simili';
 
   @override
-  String get taskTag_chooseTheFight => 'Choose the fight';
+  String get taskTag_chooseTheFight => 'Scegli il combattimento';
 
   @override
-  String get taskTag_clamp => 'Clamp';
+  String get taskTag_clamp => 'Morsa (clamp)';
 
   @override
-  String get taskTag_clampCapture => 'Clamp capture';
+  String get taskTag_clampCapture => 'Cattura con la morsa';
 
   @override
-  String get taskTag_closeInCapture => 'Closing-in capture';
+  String get taskTag_closeInCapture => 'Cattura progressiva';
 
   @override
-  String get taskTag_combination => 'Combination';
+  String get taskTag_combination => 'Combinazione';
 
   @override
-  String get taskTag_commonLifeAndDeath => 'Life & death: common shapes';
+  String get taskTag_commonLifeAndDeath => 'Vita e morte: forme tipiche';
 
   @override
-  String get taskTag_compareSize => 'Compare size';
+  String get taskTag_compareSize => 'Confronta la dimensione';
 
   @override
-  String get taskTag_compareValue => 'Compare value';
+  String get taskTag_compareValue => 'Confronta il valore';
 
   @override
   String get taskTag_completeKoToSecureEndgameAdvantage =>
-      'Complete ko to secure endgame advantage';
+      'Completa il ko nel fine gioco';
 
   @override
-  String get taskTag_compositeProblems => 'Composite tasks';
+  String get taskTag_compositeProblems => 'Problemi compositi';
 
   @override
-  String get taskTag_comprehensiveTasks => 'Comprehensive tasks';
+  String get taskTag_comprehensiveTasks => 'Problemi completi';
 
   @override
-  String get taskTag_connect => 'Connect';
+  String get taskTag_connect => 'Connetti';
 
   @override
-  String get taskTag_connectAndDie => 'Connect and die';
+  String get taskTag_connectAndDie => 'Connetti e muori (oiotoshi)';
 
   @override
-  String get taskTag_connectInOneMove => 'Connect in one move';
+  String get taskTag_connectInOneMove => 'Connetti in una mossa';
 
   @override
-  String get taskTag_contactFightTesuji => 'Contact fight tesuji';
+  String get taskTag_contactFightTesuji => 'Tesuji di combattimento a contatto';
 
   @override
-  String get taskTag_contactPlay => 'Contact play';
+  String get taskTag_contactPlay => 'Giocare a contatto (tsuke)';
 
   @override
-  String get taskTag_corner => 'Corner';
+  String get taskTag_corner => 'Angolo';
 
   @override
   String get taskTag_cornerIsGoldSideIsSilverCenterIsGrass =>
-      'Corner is gold, side is silver, center is grass';
+      'L\'angolo è oro, il lato è argento, il centro è erba';
 
   @override
-  String get taskTag_counter => 'Counter';
+  String get taskTag_counter => 'Resisti';
 
   @override
-  String get taskTag_counterAttack => 'Counter-attack';
+  String get taskTag_counterAttack => 'Contrattacca';
 
   @override
-  String get taskTag_cranesNest => 'Crane\'s nest';
+  String get taskTag_cranesNest => 'Nido di gru';
 
   @override
-  String get taskTag_crawl => 'Crawl';
+  String get taskTag_crawl => 'Striscia in seconda linea (crawl)';
 
   @override
-  String get taskTag_createShortageOfLiberties =>
-      'Create shortage of liberties';
+  String get taskTag_createShortageOfLiberties => 'Crea mancanza di libertà';
 
   @override
-  String get taskTag_crossedFive => 'Crossed five';
+  String get taskTag_crossedFive => 'Cinque a croce (crossed five)';
 
   @override
-  String get taskTag_cut => 'Cut';
+  String get taskTag_cut => 'Taglio';
 
   @override
-  String get taskTag_cut2 => 'Cut';
+  String get taskTag_cut2 => 'Taglio';
 
   @override
-  String get taskTag_cutAcross => 'Cut across';
+  String get taskTag_cutAcross => 'Taglia attraverso il keima';
 
   @override
-  String get taskTag_defendFromInvasion => 'Defend from invasion';
+  String get taskTag_defendFromInvasion => 'Difenditi da un\'invasione';
 
   @override
-  String get taskTag_defendPoints => 'Defend points';
+  String get taskTag_defendPoints => 'Difendi il punteggio';
 
   @override
-  String get taskTag_defendWeakPoint => 'Defend weak point';
+  String get taskTag_defendWeakPoint => 'Difendi i punti deboli';
 
   @override
-  String get taskTag_descent => 'Descent';
+  String get taskTag_descent => 'Discesa';
 
   @override
-  String get taskTag_diagonal => 'Diagonal';
+  String get taskTag_diagonal => 'Diagonale';
 
   @override
-  String get taskTag_directionOfCapture => 'Direction of capture';
+  String get taskTag_directionOfCapture => 'Direzione di cattura';
 
   @override
-  String get taskTag_directionOfEscape => 'Direction of escape';
+  String get taskTag_directionOfEscape => 'Direzione di fuga';
 
   @override
-  String get taskTag_directionOfPlay => 'Direction of play';
+  String get taskTag_directionOfPlay => 'Direzione di gioco';
 
   @override
   String get taskTag_doNotUnderestimateOpponent =>
-      'Do not underestimate opponent';
+      'Non sottostimare l\'avversario';
 
   @override
-  String get taskTag_doubleAtari => 'Double atari';
+  String get taskTag_doubleAtari => 'Doppio atari';
 
   @override
-  String get taskTag_doubleCapture => 'Double capture';
+  String get taskTag_doubleCapture => 'Doppia cattura';
 
   @override
-  String get taskTag_doubleKo => 'Double ko';
+  String get taskTag_doubleKo => 'Doppio ko';
 
   @override
-  String get taskTag_doubleSenteEndgame => 'Double sente endgame';
+  String get taskTag_doubleSenteEndgame => 'Fine gioco in doppio sente';
 
   @override
-  String get taskTag_doubleSnapback => 'Double snapback';
+  String get taskTag_doubleSnapback => 'Doppio snapback';
 
   @override
-  String get taskTag_endgame => 'Endgame: general';
+  String get taskTag_endgame => 'Fine gioco: generico';
 
   @override
-  String get taskTag_endgameFundamentals => 'Endgame fundamentals';
+  String get taskTag_endgameFundamentals => 'Fondamenti di fine gioco';
 
   @override
-  String get taskTag_endgameIn5x5 => 'Endgame on 5x5';
+  String get taskTag_endgameIn5x5 => 'Fine gioco sul 5x5';
 
   @override
-  String get taskTag_endgameOn4x4 => 'Endgame on 4x4';
+  String get taskTag_endgameOn4x4 => 'Fine gioco sul 4x4';
 
   @override
-  String get taskTag_endgameTesuji => 'Endgame tesuji';
+  String get taskTag_endgameTesuji => 'Tesuji di fine gioco';
 
   @override
-  String get taskTag_engulfingAtari => 'Engulfing atari';
+  String get taskTag_engulfingAtari => 'Atari per accerchiamento';
 
   @override
-  String get taskTag_escape => 'Escape';
+  String get taskTag_escape => 'Fuggi';
 
   @override
-  String get taskTag_escapeInOneMove => 'Escape in one move';
+  String get taskTag_escapeInOneMove => 'Fuggi in una mossa';
 
   @override
-  String get taskTag_exploitShapeWeakness => 'Exploit shape weakness';
+  String get taskTag_exploitShapeWeakness => 'Sfrutta le debolezze';
 
   @override
-  String get taskTag_eyeVsNoEye => 'Eye vs no-eye';
+  String get taskTag_eyeVsNoEye => 'Meari menashi (eye vs. no-eye)';
 
   @override
-  String get taskTag_fillNeutralPoints => 'Fill neutral points';
+  String get taskTag_fillNeutralPoints => 'Riempi i dame';
 
   @override
-  String get taskTag_findTheRoot => 'Find the root';
+  String get taskTag_findTheRoot => 'Trova la radice';
 
   @override
-  String get taskTag_firstLineBrilliantMove => 'First line brilliant move';
+  String get taskTag_firstLineBrilliantMove => 'Tesuji in prima linea';
 
   @override
-  String get taskTag_flowerSix => 'Flower six';
+  String get taskTag_flowerSix => 'Sei a grappolo d\'uva (rabbity six)';
 
   @override
   String get taskTag_goldenChickenStandingOnOneLeg =>
-      'Golden rooster standing on one leg';
+      'Il gallo d\'oro sta su una zampa';
 
   @override
-  String get taskTag_groupLiberties => 'Group liberties';
+  String get taskTag_groupLiberties => 'Libertà dei gruppi';
 
   @override
-  String get taskTag_groupsBase => 'Group\'s base';
+  String get taskTag_groupsBase => 'Base del gruppo';
 
   @override
   String get taskTag_hane => 'Hane';
 
   @override
-  String get taskTag_increaseEyeSpace => 'Increase eye space';
+  String get taskTag_increaseEyeSpace => 'Aumenta lo spazio vitale';
 
   @override
-  String get taskTag_increaseLiberties => 'Increase liberties';
+  String get taskTag_increaseLiberties => 'Aumenta le libertà';
 
   @override
-  String get taskTag_indirectAttack => 'Indirect attack';
+  String get taskTag_indirectAttack => 'Attacco indiretto';
 
   @override
-  String get taskTag_influenceKeyPoints => 'Influence key points';
+  String get taskTag_influenceKeyPoints => 'Punti chiave dell\'influenza';
 
   @override
-  String get taskTag_insideKill => 'Inside kill';
+  String get taskTag_insideKill => 'Uccidi dall\'interno';
 
   @override
-  String get taskTag_insideMoves => 'Inside moves';
+  String get taskTag_insideMoves => 'Mosse interne';
 
   @override
-  String get taskTag_interestingTasks => 'Interesting tasks';
+  String get taskTag_interestingTasks => 'Problemi interessanti';
 
   @override
-  String get taskTag_internalLibertyShortage => 'Internal liberty shortage';
+  String get taskTag_internalLibertyShortage => 'Carenza di libertà interne';
 
   @override
-  String get taskTag_invadingTechnique => 'Invading technique';
+  String get taskTag_invadingTechnique => 'Tecniche di invasione';
 
   @override
-  String get taskTag_invasion => 'Invasion';
+  String get taskTag_invasion => 'Invasione';
 
   @override
-  String get taskTag_jGroupAndSimilar => 'J-group and similar';
+  String get taskTag_jGroupAndSimilar => 'Gruppo J e simili';
 
   @override
-  String get taskTag_josekiFundamentals => 'Joseki fundamentals';
+  String get taskTag_josekiFundamentals => 'Fondamenti di joseki';
 
   @override
-  String get taskTag_jump => 'Jump';
+  String get taskTag_jump => 'Salto';
 
   @override
-  String get taskTag_keepSente => 'Keep sente';
+  String get taskTag_keepSente => 'Mantieni il sente';
 
   @override
-  String get taskTag_killAfterCapture => 'Kill after capture';
+  String get taskTag_killAfterCapture => 'Uccidi dopo la cattura';
 
   @override
-  String get taskTag_killByEyePointPlacement => 'Kill by eye point placement';
+  String get taskTag_killByEyePointPlacement =>
+      'Uccidi giocando nel punto vitale';
 
   @override
-  String get taskTag_knightsMove => 'Knight\'s move';
+  String get taskTag_knightsMove => 'Mossa del cavallo (keima)';
 
   @override
   String get taskTag_ko => 'Ko';
 
   @override
-  String get taskTag_kosumiWedge => 'Kosumi wedge';
+  String get taskTag_kosumiWedge => 'Taglia il kosumi (atekomi)';
 
   @override
-  String get taskTag_largeKnightsMove => 'Large knight move';
+  String get taskTag_largeKnightsMove => 'Mossa del cavallo grande (ogeima)';
 
   @override
-  String get taskTag_largeMoyoFight => 'Large moyo fight';
+  String get taskTag_largeMoyoFight => 'Combattimento nel moyo grande';
 
   @override
-  String get taskTag_lifeAndDeath => 'Life & death: general';
+  String get taskTag_lifeAndDeath => 'Vita e morte: generale';
 
   @override
-  String get taskTag_lifeAndDeathOn4x4 => 'Life and death on 4x4';
+  String get taskTag_lifeAndDeathOn4x4 => 'Vita e morte sul 4x4';
 
   @override
-  String get taskTag_lookForLeverage => 'Look for leverage';
+  String get taskTag_lookForLeverage => 'Sfrutta le forzanti';
 
   @override
-  String get taskTag_looseLadder => 'Loose ladder';
+  String get taskTag_looseLadder => 'Scala lasca';
 
   @override
-  String get taskTag_lovesickCut => 'Lovesick cut';
+  String get taskTag_lovesickCut => 'Taglio degli innamorati';
 
   @override
-  String get taskTag_makeEye => 'Make eye';
+  String get taskTag_makeEye => 'Fai un occhio';
 
   @override
-  String get taskTag_makeEyeInOneStep => 'Make eye in one step';
+  String get taskTag_makeEyeInOneStep => 'Fai un occhio in un passo';
 
   @override
-  String get taskTag_makeEyeInSente => 'Make eye in sente';
+  String get taskTag_makeEyeInSente => 'Fai un occhio in sente';
 
   @override
-  String get taskTag_makeKo => 'Make ko';
+  String get taskTag_makeKo => 'Fai ko';
 
   @override
-  String get taskTag_makeShape => 'Make shape';
+  String get taskTag_makeShape => 'Fai forma';
 
   @override
-  String get taskTag_middlegame => 'Middlegame';
+  String get taskTag_middlegame => 'Mediogioco (chuban)';
 
   @override
-  String get taskTag_monkeyClimbingMountain => 'Monkey climbing the mountain';
+  String get taskTag_monkeyClimbingMountain => 'La scimmia scala la montagna';
 
   @override
-  String get taskTag_mouseStealingOil => 'Mouse stealing oil';
+  String get taskTag_mouseStealingOil => 'Il topo ruba l\'olio';
 
   @override
-  String get taskTag_moveOut => 'Move out';
+  String get taskTag_moveOut => 'Scappa';
 
   @override
-  String get taskTag_moveTowardsEmptySpace => 'Move towards empty space';
+  String get taskTag_moveTowardsEmptySpace => 'Muovi verso lo spazio vuoto';
 
   @override
-  String get taskTag_multipleBrilliantMoves => 'Multiple brilliant moves';
+  String get taskTag_multipleBrilliantMoves => 'Tesuji multipli';
 
   @override
-  String get taskTag_net => 'Net';
+  String get taskTag_net => 'Rete (geta)';
 
   @override
-  String get taskTag_netCapture => 'Net capture';
+  String get taskTag_netCapture => 'Cattura con rete';
 
   @override
-  String get taskTag_observeSubtleDifference => 'Observe subtle difference';
+  String get taskTag_observeSubtleDifference => 'Osserva le piccole differenze';
 
   @override
   String get taskTag_occupyEncloseAndApproachCorner =>
-      'Occupy, enclose and approach corners';
+      'Occupa, circonda e approccia gli angoli';
 
   @override
-  String get taskTag_oneStoneTwoPurposes => 'One stone, two purposes';
+  String get taskTag_oneStoneTwoPurposes => 'Una pietra, due scopi';
 
   @override
-  String get taskTag_opening => 'Opening';
+  String get taskTag_opening => 'Apertura (fuseki)';
 
   @override
-  String get taskTag_openingChoice => 'Opening choice';
+  String get taskTag_openingChoice => 'Scegli l\'apertura';
 
   @override
-  String get taskTag_openingFundamentals => 'Opening fundamentals';
+  String get taskTag_openingFundamentals => 'Fondamenti delle aperture';
 
   @override
-  String get taskTag_orderOfEndgameMoves => 'Order of endgame moves';
+  String get taskTag_orderOfEndgameMoves => 'Ordine delle mosse nel fine gioco';
 
   @override
-  String get taskTag_orderOfMoves => 'Order of moves';
+  String get taskTag_orderOfMoves => 'Ordine delle mosse';
 
   @override
-  String get taskTag_orderOfMovesInKo => 'Order of moves in a ko';
+  String get taskTag_orderOfMovesInKo => 'Ordine delle mosse nel ko';
 
   @override
-  String get taskTag_orioleCapturesButterfly => 'Oriole captures the butterfly';
+  String get taskTag_orioleCapturesButterfly => 'L\'oriolo cattura la farfalla';
 
   @override
-  String get taskTag_pincer => 'Pincer';
+  String get taskTag_pincer => 'Pinza';
 
   @override
-  String get taskTag_placement => 'Placement';
+  String get taskTag_placement => 'Oki (placement)';
 
   @override
-  String get taskTag_plunderingTechnique => 'Plundering technique';
+  String get taskTag_plunderingTechnique => 'Tecniche di saccheggio';
 
   @override
-  String get taskTag_preventBambooJoint => 'Prevent the bamboo joint';
+  String get taskTag_preventBambooJoint => 'Previeni il bamboo joint';
 
   @override
-  String get taskTag_preventBridgingUnder => 'Prevent bridging under';
+  String get taskTag_preventBridgingUnder => 'Impedisci il ponte (watari)';
 
   @override
   String get taskTag_preventOpponentFromApproaching =>
-      'Prevent opponent from approaching';
+      'Previeni l\'approccio dell\'avversario';
 
   @override
-  String get taskTag_probe => 'Probe';
+  String get taskTag_probe => 'Sonda (probe)';
 
   @override
-  String get taskTag_profitInSente => 'Profit in sente';
+  String get taskTag_profitInSente => 'Approfitta del sente';
 
   @override
-  String get taskTag_profitUsingLifeAndDeath => 'Profit using life and death';
+  String get taskTag_profitUsingLifeAndDeath => 'Approfitta della vita-e-morte';
 
   @override
-  String get taskTag_push => 'Push';
+  String get taskTag_push => 'Spinta';
 
   @override
-  String get taskTag_pyramidFour => 'Pyramid four';
+  String get taskTag_pyramidFour => 'Quattro a forma di T';
 
   @override
-  String get taskTag_realEyeAndFalseEye => 'Real eye vs false eye';
+  String get taskTag_realEyeAndFalseEye => 'Occhio vero vs. occhio falso';
 
   @override
-  String get taskTag_rectangularSix => 'Rectangular six';
+  String get taskTag_rectangularSix => 'Sei a forma di rettangolo';
 
   @override
-  String get taskTag_reduceEyeSpace => 'Reduce eye space';
+  String get taskTag_reduceEyeSpace => 'Riduci lo spazio vitale';
 
   @override
-  String get taskTag_reduceLiberties => 'Reduce liberties';
+  String get taskTag_reduceLiberties => 'Riduci le libertà';
 
   @override
-  String get taskTag_reduction => 'Reduction';
+  String get taskTag_reduction => 'Riduzione';
 
   @override
-  String get taskTag_runWeakGroup => 'Run weak group';
+  String get taskTag_runWeakGroup => 'Gestisci il gruppo debole';
 
   @override
   String get taskTag_sabakiAndUtilizingInfluence =>
-      'Sabaki and utilizing influence';
+      'Sabaki e utilizzo dell\'influenza';
 
   @override
-  String get taskTag_sacrifice => 'Sacrifice';
+  String get taskTag_sacrifice => 'Sacrificio';
 
   @override
-  String get taskTag_sacrificeAndSqueeze => 'Sacrifice and squeeze';
+  String get taskTag_sacrificeAndSqueeze => 'Sacrificio e squeeze';
 
   @override
-  String get taskTag_sealIn => 'Seal in';
+  String get taskTag_sealIn => 'Sigilla';
 
   @override
-  String get taskTag_secondLine => 'Second line';
+  String get taskTag_secondLine => 'Seconda linea';
 
   @override
-  String get taskTag_seizeTheOpportunity => 'Seize the opportunity';
+  String get taskTag_seizeTheOpportunity => 'Cogli l\'attimo';
 
   @override
   String get taskTag_seki => 'Seki';
 
   @override
-  String get taskTag_senteAndGote => 'Sente and gote';
+  String get taskTag_senteAndGote => 'Sente e gote';
 
   @override
-  String get taskTag_settleShape => 'Settle shape';
+  String get taskTag_settleShape => 'Stabilizza la forma';
 
   @override
-  String get taskTag_settleShapeInSente => 'Settle shape in sente';
+  String get taskTag_settleShapeInSente => 'Stabilizza la forma in sente';
 
   @override
-  String get taskTag_shape => 'Shape';
+  String get taskTag_shape => 'Forma';
 
   @override
-  String get taskTag_shapesVitalPoint => 'Shape\'s vital point';
+  String get taskTag_shapesVitalPoint => 'Punto vitale della forma';
 
   @override
-  String get taskTag_side => 'Side';
+  String get taskTag_side => 'Lato';
 
   @override
-  String get taskTag_smallBoardEndgame => 'Small board endgame';
+  String get taskTag_smallBoardEndgame => 'Fine gioco su goban piccolo';
 
   @override
   String get taskTag_snapback => 'Snapback';
 
   @override
-  String get taskTag_solidConnection => 'Solid connection';
+  String get taskTag_solidConnection => 'Connessione solida';
 
   @override
-  String get taskTag_solidExtension => 'Solid extension';
+  String get taskTag_solidExtension => 'Estensione solida';
 
   @override
-  String get taskTag_splitInOneMove => 'Split in one move';
+  String get taskTag_splitInOneMove => 'Separa in una mossa';
 
   @override
-  String get taskTag_splittingMove => 'Splitting move';
+  String get taskTag_splittingMove => 'Mosse per separare';
 
   @override
-  String get taskTag_squareFour => 'Square four';
+  String get taskTag_squareFour => 'Quattro a forma di quadrato';
 
   @override
   String get taskTag_squeeze => 'Squeeze';
 
   @override
-  String get taskTag_standardCapturingRaces => 'Standard capturing races';
+  String get taskTag_standardCapturingRaces => 'Semeai standard';
 
   @override
   String get taskTag_standardCornerAndSideEndgame =>
-      'Standard corner and side endgame';
+      'Fine gioco standard (angoli e lati)';
 
   @override
-  String get taskTag_straightFour => 'Straight four';
+  String get taskTag_straightFour => 'Quattro in fila';
 
   @override
-  String get taskTag_straightThree => 'Straight three';
+  String get taskTag_straightThree => 'Tre in fila';
 
   @override
-  String get taskTag_surroundTerritory => 'Surround territory';
+  String get taskTag_surroundTerritory => 'Circonda il territorio';
 
   @override
-  String get taskTag_symmetricShape => 'Symmetric shape';
+  String get taskTag_symmetricShape => 'Forme simmetriche';
 
   @override
   String get taskTag_techniqueForReinforcingGroups =>
-      'Technique for reinforcing groups';
+      'Tecniche per rafforzare i gruppi';
 
   @override
   String get taskTag_techniqueForSecuringTerritory =>
-      'Technique for securing territory';
+      'Tecniche per mettere in sicurezza un territorio';
 
   @override
-  String get taskTag_textbookTasks => 'Textbook tasks';
+  String get taskTag_textbookTasks => 'Problemi da libro';
 
   @override
-  String get taskTag_thirdAndFourthLine => 'Third and fourth line';
+  String get taskTag_thirdAndFourthLine => 'Terza e quarta linea';
 
   @override
-  String get taskTag_threeEyesTwoActions => 'Three eyes, two actions';
+  String get taskTag_threeEyesTwoActions => 'Tre occhi, due azioni';
 
   @override
   String get taskTag_threeSpaceExtensionFromTwoStones =>
-      'Three-space extension from two stones';
+      'Estensione di tre spazi da due pietre';
 
   @override
   String get taskTag_throwIn => 'Throw-in';
 
   @override
-  String get taskTag_tigersMouth => 'Tiger\'s mouth';
+  String get taskTag_tigersMouth => 'Bocca di tigre';
 
   @override
-  String get taskTag_tombstoneSqueeze => 'Tombstone squeeze';
+  String get taskTag_tombstoneSqueeze => 'Tombstone squeeze (Pagoda squeeze)';
 
   @override
   String get taskTag_tripodGroupWithExtraLegAndSimilar =>
-      'Tripod group with extra leg and similar';
+      'Tripode con gamba extra e simili';
 
   @override
-  String get taskTag_twoHaneGainOneLiberty => 'Double hane grows one liberty';
+  String get taskTag_twoHaneGainOneLiberty =>
+      'Il doppio hane aggiunge una libertà';
 
   @override
-  String get taskTag_twoHeadedDragon => 'Two-headed dragon';
+  String get taskTag_twoHeadedDragon => 'Drago a due teste';
 
   @override
-  String get taskTag_twoSpaceExtension => 'Two-space extension';
+  String get taskTag_twoSpaceExtension => 'Estensione a due spazi';
 
   @override
-  String get taskTag_typesOfKo => 'Types of ko';
+  String get taskTag_typesOfKo => 'Tipi di ko';
 
   @override
-  String get taskTag_underTheStones => 'Under the stones';
+  String get taskTag_underTheStones => 'Ishi no shita (under the stones)';
 
   @override
-  String get taskTag_underneathAttachment => 'Underneath attachment';
+  String get taskTag_underneathAttachment => 'Tsuke da sotto';
 
   @override
-  String get taskTag_urgentPointOfAFight => 'Urgent point of a fight';
+  String get taskTag_urgentPointOfAFight =>
+      'Punti urgenti per il combattimento';
 
   @override
-  String get taskTag_urgentPoints => 'Urgent points';
+  String get taskTag_urgentPoints => 'Punti urgenti';
 
   @override
-  String get taskTag_useConnectAndDie => 'Use connect and die';
+  String get taskTag_useConnectAndDie => 'Sfrutta oiotoshi (connect and die)';
 
   @override
   String get taskTag_useCornerSpecialProperties =>
-      'Use corner special properties';
+      'Usa le peculiarità dell\'angolo';
 
   @override
-  String get taskTag_useDescentToFirstLine => 'Use descent to first line';
+  String get taskTag_useDescentToFirstLine => 'Usa la discesa in prima linea';
 
   @override
-  String get taskTag_useInfluence => 'Use influence';
+  String get taskTag_useInfluence => 'Usa l\'influenza';
 
   @override
   String get taskTag_useOpponentsLifeAndDeath =>
-      'Use opponent\'s life and death';
+      'Sfrutta la vita-e-morte dell\'avversario';
 
   @override
-  String get taskTag_useShortageOfLiberties => 'Use shortage of liberties';
+  String get taskTag_useShortageOfLiberties => 'Sfrutta la carenza di libertà';
 
   @override
-  String get taskTag_useSnapback => 'Use snapback';
+  String get taskTag_useSnapback => 'Usa lo snapback';
 
   @override
-  String get taskTag_useSurroundingStones => 'Use surrounding stones';
+  String get taskTag_useSurroundingStones => 'Usa le pietre attorno';
 
   @override
-  String get taskTag_vitalAndUselessStones => 'Vital and useless stones';
+  String get taskTag_vitalAndUselessStones => 'Pietre vitali e pietre inutili';
 
   @override
-  String get taskTag_vitalPointForBothSides => 'Vital point for both sides';
+  String get taskTag_vitalPointForBothSides => 'Punti vitali per entrambi';
 
   @override
-  String get taskTag_vitalPointForCapturingRace =>
-      'Vital point for capturing race';
+  String get taskTag_vitalPointForCapturingRace => 'Punti vitali per il semeai';
 
   @override
   String get taskTag_vitalPointForIncreasingLiberties =>
-      'Vital point for increasing liberties';
+      'Punti vitali per aumentare le libertà';
 
   @override
-  String get taskTag_vitalPointForKill => 'Vital point for kill';
+  String get taskTag_vitalPointForKill => 'Punti vitali per uccidere';
 
   @override
-  String get taskTag_vitalPointForLife => 'Vital point for life';
+  String get taskTag_vitalPointForLife => 'Punti vitali per vivere';
 
   @override
   String get taskTag_vitalPointForReducingLiberties =>
-      'Vital point for reducing liberties';
+      'Punti vitali per ridurre le libertà';
 
   @override
   String get taskTag_wedge => 'Wedge';
 
   @override
-  String get taskTag_wedgingCapture => 'Wedging capture';
+  String get taskTag_wedgingCapture => 'Cattura con wedge';
 
   @override
   String get taskTimeout => 'Timeout';
