@@ -5,13 +5,12 @@ import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
 
 /// Manages chat presence tracking for a specific channel.
 ///
-/// Listens to chat-join and chat-part events from a WebSocket and maintains
-/// a set of currently present user IDs.
+/// The ChatPresenceManager serves two main roles:
 ///
-/// Automatically joins the chat channel on construction and leaves on disposal.
-/// It's important to join the chat channel for games because OGS uses this for
-/// determining online status of players in the game and requires presence
-/// to participate in scoring.
+/// 1. Join and leave the chat channel
+///     - This is necessary for OGS to track online status of players in games
+///      which it uses to allow or disallow participation in scoring.
+/// 2. Track users joining and leaving the channel
 class ChatPresenceManager {
   final Logger _logger = Logger('ChatPresenceManager');
   final String channel;
@@ -43,11 +42,7 @@ class ChatPresenceManager {
 
   void _handleMessage(Map<String, dynamic> message) {
     final event = message['event'] as String;
-    final data = message['data'] as Map<String, dynamic>?;
-
-    if (data == null) {
-      return;
-    }
+    final data = message['data'] as Map<String, dynamic>;
 
     final messageChannel = data['channel'] as String?;
     if (messageChannel != channel) {
@@ -63,10 +58,7 @@ class ChatPresenceManager {
   }
 
   void _handleChatJoin(Map<String, dynamic> data) {
-    final users = data['users'] as List<dynamic>?;
-    if (users == null) {
-      return;
-    }
+    final users = data['users'] as List<dynamic>;
 
     var changed = false;
     for (final user in users) {
