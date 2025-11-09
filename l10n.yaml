@@ -1,3 +1,5 @@
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
+# Output file for messages in template that are missing translations
+untranslated-messages-file: untranslated-messages.txt
