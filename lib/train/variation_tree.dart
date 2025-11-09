@@ -82,13 +82,13 @@ class VariationTreeIterator {
 
   wq.Point? nextProperMove() {
     if (tree == null || tree!.children.isEmpty) return null;
-    
+
     for (final entry in tree!.children.entries) {
       if (entry.value.finalStatus() == VariationStatus.correct) {
         return entry.key;
       }
     }
-    
+
     return null;
   }
 
