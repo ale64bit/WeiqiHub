@@ -5,6 +5,7 @@ import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/ogs/chat_presence_manager.dart';
 import 'package:wqhub/game_client/ogs/http_client.dart';
 import 'package:wqhub/game_client/ogs/game_utils.dart';
 import 'package:wqhub/game_client/ogs/ogs_websocket_manager.dart';
@@ -28,6 +29,8 @@ class OGSGame extends Game {
   late final StreamController<bool> _countingResultResponsesController;
   late final Completer<GameResult> _resultCompleter;
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
+  late final ChatPresenceManager _chatPresenceManager;
+  StreamSubscription<Set<String>>? _presenceSubscription;
 
   // Track all moves played in the game for board state reconstruction
   final List<wq.Move> _allMoves = [];
@@ -65,6 +68,14 @@ class OGSGame extends Game {
     _resultCompleter = Completer<GameResult>();
 
     _allMoves.addAll(previousMoves);
+
+    // Initialize chat presence manager - this will auto-join the chat channel
+    _chatPresenceManager = ChatPresenceManager(
+      channel: 'game-$id',
+      webSocketManager: _webSocketManager,
+    );
+    _presenceSubscription =
+        _chatPresenceManager.presenceUpdates.listen(_handlePresenceUpdate);
 
     _setupGame();
   }
@@ -196,11 +207,6 @@ class OGSGame extends Game {
     final event = message['event'] as String;
     final gamePrefix = 'game/$id/';
 
-    if (event == 'chat-join' || event == 'chat-part') {
-      _handleChatPresence(message);
-      return;
-    }
-
     // Only handle messages for this specific game
     if (!event.startsWith(gamePrefix)) {
       return;
@@ -239,41 +245,23 @@ class OGSGame extends Game {
     _logger.warning('Error received for game $id: $data');
   }
 
-  void _handleChatPresence(Map<String, dynamic> message) {
-    final event = message['event'] as String;
-    final data = message['data'] as Map<String, dynamic>;
-    final channel = data['channel'] as String;
+  void _handlePresenceUpdate(Set<String> presentUsers) {
+    _logger.fine('Presence update: ${presentUsers.length} users present');
 
-    if (channel != 'game-$id') {
-      return;
+    final blackUserId = black.value.userId;
+    final whiteUserId = white.value.userId;
+
+    final blackOnline = presentUsers.contains(blackUserId);
+    final whiteOnline = presentUsers.contains(whiteUserId);
+
+    if (black.value.online != blackOnline) {
+      black.value = black.value.copyWith(online: blackOnline);
+      _logger.fine('Updated black player presence: $blackOnline');
     }
 
-    if (event == 'chat-join') {
-      final users = data['users'] as List<dynamic>;
-      for (final user in users) {
-        final userId = user['id'].toString();
-        _logger.fine('User $userId joined game-$id chat');
-
-        _updatePlayerOnlineStatus(userId, true);
-      }
-    } else if (event == 'chat-part') {
-      final user = data['user'] as Map<String, dynamic>;
-      final userId = user['id'].toString();
-      _logger.fine('User $userId left game-$id chat');
-
-      _updatePlayerOnlineStatus(userId, false);
-    }
-  }
-
-  void _updatePlayerOnlineStatus(String userId, bool isOnline) {
-    if (black.value.userId == userId && black.value.online != isOnline) {
-      black.value = black.value.copyWith(online: isOnline);
-      _logger.fine('Updated black player presence: $isOnline');
-    }
-
-    if (white.value.userId == userId && white.value.online != isOnline) {
-      white.value = white.value.copyWith(online: isOnline);
-      _logger.fine('Updated white player presence: $isOnline');
+    if (white.value.online != whiteOnline) {
+      white.value = white.value.copyWith(online: whiteOnline);
+      _logger.fine('Updated white player presence: $whiteOnline');
     }
   }
 
@@ -369,7 +357,7 @@ class OGSGame extends Game {
       userId: userId,
       username: username,
       rank: rank,
-      online: false, // We don't have online status from gamedata
+      online: _chatPresenceManager.isPresent(userId),
       winCount: 0, // We don't have win/loss counts from gamedata
       lossCount: 0,
     );
@@ -715,6 +703,8 @@ class OGSGame extends Game {
 
   void dispose() {
     _messageSubscription?.cancel();
+    _presenceSubscription?.cancel();
+    _chatPresenceManager.dispose();
     _webSocketManager.leaveGame(id);
     _moveController.close();
     _countingResultController.close();
