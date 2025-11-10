@@ -7,6 +7,7 @@
 - accessibility: add setting to show wrong moves as crosses (@hemme)
 - Italian localization (@hemme)
 - Romanian localization (@adudenamedruby)
+- German localization (@StHagel, @InfoKendoKing)
 
 ## 0.1.10
 - now available in Chinese (simplified), Russian and Spanish
