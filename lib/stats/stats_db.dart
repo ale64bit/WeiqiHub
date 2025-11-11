@@ -324,7 +324,7 @@ class StatsDB {
         ''', persistent: true),
         _addDailyTaskAttemptCorrect = db.prepare('''
           INSERT INTO task_daily_stats(date, correct_count, wrong_count) 
-            VALUES(date(), 1, 0)
+            VALUES(date('now', 'localtime'), 1, 0)
             ON CONFLICT(date) DO UPDATE SET
               correct_count = correct_count+1;
         ''', persistent: true),
@@ -338,7 +338,7 @@ class StatsDB {
         ''', persistent: true),
         _addDailyTaskAttemptWrong = db.prepare('''
           INSERT INTO task_daily_stats(date, correct_count, wrong_count) 
-            VALUES(date(), 0, 1)
+            VALUES(date('now', 'localtime'), 0, 1)
             ON CONFLICT(date) DO UPDATE SET
               wrong_count = wrong_count+1;
         ''', persistent: true),
@@ -584,7 +584,7 @@ class StatsDB {
   (int, int) taskDailyStatsSince(DateTime since) {
     final dateFormat = DateFormat('yyyy-MM-dd');
     final resultSet =
-        _taskDailyStatsSince.select([dateFormat.format(since.toUtc())]);
+        _taskDailyStatsSince.select([dateFormat.format(since.toLocal())]);
     for (final row in resultSet) {
       return (
         row['total_correct_count'] as int,
