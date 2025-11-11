@@ -8,6 +8,7 @@
 - Italian localization (@hemme)
 - Romanian localization (@adudenamedruby)
 - German localization (@StHagel, @InfoKendoKing)
+- next task can be triggered with a swipe gesture where applicable
 
 ## 0.1.10
 - now available in Chinese (simplified), Russian and Spanish
