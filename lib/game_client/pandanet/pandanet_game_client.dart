@@ -13,12 +13,15 @@ import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/game_client/server_info.dart';
 import 'package:wqhub/game_client/time_control.dart';
 import 'package:wqhub/game_client/user_info.dart';
-import 'pandanet_html_parser.dart';
 import 'pandanet_sgf_parser.dart';
+import 'pandanet_html_parser.dart';
 import 'pandanet_tcp_manager.dart';
 import 'pandanet_game.dart';
+import 'game_utils.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:wqhub/wq/rank.dart';
+
+String? _currentGameId;
 
 class PandaNetGameClient extends GameClient {
   final Logger _logger = Logger('PandaNetGameClient');
@@ -28,11 +31,11 @@ class PandaNetGameClient extends GameClient {
   final ValueNotifier<String> _password = ValueNotifier('');
   final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
   final http.Client _httpClient = http.Client();
+  final PandanetTcpManager _tcpManager = PandanetTcpManager();
 
   final String serverUrl = 'https://pandanet-igs.com/';
   final String apiUrl = 'https://my.pandanet.co.jp/';
   final String snsUrl = 'https://sns.pandanet.co.jp/';
-  final PandanetTcpManager _tcpManager = PandanetTcpManager();
 
   @override
   ServerInfo get serverInfo => ServerInfo(
@@ -68,27 +71,21 @@ class PandaNetGameClient extends GameClient {
     const speeds = ['blitz', 'rapid', 'fast', 'slow'];
     final timeControls = {
       'blitz': TimeControl(
-        // Pandanet has Canadian time controls (primarily, Japanese rules possible in some hacky workaround
-        // will need to implement the change app-wide or make find how to enforce japanese rules.
-        mainTime: Duration(minutes: 1),
-        periodCount: 1,
-        timePerPeriod: Duration(minutes: 5),
-      ), //stonesPerPeriod: 25),
+          mainTime: Duration(minutes: 1),
+          periodCount: 1,
+          timePerPeriod: Duration(minutes: 5)),
       'rapid': TimeControl(
-        mainTime: Duration(minutes: 1),
-        periodCount: 1,
-        timePerPeriod: Duration(minutes: 7),
-      ), //stonesPerPeriod: 25),
+          mainTime: Duration(minutes: 1),
+          periodCount: 1,
+          timePerPeriod: Duration(minutes: 7)),
       'fast': TimeControl(
-        mainTime: Duration(minutes: 1),
-        periodCount: 1,
-        timePerPeriod: Duration(minutes: 10),
-      ), //stonesPerPeriod: 25),
+          mainTime: Duration(minutes: 1),
+          periodCount: 1,
+          timePerPeriod: Duration(minutes: 10)),
       'slow': TimeControl(
-        mainTime: Duration(minutes: 1),
-        periodCount: 1,
-        timePerPeriod: Duration(minutes: 15),
-      ), //stonesPerPeriod: 25),
+          mainTime: Duration(minutes: 1),
+          periodCount: 1,
+          timePerPeriod: Duration(minutes: 15)),
     };
 
     final presets = <AutomatchPreset>[];
@@ -109,14 +106,11 @@ class PandaNetGameClient extends GameClient {
 
   Future<void> _connectTcp(String username, String password) async {
     if (_tcpManager.isConnected) return;
-
     try {
       await _tcpManager.connect(username, password);
-      _tcpManager.messages.listen((m) => _logger.fine('PandaNet TCP: $m'),
-          onError: (e) => _logger.warning('PandaNet TCP stream error: $e'));
       _logger.info('TCP connection established');
     } catch (e) {
-      _logger.warning('Failed to connect to PandaNet TCP: $e');
+      _logger.warning('Failed to connect to PandaNet TCP server: $e');
     }
   }
 
@@ -124,66 +118,26 @@ class PandaNetGameClient extends GameClient {
   Future<UserInfo> login(String username, String password) async {
     try {
       _logger.info('Attempting login for user "$username"...');
-      final loginResponse = await _httpClient.post(
-        Uri.parse('${serverUrl}igs_users/jwt_token.json'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'username': username,
-          'password': password,
-          'lang': 'en',
-        }),
+      await _connectTcp(username, password);
+
+      final stats = await _tcpManager.getStats();
+      final rank = RankParsing.fromString(stats.rank);
+      final user = UserInfo(
+        userId: stats.player,
+        username: stats.player,
+        rank: rank,
+        online: true,
+        winCount: stats.wins,
+        lossCount: stats.losses,
       );
 
-      if (loginResponse.statusCode != 200) {
-        throw Exception('Login failed: ${loginResponse.statusCode}');
-      }
-
-      final data = jsonDecode(loginResponse.body);
-      if (data['success'] != true) throw Exception('Login unsuccessful.');
-
-      final user = await _fetchUserInfo(username, password);
       _userInfo.value = user;
       _password.value = password;
-
-      unawaited(_connectTcp(username, password));
-
       return user;
     } catch (e, st) {
       _logger.warning('Login error: $e\n$st');
       rethrow;
     }
-  }
-
-  Future<UserInfo> _fetchUserInfo(String username, String password) async {
-    final cgiResponse = await _httpClient.post(
-      Uri.parse('${apiUrl}cgi-bin/cgi.exe?MH'),
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: {
-        'page': 'profile',
-        'param': 'id=$username',
-        'userid': username,
-        'password': password,
-      },
-    );
-
-    final accKey = parseKey(cgiResponse.body);
-
-    final profileResponse = await _httpClient.get(
-      Uri.parse('${snsUrl}mypage.php?key=$accKey'),
-      headers: {'User-Agent': _userAgent},
-    );
-
-    final parsed = parseUserInfo(profileResponse.body);
-    final rank = parseRankString(parsed.rankStr);
-
-    return UserInfo(
-      userId: username,
-      username: username,
-      rank: rank,
-      online: true,
-      winCount: parsed.wins,
-      lossCount: parsed.losses,
-    );
   }
 
   @override
@@ -223,9 +177,8 @@ class PandaNetGameClient extends GameClient {
     String? whitePlayer;
     String? blackPlayer;
     int handicap = 0;
-
     subscription = _tcpManager.messages.listen((message) {
-      if (message.startsWith('15 Game')) {
+      if (message.contains('15 Game')) {
         final match =
             RegExp(r'15 Game (\d+) I: (\w+) .* vs (\w+)').firstMatch(message);
         if (match != null) {
@@ -235,13 +188,17 @@ class PandaNetGameClient extends GameClient {
           _logger
               .fine('Parsed players → White=$whitePlayer, Black=$blackPlayer');
         }
-      } else if (message.contains('Handicap')) {
+      }
+
+      if (message.contains('Handicap')) {
         final m = RegExp(r'Handicap\s+(\d+)').firstMatch(message);
         if (m != null) {
           handicap = int.parse(m.group(1)!);
           _logger.info('Detected handicap: $handicap');
         }
-      } else if (message.contains('Match [') && message.contains('accepted')) {
+      }
+
+      if (message.contains('Match [') && message.contains('accepted')) {
         _logger.info('Match accepted: $message');
 
         if (gameId != null && whitePlayer != null && blackPlayer != null) {
@@ -279,14 +236,15 @@ class PandaNetGameClient extends GameClient {
           );
 
           _logger.info(
-            'Game created: id=$gameId, white=$whitePlayer, black=$blackPlayer, '
-            'handicap=$handicap, myColor=${game.myColor.name}',
-          );
+              'Game created: id=$gameId, white=$whitePlayer, black=$blackPlayer, '
+              'handicap=$handicap, myColor=${game.myColor.name}');
 
           subscription?.cancel();
           completer.complete(game);
         }
-      } else if (message.contains('declines your request')) {
+      }
+
+      if (message.contains('declines your request')) {
         subscription?.cancel();
         if (!completer.isCompleted) completer.completeError('Match declined');
       }
@@ -309,9 +267,8 @@ class PandaNetGameClient extends GameClient {
   @override
   void stopAutomatch() {
     final username = _userInfo.value?.username;
-    if (username != null && username.isNotEmpty) {
+    if (username != null && username.isNotEmpty)
       _tcpManager.sendUnmatch(username);
-    }
   }
 
   @override
@@ -320,7 +277,7 @@ class PandaNetGameClient extends GameClient {
     final password = _password.value;
 
     if (username == null || username.isEmpty || password.isEmpty) {
-      _logger.warning('Cannot fetch game history: user not logged in.');
+      _logger.warning('Cannot fetch, not logged in.');
       return [];
     }
 
@@ -340,7 +297,7 @@ class PandaNetGameClient extends GameClient {
       throw Exception('Failed to fetch game list: ${response.statusCode}');
     }
 
-    return parseGameList(response.body, parseRankString);
+    return parseGameList(response.body, RankParsing.fromString);
   }
 
   @override

@@ -115,4 +115,13 @@ void main() {
     expect(var2.nodes[0]['B'], ['ee']);
     expect(var2.nodes[1]['W'], ['dd']);
   });
+
+
+  test('fromSgf', () {
+    const sgfData =
+        '(;GM[1]EV[Internet Go Server game: sugadintas vs Hurakami]US[Brought to you by IGS PANDANET]CoPyright[  Copyright (c) PANDANET Inc. 2025  Permission to reproduce this game is given, provided proper credit is given.  No warrantee, implied or explicit, is understood.  Use of this game is an understanding and agreement of this notice.]GN[sugadintas-Hurakami(B) IGS]RE[B+Time]PW[sugadintas]WR[3d?]NW[31]PB[Hurakami]BR[1k+]NB[28]PC[IGS:  igs.joyjoy.net 6969]DT[2025-11-07]SZ[19]TM[60]KM[0.500000]LT[]RR[Normal]HA[3]AB[dd][pd][dp]C[ Hurakami 1k+: Hi!];W[pp]WL[52];B[dj]BL[57];W[pj]WL[52];B[jd]BL[54];W[jp]WL[51];B[jj]BL[53];W[kk]WL[50];B[kj]BL[52];W[lk]WL[50];B[jk]BL[51];W[jl]WL[49];B[il]BL[50];W[im]WL[49];B[hm]BL[47];W[jm]WL[48];B[hl]BL[45];W[lj]WL[47];B[li]BL[44];W[mi]WL[47];B[mh]BL[43];W[nh]WL[46];B[lh]BL[42];W[ni]WL[45];B[hn]BL[39];W[ng]WL[44];B[qq]BL[35];W[qp]WL[43];B[pq]BL[33];W[or]WL[42];B[hp]BL[29];W[jq]WL[41];B[qf]BL[25];W[cc]WL[40];B[cd]BL[22];W[dc]WL[39];B[ec]BL[20];W[eb]WL[38];B[fc]BL[19];W[fb]WL[37];B[gc]BL[18];W[gb]WL[36];B[hc]BL[17];W[cq]WL[35];B[cp]BL[14];W[dq]WL[35];B[eq]BL[12];W[er]WL[35];B[fr]BL[9];W[fq]WL[34];B[ep]BL[7];W[gr]WL[33];B[dr]BL[6];W[fs]WL[32];B[cr]BL[5];W[bq]WL[31];B[br]BL[4];W[nd]WL[21];B[nc]BL[2];W[mc]WL[20];B[oc]BL[1];W[md]WL[19];B[le]BL[298];W[mf]WL[18];B[lf]BL[297];W[qh]WL[17];B[of]BL[294];W[nf]WL[16];B[bd]BL[289];W[bc]WL[16];B[ac]BL[287];W[ab]WL[15];B[ad]BL[286];W[ba]WL[14];B[rg]BL[268];W[rh]WL[13];B[sh]BL[267];OS[xysu123456])';
+    final rec = GameRecord.fromSgf(sgfData);
+    expect(rec.type, GameRecordType.sgf);
+    expect(rec.moves.length, 76);
+  });
 }

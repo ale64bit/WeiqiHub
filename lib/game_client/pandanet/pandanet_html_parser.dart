@@ -39,21 +39,6 @@ String parseKey(String html) {
   return (wins: wins, losses: losses, rankStr: rankStr);
 }
 
-Rank parseRankString(String str) {
-  if (str.isEmpty) return Rank.unknown;
-  final cleaned = str.toLowerCase().trim().replaceAll(RegExp(r'[+?]'), '');
-  final match = RegExp(r'(\d+)\s*([kdp])$').firstMatch(cleaned);
-  if (match == null) return Rank.unknown;
-
-  final number = match.group(1);
-  final suffix = match.group(2);
-  final name = '$suffix$number';
-  return Rank.values.firstWhere(
-    (r) => r.name.toLowerCase() == name,
-    orElse: () => Rank.unknown,
-  );
-}
-
 List<GameSummary> parseGameList(
     String html, Rank Function(String) rankParser) {
   final table = RegExp(r'<table[^>]*class="more"[^>]*>([\s\S]*?)<\/table>')
