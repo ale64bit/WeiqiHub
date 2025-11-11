@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:logging/logging.dart';
 import 'game_utils.dart';
 
@@ -11,6 +9,7 @@ class PandaUserStats {
   final int wins;
   final int losses;
   final String rank;
+
   PandaUserStats({
     required this.player,
     required this.rating,
@@ -22,7 +21,6 @@ class PandaUserStats {
 
 class PandanetTcpManager {
   final _logger = Logger('PandanetTcpManager');
-
   Socket? _socket;
   bool _connected = false;
 
@@ -31,7 +29,9 @@ class PandanetTcpManager {
 
   bool get isConnected => _connected;
 
+  final List<String> _whoBuffer = [];
   Completer<PandaUserStats>? _statsCompleter;
+  Completer<List<Map<String, String>>>? _whoCompleter;
   final List<String> _buffer = [];
 
   Future<void> connect(String username, String password) async {
@@ -50,21 +50,41 @@ class PandanetTcpManager {
         cancelOnError: false,
       );
 
-      _logger.info('logging in as $username...');
+      _logger.info('Logging in as $username...');
       _socket!.writeln(username);
       await Future.delayed(const Duration(milliseconds: 300));
       _socket!.writeln(password);
     } catch (e, st) {
       _connected = false;
-      _logger.severe('connection error: $e\n$st');
+      _logger.severe('Connection error: $e:$st');
       rethrow;
     }
   }
 
   void _onData(List<int> data) {
     final chunk = String.fromCharCodes(data);
-    for (final line in chunk.split('\n')) {
+
+    for (final rawLine in chunk.split('\n')) {
+      final line = rawLine.trimRight();
+      if (line.isEmpty) continue;
+
+      if (line.startsWith('27')) {
+        _whoBuffer.add(line);
+        continue;
+      }
+
+      if ((line.startsWith('1 5') || line.startsWith('1 6')) &&
+          _whoBuffer.isNotEmpty) {
+        final parsed = _parseWho(_whoBuffer.join('\n'));
+        _whoBuffer.clear();
+        if (_whoCompleter != null && !_whoCompleter!.isCompleted) {
+          _whoCompleter!.complete(parsed);
+        }
+        continue;
+      }
+
       _buffer.add(line);
+
       if (line.startsWith('1 5') || line.startsWith('1 6')) {
         final msg = _buffer.join('\n');
         _buffer.clear();
@@ -73,12 +93,23 @@ class PandanetTcpManager {
     }
   }
 
-  void _handleFullMessage(String msg) {
-    if (_isNoise(msg)) {
-      _logger.finer('<<< (noise) $msg');
-      return;
+  List<Map<String, String>> _parseWho(String text) {
+    final players = <Map<String, String>>[];
+    final regex = RegExp(r'\s+([A-Za-z0-9_]+)\s+\S+\s+([0-9kdpsNR\*]+)');
+
+    for (final match in regex.allMatches(text)) {
+      final name = match.group(1);
+      final rank = match.group(2);
+      if (name != null && rank != null) {
+        players.add({'name': name, 'rank': rank});
+      }
     }
 
+    return players;
+  }
+
+  void _handleFullMessage(String msg) {
+    if (_isNoise(msg)) return;
     _logger.fine('<<< $msg');
     _incoming.add(msg);
 
@@ -88,6 +119,15 @@ class PandanetTcpManager {
           _statsCompleter != null &&
           !_statsCompleter!.isCompleted) {
         _statsCompleter!.complete(parsed);
+      }
+    }
+
+    if (msg.startsWith('9 Players') || msg.contains('(I)')) {
+      final list = _parseWho(msg);
+      if (list.isNotEmpty &&
+          _whoCompleter != null &&
+          !_whoCompleter!.isCompleted) {
+        _whoCompleter!.complete(list);
       }
     }
   }
@@ -131,7 +171,7 @@ class PandanetTcpManager {
   Future<PandaUserStats> getStats() async {
     final s = _socket;
     if (!_connected || s == null) {
-      _logger.warning('not connected.');
+      _logger.warning('Cannot send stats, not connected.');
       throw Exception('Not connected');
     }
 
@@ -144,17 +184,29 @@ class PandanetTcpManager {
     );
   }
 
+  Future<List<Map<String, String>>> getWho({String? range}) async {
+    if (!_connected || _socket == null) throw Exception('Not connected');
+    _whoCompleter = Completer<List<Map<String, String>>>();
+
+    final cmd = range != null ? 'who $range' : 'who';
+    _socket!.writeln(cmd);
+    _logger.fine('>>> $cmd');
+
+    return _whoCompleter!.future.timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => throw Exception('Who response timeout'),
+    );
+  }
+
   void send(String command) {
     final s = _socket;
     if (!_connected || s == null) {
-      _logger.warning('error sending "$command", not connected.');
+      _logger.warning('Cannot send "$command", not connected.');
       return;
     }
-    s.writeln(command);
     _logger.fine('>>> $command');
+    s.writeln(command);
   }
-
-  void getWho() => send('who');
 
   void sendMatch(
     String opponent, {

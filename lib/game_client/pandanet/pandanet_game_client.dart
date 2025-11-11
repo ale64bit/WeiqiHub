@@ -71,21 +71,25 @@ class PandaNetGameClient extends GameClient {
     const speeds = ['blitz', 'rapid', 'fast', 'slow'];
     final timeControls = {
       'blitz': TimeControl(
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 5)),
+        mainTime: Duration(minutes: 100),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 5),
+      ),
       'rapid': TimeControl(
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 7)),
+        mainTime: Duration(minutes: 100),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 7),
+      ),
       'fast': TimeControl(
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 10)),
+        mainTime: Duration(minutes: 100),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 10),
+      ),
       'slow': TimeControl(
-          mainTime: Duration(minutes: 1),
-          periodCount: 1,
-          timePerPeriod: Duration(minutes: 15)),
+        mainTime: Duration(minutes: 100),
+        periodCount: 1,
+        timePerPeriod: Duration(minutes: 15),
+      ),
     };
 
     final presets = <AutomatchPreset>[];
@@ -135,7 +139,7 @@ class PandaNetGameClient extends GameClient {
       _password.value = password;
       return user;
     } catch (e, st) {
-      _logger.warning('Login error: $e\n$st');
+      _logger.warning('Login error: $e:$st');
       rethrow;
     }
   }
@@ -177,29 +181,36 @@ class PandaNetGameClient extends GameClient {
     String? whitePlayer;
     String? blackPlayer;
     int handicap = 0;
+
+    // Request players near our rank
+    const range = '3k-1d';
+    _logger.info('Requesting who $range');
+    List<Map<String, String>> whoList = [];
+    try {
+      whoList = await _tcpManager
+          .getWho(range: range)
+          .timeout(const Duration(seconds: 3));
+      _logger.info('Fetched ${whoList.length} players within $range');
+    } catch (e) {
+      _logger.warning('getWho() failed or timed out: $e');
+    }
+
     subscription = _tcpManager.messages.listen((message) {
-      if (message.contains('15 Game')) {
-        final match =
-            RegExp(r'15 Game (\d+) I: (\w+) .* vs (\w+)').firstMatch(message);
-        if (match != null) {
-          gameId = match.group(1);
-          whitePlayer = match.group(2);
-          blackPlayer = match.group(3);
-          _logger
-              .fine('Parsed players → White=$whitePlayer, Black=$blackPlayer');
-        }
-      }
+      if (message.contains('15 Game') && message.contains('accepted')) {
+        _logger.info('Detected accepted match: $message');
 
-      if (message.contains('Handicap')) {
-        final m = RegExp(r'Handicap\s+(\d+)').firstMatch(message);
-        if (m != null) {
-          handicap = int.parse(m.group(1)!);
-          _logger.info('Detected handicap: $handicap');
-        }
-      }
+        final gameIdMatch = RegExp(r'15 Game (\d+)').firstMatch(message);
+        final playersMatch =
+            RegExp(r'I:\s*(\w+).*\s+vs\s+(\w+)').firstMatch(message);
 
-      if (message.contains('Match [') && message.contains('accepted')) {
-        _logger.info('Match accepted: $message');
+        gameId = gameIdMatch?.group(1);
+        whitePlayer = playersMatch?.group(1);
+        blackPlayer = playersMatch?.group(2);
+
+        final handicapMatch = RegExp(r'Handicap\s+(\d+)').firstMatch(message);
+        handicap = handicapMatch != null
+            ? int.tryParse(handicapMatch.group(1)!) ?? 0
+            : 0;
 
         if (gameId != null && whitePlayer != null && blackPlayer != null) {
           final myColor =
@@ -236,11 +247,22 @@ class PandaNetGameClient extends GameClient {
           );
 
           _logger.info(
-              'Game created: id=$gameId, white=$whitePlayer, black=$blackPlayer, '
-              'handicap=$handicap, myColor=${game.myColor.name}');
+            'Game created: id=$gameId, white=$whitePlayer, black=$blackPlayer, '
+            'handicap=$handicap, myColor=${game.myColor.name}',
+          );
 
           subscription?.cancel();
           completer.complete(game);
+        }
+      }
+
+      if (message.startsWith('36') &&
+          message.contains('wants a match with you')) {
+        final match = RegExp(r'36\s+(\S+)\s+wants a match').firstMatch(message);
+        if (match != null) {
+          final opponent = match.group(1)!;
+          _logger.info('Auto-accepting incoming match from $opponent');
+          _tcpManager.send('automatch $opponent');
         }
       }
 
@@ -253,22 +275,34 @@ class PandaNetGameClient extends GameClient {
       if (!completer.isCompleted) completer.completeError(e);
     });
 
-    _tcpManager.sendMatch(
-      'Hurakami',
-      color: 'B',
-      main: preset.timeControl.mainTime?.inMinutes ?? 60,
-      overtime: preset.timeControl.timePerPeriod?.inMinutes ?? 5,
-    );
+    _logger.info('Sent match requests to ${whoList.length} candidates');
 
-    _logger.info('Sent match request to Hurakami');
+    for (final p in whoList) {
+      if (completer.isCompleted) break;
+
+      final name = p['name'];
+      final rank = p['rank'];
+      if (name != null && rank != null && name != username) {
+        _logger.fine('Matching $name ($rank)');
+        _tcpManager.sendMatch(
+          name,
+          color: 'B',
+          main: 1,
+          overtime: 5,
+        );
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+    }
+
     return completer.future;
   }
 
   @override
   void stopAutomatch() {
     final username = _userInfo.value?.username;
-    if (username != null && username.isNotEmpty)
+    if (username != null && username.isNotEmpty) {
       _tcpManager.sendUnmatch(username);
+    }
   }
 
   @override
