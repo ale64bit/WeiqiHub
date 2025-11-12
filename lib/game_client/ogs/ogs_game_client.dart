@@ -69,7 +69,7 @@ class OGSGameClient extends GameClient {
   @override
   ServerFeatures get serverFeatures => ServerFeatures(
         manualCounting: true,
-        automaticCounting: true,
+        automaticCounting: false,
         aiReferee: false, // OGS's AI referee cannot be called on-demand
         aiRefereeMinMoveCount: const IMapConst({}),
         forcedCounting: false, // OGS handles counting differently

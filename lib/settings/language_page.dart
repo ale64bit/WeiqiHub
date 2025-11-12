@@ -15,6 +15,7 @@ class LanguagePage extends StatefulWidget {
 
 class _LanguagePageState extends State<LanguagePage> {
   static final Map<String, String> nativeLanguageName = {
+    'de': 'Deutsch',
     'en': 'English',
     'es': 'Español',
     'it': 'Italiano',
