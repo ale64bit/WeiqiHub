@@ -126,13 +126,12 @@ class Task {
     );
   }
 
-  wq.Point _transformTopLeft(
+  static wq.Point _transformTopLeft(
       topLeft, int boardSize, int subBoardSize, Symmetry symmetry) {
     if (symmetry == Symmetry.identity) return topLeft;
 
     final (x1, y1) = topLeft;
-    final (x2, y2) =
-        (topLeft.$1 + subBoardSize - 1, topLeft.$2 + subBoardSize - 1);
+    final (x2, y2) = (x1 + subBoardSize - 1, y1 + subBoardSize - 1);
 
     final wq.Point topRight = (x2, y1);
     final wq.Point bottomRight = (x2, y2);
@@ -147,8 +146,6 @@ class Task {
       min(tlS.$1, min(trS.$1, min(blS.$1, brS.$1))),
       min(tlS.$2, min(trS.$2, min(blS.$2, brS.$2)))
     );
-
-    topLeftS = (max(0, topLeftS.$1), max(0, topLeftS.$2));
 
     return topLeftS;
   }
