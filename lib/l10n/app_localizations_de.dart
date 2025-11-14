@@ -1337,6 +1337,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Fehler im Zeitrausch Modus werden gespeichert';
 
   @override
+  String get randomizeTaskOrientation => 'Randomize task orientation';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.';
+
+  @override
   String get timePerTask => 'Zeit pro Aufgabe';
 
   @override
