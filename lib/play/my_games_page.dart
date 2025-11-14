@@ -53,15 +53,18 @@ class _MyGamesPageState extends State<MyGamesPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final items = snapshot.data!;
+            final first = items.firstOrNull;
             return ListView.builder(
               itemCount: items.length,
-              prototypeItem: _GameListTile(
-                summary: items.first,
-                won: true,
-                onTap: () {},
-                onDownload: () {},
-                onAISensei: () {},
-              ),
+              prototypeItem: first == null
+                  ? null
+                  : _GameListTile(
+                      summary: first,
+                      won: true,
+                      onTap: () {},
+                      onDownload: () {},
+                      onAISensei: () {},
+                    ),
               itemBuilder: (context, index) {
                 final username =
                     widget.gameClient.userInfo.value?.username ?? '';
