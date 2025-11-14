@@ -152,26 +152,29 @@ class _BoardState extends State<Board> {
           ),
         ),
     ];
-    final board = MouseRegion(
-      cursor: widget.cursor,
-      onExit: _onPointerExit,
-      onHover: _onPointerHover,
-      child: GestureDetector(
-        onTapDown: _onTapDown,
-        child: SizedBox.square(
-          key: const ValueKey('board-container'),
-          dimension: widget.size,
-          child: Stack(
-            alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: [
-              background,
-              ...objects,
-            ],
-          ),
-        ),
+    Widget board = SizedBox.square(
+      key: const ValueKey('board-container'),
+      dimension: widget.size,
+      child: Stack(
+        alignment: Alignment.center,
+        clipBehavior: Clip.none,
+        children: [
+          background,
+          ...objects,
+        ],
       ),
     );
+    if (widget.settings.interactive) {
+      board = MouseRegion(
+        cursor: widget.cursor,
+        onExit: _onPointerExit,
+        onHover: _onPointerHover,
+        child: GestureDetector(
+          onTapDown: _onTapDown,
+          child: board,
+        ),
+      );
+    }
 
     if (widget.settings.border != null) {
       return Container(

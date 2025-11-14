@@ -73,6 +73,7 @@ class BoardSettings {
     this.edgeLine = BoardEdgeLine.single,
     this.border,
     this.stoneShadows = true,
+    this.interactive = true,
   });
 
   final int size;
@@ -81,6 +82,7 @@ class BoardSettings {
   final BoardEdgeLine edgeLine;
   final BoardBorderSettings? border;
   final bool stoneShadows;
+  final bool interactive;
 
   int get visibleSize => subBoard?.size ?? size;
   (int, int) get topLeft => subBoard?.topLeft ?? (0, 0);
@@ -90,8 +92,8 @@ class BoardSettings {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(size, subBoard, theme, edgeLine, border, stoneShadows);
+  int get hashCode => Object.hash(
+      size, subBoard, theme, edgeLine, border, stoneShadows, interactive);
 
   @override
   bool operator ==(Object other) {
@@ -107,6 +109,7 @@ class BoardSettings {
         other.theme == theme &&
         other.edgeLine == edgeLine &&
         other.border == border &&
-        other.stoneShadows == stoneShadows;
+        other.stoneShadows == stoneShadows &&
+        other.interactive == interactive;
   }
 }
