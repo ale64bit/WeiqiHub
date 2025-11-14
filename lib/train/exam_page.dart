@@ -8,13 +8,11 @@ import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_action_bar.dart';
+import 'package:wqhub/train/task_board.dart';
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_solving_state_mixin.dart';
 import 'package:wqhub/train/upsolve_mode.dart';
 import 'package:wqhub/turn_icon.dart';
-import 'package:wqhub/board/board.dart';
-import 'package:wqhub/board/board_settings.dart';
-import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/time_display.dart';
 import 'package:wqhub/train/variation_tree.dart';
@@ -82,48 +80,15 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final wideLayout = MediaQuery.sizeOf(context).aspectRatio > 1.5;
-    final borderSize =
-        1.5 * (Theme.of(context).textTheme.labelMedium?.fontSize ?? 0);
-    final border = context.settings.showCoordinates
-        ? BoardBorderSettings(
-            size: borderSize,
-            color: Theme.of(context).colorScheme.surfaceContainerHigh,
-            rowCoordinates: CoordinateStyle(
-              labels: CoordinateLabels.numbers,
-              reverse: true,
-            ),
-            columnCoordinates: CoordinateStyle(
-              labels: CoordinateLabels.alphaNoI,
-            ),
-          )
-        : null;
 
-    final boardSettings = BoardSettings(
-      size: _taskSource.task.boardSize,
-      subBoard: SubBoard(
-        topLeft: _taskSource.task.topLeft,
-        size: _taskSource.task.subBoardSize,
-      ),
-      theme: context.settings.boardTheme,
-      edgeLine: context.settings.edgeLine,
-      border: border,
-      stoneShadows: context.settings.stoneShadows,
-    );
-
-    final board = LayoutBuilder(
-      builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
-            2 * (boardSettings.border?.size ?? 0);
-        return Board(
-          size: boardSize,
-          settings: boardSettings,
-          onPointClicked: (p) => onMove(p, wideLayout),
-          turn: turn,
-          stones: gameTree.stones,
-          annotations: continuationAnnotations ?? gameTree.annotations,
-          confirmTap: context.settings.confirmMoves,
-        );
-      },
+    final boardArea = TaskBoard(
+      task: currentTask,
+      turn: turn,
+      stones: gameTree.stones,
+      annotations: continuationAnnotations ?? gameTree.annotations,
+      dismissable: solveStatus != null,
+      onPointClicked: (p) => onMove(p, wideLayout),
+      onDismissed: _onNext,
     );
 
     final taskTitle =
@@ -148,7 +113,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
         body: Center(
           child: Row(
             children: <Widget>[
-              Expanded(child: Center(child: board)),
+              Expanded(child: boardArea),
               VerticalDivider(thickness: 1, width: 8),
               _SideBar(
                 title: widget.title,
@@ -234,9 +199,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
             ),
           ],
         ),
-        body: Center(
-          child: board,
-        ),
+        body: boardArea,
         bottomNavigationBar: BottomAppBar(
           height: upsolveMode == UpsolveMode.auto ? 80.0 : 160.0,
           child: (solveStatus == null)

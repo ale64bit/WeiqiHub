@@ -88,6 +88,17 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
             ),
           ),
           ListTile(
+            title: Text(loc.randomizeTaskOrientation),
+            subtitle: Text(loc.randomizeTaskOrientationDesc),
+            trailing: Switch(
+              value: context.settings.randomizeTaskOrientation,
+              onChanged: (value) {
+                context.settings.randomizeTaskOrientation = value;
+                setState(() {});
+              },
+            ),
+          ),
+          ListTile(
             title: Text(loc.showMoveErrorsAsCrosses),
             subtitle: Text(loc.showMoveErrorsAsCrossesDesc),
             trailing: Switch(
