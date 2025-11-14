@@ -10,8 +10,6 @@ enum Symmetry {
   diagonal1,
   diagonal2;
 
-  // Members
-
   wq.Point transformPoint(wq.Point p, int boardSize) {
     final (r, c) = p;
     final maxCoord = boardSize - 1;
