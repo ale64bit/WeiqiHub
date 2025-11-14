@@ -46,7 +46,8 @@ class _RankedModeHelpDialogState extends State<RankedModeHelpDialog> {
               RankedModePage.routeName,
               arguments: RankedModeRouteArguments(
                 taskSource: BlackToPlaySource(
-                  source: RankedModeTaskSource(context.stats.rankedModeRank),
+                  source: RankedModeTaskSource(context.stats.rankedModeRank,
+                      context.settings.randomizeTaskOrientation),
                   blackToPlay: context.settings.alwaysBlackToPlay,
                 ),
               ),

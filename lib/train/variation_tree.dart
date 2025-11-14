@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
+import 'package:wqhub/symmetry.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 enum VariationStatus {
@@ -27,6 +28,27 @@ class VariationTree {
           (cur, t) => t.finalStatus() == VariationStatus.correct
               ? VariationStatus.correct
               : cur);
+
+  VariationTree withSymmetry(Symmetry symmetry, int boardSize) {
+    if (symmetry == Symmetry.identity) {
+      return this;
+    }
+
+    final transformedChildren =
+        children.entries.fold<IMap<wq.Point, VariationTree>>(
+      const IMap<wq.Point, VariationTree>.empty(),
+      (acc, entry) {
+        final transformedPoint = symmetry.transformPoint(entry.key, boardSize);
+        final transformedChild = entry.value.withSymmetry(symmetry, boardSize);
+        return acc.add(transformedPoint, transformedChild);
+      },
+    );
+
+    return VariationTree(
+      status: status,
+      children: transformedChildren,
+    );
+  }
 }
 
 class VariationTreeIterator {

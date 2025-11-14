@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:isolate';
+import 'dart:math';
 
 import 'package:animated_tree_view/tree_view/tree_node.dart';
 import 'package:crypto/crypto.dart';
@@ -13,6 +14,7 @@ import 'package:wqhub/random_util.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_source/distribution_task_source.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
+import 'package:wqhub/symmetry.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
@@ -95,6 +97,62 @@ class Task {
             variationTree: variationTree,
           ),
       };
+
+  Task withSymmetry(Symmetry symmetry) {
+    if (symmetry == Symmetry.identity) {
+      return this;
+    }
+
+    final transformedStonesMap = <wq.Color, ISet<wq.Point>>{};
+    for (final entry in initialStones.entries) {
+      final transformedPoints = entry.value.fold<ISet<wq.Point>>(
+        const ISet<wq.Point>.empty(),
+        (accPoints, point) =>
+            accPoints.add(symmetry.transformPoint(point, boardSize)),
+      );
+      transformedStonesMap[entry.key] = transformedPoints;
+    }
+
+    return Task(
+      id: id,
+      rank: rank,
+      type: type,
+      first: first,
+      boardSize: boardSize,
+      subBoardSize: subBoardSize,
+      topLeft: _transformTopLeft(topLeft, boardSize, subBoardSize, symmetry),
+      initialStones: IMapOfSets(transformedStonesMap),
+      variationTree: variationTree.withSymmetry(symmetry, boardSize),
+    );
+  }
+
+  static wq.Point _transformTopLeft(
+      wq.Point topLeft, int boardSize, int subBoardSize, Symmetry symmetry) {
+    if (symmetry == Symmetry.identity) return topLeft;
+
+    final (x1, y1) = topLeft;
+    final (x2, y2) = (x1 + subBoardSize - 1, y1 + subBoardSize - 1);
+
+    final topRight = (x2, y1);
+    final bottomRight = (x2, y2);
+    final bottomLeft = (x1, y2);
+
+    final tlS = symmetry.transformPoint(topLeft, boardSize);
+    final trS = symmetry.transformPoint(topRight, boardSize);
+    final blS = symmetry.transformPoint(bottomRight, boardSize);
+    final brS = symmetry.transformPoint(bottomLeft, boardSize);
+
+    final topLeftS = (
+      [tlS.$1, trS.$1, blS.$1, brS.$1].reduce(min),
+      [tlS.$2, trS.$2, blS.$2, brS.$2].reduce(min),
+    );
+
+    return topLeftS;
+  }
+
+  Task withRandomSymmetry({required bool randomize}) => randomize
+      ? withSymmetry(Symmetry.values[Random().nextInt(Symmetry.values.length)])
+      : this;
 
   String deepLink() {
     final rs = rank.index.toRadixString(16).padLeft(2, '0');
@@ -299,23 +357,14 @@ class _TaskBucket {
     IMap<wq.Point, wq.Color> gotStones,
   ) {
     final ex = wantStones.entries.first;
-    for (final f in [
-      (wq.Point x) => x,
-      _rot90,
-      _rot180,
-      _rot270,
-      _hFlip,
-      _vFlip,
-      _mirrorMain,
-      _mirrorAnti,
-    ]) {
-      final (rx, cx) = f(ex.key);
+    for (final sym in Symmetry.values) {
+      final (rx, cx) = sym.transformPoint(ex.key, 19);
       for (final ey in gotStones.entries) {
         final (ry, cy) = ey.key;
         // Assume ex and ey represent the same stone and check if the remaining stones match.
         var ok = true;
         for (final pz in wantEmpty) {
-          final (rz, cz) = f(pz);
+          final (rz, cz) = sym.transformPoint(pz, 19);
           final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
           if (zz != null) {
             ok = false;
@@ -323,7 +372,7 @@ class _TaskBucket {
           }
         }
         for (final ez in wantStones.entries) {
-          final (rz, cz) = f(ez.key);
+          final (rz, cz) = sym.transformPoint(ez.key, 19);
           final zz = gotStones.get((ry + (rz - rx), cy + (cz - cx)));
           if (zz == null || ((ex.value == ey.value) != (zz == ez.value))) {
             ok = false;
@@ -335,14 +384,6 @@ class _TaskBucket {
     }
     return false;
   }
-
-  wq.Point _rot90(wq.Point p) => (p.$2, 19 - 1 - p.$1);
-  wq.Point _rot180(wq.Point p) => (19 - 1 - p.$1, 19 - 1 - p.$2);
-  wq.Point _rot270(wq.Point p) => (19 - 1 - p.$2, p.$1);
-  wq.Point _hFlip(wq.Point p) => (p.$1, 19 - 1 - p.$2);
-  wq.Point _vFlip(wq.Point p) => (19 - 1 - p.$1, p.$2);
-  wq.Point _mirrorMain(wq.Point p) => (p.$2, p.$1);
-  wq.Point _mirrorAnti(wq.Point p) => (19 - 1 - p.$2, 19 - 1 - p.$1);
 }
 
 class _TagBucket {
