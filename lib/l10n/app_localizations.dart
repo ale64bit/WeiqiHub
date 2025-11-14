@@ -2592,6 +2592,18 @@ abstract class AppLocalizations {
   /// **'Enable to save mistakes made in Time Frenzy'**
   String get timeFrenzyMistakesDesc;
 
+  /// No description provided for @randomizeTaskOrientation.
+  ///
+  /// In en, this message translates to:
+  /// **'Randomize task orientation'**
+  String get randomizeTaskOrientation;
+
+  /// No description provided for @randomizeTaskOrientationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.'**
+  String get randomizeTaskOrientationDesc;
+
   /// No description provided for @timePerTask.
   ///
   /// In en, this message translates to:

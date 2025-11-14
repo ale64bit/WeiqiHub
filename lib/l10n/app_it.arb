@@ -176,6 +176,8 @@
       }
     }
   },
+  "randomizeTaskOrientation" : "Orientamento casuale",
+  "randomizeTaskOrientationDesc" : "Ruota e rifletti casualmente i problemi lungo gli assi orizzontale, verticale e diagonale per prevenire la memorizzazione e migliorare il riconoscimento dei pattern.",
   "rank": "Livello",
   "rankedMode": "Modalità classificata",
   "recentRecord": "Risultato recente",
