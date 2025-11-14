@@ -60,6 +60,7 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
               theme: context.settings.boardTheme,
               edgeLine: context.settings.edgeLine,
               stoneShadows: context.settings.stoneShadows,
+              interactive: false,
             );
 
             var stones = const IMap<wq.Point, wq.Color>.empty();
