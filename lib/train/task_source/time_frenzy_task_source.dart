@@ -17,9 +17,13 @@ final class TimeFrenzyTaskSource extends TaskSource {
   Task _cur;
   double _rank = Rank.k15.index.toDouble();
   int _mistakeCount = 0;
+  bool randomizeLayout = false;
 
-  TimeFrenzyTaskSource()
-      : _cur = TaskRepository().readByTypes(Rank.k15, _taskTypes, 1).first;
+  TimeFrenzyTaskSource({required bool this.randomizeLayout})
+      : _cur = TaskRepository()
+            .readByTypes(Rank.k15, _taskTypes, 1)
+            .first
+            .withRandomSymmetry(randomize: randomizeLayout);
 
   @override
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {
@@ -33,7 +37,9 @@ final class TimeFrenzyTaskSource extends TaskSource {
     onRankChanged?.call(_rank);
     _cur = TaskRepository()
         .readByTypes(Rank.values[_rank.toInt()], _taskTypes, 1)
-        .first;
+        .first
+        .withRandomSymmetry(randomize: randomizeLayout);
+    ;
     return true;
   }
 

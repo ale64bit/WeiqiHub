@@ -219,7 +219,9 @@ class _Train extends StatelessWidget {
                     TimeFrenzyPage.routeName,
                     arguments: TimeFrenzyRouteArguments(
                       taskSource: BlackToPlaySource(
-                        source: TimeFrenzyTaskSource(),
+                        source: TimeFrenzyTaskSource(
+                            randomizeLayout:
+                                context.settings.randomizeTaskOrientation),
                         blackToPlay: context.settings.alwaysBlackToPlay,
                       ),
                     ),
@@ -242,8 +244,9 @@ class _Train extends StatelessWidget {
                     RankedModePage.routeName,
                     arguments: RankedModeRouteArguments(
                       taskSource: BlackToPlaySource(
-                        source:
-                            RankedModeTaskSource(context.stats.rankedModeRank),
+                        source: RankedModeTaskSource(
+                            context.stats.rankedModeRank,
+                            context.settings.randomizeTaskOrientation),
                         blackToPlay: context.settings.alwaysBlackToPlay,
                       ),
                     ),
@@ -350,18 +353,20 @@ class _Train extends StatelessWidget {
       builder: (context) => _FindTaskDialog(),
     ).then((res) {
       if (res != null) {
-        final (task, dismissed) = res;
+        var (task, dismissed) = res;
         if (dismissed) return;
         if (task != null) {
           if (context.mounted) {
+            if (context.settings.alwaysBlackToPlay) {
+              task = task.withBlackToPlay();
+            }
+            task = task.withRandomSymmetry(
+                randomize: context.settings.randomizeTaskOrientation);
+
             Navigator.pushNamed(
               context,
               SingleTaskPage.routeName,
-              arguments: SingleTaskRouteArguments(
-                task: context.settings.alwaysBlackToPlay
-                    ? task.withBlackToPlay()
-                    : task,
-              ),
+              arguments: SingleTaskRouteArguments(task: task),
             );
           }
         } else {

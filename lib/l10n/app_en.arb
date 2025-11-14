@@ -488,6 +488,8 @@
   "timeFrenzy": "Time frenzy",
   "timeFrenzyMistakes": "Track Time Frenzy mistakes",
   "timeFrenzyMistakesDesc": "Enable to save mistakes made in Time Frenzy",
+  "randomizeTaskOrientation" : "Randomize task orientation",
+  "randomizeTaskOrientationDesc" : "Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.",
   "timePerTask": "Time per task",
   "today": "Today",
   "tooltipAnalyzeWithAISensei": "Analyze with AI Sensei",

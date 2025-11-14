@@ -46,7 +46,9 @@ class _TimeFrenzyHelpDialogState extends State<TimeFrenzyHelpDialog> {
               TimeFrenzyPage.routeName,
               arguments: TimeFrenzyRouteArguments(
                 taskSource: BlackToPlaySource(
-                  source: TimeFrenzyTaskSource(),
+                  source: TimeFrenzyTaskSource(
+                      randomizeLayout:
+                          context.settings.randomizeTaskOrientation),
                   blackToPlay: context.settings.alwaysBlackToPlay,
                 ),
               ),

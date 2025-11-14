@@ -1297,6 +1297,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get timeFrenzyMistakesDesc => '启用以保存限时挑战中的错误';
 
   @override
+  String get randomizeTaskOrientation => '随机化题目方向';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      '随机旋转和翻转题目，沿水平、垂直和对角轴线，防止记忆化并增强模式识别能力。';
+
+  @override
   String get timePerTask => '单题用时';
 
   @override

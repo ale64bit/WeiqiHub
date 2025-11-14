@@ -1336,6 +1336,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Включить для сохранения ошибок, сделанных во Временном раже';
 
   @override
+  String get randomizeTaskOrientation => 'Случайная ориентация задач';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Случайно поворачивает и отражает задачи вдоль горизонтальной, вертикальной и диагональной осей, чтобы предотвратить запоминание и улучшить распознавание паттернов.';
+
+  @override
   String get timePerTask => 'Время на задачу';
 
   @override
