@@ -642,6 +642,12 @@ abstract class AppLocalizations {
   /// **'Game saved to {path}'**
   String msgGameSavedTo(String path);
 
+  /// No description provided for @msgNoGamesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No games found.'**
+  String get msgNoGamesFound;
+
   /// No description provided for @msgPleaseWaitForYourTurn.
   ///
   /// In en, this message translates to:

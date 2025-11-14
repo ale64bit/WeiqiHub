@@ -123,6 +123,7 @@
       }
     }
   },
+  "msgNoGamesFound": "No se encontraron juegos.",
   "msgPleaseWaitForYourTurn": "Por favor, espera tu turno",
   "msgSearchingForGame": "Buscando partida...",
   "msgSgfCopied": "SGF copiado al portapapeles",

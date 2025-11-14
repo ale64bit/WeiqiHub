@@ -123,6 +123,7 @@
       }
     }
   },
+  "msgNoGamesFound": "Nu s-au găsit jocuri.",
   "msgPleaseWaitForYourTurn": "Te rog, așteaptă-ți rândul",
   "msgSearchingForGame": "Se caută un joc...",
   "msgSgfCopied": "SGF copiat în clipboard",

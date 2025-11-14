@@ -123,6 +123,7 @@
       }
     }
   },
+  "msgNoGamesFound": "这里什么也没有。",
   "msgPleaseWaitForYourTurn": "请等待您的回合",
   "msgSearchingForGame": "正在寻找对局...",
   "msgSgfCopied": "SGF已复制到剪贴板",

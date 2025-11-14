@@ -299,6 +299,9 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
+  String get msgNoGamesFound => 'Nu s-au găsit jocuri.';
+
+  @override
   String get msgPleaseWaitForYourTurn => 'Te rog, așteaptă-ți rândul';
 
   @override

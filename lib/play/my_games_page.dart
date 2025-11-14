@@ -53,6 +53,10 @@ class _MyGamesPageState extends State<MyGamesPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final items = snapshot.data!;
+            if (items.isEmpty) {
+              return Center(child: Text(loc.msgNoGamesFound));
+            }
+
             return ListView.builder(
               itemCount: items.length,
               prototypeItem: _GameListTile(

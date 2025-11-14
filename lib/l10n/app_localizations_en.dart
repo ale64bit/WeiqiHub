@@ -298,6 +298,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get msgNoGamesFound => 'No games found.';
+
+  @override
   String get msgPleaseWaitForYourTurn => 'Please, wait for your turn';
 
   @override

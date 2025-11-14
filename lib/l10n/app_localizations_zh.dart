@@ -291,6 +291,9 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get msgNoGamesFound => '这里什么也没有。';
+
+  @override
   String get msgPleaseWaitForYourTurn => '请等待您的回合';
 
   @override
