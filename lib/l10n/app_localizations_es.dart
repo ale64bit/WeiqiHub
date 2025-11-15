@@ -388,7 +388,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get ogsDesc =>
-      'La principal plataforma en línea de Go, con torneos, análisis con IA y una vibrante comunidad.';
+      'Un servidor internacional, más popular en Europa y las Américas.';
 
   @override
   String get ogsName => 'Online Go Server';
