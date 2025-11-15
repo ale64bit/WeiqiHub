@@ -164,7 +164,7 @@
       }
     }
   },
-  "ogsDesc": "Einer der beliebtesten Server im Westen.",
+  "ogsDesc": "Ein internationaler Server welcher am meisten in Europa und Amerika genutzt wird.",
   "ogsName": "Online Go Server",
   "ok": "OK",
   "pass": "Passen",
@@ -487,7 +487,9 @@
   "thick": "Dick",
   "timeFrenzy": "Zeitrausch",
   "timeFrenzyMistakes": "Zeitrausch Fehler",
-  "timeFrenzyMistakesDesc": "Fehler im Zeitrausch Modus werden gespeichert",
+  "timeFrenzyMistakesDesc": "Fehler im Zeitrausch Modus werden gespeichert", 
+  "randomizeTaskOrientation" : "Zufällige Aufgabenorientierung",
+  "randomizeTaskOrientationDesc" : "Zufälliges Drehen und Spiegeln von Aufgaben entlang horizontaler, vertikaler und diagonaler Achsen, um Auswendiglernen zu verhindern und die Mustererkennung zu verbessern.",
   "timePerTask": "Zeit pro Aufgabe",
   "today": "Heute",
   "tooltipAnalyzeWithAISensei": "Mit AI Sensei analysieren",
