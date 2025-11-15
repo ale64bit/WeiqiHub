@@ -1,17 +1,18 @@
 import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/variation_tree.dart';
+import 'package:wqhub/wq/wq.dart' as wq;
 
 final class BlackToPlaySource extends TaskSource {
   final TaskSource source;
   final bool blackToPlay;
+  bool nextShouldBeBlackToPlay = true;
 
   @override
   late Task task;
 
   BlackToPlaySource({required this.source, required this.blackToPlay}) {
-    task = source.task;
-    if (blackToPlay) task = task.withBlackToPlay();
+    ensureFirstColor(source.task);
   }
 
   @override
@@ -23,8 +24,18 @@ final class BlackToPlaySource extends TaskSource {
     if (!source.next(prevStatus, prevSolveTime, onRankChanged: onRankChanged)) {
       return false;
     }
-    task = source.task;
-    if (blackToPlay) task = task.withBlackToPlay();
+    ensureFirstColor(source.task);
     return true;
+  }
+
+  void ensureFirstColor(Task sourceTask) {
+    if (blackToPlay) {
+      task = sourceTask.withColorToPlay(wq.Color.black);
+    } else {
+      task = sourceTask.withColorToPlay(
+          nextShouldBeBlackToPlay ? wq.Color.black : wq.Color.white);
+      nextShouldBeBlackToPlay =
+          !nextShouldBeBlackToPlay; //alternate first color to move
+    }
   }
 }
