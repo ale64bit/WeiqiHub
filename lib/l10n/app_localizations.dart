@@ -753,7 +753,7 @@ abstract class AppLocalizations {
   /// No description provided for @ogsDesc.
   ///
   /// In en, this message translates to:
-  /// **'The premier online Go platform with tournaments, AI analysis, and a vibrant community.'**
+  /// **'An international server, most popular in Europe and the Americas.'**
   String get ogsDesc;
 
   /// No description provided for @ogsName.
