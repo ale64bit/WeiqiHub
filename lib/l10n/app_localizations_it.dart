@@ -40,10 +40,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get autoMatch => 'Abbinamento automatico';
 
   @override
-  String get behaviour => 'Opzioni';
+  String get behaviour => 'Preferenze';
 
   @override
-  String get bestResult => 'Best result';
+  String get bestResult => 'Record';
 
   @override
   String get black => 'Nero';
@@ -150,7 +150,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String errMustBeAtMost(num n) {
-    return 'Deve essere al più $n';
+    return 'Deve essere al massimo $n';
   }
 
   @override
