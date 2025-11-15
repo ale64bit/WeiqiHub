@@ -80,21 +80,21 @@ class Task {
       required this.initialStones,
       required this.variationTree});
 
-  Task withBlackToPlay() => switch (first) {
-        wq.Color.black => this,
-        wq.Color.white => Task(
-            id: id,
-            rank: rank,
-            type: type,
-            first: wq.Color.black,
-            boardSize: boardSize,
-            subBoardSize: subBoardSize,
-            topLeft: topLeft,
-            initialStones: IMapOfSets({
-              wq.Color.black: initialStones.get(wq.Color.white),
-              wq.Color.white: initialStones.get(wq.Color.black),
-            }),
-            variationTree: variationTree,
+  Task withColorToPlay(wq.Color color) => switch (first == color) {
+      true => this,
+      false => Task(
+          id: id,
+          rank: rank,
+          type: type,
+          first: color,
+          boardSize: boardSize,
+          subBoardSize: subBoardSize,
+          topLeft: topLeft,
+          initialStones: IMapOfSets({
+            wq.Color.black: initialStones.get(wq.Color.white),
+            wq.Color.white: initialStones.get(wq.Color.black),
+          }),
+          variationTree: variationTree,
           ),
       };
 
