@@ -9,8 +9,8 @@
   "appearance": "Aspetto",
   "autoCounting": "Conteggio automatico",
   "autoMatch": "Abbinamento automatico",
-  "behaviour": "Opzioni",
-  "bestResult": "Best result",
+  "behaviour": "Preferenze",
+  "bestResult": "Record",
   "black": "Nero",
   "board": "Goban",
   "boardSize": "Dimensioni",
@@ -50,7 +50,7 @@
       }
     }
   },
-  "errMustBeAtMost": "Deve essere al più {n}",
+  "errMustBeAtMost": "Deve essere al massimo {n}",
   "@errMustBeAtMost": {
     "placeholders": {
       "n": {
