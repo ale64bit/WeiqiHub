@@ -80,13 +80,13 @@ class Task {
       required this.initialStones,
       required this.variationTree});
 
-  Task withBlackToPlay() => switch (first) {
-        wq.Color.black => this,
-        wq.Color.white => Task(
+  Task withColorToPlay(wq.Color color) => switch (first == color) {
+        true => this,
+        false => Task(
             id: id,
             rank: rank,
             type: type,
-            first: wq.Color.black,
+            first: color,
             boardSize: boardSize,
             subBoardSize: subBoardSize,
             topLeft: topLeft,
