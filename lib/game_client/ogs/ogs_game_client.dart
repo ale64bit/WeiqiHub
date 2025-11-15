@@ -519,7 +519,7 @@ class OGSGameClient extends GameClient {
       final clampedRankNum = rankNum.clamp(0, Rank.values.length - 1);
       return Rank.values[clampedRankNum];
     }
-    return Rank.k6; // Default
+    return Rank.unknown; // Default
   }
 
   List<wq.Move> _parseMovesFromGameData(
