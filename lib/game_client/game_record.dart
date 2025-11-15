@@ -33,9 +33,22 @@ class GameRecord {
     for (int i = 0; i < tree.nodes.length; i++) {
       final node = tree.nodes[i];
 
-      // Skip the root node (index 0) only in the main tree
-      // Child trees don't have root nodes with game info
-      if (i == 0 && moves.isEmpty) continue;
+      // Handle handicap stones or other setup at the root node
+      if (i == 0 && moves.isEmpty) {
+        // "Add Black"
+        if (node.containsKey('AB')) {
+          for (final stoneStr in node['AB']!) {
+            moves.add((col: wq.Color.black, p: wq.parseSgfPoint(stoneStr)));
+          }
+        }
+        // "Add White"
+        if (node.containsKey('AW')) {
+          for (final stoneStr in node['AW']!) {
+            moves.add((col: wq.Color.white, p: wq.parseSgfPoint(stoneStr)));
+          }
+        }
+        continue;
+      }
 
       // Check for black move
       if (node.containsKey('B')) {
