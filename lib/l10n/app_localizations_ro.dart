@@ -384,8 +384,7 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get ogsDesc =>
-      'Principala platformă online de Go, cu turnee, analiză AI și o comunitate vibrantă.';
+  String get ogsDesc => 'Suport beta pentru online-go.com';
 
   @override
   String get ogsName => 'Serverul Online Go';

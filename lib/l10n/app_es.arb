@@ -164,7 +164,7 @@
       }
     }
   },
-  "ogsDesc": "La principal plataforma en línea de Go, con torneos, análisis con IA y una vibrante comunidad.",
+  "ogsDesc": "Soporte beta para online-go.com",
   "ogsName": "Online Go Server",
   "ok": "OK",
   "pass": "Pasar",
