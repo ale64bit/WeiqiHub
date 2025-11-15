@@ -4,248 +4,250 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for English (`en`).
-class AppLocalizationsEn extends AppLocalizations {
-  AppLocalizationsEn([String locale = 'en']) : super(locale);
+/// The translations for German (`de`).
+class AppLocalizationsDe extends AppLocalizations {
+  AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get about => 'About';
+  String get about => 'Über';
 
   @override
-  String get acceptDeadStones => 'Accept dead stones';
+  String get acceptDeadStones => 'Tote Steine akzeptieren';
 
   @override
-  String get accuracy => 'Accuracy';
+  String get accuracy => 'Genauigkeit';
 
   @override
-  String get aiReferee => 'AI referee';
+  String get aiReferee => 'KI-Schiedsrichter';
 
   @override
   String get aiSensei => 'AI Sensei';
 
   @override
-  String get alwaysBlackToPlay => 'Always black-to-play';
+  String get alwaysBlackToPlay => 'Immer Schwarz am Zug';
 
   @override
   String get alwaysBlackToPlayDesc =>
-      'Set all tasks as black-to-play to avoid confusion';
+      'Alle Aufgaben mit Schwarz am Zug aufbauen, um Verwechslung zu vermeiden';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Aussehen';
 
   @override
-  String get autoCounting => 'Auto counting';
+  String get autoCounting => 'Automatisches Auszählen';
 
   @override
-  String get autoMatch => 'Auto-Match';
+  String get autoMatch => 'Automatisches Match';
 
   @override
-  String get behaviour => 'Behaviour';
+  String get behaviour => 'Verhalten';
 
   @override
-  String get bestResult => 'Best result';
+  String get bestResult => 'Bestes Ergebnis';
 
   @override
-  String get black => 'Black';
+  String get black => 'Schwarz';
 
   @override
-  String get board => 'Board';
+  String get board => 'Brett';
 
   @override
-  String get boardSize => 'Board size';
+  String get boardSize => 'Brettgröße';
 
   @override
-  String get boardTheme => 'Board theme';
+  String get boardTheme => 'Brett Aussehen';
 
   @override
-  String get byRank => 'By rank';
+  String get byRank => 'Nach Rang';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Abbrechen';
 
   @override
-  String get captures => 'Captures';
+  String get captures => 'Gefangene';
 
   @override
-  String get clearBoard => 'Clear';
+  String get clearBoard => 'Brett leeren';
 
   @override
-  String get collectStats => 'Collect statistics';
+  String get collectStats => 'Statistiken erfassen';
 
   @override
-  String get collections => 'Collections';
+  String get collections => 'Sammlungen';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'Bestätigen';
 
   @override
-  String get confirmBoardSize => 'Confirm board size';
+  String get confirmBoardSize => 'Brettgröße bestätigen';
 
   @override
   String get confirmBoardSizeDesc =>
-      'Boards this size or larger require move confirmation';
+      'Bretter dieser Größe oder größer erfordern eine Zugbestätigung';
 
   @override
-  String get confirmMoves => 'Confirm moves';
+  String get confirmMoves => 'Züge bestätigen';
 
   @override
   String get confirmMovesDesc =>
-      'Double-tap to confirm moves on large boards to avoid misclicks';
+      'Doppelt tippen, um Züge auf großen Brettern zu bestätigen und Fehlklicks zu vermeiden';
 
   @override
-  String get continue_ => 'Continue';
+  String get continue_ => 'Fortfahren';
 
   @override
-  String get copySGF => 'Copy SGF';
+  String get copySGF => 'SGF kopieren';
 
   @override
-  String get copyTaskLink => 'Copy task link';
+  String get copyTaskLink => 'Aufgabenlink kopieren';
 
   @override
-  String get customExam => 'Custom exam';
+  String get customExam => 'Benutzerdefinierte Prüfung';
 
   @override
-  String get dark => 'Dark';
+  String get dark => 'Dunkel';
 
   @override
-  String get dontShowAgain => 'Don\'t show again';
+  String get dontShowAgain => 'Nicht erneut anzeigen';
 
   @override
-  String get download => 'Download';
+  String get download => 'Herunterladen';
 
   @override
-  String get edgeLine => 'Edge line';
+  String get edgeLine => 'Randlinie';
 
   @override
-  String get empty => 'Empty';
+  String get empty => 'leer';
 
   @override
-  String get endgameExam => 'Endgame exam';
+  String get endgameExam => 'Endspiel-Prüfung';
 
   @override
-  String get enterTaskLink => 'Enter the task link';
+  String get enterTaskLink => 'Aufgabenlink eingeben';
 
   @override
-  String get errCannotBeEmpty => 'Cannot be empty';
+  String get errCannotBeEmpty => 'Darf nicht leer sein';
 
   @override
-  String get errFailedToDownloadGame => 'Failed to download game';
+  String get errFailedToDownloadGame =>
+      'Spiel konnte nicht heruntergeladen werden';
 
   @override
   String get errFailedToLoadGameList =>
-      'Failed to load game list. Please try again.';
+      'Spielliste konnte nicht geladen werden. Bitte versuche es erneut.';
 
   @override
   String get errFailedToUploadGameToAISensei =>
-      'Failed to upload game to AI Sensei';
+      'Spiel konnte nicht zu AI Sensei hochgeladen werden';
 
   @override
-  String get errIncorrectUsernameOrPassword => 'Incorrect username or password';
+  String get errIncorrectUsernameOrPassword =>
+      'Falscher Benutzername oder falsches Passwort';
 
   @override
   String errMustBeAtLeast(num n) {
-    return 'Must be at least $n';
+    return 'Muss mindestens $n sein';
   }
 
   @override
   String errMustBeAtMost(num n) {
-    return 'Must be at most $n';
+    return 'Darf höchstens $n sein';
   }
 
   @override
-  String get errMustBeInteger => 'Must be an integer';
+  String get errMustBeInteger => 'Muss eine ganze Zahl sein';
 
   @override
-  String get exit => 'Exit';
+  String get exit => 'Beenden';
 
   @override
-  String get exitTryMode => 'Exit try mode';
+  String get exitTryMode => 'Testmodus beenden';
 
   @override
-  String get find => 'Find';
+  String get find => 'Suchen';
 
   @override
-  String get findTask => 'Find task';
+  String get findTask => 'Problem suchen';
 
   @override
-  String get findTaskByLink => 'By link';
+  String get findTaskByLink => 'Mit einem Link';
 
   @override
-  String get findTaskByPattern => 'By pattern';
+  String get findTaskByPattern => 'Mit Mustererkennung';
 
   @override
-  String get findTaskResults => 'Search results';
+  String get findTaskResults => 'Suchergebnisse';
 
   @override
-  String get findTaskSearching => 'Searching...';
+  String get findTaskSearching => 'Suche...';
 
   @override
-  String get forceCounting => 'Force counting';
+  String get forceCounting => 'Auszählen erzwingen';
 
   @override
-  String get foxwqDesc => 'The most popular server in China and the world.';
+  String get foxwqDesc => 'Der beliebteste Server in China und weltweit.';
 
   @override
   String get foxwqName => 'Fox Weiqi';
 
   @override
-  String get gameInfo => 'Game info';
+  String get gameInfo => 'Spielinfo';
 
   @override
-  String get gameRecord => 'Game record';
+  String get gameRecord => 'Spielaufzeichnung';
 
   @override
-  String get gradingExam => 'Grading exam';
+  String get gradingExam => 'Einstufungsprüfung';
 
   @override
-  String get handicap => 'Handicap';
+  String get handicap => 'Vorgabe';
 
   @override
-  String get help => 'Help';
+  String get help => 'Hilfe';
 
   @override
   String get helpDialogCollections =>
-      'Collections are classic, curated sets of high-quality tasks which hold special value together as a training resource.\n\nThe main goal is to solve a collection with a high success rate. A secondary goal is to solve it as fast as possible.\n\nTo start or continue solving a collection, slide left on the collection tile while in portrait mode or click the Start/Continue buttons while in landscape mode.';
+      'Kollektionen sind klassische, kuratierte Sets von hochwertigen Aufgaben, die gemeinsam einen besonderen Wert als Trainingsressource bilden.\n\nDas Hauptziel ist es, eine Kollektion mit einer hohen Erfolgsquote zu lösen. Ein Nebenziel ist es, sie so schnell wie möglich zu lösen.\n\nUm eine Kollektion zu starten oder fortzusetzen, wische im Hochformat nach links über die Kachel der Kollektion oder klicke im Querformat auf die Start-/Weiter-Buttons.';
 
   @override
   String get helpDialogEndgameExam =>
-      '- Endgame exams are sets of 10 endgame tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+      '- Endspielprüfungen bestehen aus 10 Endspielaufgaben, und du hast 45 Sekunden pro Aufgabe.\n\n- Du bestehst die Prüfung, wenn du 8 oder mehr Aufgaben korrekt löst (80 % Erfolgsquote).\n\n- Das Bestehen der Prüfung für einen bestimmten Rang schaltet die Prüfung für den nächsten Rang frei.';
 
   @override
   String get helpDialogGradingExam =>
-      '- Grading exams are sets of 10 tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.';
+      '- Einstufungsprüfung bestehen aus 10 Aufgaben, und du hast 45 Sekunden pro Aufgabe.\n\n- Du bestehst die Prüfung, wenn du 8 oder mehr Aufgaben korrekt löst (80 % Erfolgsquote).\n\n- Das Bestehen der Prüfung für einen bestimmten Rang schaltet die Prüfung für den nächsten Rang frei.';
 
   @override
   String get helpDialogRankedMode =>
-      '- Solve tasks without a time limit.\n\n- Task difficulty increases according to how fast you solve them.\n\n- Focus on solving correctly and reach the highest rank possible.';
+      '- Löse Aufgaben ohne Zeitlimit.\n\n- Die Schwierigkeit der Aufgaben steigt entsprechend deiner Lösungs­geschwindigkeit.\n\n- Konzentriere dich darauf, korrekt zu lösen und den höchstmöglichen Rang zu erreichen.';
 
   @override
   String get helpDialogTimeFrenzy =>
-      '- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.';
+      '- Du hast 3 Minuten Zeit, um so viele Aufgaben wie möglich zu lösen.\n\n- Die Aufgaben werden zunehmend schwieriger, je mehr du löst.\n\n- Wenn du 3 Fehler machst, bist du raus.';
 
   @override
-  String get home => 'Home';
+  String get home => 'Startseite';
 
   @override
   String get komi => 'Komi';
 
   @override
-  String get language => 'Language';
+  String get language => 'Sprache';
 
   @override
-  String get leave => 'Leave';
+  String get leave => 'Verlassen';
 
   @override
-  String get light => 'Light';
+  String get light => 'Hell';
 
   @override
-  String get login => 'Login';
+  String get login => 'Anmelden';
 
   @override
-  String get logout => 'Logout';
+  String get logout => 'Abmelden';
 
   @override
-  String get long => 'Long';
+  String get long => 'Lang';
 
   @override
   String mMinutes(int m) {
@@ -253,85 +255,88 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get maxNumberOfMistakes => 'Maximum number of mistakes';
+  String get maxNumberOfMistakes => 'Maximale Fehleranzahl';
 
   @override
-  String get maxRank => 'Max rank';
+  String get maxRank => 'Max. Rang';
 
   @override
-  String get medium => 'Medium';
+  String get medium => 'Mittel';
 
   @override
-  String get minRank => 'Min rank';
+  String get minRank => 'Min. Rang';
 
   @override
-  String get minutes => 'Minutes';
+  String get minutes => 'Minuten';
 
   @override
-  String get month => 'Month';
+  String get month => 'Monat';
 
   @override
-  String get msgCannotUseAIRefereeYet => 'AI referee cannot be used yet';
+  String get msgCannotUseAIRefereeYet =>
+      'Der KI-Schiedsrichter kann noch nicht verwendet werden';
 
   @override
   String get msgCannotUseForcedCountingYet =>
-      'Forced counting cannot be used yet';
+      'Erzwungenes Zählen kann noch nicht verwendet werden';
 
   @override
   String get msgConfirmDeleteCollectionProgress =>
-      'Are you sure that you want to delete the previous attempt?';
+      'Bist du sicher, dass du den bisherigen Fortschritt löschen möchtest?';
 
   @override
-  String get msgConfirmResignation => 'Are you sure that you want to resign?';
+  String get msgConfirmResignation =>
+      'Bist du sicher, dass du aufgeben möchtest?';
 
   @override
   String msgConfirmStopEvent(String event) {
-    return 'Are you sure that you want to stop the $event?';
+    return 'Bist du sicher, dass du $event beenden möchtest?';
   }
 
   @override
-  String get msgDownloadingGame => 'Downloading game';
+  String get msgDownloadingGame => 'Spiel wird heruntergeladen';
 
   @override
   String msgGameSavedTo(String path) {
-    return 'Game saved to $path';
+    return 'Spiel gespeichert unter $path';
   }
 
   @override
-  String get msgPleaseWaitForYourTurn => 'Please, wait for your turn';
+  String get msgPleaseWaitForYourTurn => 'Bitte warte auf deinen Zug';
 
   @override
-  String get msgSearchingForGame => 'Searching for a game...';
+  String get msgSearchingForGame => 'Suche nach einem Spiel...';
 
   @override
   String get msgSgfCopied => 'SGF copied to clipboard';
 
   @override
-  String get msgTaskLinkCopied => 'Task link copied.';
+  String get msgTaskLinkCopied => 'Aufgabenlink kopiert.';
 
   @override
   String get msgWaitingForOpponentsDecision =>
-      'Waiting for your opponent\'s decision...';
+      'Warte auf die Entscheidung deines Gegners...';
 
   @override
-  String get msgYouCannotPass => 'You cannot pass';
+  String get msgYouCannotPass => 'Du kannst nicht passen';
 
   @override
   String get msgYourOpponentDisagreesWithCountingResult =>
-      'Your opponent disagrees with the counting result';
+      'Dein Gegner ist mit der Auszählung nicht einverstanden';
 
   @override
-  String get msgYourOpponentRefusesToCount => 'Your opponent refuses to count';
+  String get msgYourOpponentRefusesToCount =>
+      'Dein Gegner weigert sich zu auszuzählen';
 
   @override
   String get msgYourOpponentRequestsAutomaticCounting =>
-      'Your opponent requests automatic counting. Do you agree?';
+      'Dein Gegner fordert automatisches Auszählen an. Bist du damit einverstanden?';
 
   @override
-  String get myGames => 'My games';
+  String get myGames => 'Meine Spiele';
 
   @override
-  String get myMistakes => 'My mistakes';
+  String get myMistakes => 'Meine Fehler';
 
   @override
   String nTasks(int count) {
@@ -342,9 +347,9 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString tasks',
-      one: '1 task',
-      zero: 'No tasks',
+      other: '$countString Aufgaben',
+      one: '1 Aufgabe',
+      zero: 'Keine Aufgaben',
     );
     return '$_temp0';
   }
@@ -358,24 +363,24 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$countString tasks available',
-      one: '1 task available',
-      zero: 'No tasks available',
+      other: '$countString Aufgaben verfügbar',
+      one: '1 Aufgabe verfügbar',
+      zero: 'Keine Aufgaben verfügbar',
     );
     return '$_temp0';
   }
 
   @override
-  String get newBestResult => 'New best!';
+  String get newBestResult => 'Neuer Rekord!';
 
   @override
-  String get no => 'No';
+  String get no => 'Nein';
 
   @override
-  String get none => 'None';
+  String get none => 'Keine';
 
   @override
-  String get numberOfTasks => 'Number of tasks';
+  String get numberOfTasks => 'Anzahl der Aufgaben';
 
   @override
   String nxnBoardSize(int n) {
@@ -383,8 +388,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get ogsDesc =>
-      'The premier online Go platform with tournaments, AI analysis, and a vibrant community.';
+  String get ogsDesc => 'Einer der beliebtesten Server im Westen.';
 
   @override
   String get ogsName => 'Online Go Server';
@@ -393,19 +397,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get pass => 'Pass';
+  String get pass => 'Passen';
 
   @override
-  String get password => 'Password';
+  String get password => 'Passwort';
 
   @override
-  String get play => 'Play';
+  String get play => 'Spielen';
 
   @override
   String get pleaseMarkDeadStones => 'Please mark the dead stones.';
 
   @override
-  String get promotionRequirements => 'Promotion requirements';
+  String get promotionRequirements => 'Anforderungen zum Auftsieg';
 
   @override
   String pxsByoyomi(int p, int s) {
@@ -413,62 +417,62 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get rank => 'Rank';
+  String get rank => 'Rang';
 
   @override
-  String get rankedMode => 'Ranked mode';
+  String get rankedMode => 'Gewerteter Modus';
 
   @override
-  String get recentRecord => 'Recent record';
+  String get recentRecord => 'Letzte Ergebnisse';
 
   @override
-  String get register => 'Register';
+  String get register => 'Registrieren';
 
   @override
   String get rejectDeadStones => 'Reject dead stones';
 
   @override
-  String get resign => 'Resign';
+  String get resign => 'Aufgeben';
 
   @override
-  String get responseDelay => 'Response delay';
+  String get responseDelay => 'Antwortverzögerung';
 
   @override
   String get responseDelayDesc =>
-      'Duration of the delay before the response appears while solving tasks';
+      'Dauer der Verzögerung, bevor beim Lösen einer Aufgabe die Antwort erscheint';
 
   @override
-  String get responseDelayLong => 'Long';
+  String get responseDelayLong => 'Lang';
 
   @override
-  String get responseDelayMedium => 'Medium';
+  String get responseDelayMedium => 'Mittel';
 
   @override
-  String get responseDelayNone => 'None';
+  String get responseDelayNone => 'Keine';
 
   @override
-  String get responseDelayShort => 'Short';
+  String get responseDelayShort => 'Kurz';
 
   @override
-  String get result => 'Result';
+  String get result => 'Ergebnis';
 
   @override
-  String get resultAccept => 'Accept';
+  String get resultAccept => 'Akzeptieren';
 
   @override
-  String get resultReject => 'Reject';
+  String get resultReject => 'Ablehnen';
 
   @override
-  String get rules => 'Rules';
+  String get rules => 'Regeln';
 
   @override
-  String get rulesChinese => 'Chinese';
+  String get rulesChinese => 'Chinesisch';
 
   @override
-  String get rulesJapanese => 'Japanese';
+  String get rulesJapanese => 'Japanisch';
 
   @override
-  String get rulesKorean => 'Korean';
+  String get rulesKorean => 'Koreanisch';
 
   @override
   String sSeconds(int s) {
@@ -476,135 +480,136 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get save => 'Save';
+  String get save => 'Sichern';
 
   @override
-  String get saveSGF => 'Save SGF';
+  String get saveSGF => 'SGF speichern';
 
   @override
-  String get seconds => 'Seconds';
+  String get seconds => 'Sekunden';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'Einstellungen';
 
   @override
-  String get short => 'Short';
+  String get short => 'Kurz';
 
   @override
-  String get showCoordinates => 'Show coordinates';
+  String get showCoordinates => 'Koordinaten anzeigen';
 
   @override
-  String get showMoveErrorsAsCrosses => 'Display wrong moves as crosses';
+  String get showMoveErrorsAsCrosses => 'Falsche Züge als Kreuz darstellen';
 
   @override
   String get showMoveErrorsAsCrossesDesc =>
-      'Display wrong moves as red crosses instead of red dots';
+      'Falsche Züge werden als rotes Kreuz anstatt eines roiten Punkts angezeigt';
 
   @override
-  String get simple => 'Simple';
+  String get simple => 'Einfach';
 
   @override
-  String get sortModeDifficult => 'Difficult';
+  String get sortModeDifficult => 'Schwierig';
 
   @override
-  String get sortModeRecent => 'Recent';
+  String get sortModeRecent => 'Neueste';
 
   @override
-  String get sound => 'Sound';
+  String get sound => 'Ton';
 
   @override
   String get start => 'Start';
 
   @override
-  String get statistics => 'Statistics';
+  String get statistics => 'Statistiken';
 
   @override
-  String get statsDateColumn => 'Date';
+  String get statsDateColumn => 'Datum';
 
   @override
-  String get statsDurationColumn => 'Time';
+  String get statsDurationColumn => 'Dauer';
 
   @override
-  String get statsTimeColumn => 'Time';
+  String get statsTimeColumn => 'Zeit';
 
   @override
-  String get stoneShadows => 'Stone shadows';
+  String get stoneShadows => 'Steinschatten';
 
   @override
-  String get stones => 'Stones';
+  String get stones => 'Steine';
 
   @override
-  String get subtopic => 'Subtopic';
+  String get subtopic => 'Unterthema';
 
   @override
   String get system => 'System';
 
   @override
-  String get task => 'Task';
+  String get task => 'Aufgabe';
 
   @override
-  String get taskCorrect => 'Correct';
+  String get taskCorrect => 'Richtig';
 
   @override
-  String get taskNext => 'Next';
+  String get taskNext => 'Weiter';
 
   @override
-  String get taskNotFound => 'Task not found';
+  String get taskNotFound => 'Aufgabe nicht gefunden';
 
   @override
-  String get taskRedo => 'Redo';
+  String get taskRedo => 'Erneut versuchen';
 
   @override
-  String get taskSource => 'Task source';
+  String get taskSource => 'Quelle der Aufgaben';
 
   @override
-  String get taskSourceFromMyMistakes => 'From my mistakes';
+  String get taskSourceFromMyMistakes => 'Aus meinen Fehlern';
 
   @override
-  String get taskSourceFromTaskTopic => 'From task topic';
+  String get taskSourceFromTaskTopic => 'Aus dem Aufgabenthema';
 
   @override
-  String get taskSourceFromTaskTypes => 'From task types';
+  String get taskSourceFromTaskTypes => 'Aus den Aufgabentypen';
 
   @override
-  String get taskTag_afterJoseki => 'After joseki';
+  String get taskTag_afterJoseki => 'Nach dem joseki';
 
   @override
-  String get taskTag_aiOpening => 'AI opening';
+  String get taskTag_aiOpening => 'KI Eröffnung';
 
   @override
-  String get taskTag_aiVariations => 'AI variations';
+  String get taskTag_aiVariations => 'KI Variationen';
 
   @override
-  String get taskTag_attack => 'Attack';
+  String get taskTag_attack => 'Angriff';
 
   @override
-  String get taskTag_attackAndDefenseInKo => 'Attack and defense in a ko';
+  String get taskTag_attackAndDefenseInKo => 'Angriff und Verteidigung mit Ko';
 
   @override
-  String get taskTag_attackAndDefenseOfCuts => 'Attack and defense of cuts';
+  String get taskTag_attackAndDefenseOfCuts =>
+      'Angriff und Verteidigung von Schnitten';
 
   @override
   String get taskTag_attackAndDefenseOfInvadingStones =>
-      'Attack and defense of invading stones';
+      'ngriff und Verteidigung von Invasionen';
 
   @override
-  String get taskTag_avoidKo => 'Avoid ko';
+  String get taskTag_avoidKo => 'Ko vermeiden';
 
   @override
-  String get taskTag_avoidMakingDeadShape => 'Avoid making dead shape';
+  String get taskTag_avoidMakingDeadShape => 'Tote Form vermeiden';
 
   @override
-  String get taskTag_avoidTrap => 'Avoid trap';
+  String get taskTag_avoidTrap => 'Falle ausweichen';
 
   @override
-  String get taskTag_basicEndgame => 'Endgame: basic';
+  String get taskTag_basicEndgame => 'Endspiel: Grundlagen';
 
   @override
-  String get taskTag_basicLifeAndDeath => 'Life & death: basic';
+  String get taskTag_basicLifeAndDeath => 'Leben & Tod: Grundlagen';
 
   @override
-  String get taskTag_basicMoves => 'Basic moves';
+  String get taskTag_basicMoves => 'Grundlagen';
 
   @override
   String get taskTag_basicTesuji => 'Tesuji';
@@ -625,34 +630,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskTag_bentThree => 'Bent three';
 
   @override
-  String get taskTag_bigEyeLiberties => 'Big eye\'s liberties';
+  String get taskTag_bigEyeLiberties => 'Freiheiten von großen Augen';
 
   @override
-  String get taskTag_bigEyeVsSmallEye => 'Big eye vs small eye';
+  String get taskTag_bigEyeVsSmallEye => 'Großes Auge vs kleines Auge';
 
   @override
-  String get taskTag_bigPoints => 'Big points';
+  String get taskTag_bigPoints => 'Große Punkte';
 
   @override
-  String get taskTag_blindSpot => 'Blind spot';
+  String get taskTag_blindSpot => 'Blinder Fleck';
 
   @override
-  String get taskTag_breakEye => 'Break eye';
+  String get taskTag_breakEye => 'Augen verhindern';
 
   @override
-  String get taskTag_breakEyeInOneStep => 'Break eye in one step';
+  String get taskTag_breakEyeInOneStep => 'Augen verhindern in einem Zug';
 
   @override
-  String get taskTag_breakEyeInSente => 'Break eye in sente';
+  String get taskTag_breakEyeInSente => 'Augen verhindern in Vorhand';
 
   @override
-  String get taskTag_breakOut => 'Break out';
+  String get taskTag_breakOut => 'Ausbrechen';
 
   @override
-  String get taskTag_breakPoints => 'Break points';
+  String get taskTag_breakPoints => 'Punkte verhindern';
 
   @override
-  String get taskTag_breakShape => 'Break shape';
+  String get taskTag_breakShape => 'Shape verhindern';
 
   @override
   String get taskTag_bridgeUnder => 'Bridge under';
@@ -1307,107 +1312,100 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskTypeTheory => 'Theory';
 
   @override
-  String get taskWrong => 'Wrong';
+  String get taskWrong => 'Falsch';
 
   @override
-  String get tasksSolved => 'Tasks solved';
+  String get tasksSolved => 'Gelöste Aufgaben';
 
   @override
   String get test => 'Test';
 
   @override
-  String get theme => 'Theme';
+  String get theme => 'Thema';
 
   @override
-  String get thick => 'Thick';
+  String get thick => 'Dick';
 
   @override
-  String get timeFrenzy => 'Time frenzy';
+  String get timeFrenzy => 'Zeitrausch';
 
   @override
-  String get timeFrenzyMistakes => 'Track Time Frenzy mistakes';
+  String get timeFrenzyMistakes => 'Zeitrausch Fehler';
 
   @override
   String get timeFrenzyMistakesDesc =>
-      'Enable to save mistakes made in Time Frenzy';
+      'Fehler im Zeitrausch Modus werden gespeichert';
 
   @override
-  String get randomizeTaskOrientation => 'Randomize task orientation';
+  String get timePerTask => 'Zeit pro Aufgabe';
 
   @override
-  String get randomizeTaskOrientationDesc =>
-      'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.';
+  String get today => 'Heute';
 
   @override
-  String get timePerTask => 'Time per task';
+  String get tooltipAnalyzeWithAISensei => 'Mit AI Sensei analysieren';
 
   @override
-  String get today => 'Today';
+  String get tooltipDownloadGame => 'Spiel herunterladen';
 
   @override
-  String get tooltipAnalyzeWithAISensei => 'Analyze with AI Sensei';
+  String get topic => 'Thema';
 
   @override
-  String get tooltipDownloadGame => 'Download game';
+  String get topicExam => 'Themen Prüfung';
 
   @override
-  String get topic => 'Topic';
+  String get topics => 'Themen';
 
   @override
-  String get topicExam => 'Topic exam';
+  String get train => 'Trainieren';
 
   @override
-  String get topics => 'Topics';
+  String get trainingAvgTimePerTask => 'Durchschn. Zeit pro Aufgabe';
 
   @override
-  String get train => 'Train';
+  String get trainingFailed => 'Nicht bestanden';
 
   @override
-  String get trainingAvgTimePerTask => 'Avg time per task';
+  String get trainingMistakes => 'Fehler';
 
   @override
-  String get trainingFailed => 'Failed';
+  String get trainingPassed => 'Bestanden';
 
   @override
-  String get trainingMistakes => 'Mistakes';
+  String get trainingTotalTime => 'Gesamtzeit';
 
   @override
-  String get trainingPassed => 'Passed';
-
-  @override
-  String get trainingTotalTime => 'Total time';
-
-  @override
-  String get tryCustomMoves => 'Try custom moves';
+  String get tryCustomMoves => 'Eigene Züge ausprobieren';
 
   @override
   String get tygemDesc =>
-      'The most popular server in Korea and one of the most popular in the world.';
+      'Der beliebteste Server in Korea und einer der beliebtesten weltweit.';
 
   @override
   String get tygemName => 'Tygem Baduk';
 
   @override
-  String get type => 'Type';
+  String get type => 'Typ';
 
   @override
   String get ui => 'UI';
 
   @override
-  String get userInfo => 'User info';
+  String get userInfo => 'Benutzerinfo';
 
   @override
-  String get username => 'Username';
+  String get username => 'Benutzername';
 
   @override
-  String get voice => 'Voice';
+  String get voice => 'Stimme';
 
   @override
-  String get week => 'Week';
+  String get week => 'Woche';
 
   @override
-  String get white => 'White';
+  String get white => 'Weiß';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'Ja';
 }

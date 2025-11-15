@@ -33,3 +33,6 @@ out/
 
 # Flutter platform-specific dirs
 web/
+
+# Localization
+untranslated-messages.txt
