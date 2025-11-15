@@ -115,4 +115,31 @@ void main() {
     expect(var2.nodes[0]['B'], ['ee']);
     expect(var2.nodes[1]['W'], ['dd']);
   });
+
+  test('fromSgf with handicap stones', () {
+    // Test SGF with handicap stones using AB property
+    const sgfWithHandicap =
+        '(;GM[1]FF[4]SZ[19]HA[4]AB[pd][dp][pp][dd];W[qf];B[nc];W[fc])';
+    final rec = GameRecord.fromSgf(sgfWithHandicap);
+
+    expect(rec.moves.length, 7);
+
+    // First 4 moves should be handicap stones (black)
+    expect(rec.moves[0].col, wq.Color.black);
+    expect(rec.moves[0].p, (3, 15)); // pd
+    expect(rec.moves[1].col, wq.Color.black);
+    expect(rec.moves[1].p, (15, 3)); // dp
+    expect(rec.moves[2].col, wq.Color.black);
+    expect(rec.moves[2].p, (15, 15)); // pp
+    expect(rec.moves[3].col, wq.Color.black);
+    expect(rec.moves[3].p, (3, 3)); // dd
+
+    // Then the actual moves
+    expect(rec.moves[4].col, wq.Color.white);
+    expect(rec.moves[4].p, (5, 16)); // qf
+    expect(rec.moves[5].col, wq.Color.black);
+    expect(rec.moves[5].p, (2, 13)); // nc
+    expect(rec.moves[6].col, wq.Color.white);
+    expect(rec.moves[6].p, (2, 5)); // fc
+  });
 }
