@@ -594,5 +594,5 @@ class StatsDB {
     return (0, 0);
   }
 
-  void dispose() => _db.dispose();
+  void dispose() => _db.close();
 }
