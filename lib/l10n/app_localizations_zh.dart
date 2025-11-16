@@ -371,8 +371,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get ogsDesc =>
-      'Online Go Server (OGS) 是功能强大的国际性围棋对弈平台，提供丰富的比赛和AI分析工具。';
+  String get ogsDesc => '国际性服务器，在欧洲和美洲最受欢迎。';
 
   @override
   String get ogsName => 'Online Go Server';
