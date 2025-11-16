@@ -40,6 +40,11 @@ jobs:
         run: flutter test
       - name: Build
         run: flutter build linux --obfuscate --split-debug-info=out/linux
+      - name: Upload bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: WeiqiHub-linux-x86_64
+          path: build/linux/x64/release/bundle/
       - name: Build AppImage 
         run: |
           cp linux/appimage/AppRun build/linux/x64/release/bundle/
