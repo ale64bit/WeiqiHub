@@ -17,7 +17,7 @@ jobs:
       - name: Install linux dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y ninja-build libgtk-3-dev libasound2-dev binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync
+          sudo apt-get install -y ninja-build libgtk-3-dev libasound2-dev binutils coreutils desktop-file-utils fakeroot libfuse2 libgdk-pixbuf2.0-dev patchelf python3-pip python3-setuptools squashfs-tools strace util-linux zsync
       - name: Setup appimagetool
         run: |
           sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /opt/appimagetool
