@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.1.12
+
 ## 0.1.11
 - OGS support (@benjaminpjones)
 - add setting to track Time Frenzy mistakes (@hemme)
