@@ -21,6 +21,7 @@ class _LanguagePageState extends State<LanguagePage> {
     'it': 'Italiano',
     'ro': 'Română',
     'ru': 'Русский',
+    'uk': 'Українська',
     'zh': '中文 – 简体',
   };
   @override
