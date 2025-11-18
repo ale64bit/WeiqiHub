@@ -142,4 +142,29 @@ void main() {
     expect(rec.moves[6].col, wq.Color.white);
     expect(rec.moves[6].p, (2, 5)); // fc
   });
+
+  // This non-standard behavior is really just necessary for Pandanet SGF files,
+  // which have the CoPyright property spelled out.
+  test('should convert lower case properties', () {
+    // Test that mixed-case properties are converted to uppercase
+    const sgfData = '(;CoPyright[hello](;White[ii])(;White[hi]Comment[h]))';
+    final sgf = Sgf.parse(sgfData);
+
+    expect(sgf.trees.length, 1);
+    final tree = sgf.trees.first;
+
+    expect(tree.nodes.length, 1);
+    expect(tree.nodes[0]['CP'], ['hello']);
+
+    expect(tree.children.length, 2);
+
+    final var1 = tree.children[0];
+    expect(var1.nodes.length, 1);
+    expect(var1.nodes[0]['W'], ['ii']);
+
+    final var2 = tree.children[1];
+    expect(var2.nodes.length, 1);
+    expect(var2.nodes[0]['W'], ['hi']);
+    expect(var2.nodes[0]['C'], ['h']);
+  });
 }

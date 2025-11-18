@@ -48,7 +48,10 @@ class _SgfDefinition extends GrammarDefinition {
       (ref0(propIdent) & ref0(space) & ref0(propValues))
           .map((l) => (l[0], l[2]));
 
-  Parser<String> propIdent() => (uppercase() & uppercase().star()).flatten();
+  Parser<String> propIdent() => (letter() & letter().star()).flatten().map((s) {
+        // Extract only uppercase letters (e.g., "CoPyright" -> "CP", "GM" -> "GM")
+        return s.split('').where((c) => c.toUpperCase() == c).join();
+      });
 
   Parser<List<String>> propValues() =>
       ref0(propValue).plusSeparated(ref0(space)).map((sl) => sl.elements);
