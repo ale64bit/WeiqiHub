@@ -219,6 +219,9 @@ class AppLocalizationsZh extends AppLocalizations {
       '- 3分钟内解答尽可能多的题。\n\n- 题目难度会随着您的进度逐渐增加。\n\n- 累计答错3题即结束。';
 
   @override
+  String get hideTask => '移出错题集';
+
+  @override
   String get home => '主界面';
 
   @override

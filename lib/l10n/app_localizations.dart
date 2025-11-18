@@ -510,6 +510,12 @@ abstract class AppLocalizations {
   /// **'- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.'**
   String get helpDialogTimeFrenzy;
 
+  /// No description provided for @hideTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from mistakes'**
+  String get hideTask;
+
   /// No description provided for @home.
   ///
   /// In en, this message translates to:

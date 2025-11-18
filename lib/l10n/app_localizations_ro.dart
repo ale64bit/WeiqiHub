@@ -225,6 +225,9 @@ class AppLocalizationsRo extends AppLocalizations {
       '- Ai 3 minute pentru a rezolva cât mai multe sarcini posibil.\n\n- Sarcinile devin tot mai dificile pe măsură ce le rezolvi.\n\n- Dacă faci 3 greșeli, ești eliminat.';
 
   @override
+  String get hideTask => 'Elimină din greșeli';
+
+  @override
   String get home => 'Acasă';
 
   @override
