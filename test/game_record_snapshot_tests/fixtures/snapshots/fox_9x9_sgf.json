@@ -1,0 +1,185 @@
+{
+  "type": "GameRecordType.sgf",
+  "moves": [
+    {
+      "color": "B",
+      "row": 4,
+      "col": 6
+    },
+    {
+      "color": "W",
+      "row": 4,
+      "col": 3
+    },
+    {
+      "color": "B",
+      "row": 5,
+      "col": 4
+    },
+    {
+      "color": "W",
+      "row": 5,
+      "col": 3
+    },
+    {
+      "color": "B",
+      "row": 6,
+      "col": 3
+    },
+    {
+      "color": "W",
+      "row": 4,
+      "col": 4
+    },
+    {
+      "color": "B",
+      "row": 5,
+      "col": 5
+    },
+    {
+      "color": "W",
+      "row": 6,
+      "col": 2
+    },
+    {
+      "color": "B",
+      "row": 2,
+      "col": 5
+    },
+    {
+      "color": "W",
+      "row": 7,
+      "col": 3
+    },
+    {
+      "color": "B",
+      "row": 7,
+      "col": 4
+    },
+    {
+      "color": "W",
+      "row": 6,
+      "col": 4
+    },
+    {
+      "color": "B",
+      "row": 6,
+      "col": 5
+    },
+    {
+      "color": "W",
+      "row": 2,
+      "col": 3
+    },
+    {
+      "color": "B",
+      "row": 1,
+      "col": 4
+    },
+    {
+      "color": "W",
+      "row": 1,
+      "col": 3
+    },
+    {
+      "color": "B",
+      "row": 0,
+      "col": 3
+    },
+    {
+      "color": "W",
+      "row": 2,
+      "col": 4
+    },
+    {
+      "color": "B",
+      "row": 1,
+      "col": 5
+    },
+    {
+      "color": "W",
+      "row": 0,
+      "col": 2
+    },
+    {
+      "color": "B",
+      "row": 6,
+      "col": 3
+    },
+    {
+      "color": "W",
+      "row": 3,
+      "col": 5
+    },
+    {
+      "color": "B",
+      "row": 3,
+      "col": 6
+    },
+    {
+      "color": "W",
+      "row": 6,
+      "col": 4
+    },
+    {
+      "color": "B",
+      "row": 1,
+      "col": 2
+    },
+    {
+      "color": "W",
+      "row": 0,
+      "col": 4
+    },
+    {
+      "color": "B",
+      "row": 6,
+      "col": 3
+    },
+    {
+      "color": "W",
+      "row": 7,
+      "col": 2
+    },
+    {
+      "color": "B",
+      "row": 0,
+      "col": 5
+    },
+    {
+      "color": "W",
+      "row": 0,
+      "col": 3
+    },
+    {
+      "color": "B",
+      "row": 4,
+      "col": 5
+    },
+    {
+      "color": "W",
+      "row": 3,
+      "col": 4
+    },
+    {
+      "color": "B",
+      "row": 6,
+      "col": 4
+    },
+    {
+      "color": "W",
+      "row": 8,
+      "col": 4
+    },
+    {
+      "color": "B",
+      "row": 8,
+      "col": 5
+    },
+    {
+      "color": "W",
+      "row": 8,
+      "col": 3
+    }
+  ]
+}
