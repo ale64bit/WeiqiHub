@@ -167,4 +167,35 @@ void main() {
     expect(var2.nodes[0]['W'], ['hi']);
     expect(var2.nodes[0]['C'], ['h']);
   });
+
+  test('should allow whitespace after semicolon', () {
+    // Test that nodes can have whitespace/newlines after the semicolon
+    const sgfData = '(;\nGM[1]FF[4]SZ[9];B[ee];W[ce])';
+    final sgf = Sgf.parse(sgfData);
+    expect(sgf.trees.length, 1);
+
+    final tree = sgf.trees.first;
+    expect(tree.nodes.length, 3);
+    expect(tree.nodes[0]['GM'], ['1']);
+    expect(tree.nodes[1]['B'], ['ee']);
+    expect(tree.nodes[2]['W'], ['ce']);
+  });
+
+  test('should allow trailing junk before closing paren', () {
+    // Test that arbitrary content after variations is ignored
+    // This is non-standard, but Pandanet SGF files place this OS[] property
+    // after the last move.
+    const sgfData = '(;GM[1]FF[4]SZ[9];B[aa];W[bb]junk\nmore junk\nOS[])';
+    final sgf = Sgf.parse(sgfData);
+    expect(sgf.trees.length, 1);
+
+    final tree = sgf.trees.first;
+    expect(tree.nodes.length, 3);
+    expect(tree.nodes[0]['GM'], ['1']);
+    expect(tree.nodes[1]['B'], ['aa']);
+    expect(tree.nodes[2]['W'], ['bb']);
+
+    final rec = GameRecord.fromSgf(sgfData);
+    expect(rec.moves.length, 2);
+  });
 }

@@ -28,20 +28,23 @@ class _SgfDefinition extends GrammarDefinition {
   Parser<List<SgfTree>> collection() =>
       ref0(gameTree).plusSeparated(ref0(space)).map((l) => l.elements);
 
-  Parser<SgfTree> gameTree() =>
-      (ref0(nodeSeq) & ref0(gameTree).starSeparated(ref0(space)))
-          .skip(before: char('(').trim(), after: char(')').trim())
-          .map((l) => SgfTree(
-                nodes: l[0],
-                children: l[1].elements,
-              ));
+  Parser<SgfTree> gameTree() => (ref0(nodeSeq) &
+          ref0(gameTree).starSeparated(ref0(space)) &
+          (char(')').not() & any())
+              .star()) // Allow junk after variations (e.g., IGS/Pandanet's OS[])
+      .skip(before: char('(').trim(), after: char(')').trim())
+      .map((l) => SgfTree(
+            nodes: l[0],
+            children: l[1].elements,
+          ));
 
   Parser<List<SgfNode>> nodeSeq() =>
       ref0(node).plusSeparated(ref0(space)).map((r) => r.elements);
 
   Parser<SgfNode> node() =>
-      (char(';') & ref0(prop).starSeparated(ref0(space))).map((l) {
-        return {for (final (k, vs) in l[1].elements) k: vs};
+      (char(';') & ref0(space) & ref0(prop).starSeparated(ref0(space)))
+          .map((l) {
+        return {for (final (k, vs) in l[2].elements) k: vs};
       });
 
   Parser<(String, List<String>)> prop() =>
