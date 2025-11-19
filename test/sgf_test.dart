@@ -181,19 +181,17 @@ void main() {
     expect(tree.nodes[2]['W'], ['ce']);
   });
 
-  test('should allow trailing junk before closing paren', () {
-    // Test that arbitrary content after variations is ignored
-    // This is non-standard, but Pandanet SGF files place this OS[] property
-    // after the last move.
-    const sgfData = '(;GM[1]FF[4]SZ[9];B[aa];W[bb]junk\nmore junk\nOS[])';
+  test('should allow trailing fields', () {
+    const sgfData = '(;GM[1]FF[4]SZ[9];B[aa];W[bb];\n\nOS[]\n\n)';
     final sgf = Sgf.parse(sgfData);
     expect(sgf.trees.length, 1);
 
     final tree = sgf.trees.first;
-    expect(tree.nodes.length, 3);
+    expect(tree.nodes.length, 4);
     expect(tree.nodes[0]['GM'], ['1']);
     expect(tree.nodes[1]['B'], ['aa']);
     expect(tree.nodes[2]['W'], ['bb']);
+    expect(tree.nodes[3]['OS'], ['']);
 
     final rec = GameRecord.fromSgf(sgfData);
     expect(rec.moves.length, 2);
