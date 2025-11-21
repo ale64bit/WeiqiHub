@@ -102,6 +102,18 @@ class VariationTreeIterator {
         .elementAt(Random().nextInt(tree!.children.length));
   }
 
+  wq.Point? nextProperMove() {
+    if (tree == null || tree!.children.isEmpty) return null;
+
+    for (final entry in tree!.children.entries) {
+      if (entry.value.finalStatus() == VariationStatus.correct) {
+        return entry.key;
+      }
+    }
+
+    return null;
+  }
+
   List<(wq.Point, VariationStatus)> continuations() =>
       tree?.children.entries
           .map((e) => (e.key, e.value.finalStatus()))

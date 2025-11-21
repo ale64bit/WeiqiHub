@@ -96,6 +96,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
                 color: widget.task.first,
                 upsolveMode: upsolveMode,
                 onShowSolution: onShowContinuations,
+                onPlayVariation: onPlaySolution,
                 onShareTask: onShareTask,
                 onCopySgf: onCopySgf,
                 onResetTask: onResetTask,
@@ -127,6 +128,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
           child: TaskActionBar(
             upsolveMode: upsolveMode,
             onShowSolution: onShowContinuations,
+            onPlayVariation: onPlaySolution,
             onShareTask: onShareTask,
             onCopySgf: onCopySgf,
             onResetTask: onResetTask,
@@ -151,6 +153,7 @@ class _SideBar extends StatelessWidget {
   final wq.Color color;
   final UpsolveMode upsolveMode;
   final Function()? onShowSolution;
+  final Function()? onPlayVariation;
   final Function()? onShareTask;
   final Function()? onCopySgf;
   final Function()? onResetTask;
@@ -164,6 +167,7 @@ class _SideBar extends StatelessWidget {
     required this.color,
     required this.upsolveMode,
     required this.onShowSolution,
+    this.onPlayVariation,
     required this.onShareTask,
     this.onCopySgf,
     required this.onResetTask,
@@ -205,6 +209,7 @@ class _SideBar extends StatelessWidget {
             TaskActionBar(
               upsolveMode: upsolveMode,
               onShowSolution: onShowSolution,
+              onPlayVariation: onPlayVariation,
               onShareTask: onShareTask,
               onCopySgf: onCopySgf,
               onResetTask: onResetTask,
