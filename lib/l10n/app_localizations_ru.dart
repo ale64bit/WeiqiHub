@@ -225,6 +225,9 @@ class AppLocalizationsRu extends AppLocalizations {
       '- У вас есть 3 минуты, чтобы решить как можно больше задач.\n\n- Задачи становятся всё сложнее по мере их решения.\n\n- Если вы допустите 3 ошибки, вы проиграете.';
 
   @override
+  String get hideTask => 'Удалить из ошибок';
+
+  @override
   String get home => 'Главная';
 
   @override

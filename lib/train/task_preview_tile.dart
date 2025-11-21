@@ -2,6 +2,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_settings.dart';
+import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/single_task_page.dart';
@@ -43,6 +44,7 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
     return FutureBuilder(
       future: taskFut,
       builder: (context, snapshot) {
@@ -94,7 +96,15 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                       Navigator.pushNamed(
                         context,
                         SingleTaskPage.routeName,
-                        arguments: SingleTaskRouteArguments(task: task),
+                        arguments: SingleTaskRouteArguments(
+                          task: task,
+                          onHideTask: widget.onHideTask != null
+                              ? () {
+                                  widget.onHideTask!();
+                                  Navigator.of(context).pop();
+                                }
+                              : null,
+                        ),
                       );
                     },
                     onLongPressStart: (details) {
@@ -108,7 +118,7 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                       menuChildren: <Widget>[
                         MenuItemButton(
                           onPressed: () => widget.onHideTask?.call(),
-                          child: const Text('Hide task'),
+                          child: Text(loc.hideTask),
                         ),
                       ],
                       child: Center(

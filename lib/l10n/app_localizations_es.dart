@@ -225,6 +225,9 @@ class AppLocalizationsEs extends AppLocalizations {
       '- Tienes 3 minutos para resolver tantos problemas como sea posible.\n\n- La dificultad de los problemas aumenta a medida que los resuelves.\n\n- Si fallas 3 problemas, el contrarreloj termina.';
 
   @override
+  String get hideTask => 'Quitar de errores';
+
+  @override
   String get home => 'Inicio';
 
   @override
