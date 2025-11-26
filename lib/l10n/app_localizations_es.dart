@@ -144,6 +144,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Nombre de usuario o contraseña incorrectos';
 
   @override
+  String get errLoginFailed =>
+      'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';
+
+  @override
+  String get errNetworkError =>
+      'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
+
+  @override
   String errMustBeAtLeast(num n) {
     return 'No puede ser menor que $n';
   }

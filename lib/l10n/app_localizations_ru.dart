@@ -144,6 +144,14 @@ class AppLocalizationsRu extends AppLocalizations {
       'Неверное имя пользователя или пароль';
 
   @override
+  String get errLoginFailed =>
+      'Вход не выполнен. Пожалуйста, попробуйте позже.';
+
+  @override
+  String get errNetworkError =>
+      'Ошибка сети. Проверьте подключение и попробуйте снова.';
+
+  @override
   String errMustBeAtLeast(num n) {
     return 'Должно быть не менее $n';
   }

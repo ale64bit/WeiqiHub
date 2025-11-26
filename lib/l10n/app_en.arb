@@ -42,6 +42,8 @@
   "errFailedToLoadGameList": "Failed to load game list. Please try again.",
   "errFailedToUploadGameToAISensei": "Failed to upload game to AI Sensei",
   "errIncorrectUsernameOrPassword": "Incorrect username or password",
+  "errLoginFailed": "Login failed. Please try again later.",
+  "errNetworkError": "Network error. Please check your connection and try again.",
   "errMustBeAtLeast": "Must be at least {n}",
   "@errMustBeAtLeast": {
     "placeholders": {

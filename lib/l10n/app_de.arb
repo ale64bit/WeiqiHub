@@ -42,6 +42,8 @@
   "errFailedToLoadGameList": "Spielliste konnte nicht geladen werden. Bitte versuche es erneut.",
   "errFailedToUploadGameToAISensei": "Spiel konnte nicht zu AI Sensei hochgeladen werden",
   "errIncorrectUsernameOrPassword": "Falscher Benutzername oder falsches Passwort",
+  "errLoginFailed": "Anmeldung fehlgeschlagen. Bitte versuche es später erneut.",
+  "errNetworkError": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.",
   "errMustBeAtLeast": "Muss mindestens {n} sein",
   "@errMustBeAtLeast": {
     "placeholders": {

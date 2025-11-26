@@ -42,6 +42,8 @@
   "errFailedToLoadGameList": "Impossibile caricare l'elenco delle partite. Per favore riprova più tardi.",
   "errFailedToUploadGameToAISensei": "Impossibile caricare la partita su AI Sensei",
   "errIncorrectUsernameOrPassword": "Username o password non corretti",
+  "errLoginFailed": "Accesso non riuscito. Riprova più tardi.",
+  "errNetworkError": "Errore di rete. Controlla la tua connessione e riprova.",
   "errMustBeAtLeast": "Deve essere almeno {n}",
   "@errMustBeAtLeast": {
     "placeholders": {

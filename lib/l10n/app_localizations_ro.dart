@@ -144,6 +144,14 @@ class AppLocalizationsRo extends AppLocalizations {
       'Nume de utilizator sau parolă incorecte';
 
   @override
+  String get errLoginFailed =>
+      'Autentificarea a eșuat. Te rog să încerci din nou mai târziu.';
+
+  @override
+  String get errNetworkError =>
+      'Eroare de rețea. Te rog să verifici conexiunea și să încerci din nou.';
+
+  @override
   String errMustBeAtLeast(num n) {
     return 'Trebuie să fie cel puțin $n';
   }
