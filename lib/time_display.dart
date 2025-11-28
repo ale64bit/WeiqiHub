@@ -36,17 +36,16 @@ class TimeDisplay extends StatefulWidget {
 
 class _TimeDisplayState extends State<TimeDisplay> {
   late Timer _timer;
-  late Duration _timeLeft;
+  DateTime? _startTime;
+  int? _lastAnnouncedSecond;
 
   @override
   void initState() {
     super.initState();
     if (widget.tickerEnabled) {
-      _timer = Timer.periodic(const Duration(seconds: 1), _onTick);
+      _startTime = DateTime.now();
+      _timer = Timer.periodic(const Duration(milliseconds: 100), _onTick);
     }
-    _timeLeft = (widget.timeState.mainTimeLeft > Duration.zero)
-        ? widget.timeState.mainTimeLeft
-        : widget.timeState.periodTimeLeft;
   }
 
   @override
@@ -54,9 +53,8 @@ class _TimeDisplayState extends State<TimeDisplay> {
     super.didUpdateWidget(oldWidget);
     if (widget.timeState != oldWidget.timeState ||
         widget.tickId != oldWidget.tickId) {
-      _timeLeft = (widget.timeState.mainTimeLeft > Duration.zero)
-          ? widget.timeState.mainTimeLeft
-          : widget.timeState.periodTimeLeft;
+      _startTime = DateTime.now();
+      _lastAnnouncedSecond = null;
       if (widget.timeState != oldWidget.timeState) _voiceCountdown();
     }
   }
@@ -69,18 +67,19 @@ class _TimeDisplayState extends State<TimeDisplay> {
 
   @override
   Widget build(BuildContext context) {
+    final (timeLeft, isMainTime, periodCount) = _calculateTimeState();
+
     final colorScheme = ColorScheme.of(context);
-    final containerColor = _timeLeft <= widget.warningDuration
+    final containerColor = timeLeft <= widget.warningDuration
         ? colorScheme.errorContainer
         : colorScheme.primaryContainer;
     final textStyle = TextTheme.of(context).headlineLarge?.copyWith(
       fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
     );
-    final isMaintime = (widget.timeState.mainTimeLeft > Duration.zero) ||
-        (widget.timeState.periodCount == 0);
-    final hh = _formatUnit(_timeLeft.inHours);
-    final mm = _formatUnit(_timeLeft.inMinutes.remainder(60));
-    final ss = _formatUnit(_timeLeft.inSeconds.remainder(60));
+    final isMaintime = isMainTime || (periodCount == 0);
+    final hh = _formatUnit(timeLeft.inHours);
+    final mm = _formatUnit(timeLeft.inMinutes.remainder(60));
+    final ss = _formatUnit(timeLeft.inSeconds.remainder(60));
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,9 +94,7 @@ class _TimeDisplayState extends State<TimeDisplay> {
             ]
           : <Widget>[
               // Overtime
-              _UnitContainer(
-                  value: '${widget.timeState.periodCount}x',
-                  color: containerColor),
+              _UnitContainer(value: '${periodCount}x', color: containerColor),
               Text(':', style: textStyle),
               if (hh != '00') _UnitContainer(value: hh, color: containerColor),
               if (hh != '00') Text(':', style: textStyle),
@@ -110,33 +107,76 @@ class _TimeDisplayState extends State<TimeDisplay> {
 
   String _formatUnit(int u) => u.toString().padLeft(2, '0');
 
-  void _onTick(Timer timer) {
-    if (!widget.enabled) return;
+  Duration _getElapsed() {
+    if (_startTime == null) return Duration.zero;
+    return DateTime.now().difference(_startTime!);
+  }
+
+  (Duration, bool, int) _calculateTimeState() {
+    final elapsed = widget.enabled ? _getElapsed() : Duration.zero;
 
     switch (widget.tickMode) {
       case TickMode.increase:
-        setState(() {
-          _timeLeft += Duration(seconds: 1);
-        });
+        final timeLeft = (widget.timeState.mainTimeLeft > Duration.zero)
+            ? widget.timeState.mainTimeLeft
+            : widget.timeState.periodTimeLeft;
+        return (
+          timeLeft + elapsed,
+          widget.timeState.mainTimeLeft > Duration.zero,
+          widget.timeState.periodCount
+        );
       case TickMode.decrease:
-        if (_timeLeft > Duration.zero) {
-          setState(() {
-            _timeLeft -= Duration(seconds: 1);
-            if (_timeLeft == Duration.zero) {
-              widget.onTimeout?.call();
-            }
-          });
-          _voiceCountdown();
+        var remainingElapsed = elapsed;
+        var mainTimeLeft = widget.timeState.mainTimeLeft;
+        var periodCount = widget.timeState.periodCount;
+
+        // First, consume main time
+        if (mainTimeLeft > Duration.zero) {
+          if (remainingElapsed <= mainTimeLeft) {
+            return (mainTimeLeft - remainingElapsed, true, periodCount);
+          }
+          remainingElapsed -= mainTimeLeft;
         }
+
+        // Then, consume byo-yomi periods
+        final periodTime = widget.timeState.periodTimeLeft;
+        while (periodCount > 0 && remainingElapsed >= periodTime) {
+          remainingElapsed -= periodTime;
+          periodCount--;
+        }
+
+        if (periodCount > 0) {
+          return (periodTime - remainingElapsed, false, periodCount);
+        }
+
+        // Time expired
+        return (Duration.zero, false, 0);
     }
   }
 
+  void _onTick(Timer timer) {
+    if (!widget.enabled) return;
+
+    setState(() {
+      final (timeLeft, _, _) = _calculateTimeState();
+      if (timeLeft == Duration.zero) {
+        widget.onTimeout?.call();
+      }
+    });
+    _voiceCountdown();
+  }
+
   void _voiceCountdown() {
+    final (timeLeft, isMainTime, _) = _calculateTimeState();
     if (widget.voiceCountdown &&
-        widget.timeState.isOvertime &&
-        Duration.zero < _timeLeft &&
-        _timeLeft <= Duration(seconds: 9)) {
-      AudioController().count(_timeLeft.inSeconds);
+        !isMainTime &&
+        Duration.zero < timeLeft &&
+        timeLeft <= Duration(seconds: 9)) {
+      final secondsLeft = timeLeft.inSeconds;
+      if (secondsLeft != _lastAnnouncedSecond) {
+        _lastAnnouncedSecond = secondsLeft;
+        AudioController().count(secondsLeft);
+      }
     }
   }
 }
