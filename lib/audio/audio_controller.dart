@@ -111,6 +111,12 @@ class AudioController {
       await _soloud.play(_enVoice.startToPlay, volume: voiceVolume);
   Future<void> pass() async =>
       await _soloud.play(_enVoice.pass, volume: voiceVolume);
-  Future<void> count(int i) async =>
-      await _soloud.play(_enVoice.count[i - 1], volume: voiceVolume);
+  Future<void> count(int i) async {
+    if (i < 1 || i > _enVoice.count.length) {
+      _log.warning(
+          'Invalid count value: $i (expected 1-${_enVoice.count.length})');
+      return;
+    }
+    await _soloud.play(_enVoice.count[i - 1], volume: voiceVolume);
+  }
 }

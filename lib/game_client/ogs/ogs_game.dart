@@ -5,6 +5,7 @@ import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/game_timer.dart';
 import 'package:wqhub/game_client/ogs/chat_presence_manager.dart';
 import 'package:wqhub/game_client/ogs/http_client.dart';
 import 'package:wqhub/game_client/ogs/game_utils.dart';
@@ -31,6 +32,10 @@ class OGSGame extends Game {
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
   late final ChatPresenceManager _chatPresenceManager;
   StreamSubscription<Set<String>>? _presenceSubscription;
+
+  // Game timers for local countdown
+  late final GameTimer _blackTimer;
+  late final GameTimer _whiteTimer;
 
   // Track all moves played in the game for board state reconstruction
   final List<wq.Move> _allMoves = [];
@@ -68,6 +73,21 @@ class OGSGame extends Game {
     _resultCompleter = Completer<GameResult>();
 
     _allMoves.addAll(previousMoves);
+
+    final initialTimeState = TimeState(
+      mainTimeLeft: timeControl.mainTime,
+      periodTimeLeft: timeControl.timePerPeriod,
+      periodCount: timeControl.periodCount,
+    );
+    _blackTimer = GameTimer(initialState: initialTimeState);
+    _whiteTimer = GameTimer(initialState: initialTimeState);
+
+    _blackTimer.timeNotifier.addListener(() {
+      blackTime.value = _blackTimer.timeNotifier.value;
+    });
+    _whiteTimer.timeNotifier.addListener(() {
+      whiteTime.value = _whiteTimer.timeNotifier.value;
+    });
 
     // Initialize chat presence manager - this will auto-join the chat channel
     _chatPresenceManager = ChatPresenceManager(
@@ -433,18 +453,41 @@ class OGSGame extends Game {
   void _handleClock(Map<String, dynamic> data) {
     _logger.fine('Received clock update for game $id');
 
+    // If the game has already ended, stop both timers and ignore clock updates
+    if (_resultCompleter.isCompleted) {
+      _blackTimer.stop();
+      _whiteTimer.stop();
+      _logger.fine('Ignoring clock update for completed game $id');
+      return;
+    }
+
     try {
       final blackTimeData = data['black_time'] as Map<String, dynamic>?;
       final whiteTimeData = data['white_time'] as Map<String, dynamic>?;
+      final currentPlayer = data['current_player'] as int?;
 
       if (blackTimeData != null) {
-        blackTime.value =
-            (blackTime.value.$1 + 1, _parseOGSTimeData(blackTimeData));
+        final newState = _parseOGSTimeData(blackTimeData);
+        final isBlackTurn = currentPlayer == int.tryParse(black.value.userId);
+
+        if (isBlackTurn) {
+          _blackTimer.start(newState);
+        } else {
+          _blackTimer.stop();
+          blackTime.value = (blackTime.value.$1 + 1, newState);
+        }
       }
 
       if (whiteTimeData != null) {
-        whiteTime.value =
-            (whiteTime.value.$1 + 1, _parseOGSTimeData(whiteTimeData));
+        final newState = _parseOGSTimeData(whiteTimeData);
+        final isWhiteTurn = currentPlayer == int.tryParse(white.value.userId);
+
+        if (isWhiteTurn) {
+          _whiteTimer.start(newState);
+        } else {
+          _whiteTimer.stop();
+          whiteTime.value = (whiteTime.value.$1 + 1, newState);
+        }
       }
 
       _logger.fine(
@@ -704,6 +747,8 @@ class OGSGame extends Game {
   void dispose() {
     _messageSubscription?.cancel();
     _presenceSubscription?.cancel();
+    _blackTimer.dispose();
+    _whiteTimer.dispose();
     _chatPresenceManager.dispose();
     _webSocketManager.leaveGame(id);
     _moveController.close();

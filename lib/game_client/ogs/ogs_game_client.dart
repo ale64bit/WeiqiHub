@@ -74,7 +74,7 @@ class OGSGameClient extends GameClient {
         aiRefereeMinMoveCount: const IMapConst({}),
         forcedCounting: false, // OGS handles counting differently
         forcedCountingMinMoveCount: const IMapConst({}),
-        localTimeControl: true,
+        localTimeControl: false, // OGS uses GameTimer for local countdown
       );
 
   @override
