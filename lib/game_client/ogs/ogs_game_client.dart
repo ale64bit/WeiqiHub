@@ -246,6 +246,8 @@ class OGSGameClient extends GameClient {
           'source': 'play',
           'ended__isnull': 'true',
           'time_per_move__lt': '3600',
+          // Exclude correspondence games with no time control
+          'time_per_move__gt': '0',
         },
       );
       final List<dynamic> results = data['results'] ?? [];
