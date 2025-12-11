@@ -140,8 +140,8 @@ void main() {
         final timer = GameTimer(initialState: initialState);
         final updates = <(int, TimeState)>[];
 
-        timer.timeNotifier.addListener(() {
-          updates.add(timer.timeNotifier.value);
+        timer.addListener(() {
+          updates.add(timer.value);
         });
 
         timer.start(initialState);
@@ -171,11 +171,11 @@ void main() {
         final timer = GameTimer(initialState: initialState);
         timer.start(initialState);
 
-        final initialTick = timer.timeNotifier.value.$1;
+        final initialTick = timer.value.$1;
 
         async.elapse(Duration(seconds: 2));
 
-        final newTick = timer.timeNotifier.value.$1;
+        final newTick = timer.value.$1;
         expect(newTick, greaterThan(initialTick));
 
         timer.dispose();

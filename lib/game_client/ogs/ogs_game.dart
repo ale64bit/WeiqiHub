@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
@@ -83,11 +82,11 @@ class OGSGame extends Game {
     _blackTimer = GameTimer(initialState: initialTimeState);
     _whiteTimer = GameTimer(initialState: initialTimeState);
 
-    _blackTimer.timeNotifier.addListener(() {
-      blackTime.value = _blackTimer.timeNotifier.value;
+    _blackTimer.addListener(() {
+      blackTime.value = _blackTimer.value;
     });
-    _whiteTimer.timeNotifier.addListener(() {
-      whiteTime.value = _whiteTimer.timeNotifier.value;
+    _whiteTimer.addListener(() {
+      whiteTime.value = _whiteTimer.value;
     });
 
     // Initialize chat presence manager - this will auto-join the chat channel
@@ -470,7 +469,6 @@ class OGSGame extends Game {
       void updatePlayerTimer(
         Map<String, dynamic>? timeData,
         GameTimer timer,
-        ValueNotifier<(int, TimeState)> timeNotifier,
         String playerId,
       ) {
         if (timeData != null) {
@@ -481,15 +479,13 @@ class OGSGame extends Game {
             timer.start(newState);
           } else {
             timer.stop();
-            timeNotifier.value = (timeNotifier.value.$1 + 1, newState);
+            timer.value = (timer.value.$1 + 1, newState);
           }
         }
       }
 
-      updatePlayerTimer(
-          blackTimeData, _blackTimer, blackTime, black.value.userId);
-      updatePlayerTimer(
-          whiteTimeData, _whiteTimer, whiteTime, white.value.userId);
+      updatePlayerTimer(blackTimeData, _blackTimer, black.value.userId);
+      updatePlayerTimer(whiteTimeData, _whiteTimer, white.value.userId);
 
       _logger.fine(
           'Updated clock for game $id: blackTime=${blackTime.value}, whiteTime=${whiteTime.value}');

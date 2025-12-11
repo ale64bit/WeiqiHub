@@ -7,21 +7,19 @@ import 'package:wqhub/game_client/time_state.dart';
 ///
 /// This class handles the countdown logic for both main time and overtime periods,
 /// emitting updates once per second when active.
-class GameTimer {
+///
+/// The value is a tuple of (tick counter, TimeState). The tick counter increments
+/// each time the state changes, allowing listeners to detect updates even when
+/// the TimeState values might be identical.
+class GameTimer extends ValueNotifier<(int, TimeState)> {
   Timer? _timer;
   TimeState _baseState;
   DateTime? _startTime;
-  final ValueNotifier<(int, TimeState)> _notifier;
 
   GameTimer({
     required TimeState initialState,
   })  : _baseState = initialState,
-        _notifier = ValueNotifier((0, initialState));
-
-  /// The current time state and a tick counter.
-  /// The tick counter increments each time the state changes, allowing listeners
-  /// to detect updates even when the TimeState values might be identical.
-  ValueNotifier<(int, TimeState)> get timeNotifier => _notifier;
+        super((0, initialState));
 
   /// Whether the timer is currently running.
   bool get isRunning => _timer != null && _timer!.isActive;
@@ -43,7 +41,7 @@ class GameTimer {
     stop();
     _baseState = newState;
     _startTime = clock.now();
-    _notifier.value = (_notifier.value.$1 + 1, newState);
+    value = (value.$1 + 1, newState);
 
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       _tick();
@@ -72,7 +70,7 @@ class GameTimer {
     final elapsed = clock.now().difference(_startTime!);
     final newState = _calculateTimeState(_baseState, elapsed);
 
-    _notifier.value = (_notifier.value.$1 + 1, newState);
+    value = (value.$1 + 1, newState);
   }
 
   /// Calculate the time state after a given duration has elapsed.
@@ -113,8 +111,9 @@ class GameTimer {
   }
 
   /// Dispose of the timer and release resources.
+  @override
   void dispose() {
     _timer?.cancel();
-    _notifier.dispose();
+    super.dispose();
   }
 }
