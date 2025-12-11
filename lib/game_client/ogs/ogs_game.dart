@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/game_client/automatic_counting_info.dart';
 import 'package:wqhub/game_client/counting_result.dart';
@@ -466,29 +467,29 @@ class OGSGame extends Game {
       final whiteTimeData = data['white_time'] as Map<String, dynamic>?;
       final currentPlayer = data['current_player'] as int?;
 
-      if (blackTimeData != null) {
-        final newState = _parseOGSTimeData(blackTimeData);
-        final isBlackTurn = currentPlayer == int.tryParse(black.value.userId);
+      void updatePlayerTimer(
+        Map<String, dynamic>? timeData,
+        GameTimer timer,
+        ValueNotifier<(int, TimeState)> timeNotifier,
+        String playerId,
+      ) {
+        if (timeData != null) {
+          final newState = _parseOGSTimeData(timeData);
+          final isPlayerTurn = currentPlayer == int.tryParse(playerId);
 
-        if (isBlackTurn) {
-          _blackTimer.start(newState);
-        } else {
-          _blackTimer.stop();
-          blackTime.value = (blackTime.value.$1 + 1, newState);
+          if (isPlayerTurn) {
+            timer.start(newState);
+          } else {
+            timer.stop();
+            timeNotifier.value = (timeNotifier.value.$1 + 1, newState);
+          }
         }
       }
 
-      if (whiteTimeData != null) {
-        final newState = _parseOGSTimeData(whiteTimeData);
-        final isWhiteTurn = currentPlayer == int.tryParse(white.value.userId);
-
-        if (isWhiteTurn) {
-          _whiteTimer.start(newState);
-        } else {
-          _whiteTimer.stop();
-          whiteTime.value = (whiteTime.value.$1 + 1, newState);
-        }
-      }
+      updatePlayerTimer(
+          blackTimeData, _blackTimer, blackTime, black.value.userId);
+      updatePlayerTimer(
+          whiteTimeData, _whiteTimer, whiteTime, white.value.userId);
 
       _logger.fine(
           'Updated clock for game $id: blackTime=${blackTime.value}, whiteTime=${whiteTime.value}');
