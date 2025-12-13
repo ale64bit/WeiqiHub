@@ -40,15 +40,19 @@ class _SgfDefinition extends GrammarDefinition {
       ref0(node).plusSeparated(ref0(space)).map((r) => r.elements);
 
   Parser<SgfNode> node() =>
-      (char(';') & ref0(prop).starSeparated(ref0(space))).map((l) {
-        return {for (final (k, vs) in l[1].elements) k: vs};
+      (char(';') & ref0(space) & ref0(prop).starSeparated(ref0(space)))
+          .map((l) {
+        return {for (final (k, vs) in l[2].elements) k: vs};
       });
 
   Parser<(String, List<String>)> prop() =>
       (ref0(propIdent) & ref0(space) & ref0(propValues))
           .map((l) => (l[0], l[2]));
 
-  Parser<String> propIdent() => (uppercase() & uppercase().star()).flatten();
+  Parser<String> propIdent() => (letter() & letter().star()).flatten().map((s) {
+        // Extract only uppercase letters (e.g., "CoPyright" -> "CP", "GM" -> "GM")
+        return s.split('').where((c) => c.toUpperCase() == c).join();
+      });
 
   Parser<List<String>> propValues() =>
       ref0(propValue).plusSeparated(ref0(space)).map((sl) => sl.elements);
