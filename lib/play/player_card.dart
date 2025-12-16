@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/blinking_icon.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
+import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/turn_icon.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
@@ -40,7 +41,9 @@ class PlayerCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${userInfo.username} [${userInfo.rank}]',
+                    context.settings.hidePlayerRanks
+                        ? userInfo.username
+                        : '${userInfo.username} [${userInfo.rank}]',
                     overflow: TextOverflow.fade,
                     softWrap: false,
                   ),
