@@ -32,6 +32,7 @@ class Settings {
   static const _boardShowCoordinatesKey = 'settings.board.show_coordinates';
   static const _boardStoneShadowsKey = 'settings.board.stone_shadows';
   static const _boardEdgeLine = 'settings.board.edge_line';
+  static const _hidePlayerRanks = 'settings.appearance.hide_player_ranks';
   static const _saveDirectory = 'settings.save_dir';
   static const _locale = 'settings.language.locale';
   static const _helpDialogPrefix = 'settings.help';
@@ -91,12 +92,14 @@ class Settings {
   bool get stoneShadows => prefs.getBool(_boardStoneShadowsKey) ?? true;
   BoardEdgeLine get edgeLine =>
       BoardEdgeLine.values[prefs.getInt(_boardEdgeLine) ?? 0];
+  bool get hidePlayerRanks => prefs.getBool(_hidePlayerRanks) ?? false;
 
   set boardTheme(BoardTheme theme) => prefs.setString(_boardTheme, theme.id);
   set showCoordinates(bool val) => prefs.setBool(_boardShowCoordinatesKey, val);
   set stoneShadows(bool val) => prefs.setBool(_boardStoneShadowsKey, val);
   set edgeLine(BoardEdgeLine edgeLine) =>
       prefs.setInt(_boardEdgeLine, edgeLine.index);
+  set hidePlayerRanks(bool val) => prefs.setBool(_hidePlayerRanks, val);
 
   // Behaviour
   bool get confirmMoves =>

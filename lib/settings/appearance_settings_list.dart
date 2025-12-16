@@ -85,6 +85,17 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
+          title: Text(loc.hidePlayerRanks),
+          subtitle: Text(loc.hidePlayerRanksDesc),
+          trailing: Switch(
+            value: context.settings.hidePlayerRanks,
+            onChanged: (value) {
+              context.settings.hidePlayerRanks = value;
+              onChanged();
+            },
+          ),
+        ),
+        ListTile(
           title: Text(loc.edgeLine),
           trailing: SegmentedButton<BoardEdgeLine>(
             selected: <BoardEdgeLine>{context.settings.edgeLine},
