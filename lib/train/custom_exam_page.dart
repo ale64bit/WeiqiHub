@@ -21,6 +21,7 @@ class CustomExamRouteArguments {
   final int maxMistakes;
   final TaskSourceType taskSourceType;
   final ISet<TaskType>? taskTypes;
+  final TaskTag? taskTopic;
   final TaskTag? taskTag;
   final bool collectStats;
 
@@ -31,6 +32,7 @@ class CustomExamRouteArguments {
       required this.maxMistakes,
       required this.taskSourceType,
       required this.taskTypes,
+      this.taskTopic,
       required this.taskTag,
       required this.collectStats});
 }
@@ -44,6 +46,7 @@ class CustomExamPage extends StatelessWidget {
   final int maxMistakes;
   final TaskSourceType taskSourceType;
   final ISet<TaskType>? taskTypes;
+  final TaskTag? taskTopic;
   final TaskTag? taskTag;
   final bool collectStats;
 
@@ -55,6 +58,7 @@ class CustomExamPage extends StatelessWidget {
       required this.maxMistakes,
       required this.taskSourceType,
       this.taskTypes,
+      this.taskTopic,
       this.taskTag,
       required this.collectStats});
 
@@ -80,6 +84,7 @@ class CustomExamPage extends StatelessWidget {
         maxMistakes: maxMistakes,
         taskSourceType: taskSourceType,
         taskTypes: taskTypes,
+        taskTopic: taskTopic,
         taskTag: taskTag,
         collectStats: collectStats,
       ),
@@ -91,8 +96,9 @@ class CustomExamPage extends StatelessWidget {
     final taskSource = switch (taskSourceType) {
       TaskSourceType.fromTaskTypes =>
         TaskRepository().taskSourceByTypes(rankRange, taskTypes!),
-      TaskSourceType.fromTaskTag =>
-        TaskRepository().taskSourceByTag(rankRange, taskTag!),
+      TaskSourceType.fromTaskTag => taskTag == null
+          ? TaskRepository().taskSourceByTopic(rankRange, taskTopic!)
+          : TaskRepository().taskSourceByTag(rankRange, taskTag!),
       TaskSourceType.fromMistakes => ConstTaskRefSource(
           taskRefs: StatsDB().mistakesByRankRange(rankRange, taskCount)),
     };

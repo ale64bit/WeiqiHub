@@ -122,6 +122,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             maxMistakes: args.maxMistakes,
             taskSourceType: args.taskSourceType,
             taskTypes: args.taskTypes,
+            taskTopic: args.taskTopic,
             taskTag: args.taskTag,
             collectStats: args.collectStats,
           ));

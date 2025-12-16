@@ -665,6 +665,28 @@ class TaskRepository {
     );
   }
 
+  TaskSource taskSourceByTopic(RankRange rankRange, TaskTag topic) {
+    final buckets = <((Rank, _TagBucket), int)>[];
+    for (final subtag in topic.subtags()) {
+      for (int i = rankRange.from.index; i <= rankRange.to.index; ++i) {
+        if (_tags.tasks[(Rank.values[i], subtag)] != null) {
+          buckets.add((
+            (Rank.values[i], _tags.tasks[(Rank.values[i], subtag)]!),
+            _tags.tasks[(Rank.values[i], subtag)]?.tasks.length ?? 0
+          ));
+        }
+      }
+    }
+    return DistributionTaskSource(
+      buckets: buckets,
+      nextTask: ((Rank, _TagBucket) bucket) {
+        final (rank, tagBucket) = bucket;
+        final (type, id) = tagBucket.next();
+        return readById(rank, type, id)!;
+      },
+    );
+  }
+
   int countByTypes(RankRange rankRange, ISet<TaskType> types) {
     var total = 0;
     for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
@@ -677,6 +699,14 @@ class TaskRepository {
     var total = 0;
     for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
       total += _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0;
+    return total;
+  }
+
+  int countByTopic(RankRange rankRange, TaskTag topic) {
+    var total = 0;
+    for (final subtag in topic.subtags()) {
+      total += countByTag(rankRange, subtag);
+    }
     return total;
   }
 

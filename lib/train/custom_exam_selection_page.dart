@@ -34,7 +34,7 @@ class _CustomExamSelectionPageState
   var _taskSourceType = TaskSourceType.values.first;
   var _selectedTaskTypes = {TaskType.lifeAndDeath, TaskType.tesuji};
   var _tag = TaskTag.beginner;
-  var _subtag = TaskTag.captureInOneMove;
+  TaskTag? _subtag;
 
   @override
   Widget build(BuildContext context) {
@@ -167,18 +167,22 @@ class _CustomExamSelectionPageState
                               if (value != null) {
                                 setState(() {
                                   _tag = value;
-                                  _subtag = _tag.subtags().first;
+                                  _subtag = null;
                                 });
                               }
                             },
                           ),
-                          DropdownButtonFormField<TaskTag>(
+                          DropdownButtonFormField<TaskTag?>(
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: loc.subtopic,
                             ),
                             initialValue: _subtag,
                             items: [
+                              DropdownMenuItem(
+                                value: null,
+                                child: Text(loc.all),
+                              ),
                               for (final tag in _tag
                                   .subtags()
                                   .where((t) => t.ranks().isNotEmpty))
@@ -188,11 +192,9 @@ class _CustomExamSelectionPageState
                                 )
                             ],
                             onChanged: (value) {
-                              if (value != null) {
-                                setState(() {
-                                  _subtag = value;
-                                });
-                              }
+                              setState(() {
+                                _subtag = value;
+                              });
                             },
                           ),
                           availableTasksText,
@@ -242,6 +244,7 @@ class _CustomExamSelectionPageState
                                   maxMistakes: _maxMistakes,
                                   taskSourceType: _taskSourceType,
                                   taskTypes: ISet(_selectedTaskTypes),
+                                  taskTopic: _tag,
                                   taskTag: _subtag,
                                   collectStats: _collectStats,
                                 ),
@@ -269,8 +272,9 @@ class _CustomExamSelectionPageState
   int availableTasks() => switch (_taskSourceType) {
         TaskSourceType.fromTaskTypes =>
           TaskRepository().countByTypes(_rankRange, ISet(_selectedTaskTypes)),
-        TaskSourceType.fromTaskTag =>
-          TaskRepository().countByTag(_rankRange, _subtag),
+        TaskSourceType.fromTaskTag => _subtag == null
+            ? TaskRepository().countByTopic(_rankRange, _tag)
+            : TaskRepository().countByTag(_rankRange, _subtag!),
         TaskSourceType.fromMistakes =>
           StatsDB().countMistakesByRange(_rankRange),
       };
