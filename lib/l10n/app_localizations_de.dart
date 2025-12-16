@@ -226,6 +226,9 @@ class AppLocalizationsDe extends AppLocalizations {
       '- Du hast 3 Minuten Zeit, um so viele Aufgaben wie möglich zu lösen.\n\n- Die Aufgaben werden zunehmend schwieriger, je mehr du löst.\n\n- Wenn du 3 Fehler machst, bist du raus.';
 
   @override
+  String get hideTask => 'Aus Fehlern entfernen';
+
+  @override
   String get home => 'Startseite';
 
   @override

@@ -80,6 +80,7 @@
   "helpDialogGradingExam": "- 棋力测试包含10道题，每题限时45秒。\n\n- 答对8题及以上（80%正确率）即为通过。\n\n- 通过当前级别测试将解锁下一级别。",
   "helpDialogRankedMode": "- 无时间限制答题。\n\n- 题目难度会根据您的解题速度动态调整。\n\n- 专注于正确答题，冲击最高等级。",
   "helpDialogTimeFrenzy": "- 3分钟内解答尽可能多的题。\n\n- 题目难度会随着您的进度逐渐增加。\n\n- 累计答错3题即结束。",
+  "hideTask": "移出错题集",
   "home": "主界面",
   "komi": "贴目",
   "language": "语言",
