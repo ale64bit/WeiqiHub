@@ -2,7 +2,7 @@ name: wqhub
 description: "A unified client to multiple Go servers and offline puzzle solving."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -45,6 +45,7 @@ dependencies:
     sdk: flutter
   flutter_slidable: ^4.0.0
   flutter_soloud: ^3.0.0
+  audio_session: ^0.1.21
   http: ^1.3.0
   intl: ^0.20.1
   logging: ^1.3.0
