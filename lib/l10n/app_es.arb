@@ -42,7 +42,7 @@
   "errFailedToLoadGameList": "Error cargando lista de partidas. Por favor, prueba de nuevo.",
   "errFailedToUploadGameToAISensei": "Error enviando partida a AI Sensei",
   "errIncorrectUsernameOrPassword": "Nombre de usuario o contraseña incorrectos",
-  "errLoginFailed": "Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.",
+  "errLoginFailedWithDetails": "Error al iniciar sesión: {message}",
   "errNetworkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.",
   "errMustBeAtLeast": "No puede ser menor que {n}",
   "@errMustBeAtLeast": {

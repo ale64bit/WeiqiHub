@@ -144,8 +144,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Nombre de usuario o contraseña incorrectos';
 
   @override
-  String get errLoginFailed =>
-      'Error al iniciar sesión. Por favor, inténtalo de nuevo más tarde.';
+  String errLoginFailedWithDetails(String message) {
+    return 'Error al iniciar sesión: $message';
+  }
 
   @override
   String get errNetworkError =>

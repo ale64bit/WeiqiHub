@@ -144,8 +144,9 @@ class AppLocalizationsRu extends AppLocalizations {
       'Неверное имя пользователя или пароль';
 
   @override
-  String get errLoginFailed =>
-      'Вход не выполнен. Пожалуйста, попробуйте позже.';
+  String errLoginFailedWithDetails(String message) {
+    return 'Вход не выполнен: $message';
+  }
 
   @override
   String get errNetworkError =>

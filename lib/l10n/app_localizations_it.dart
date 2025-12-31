@@ -144,7 +144,9 @@ class AppLocalizationsIt extends AppLocalizations {
       'Username o password non corretti';
 
   @override
-  String get errLoginFailed => 'Accesso non riuscito. Riprova più tardi.';
+  String errLoginFailedWithDetails(String message) {
+    return 'Accesso non riuscito: $message';
+  }
 
   @override
   String get errNetworkError =>

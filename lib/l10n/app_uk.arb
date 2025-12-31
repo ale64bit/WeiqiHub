@@ -42,6 +42,8 @@
   "errFailedToLoadGameList": "Не вдалося завантажити список ігор. Спробуйте пізніше",
   "errFailedToUploadGameToAISensei": "Не вдалося завантажити гру на AI Sensei",
   "errIncorrectUsernameOrPassword": "Невірний логін або пароль",
+  "errLoginFailedWithDetails": "Вхід не виконано: {message}",
+  "errNetworkError": "Помилка мережі. Перевірте з'єднання і спробуйте знову.",
   "errMustBeAtLeast": "Повинно бути не менше {n}",
   "@errMustBeAtLeast": {
     "placeholders": {

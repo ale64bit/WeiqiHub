@@ -94,10 +94,10 @@ class _ServerLoginPageState extends State<ServerLoginPage> {
             LoginFailureType.invalidCredentials =>
               loc.errIncorrectUsernameOrPassword,
             LoginFailureType.network => loc.errNetworkError,
-            LoginFailureType.unknown => loc.errLoginFailed,
           };
         } else {
-          errorMessage = loc.errLoginFailed;
+          // For unexpected exceptions, show the error message
+          errorMessage = loc.errLoginFailedWithDetails(err.toString());
         }
 
         ScaffoldMessenger.of(context).showSnackBar(

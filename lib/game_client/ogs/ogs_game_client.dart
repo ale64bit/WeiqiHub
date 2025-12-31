@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' show ClientException;
 import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/exceptions.dart';
 import 'package:wqhub/game_client/game.dart';
@@ -220,27 +222,19 @@ class OGSGameClient extends GameClient {
       if (e.statusCode == 401 || e.statusCode == 403) {
         // Authentication failed - wrong username or password
         throw const LoginException(
-          'Incorrect username or password',
           type: LoginFailureType.invalidCredentials,
         );
-      } else {
-        // Other server errors
+      }
+      rethrow;
+    } catch (e) {
+      // Check for network-related exceptions
+      if (e is SocketException || e is ClientException) {
         throw LoginException(
-          'Login failed: ${e.message}',
-          type: LoginFailureType.unknown,
+          type: LoginFailureType.network,
           cause: e,
         );
       }
-    } catch (e) {
-      // Network errors or other issues
-      if (e is LoginException) {
-        rethrow;
-      }
-      throw LoginException(
-        'Network error during login',
-        type: LoginFailureType.network,
-        cause: e,
-      );
+      rethrow;
     }
   }
 

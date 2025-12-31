@@ -144,8 +144,9 @@ class AppLocalizationsRo extends AppLocalizations {
       'Nume de utilizator sau parolă incorecte';
 
   @override
-  String get errLoginFailed =>
-      'Autentificarea a eșuat. Te rog să încerci din nou mai târziu.';
+  String errLoginFailedWithDetails(String message) {
+    return 'Autentificarea a eșuat: $message';
+  }
 
   @override
   String get errNetworkError =>

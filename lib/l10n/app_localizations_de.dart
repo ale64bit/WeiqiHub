@@ -145,8 +145,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Falscher Benutzername oder falsches Passwort';
 
   @override
-  String get errLoginFailed =>
-      'Anmeldung fehlgeschlagen. Bitte versuche es später erneut.';
+  String errLoginFailedWithDetails(String message) {
+    return 'Anmeldung fehlgeschlagen: $message';
+  }
 
   @override
   String get errNetworkError =>

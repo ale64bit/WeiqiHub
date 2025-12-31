@@ -42,7 +42,7 @@
   "errFailedToLoadGameList": "加载棋局列表失败，请重试。",
   "errFailedToUploadGameToAISensei": "上传棋局到 AI Sensei 失败",
   "errIncorrectUsernameOrPassword": "用户名或密码错误",
-  "errLoginFailed": "登录失败，请稍后重试。",
+  "errLoginFailedWithDetails": "登录失败：{message}",
   "errNetworkError": "网络错误，请检查您的连接并重试。",
   "errMustBeAtLeast": "必须至少{n}",
   "@errMustBeAtLeast": {

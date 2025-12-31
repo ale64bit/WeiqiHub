@@ -368,11 +368,11 @@ abstract class AppLocalizations {
   /// **'Incorrect username or password'**
   String get errIncorrectUsernameOrPassword;
 
-  /// No description provided for @errLoginFailed.
+  /// No description provided for @errLoginFailedWithDetails.
   ///
   /// In en, this message translates to:
-  /// **'Login failed. Please try again later.'**
-  String get errLoginFailed;
+  /// **'Login failed: {message}'**
+  String errLoginFailedWithDetails(String message);
 
   /// No description provided for @errNetworkError.
   ///

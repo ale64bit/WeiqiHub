@@ -143,6 +143,15 @@ class AppLocalizationsUk extends AppLocalizations {
   String get errIncorrectUsernameOrPassword => 'Невірний логін або пароль';
 
   @override
+  String errLoginFailedWithDetails(String message) {
+    return 'Вхід не виконано: $message';
+  }
+
+  @override
+  String get errNetworkError =>
+      'Помилка мережі. Перевірте з\'єднання і спробуйте знову.';
+
+  @override
   String errMustBeAtLeast(num n) {
     return 'Повинно бути не менше $n';
   }
