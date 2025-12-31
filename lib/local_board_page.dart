@@ -145,7 +145,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
     }
   }
 
-  _updateBoard(int size, int handicap) {
+  void _updateBoard(int size, int handicap) {
     _boardSize = size;
     _handicap = handicap;
     _gameTree = AnnotatedGameTree(_boardSize,
@@ -157,7 +157,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
     setState(() {/* Update board */});
   }
 
-  _onSaveSgf() async {
+  Future<void> _onSaveSgf() async {
     final res = await showModalBottomSheet<SaveSgfFormResult>(
         context: context,
         builder: (context) {

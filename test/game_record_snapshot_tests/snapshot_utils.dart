@@ -10,7 +10,7 @@ const snapshotsDir = 'test/game_record_snapshot_tests/fixtures/snapshots';
 /// Returns the path to a snapshot file for the given base name and extension
 String snapshotPath(String baseName, String extension) {
   final ext = extension.replaceAll('.', '_');
-  return '$snapshotsDir/${baseName}$ext.json';
+  return '$snapshotsDir/$baseName$ext.json';
 }
 
 /// Creates a JSON snapshot of a GameRecord for comparison

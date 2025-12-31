@@ -72,7 +72,7 @@ class KataGo {
 
   Stream<KataGoResponse> query(KataGoRequest req) {
     input.writeln(jsonEncode(req.toJson()));
-    final controller = StreamController<KataGoResponse>.new();
+    final controller = StreamController<KataGoResponse>();
     queries[req.id] = controller;
     return controller.stream;
   }

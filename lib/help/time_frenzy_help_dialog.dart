@@ -6,6 +6,8 @@ import 'package:wqhub/train/task_source/time_frenzy_task_source.dart';
 import 'package:wqhub/train/time_frenzy_page.dart';
 
 class TimeFrenzyHelpDialog extends StatefulWidget {
+  const TimeFrenzyHelpDialog({super.key});
+
   @override
   State<TimeFrenzyHelpDialog> createState() => _TimeFrenzyHelpDialogState();
 }

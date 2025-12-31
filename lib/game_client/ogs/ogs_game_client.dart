@@ -154,7 +154,7 @@ class OGSGameClient extends GameClient {
         final timeControl = timeControlsBySpeedAndSize[sizeKey]![speed]!;
 
         presets.add(AutomatchPreset(
-          id: '${boardSize}_${speed}',
+          id: '${boardSize}_$speed',
           boardSize: boardSize,
           variant: Variant.standard,
           rules: Rules.japanese, // OGS uses Japanese rules for automatch

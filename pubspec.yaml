@@ -55,8 +55,7 @@ dependencies:
   protobuf: ^4.1.1
   share_plus: ^11.0.0
   shared_preferences: ^2.3.5
-  sqlite3: ^2.7.5
-  sqlite3_flutter_libs: ^0.5.32
+  sqlite3: ^3.1.1
   url_launcher: ^6.3.1
   uuid: ^4.5.1
   web_socket_channel: ^3.0.0

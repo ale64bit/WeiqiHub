@@ -3,6 +3,8 @@ import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class GradingExamHelpDialog extends StatefulWidget {
+  const GradingExamHelpDialog({super.key});
+
   @override
   State<GradingExamHelpDialog> createState() => _GradingExamHelpDialogState();
 }

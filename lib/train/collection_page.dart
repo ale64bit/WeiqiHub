@@ -191,7 +191,7 @@ class _CollectionPageState extends State<CollectionPage>
     }
   }
 
-  _onExit() {
+  void _onExit() {
     if (!solveStatusNotified) {
       StatsDB().updateCollectionActiveSession(widget.taskCollection.id,
           durationDelta: _stopwatch.elapsed);
@@ -214,7 +214,7 @@ class _CollectionPageState extends State<CollectionPage>
     }
   }
 
-  _finishSession() {
+  void _finishSession() {
     final activeSession =
         StatsDB().collectionActiveSession(widget.taskCollection.id)!;
     final curResult = CollectionStatEntry(

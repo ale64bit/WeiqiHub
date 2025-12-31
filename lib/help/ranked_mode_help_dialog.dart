@@ -6,6 +6,8 @@ import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/ranked_mode_task_source.dart';
 
 class RankedModeHelpDialog extends StatefulWidget {
+  const RankedModeHelpDialog({super.key});
+
   @override
   State<RankedModeHelpDialog> createState() => _RankedModeHelpDialogState();
 }

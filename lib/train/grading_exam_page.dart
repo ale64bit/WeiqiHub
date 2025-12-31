@@ -24,14 +24,14 @@ class GradingExamRouteArguments {
 class GradingExamPage extends StatelessWidget {
   static const routeName = '/train/grading_exam';
 
-  static const taskTypes = const ISetConst({
+  static const taskTypes = ISetConst({
     TaskType.lifeAndDeath,
     TaskType.tesuji,
     TaskType.capture,
     TaskType.captureRace,
   });
   static const taskCount = 10;
-  static const timePerTask = const Duration(seconds: 45);
+  static const timePerTask = Duration(seconds: 45);
   static const maxMistakes = 2;
 
   final Rank rank;

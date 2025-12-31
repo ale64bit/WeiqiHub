@@ -124,7 +124,7 @@ class _CollectionTileState
         ));
   }
 
-  onStart(AppLocalizations loc) {
+  void onStart(AppLocalizations loc) {
     if (StatsDB().collectionActiveSession(widget.collection.id) != null) {
       showDialog(
           context: context,
@@ -142,7 +142,7 @@ class _CollectionTileState
     onContinue();
   }
 
-  onContinue() {
+  void onContinue() {
     final activeSession =
         StatsDB().collectionActiveSession(widget.collection.id) ??
             CollectionActiveSession(
