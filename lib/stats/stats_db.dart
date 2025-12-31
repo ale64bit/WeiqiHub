@@ -564,7 +564,9 @@ class StatsDB {
       try {
         final type = jsonDecode(typeStr) as Map<String, dynamic>;
         event = ExamEvent.fromJson(type);
-      } catch (e) {}
+      } catch (e) {
+        // should not happen
+      }
       entries.add(ExamEntry(
         date: dateFormat.parseUTC(row['date'] as String).toLocal(),
         event: event,
@@ -594,5 +596,5 @@ class StatsDB {
     return (0, 0);
   }
 
-  void dispose() => _db.dispose();
+  void dispose() => _db.close();
 }
