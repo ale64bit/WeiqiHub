@@ -28,6 +28,7 @@ import 'package:wqhub/train/time_frenzy_page.dart';
 import 'package:wqhub/train/tags_page.dart';
 import 'package:wqhub/train/train_stats_page.dart';
 import 'package:wqhub/window_class_aware_state.dart';
+import 'package:wqhub/wq/wq.dart' as wq;
 
 enum MainPageDestination { home, play, train }
 
@@ -358,7 +359,7 @@ class _Train extends StatelessWidget {
         if (task != null) {
           if (context.mounted) {
             if (context.settings.alwaysBlackToPlay) {
-              task = task.withBlackToPlay();
+              task = task.withColorToPlay(wq.Color.black);
             }
             task = task.withRandomSymmetry(
                 randomize: context.settings.randomizeTaskOrientation);
