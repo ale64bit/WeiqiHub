@@ -21,14 +21,16 @@ class IntFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
 
-    (int, String?) _validator(value) {
+    (int, String?) validator(value) {
       if (value == null || value.isEmpty) return (0, loc.errCannotBeEmpty);
       final count = int.tryParse(value);
       if (count == null) return (0, loc.errMustBeInteger);
-      if (minValue != null && count < minValue!)
+      if (minValue != null && count < minValue!) {
         return (0, loc.errMustBeAtLeast(minValue!));
-      if (maxValue != null && count > maxValue!)
+      }
+      if (maxValue != null && count > maxValue!) {
         return (0, loc.errMustBeAtMost(maxValue!));
+      }
       return (count, null);
     }
 
@@ -38,12 +40,12 @@ class IntFormField extends StatelessWidget {
         border: OutlineInputBorder(),
         labelText: label,
       ),
-      validator: (value) => _validator(value).$2,
+      validator: (value) => validator(value).$2,
       initialValue: initialValue?.toString(),
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       autovalidateMode: AutovalidateMode.always,
       onChanged: (value) {
-        final (i, err) = _validator(value);
+        final (i, err) = validator(value);
         if (err == null) onChanged?.call(i);
       },
     );

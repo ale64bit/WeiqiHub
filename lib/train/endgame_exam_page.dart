@@ -24,9 +24,9 @@ class EndgameExamRouteArguments {
 class EndgameExamPage extends StatelessWidget {
   static const routeName = '/train/endgame_exam';
 
-  static const taskTypes = const ISetConst({TaskType.endgame});
+  static const taskTypes = ISetConst({TaskType.endgame});
   static const taskCount = 10;
-  static const timePerTask = const Duration(seconds: 45);
+  static const timePerTask = Duration(seconds: 45);
   static const maxMistakes = 2;
 
   final Rank rank;

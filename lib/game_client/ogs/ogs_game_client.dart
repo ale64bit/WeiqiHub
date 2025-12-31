@@ -75,7 +75,7 @@ class OGSGameClient extends GameClient {
         aiRefereeMinMoveCount: const IMapConst({}),
         forcedCounting: false, // OGS handles counting differently
         forcedCountingMinMoveCount: const IMapConst({}),
-        localTimeControl: true,
+        localTimeControl: false, // OGS uses GameTimer for local countdown
       );
 
   @override
@@ -155,7 +155,7 @@ class OGSGameClient extends GameClient {
         final timeControl = timeControlsBySpeedAndSize[sizeKey]![speed]!;
 
         presets.add(AutomatchPreset(
-          id: '${boardSize}_${speed}',
+          id: '${boardSize}_$speed',
           boardSize: boardSize,
           variant: Variant.standard,
           rules: Rules.japanese, // OGS uses Japanese rules for automatch
@@ -271,6 +271,8 @@ class OGSGameClient extends GameClient {
           'source': 'play',
           'ended__isnull': 'true',
           'time_per_move__lt': '3600',
+          // Exclude correspondence games with no time control
+          'time_per_move__gt': '0',
         },
       );
       final List<dynamic> results = data['results'] ?? [];

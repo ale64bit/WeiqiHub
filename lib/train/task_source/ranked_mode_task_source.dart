@@ -18,7 +18,7 @@ final class RankedModeTaskSource extends TaskSource {
   double _rank;
   bool randomizeLayout;
 
-  RankedModeTaskSource(double rank, bool this.randomizeLayout)
+  RankedModeTaskSource(double rank, this.randomizeLayout)
       : _rank = rank,
         _cur = TaskRepository()
             .readByTypes(Rank.values[rank.toInt()], _taskTypes, 1)

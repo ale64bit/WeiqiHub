@@ -300,7 +300,7 @@ class _Train extends StatelessWidget {
     );
   }
 
-  showFindTaskDialog(BuildContext parentContext) {
+  void showFindTaskDialog(BuildContext parentContext) {
     final loc = AppLocalizations.of(parentContext)!;
     showDialog(
       context: parentContext,

@@ -19,7 +19,7 @@ final class TimeFrenzyTaskSource extends TaskSource {
   int _mistakeCount = 0;
   bool randomizeLayout = false;
 
-  TimeFrenzyTaskSource({required bool this.randomizeLayout})
+  TimeFrenzyTaskSource({required this.randomizeLayout})
       : _cur = TaskRepository()
             .readByTypes(Rank.k15, _taskTypes, 1)
             .first
@@ -39,7 +39,6 @@ final class TimeFrenzyTaskSource extends TaskSource {
         .readByTypes(Rank.values[_rank.toInt()], _taskTypes, 1)
         .first
         .withRandomSymmetry(randomize: randomizeLayout);
-    ;
     return true;
   }
 

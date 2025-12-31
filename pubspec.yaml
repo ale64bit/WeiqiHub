@@ -20,7 +20,7 @@ version: 0.1.12+35
 
 environment:
   sdk: ^3.6.0
-  flutter: 3.35.7
+  flutter: 3.38.5
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -55,8 +55,7 @@ dependencies:
   protobuf: ^4.1.1
   share_plus: ^11.0.0
   shared_preferences: ^2.3.5
-  sqlite3: ^2.7.5
-  sqlite3_flutter_libs: ^0.5.32
+  sqlite3: ^3.1.1
   url_launcher: ^6.3.1
   uuid: ^4.5.1
   web_socket_channel: ^3.0.0

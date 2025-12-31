@@ -83,7 +83,7 @@ class _TagCompletionRateState extends PopAwareState<TagCompletionRate> {
     return (total, passed, RankRange.single(minRank));
   }
 
-  _updateFut() {
+  void _updateFut() {
     completionRateFut = Future(() {
       final (total, passed, curRank) = compute(context, widget.tag);
       return _TagCompletionData(

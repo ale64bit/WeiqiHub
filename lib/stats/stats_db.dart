@@ -232,7 +232,7 @@ class StatsDB {
   final PreparedStatement _examsSince;
   final PreparedStatement _taskDailyStatsSince;
 
-  static init() async {
+  static Future<void> init() async {
     _log.info('init: sqlite3 ${sqlite3.version}');
     assert(_instance == null);
 
@@ -425,7 +425,7 @@ class StatsDB {
           WHERE date >= ?;
         ''', persistent: true);
 
-  addTaskAttempt(Rank rank, TaskType type, int id, bool correct) {
+  void addTaskAttempt(Rank rank, TaskType type, int id, bool correct) {
     if (correct) {
       _addTaskAttemptCorrect.execute([rank.index, type.index, id]);
       _addDailyTaskAttemptCorrect.execute();
@@ -435,7 +435,7 @@ class StatsDB {
     }
   }
 
-  ignoreTaskMistake(Rank rank, TaskType type, int id) {
+  void ignoreTaskMistake(Rank rank, TaskType type, int id) {
     _ignoreTaskMistake.execute([rank.index, type.index, id]);
   }
 
@@ -517,13 +517,13 @@ class StatsDB {
     return null;
   }
 
-  resetCollectionActiveSession(int id) =>
+  void resetCollectionActiveSession(int id) =>
       _resetCollectionActiveSession.execute([id]);
 
-  deleteCollectionActiveSession(int id) =>
+  void deleteCollectionActiveSession(int id) =>
       _deleteCollectionActiveSession.execute([id]);
 
-  updateCollectionActiveSession(int id,
+  void updateCollectionActiveSession(int id,
       {int correctDelta = 0,
       int wrongDelta = 0,
       Duration durationDelta = Duration.zero}) {
@@ -531,7 +531,7 @@ class StatsDB {
         .execute([correctDelta, wrongDelta, durationDelta.inSeconds, id]);
   }
 
-  updateCollectionStat(CollectionStatEntry entry) {
+  void updateCollectionStat(CollectionStatEntry entry) {
     _updateCollectionStat.execute([
       entry.id,
       entry.correctCount,
@@ -541,7 +541,7 @@ class StatsDB {
     ]);
   }
 
-  addExamAttempt(ExamEvent examType, RankRange rankRange, int correctCount,
+  void addExamAttempt(ExamEvent examType, RankRange rankRange, int correctCount,
       int wrongCount, bool passed, Duration duration) {
     _addExamAttempt.execute([
       jsonEncode(examType),
@@ -564,7 +564,9 @@ class StatsDB {
       try {
         final type = jsonDecode(typeStr) as Map<String, dynamic>;
         event = ExamEvent.fromJson(type);
-      } catch (e) {}
+      } catch (e) {
+        // should not happen
+      }
       entries.add(ExamEntry(
         date: dateFormat.parseUTC(row['date'] as String).toLocal(),
         event: event,
@@ -594,5 +596,5 @@ class StatsDB {
     return (0, 0);
   }
 
-  void dispose() => _db.dispose();
+  void dispose() => _db.close();
 }

@@ -409,7 +409,7 @@ class TaskTags {
   }
 
   static TaskTags _parseTags(ByteData data) {
-    final tasks = Map<(wq.Rank, TaskTag), _TagBucket>.new();
+    final tasks = <(wq.Rank, TaskTag), _TagBucket>{};
     var offset = 0;
     var size = data.getUint16(offset);
     offset += 2;
@@ -518,7 +518,7 @@ class TaskRepository {
 
   factory TaskRepository() => _db!;
 
-  static init() async {
+  static Future<void> init() async {
     assert(_db == null);
     final ranks = const [
       Rank.k15,
@@ -668,22 +668,24 @@ class TaskRepository {
   int countByTypes(RankRange rankRange, ISet<TaskType> types) {
     var total = 0;
     for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
-      for (final type in types)
+      for (final type in types) {
         total += _buckets[(Rank.values[i], type)]?.size ?? 0;
+      }
     return total;
   }
 
   int countByTag(RankRange rankRange, TaskTag tag) {
     var total = 0;
-    for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
+    for (int i = rankRange.from.index; i <= rankRange.to.index; ++i) {
       total += _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0;
+    }
     return total;
   }
 
   TaskCollection collections() => _collectionRoot;
   TreeNode<TaskCollection> collectionsTreeNode() => _collectionTreeNode;
 
-  _populateCollectionTreeNode(
+  void _populateCollectionTreeNode(
       TaskCollection col, TreeNode<TaskCollection> node) {
     for (final childCol in col.children) {
       final childNode = TreeNode<TaskCollection>(data: childCol);

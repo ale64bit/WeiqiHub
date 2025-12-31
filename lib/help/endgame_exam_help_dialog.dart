@@ -3,6 +3,8 @@ import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class EndgameExamHelpDialog extends StatefulWidget {
+  const EndgameExamHelpDialog({super.key});
+
   @override
   State<EndgameExamHelpDialog> createState() => _EndgameExamHelpDialogState();
 }

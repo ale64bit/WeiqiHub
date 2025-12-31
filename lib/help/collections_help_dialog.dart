@@ -3,6 +3,8 @@ import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class CollectionsHelpDialog extends StatefulWidget {
+  const CollectionsHelpDialog({super.key});
+
   @override
   State<CollectionsHelpDialog> createState() => _CollectionsHelpDialogState();
 }

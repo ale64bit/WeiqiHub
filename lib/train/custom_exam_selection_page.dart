@@ -17,6 +17,8 @@ import 'package:wqhub/wq/rank.dart';
 class CustomExamSelectionPage extends StatefulWidget {
   static const routeName = '/train/custom_exam_selection';
 
+  const CustomExamSelectionPage({super.key});
+
   @override
   State<CustomExamSelectionPage> createState() =>
       _CustomExamSelectionPageState();
@@ -32,7 +34,7 @@ class _CustomExamSelectionPageState
   var _collectStats = true;
   var _rankRange = RankRange(from: Rank.k15, to: Rank.d7);
   var _taskSourceType = TaskSourceType.values.first;
-  var _selectedTaskTypes = {TaskType.lifeAndDeath, TaskType.tesuji};
+  final _selectedTaskTypes = {TaskType.lifeAndDeath, TaskType.tesuji};
   var _tag = TaskTag.beginner;
   var _subtag = TaskTag.captureInOneMove;
 
@@ -79,10 +81,12 @@ class _CustomExamSelectionPageState
                       label: loc.timePerTask,
                       initialValue: _timePerTask,
                       validator: (duration) {
-                        if (duration! == Duration.zero)
+                        if (duration! == Duration.zero) {
                           return 'Must be greater than zero';
-                        if (duration <= Duration.zero)
+                        }
+                        if (duration <= Duration.zero) {
                           return 'Must be positive';
+                        }
                         return null;
                       },
                       onChanged: (value) {
@@ -137,10 +141,11 @@ class _CustomExamSelectionPageState
                                       _selectedTaskTypes.contains(taskType),
                                   onSelected: (bool selected) {
                                     setState(() {
-                                      if (selected)
+                                      if (selected) {
                                         _selectedTaskTypes.add(taskType);
-                                      else
+                                      } else {
                                         _selectedTaskTypes.remove(taskType);
+                                      }
                                     });
                                   },
                                 )
@@ -227,7 +232,6 @@ class _CustomExamSelectionPageState
               children: [
                 Expanded(
                   child: FilledButton(
-                    child: Text(loc.start),
                     onPressed: taskCount == 0
                         ? null
                         : () {
@@ -256,6 +260,7 @@ class _CustomExamSelectionPageState
                               );
                             }
                           },
+                    child: Text(loc.start),
                   ),
                 ),
               ],

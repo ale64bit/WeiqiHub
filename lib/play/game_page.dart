@@ -868,7 +868,7 @@ class _GamePageState extends State<GamePage> {
     });
   }
 
-  onGameError(err) {
+  void onGameError(err) {
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(err),
@@ -993,7 +993,9 @@ class _GamePageState extends State<GamePage> {
                 r >= widget.game.boardSize ||
                 c < 0 ||
                 c >= widget.game.boardSize ||
-                points.contains(p)) return false;
+                points.contains(p)) {
+              return false;
+            }
             final col = _gameTree.stones.get(p);
             final isEmpty = ownership[r][c] == null;
             final isDead = ownership[r][c] != col;
@@ -1004,7 +1006,9 @@ class _GamePageState extends State<GamePage> {
         );
 
         if (bordersColors.length == 1) {
-          for (final (r, c) in points) ownership[r][c] = bordersColors.first;
+          for (final (r, c) in points) {
+            ownership[r][c] = bordersColors.first;
+          }
         }
 
         allPoints = allPoints.addAll(points);

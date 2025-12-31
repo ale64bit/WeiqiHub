@@ -341,7 +341,7 @@ class _GameLoadingDialog extends StatelessWidget {
     );
   }
 
-  static show(BuildContext context, String title, GameSummary summary,
+  static void show(BuildContext context, String title, GameSummary summary,
       Future<GameRecord> recordFut,
       {required Function(BuildContext, GameSummary, GameRecord) onRecord,
       required Function(dynamic) onError}) {
