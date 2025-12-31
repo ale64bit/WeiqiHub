@@ -9,6 +9,12 @@ enum Color {
 
   @override
   String toString() => switch (this) { Color.black => 'B', Color.white => 'W' };
+
+  static Color? fromString(String col) => switch (col) {
+        'B' => black,
+        'W' => white,
+        _ => null,
+      };
 }
 
 typedef Point = (int r, int c);

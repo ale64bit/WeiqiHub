@@ -48,6 +48,8 @@ class GameTree {
 
   bool canMove(wq.Move mv) => _board.canMove(mv);
 
+  int posHash() => _board.hash();
+
   GameTreeNode? move(wq.Move mv, {bool prune = false}) {
     if (_cur._next.containsKey(mv)) {
       _cur = _cur._next[mv]!;
