@@ -23,7 +23,7 @@ class TagExamPage extends StatelessWidget {
   static const routeName = '/train/tag_exam';
 
   static const taskCount = 10;
-  static const timePerTask = const Duration(minutes: 5);
+  static const timePerTask = Duration(minutes: 5);
   static const maxMistakes = 2;
 
   final TaskTag tag;

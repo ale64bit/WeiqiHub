@@ -22,15 +22,15 @@ class SectionButton extends StatelessWidget {
         spacing: 8.0,
         children: [
           Flexible(
-            child: Icon(icon),
             flex: 1,
+            child: Icon(icon),
           ),
           Flexible(
+              flex: 3,
               child: Text(
                 label,
                 textAlign: TextAlign.center,
-              ),
-              flex: 3),
+              )),
         ],
       ),
     );

@@ -16,6 +16,8 @@ import 'package:wqhub/wq/wq.dart' as wq;
 class TaskPatternSearchPage extends StatefulWidget {
   static const routeName = '/train/task_pattern_search';
 
+  const TaskPatternSearchPage({super.key});
+
   @override
   State<TaskPatternSearchPage> createState() => _TaskPatternSearchPageState();
 }
@@ -163,12 +165,13 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
                             selected: _selectedTaskTypes.contains(taskType),
                             onSelected: (bool selected) {
                               setState(() {
-                                if (selected)
+                                if (selected) {
                                   _selectedTaskTypes =
                                       _selectedTaskTypes.add(taskType);
-                                else
+                                } else {
                                   _selectedTaskTypes =
                                       _selectedTaskTypes.remove(taskType);
+                                }
                               });
                             },
                           )
@@ -228,10 +231,11 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
         _empty = _empty.toggle(p);
       } else {
         _empty = _empty.remove(p);
-        if (_stones.contains(p, _turn!))
+        if (_stones.contains(p, _turn!)) {
           _stones = _stones.remove(p);
-        else
+        } else {
           _stones = _stones.add(p, _turn!);
+        }
       }
     });
   }

@@ -21,9 +21,9 @@ class CircularPercentText extends StatelessWidget {
 
   Color? valueColor() {
     if (value == 100) return Colors.green;
-    if (value >= 80)
+    if (value >= 80) {
       return Colors.lightGreen;
-    else if (value >= 30)
+    } else if (value >= 30)
       return Colors.amber;
     else if (value > 0) return Colors.red;
     return null;

@@ -33,8 +33,9 @@ class CountingResult {
     if (x.length != y.length) return false;
     for (int i = 0; i < x.length; ++i) {
       if (x[i].length != y[i].length) return false;
-      for (int j = 0; j < x[i].length; ++j)
+      for (int j = 0; j < x[i].length; ++j) {
         if (x[i][j] != y[i][j]) return false;
+      }
     }
     return true;
   }

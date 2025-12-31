@@ -7,6 +7,8 @@ import 'package:wqhub/train/task_tag.dart';
 class TagsPage extends StatelessWidget {
   static const routeName = '/train/tags';
 
+  const TagsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;

@@ -125,6 +125,7 @@ class OGSGame extends Game {
     }
   }
 
+  @override
   Future<void> toggleManuallyRemovedStones(
       List<wq.Point> stones, bool removed) async {
     if (_currentPhase != 'stone removal') {

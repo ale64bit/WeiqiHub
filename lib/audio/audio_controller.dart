@@ -30,7 +30,7 @@ class AudioController {
   var voiceVolume = 1.0;
   var uiVolume = 1.0;
 
-  static init(Settings settings) async {
+  static Future<void> init(Settings settings) async {
     _log.info('init');
     assert(_instance == null);
     final soloud = SoLoud.instance;

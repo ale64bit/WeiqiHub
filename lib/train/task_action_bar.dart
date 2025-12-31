@@ -118,7 +118,9 @@ class TaskActionBar extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.fast_rewind),
                   onPressed: () {
-                    for (int i = 0; i < fastMoveNavCount; ++i) onPreviousMove();
+                    for (int i = 0; i < fastMoveNavCount; ++i) {
+                      onPreviousMove();
+                    }
                   },
                 ),
               ),
@@ -141,7 +143,9 @@ class TaskActionBar extends StatelessWidget {
                 child: IconButton(
                   icon: Icon(Icons.fast_forward),
                   onPressed: () {
-                    for (int i = 0; i < fastMoveNavCount; ++i) onNextMove();
+                    for (int i = 0; i < fastMoveNavCount; ++i) {
+                      onNextMove();
+                    }
                   },
                 ),
               ),
