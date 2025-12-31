@@ -10,6 +10,7 @@ enum AnnotationShape {
   territory,
   variation,
   fill,
+  filledCircle,
 }
 
 typedef Annotation = ({Union2<AnnotationShape, String> type, Color color});
@@ -35,7 +36,11 @@ class BoardAnnotation extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: TextStyle(color: annotation.color),
+              style: TextStyle(
+                color: annotation.color,
+                // use height: for spacing in between lines
+              ),
+              maxLines: 3,
             ),
           ));
 }
@@ -134,6 +139,12 @@ class _AnnotationShapePainter extends CustomPainter {
               size.height,
             ),
             paint);
+      case AnnotationShape.filledCircle:
+        final fillPaint = Paint()
+          ..style = PaintingStyle.fill
+          ..color = color;
+        final center = Offset(size.width / 2, size.height / 2);
+        canvas.drawCircle(center, size.width / 2, fillPaint);
     }
   }
 
