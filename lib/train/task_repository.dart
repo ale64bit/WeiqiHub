@@ -409,7 +409,7 @@ class TaskTags {
   }
 
   static TaskTags _parseTags(ByteData data) {
-    final tasks = Map<(wq.Rank, TaskTag), _TagBucket>();
+    final tasks = <(wq.Rank, TaskTag), _TagBucket>{};
     var offset = 0;
     var size = data.getUint16(offset);
     offset += 2;
