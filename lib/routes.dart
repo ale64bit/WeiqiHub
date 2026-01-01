@@ -21,6 +21,7 @@ import 'package:wqhub/train/custom_exam_page.dart';
 import 'package:wqhub/train/custom_exam_selection_page.dart';
 import 'package:wqhub/train/endgame_exam_page.dart';
 import 'package:wqhub/train/endgame_exam_selection_page.dart';
+import 'package:wqhub/train/exam_result_page.dart';
 import 'package:wqhub/train/grading_exam_page.dart';
 import 'package:wqhub/train/grading_exam_selection_page.dart';
 import 'package:wqhub/train/my_mistakes_page.dart';
@@ -125,6 +126,20 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             taskTypes: args.taskTypes,
             taskTag: args.taskTag,
             collectStats: args.collectStats,
+          ));
+    case ExamResultPage.routeName:
+      final args = settings.arguments as ExamResultRouteArguments;
+      return _mpr(
+          settings,
+          ExamResultPage(
+            event: args.event,
+            totalTime: args.totalTime,
+            passed: args.passed,
+            taskCount: args.taskCount,
+            mistakeCount: args.mistakeCount,
+            completedTasks: args.completedTasks,
+            onRedo: args.onRedo,
+            onNext: args.onNext,
           ));
     case RankedModePage.routeName:
       final args = settings.arguments as RankedModeRouteArguments;

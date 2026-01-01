@@ -6,6 +6,7 @@ import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/confirm_dialog.dart';
 import 'package:wqhub/stats/stats_db.dart';
+import 'package:wqhub/train/exam_result_page.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_action_bar.dart';
 import 'package:wqhub/train/task_board.dart';
@@ -63,6 +64,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
   var _taskNumber = 1;
   var _totalTime = Duration.zero;
   var _mistakeCount = 0;
+  final _completedTasks = <(TaskRef, bool)>[];
 
   @override
   void initState() {
@@ -237,56 +239,55 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
         context.stats.incrementTotalFailCount(currentTask.rank);
       }
     }
+
+    _completedTasks.add((currentTask.ref, status == VariationStatus.correct));
+  }
+
+  void _finishExam() {
+    final passed = _mistakeCount <= widget.maxMistakes;
+    if (passed) {
+      widget.onPass();
+    } else {
+      widget.onFail();
+    }
+    if (widget.collectStats) {
+      StatsDB().addExamAttempt(widget.examEvent, widget.rankRange,
+          widget.taskCount - _mistakeCount, _mistakeCount, passed, _totalTime);
+    }
+    Navigator.pushReplacementNamed(
+      context,
+      ExamResultPage.routeName,
+      arguments: ExamResultRouteArguments(
+        event: widget.examEvent,
+        totalTime: _totalTime,
+        passed: passed,
+        taskCount: widget.taskCount,
+        mistakeCount: _mistakeCount,
+        completedTasks: _completedTasks,
+        onRedo: (context) {
+          Navigator.pushReplacementNamed(
+            context,
+            widget.baseRoute,
+            arguments: widget.redoRouteArguments,
+          );
+        },
+        onNext: _mistakeCount <= widget.maxMistakes &&
+                widget.nextRouteArguments != null
+            ? (context) {
+                Navigator.pushReplacementNamed(
+                  context,
+                  widget.baseRoute,
+                  arguments: widget.nextRouteArguments,
+                );
+              }
+            : null,
+      ),
+    );
   }
 
   void _onNext() {
     if (_taskNumber == widget.taskCount) {
-      final passed = _mistakeCount <= widget.maxMistakes;
-      if (passed) {
-        widget.onPass();
-      } else {
-        widget.onFail();
-      }
-      if (widget.collectStats) {
-        StatsDB().addExamAttempt(
-            widget.examEvent,
-            widget.rankRange,
-            widget.taskCount - _mistakeCount,
-            _mistakeCount,
-            passed,
-            _totalTime);
-      }
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => _ResultDialog(
-          totalTime: _totalTime,
-          passed: passed,
-          mistakeCount: _mistakeCount,
-          taskCount: widget.taskCount,
-          onExit: () => Navigator.popUntil(
-              context, ModalRoute.withName(widget.exitRoute)),
-          onRedo: () {
-            Navigator.pop(context);
-            Navigator.pushReplacementNamed(
-              context,
-              widget.baseRoute,
-              arguments: widget.redoRouteArguments,
-            );
-          },
-          onNext: _mistakeCount <= widget.maxMistakes &&
-                  widget.nextRouteArguments != null
-              ? () {
-                  Navigator.pop(context);
-                  Navigator.pushReplacementNamed(
-                    context,
-                    widget.baseRoute,
-                    arguments: widget.nextRouteArguments,
-                  );
-                }
-              : null,
-        ),
-      );
+      _finishExam();
       return;
     }
     _taskSource.next(solveStatus ?? VariationStatus.wrong, _stopwatch.elapsed);
@@ -417,78 +418,6 @@ class _SideBar extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _ResultDialog extends StatelessWidget {
-  final Duration totalTime;
-  final bool passed;
-  final int mistakeCount;
-  final int taskCount;
-  final Function() onExit;
-  final Function() onRedo;
-  final Function()? onNext;
-
-  const _ResultDialog(
-      {required this.totalTime,
-      required this.passed,
-      required this.mistakeCount,
-      required this.taskCount,
-      required this.onExit,
-      required this.onRedo,
-      required this.onNext});
-
-  @override
-  Widget build(BuildContext context) {
-    final loc = AppLocalizations.of(context)!;
-    return AlertDialog(
-      title: passed
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.verified),
-                Text(loc.trainingPassed)
-              ],
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[Icon(Icons.cancel), Text(loc.trainingFailed)],
-            ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            title: Text(loc.trainingTotalTime),
-            trailing: Text(totalTime.toString().substring(2, 7)),
-          ),
-          ListTile(
-            title: Text(loc.trainingAvgTimePerTask),
-            trailing: Text(
-                '${(totalTime.inSeconds / taskCount).toStringAsFixed(1)}s'),
-          ),
-          ListTile(
-            title: Text(loc.trainingMistakes),
-            trailing: Text('$mistakeCount'),
-          ),
-        ],
-      ),
-      actionsAlignment: MainAxisAlignment.center,
-      actions: <Widget>[
-        TextButton(
-          onPressed: onExit,
-          child: Text(loc.exit),
-        ),
-        TextButton(
-          onPressed: onRedo,
-          child: Text(loc.taskRedo),
-        ),
-        if (onNext != null)
-          TextButton(
-            onPressed: onNext,
-            child: Text(loc.taskNext),
-          ),
-      ],
     );
   }
 }

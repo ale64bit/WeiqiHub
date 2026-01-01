@@ -409,6 +409,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get password => 'Пароль';
 
   @override
+  String get perTask => 'на вправу';
+
+  @override
   String get play => 'Грати';
 
   @override

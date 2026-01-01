@@ -794,6 +794,12 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get password;
 
+  /// No description provided for @perTask.
+  ///
+  /// In en, this message translates to:
+  /// **'per task'**
+  String get perTask;
+
   /// No description provided for @play.
   ///
   /// In en, this message translates to:

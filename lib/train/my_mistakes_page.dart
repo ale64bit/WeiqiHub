@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/task_preview_tile.dart';
+import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 
 class MyMistakesPage extends StatefulWidget {
@@ -16,7 +17,7 @@ class MyMistakesPage extends StatefulWidget {
 }
 
 class _MyMistakesPageState extends WindowClassAwareState<MyMistakesPage> {
-  late List<TaskStatEntry> tasks;
+  late List<(TaskRef, TaskSolveStats)> tasks;
   var selectedSortMode = _SortMode.recent;
 
   @override
@@ -66,15 +67,18 @@ class _MyMistakesPageState extends WindowClassAwareState<MyMistakesPage> {
               },
             ),
             itemCount: tasks.length,
-            itemBuilder: (context, index) => TaskPreviewTile(
-                task: tasks[index],
-                onHideTask: () {
-                  StatsDB().ignoreTaskMistake(
-                      tasks[index].rank, tasks[index].type, tasks[index].id);
-                  setState(() {
-                    tasks.removeAt(index);
+            itemBuilder: (context, index) {
+              final (ref, stats) = tasks[index];
+              return TaskPreviewTile(
+                  task: ref,
+                  solveStats: stats,
+                  onHideTask: () {
+                    StatsDB().ignoreTaskMistake(ref.rank, ref.type, ref.id);
+                    setState(() {
+                      tasks.removeAt(index);
+                    });
                   });
-                }),
+            },
           ),
         ),
       ),

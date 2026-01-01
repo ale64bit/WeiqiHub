@@ -15,42 +15,25 @@ import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
 @immutable
-class TaskStatEntry {
-  final Rank rank;
-  final TaskType type;
-  final int id;
-  final int correctCount;
-  final int wrongCount;
+class TaskSolveStats {
+  final int correctAttempts;
+  final int wrongAttempts;
 
-  const TaskStatEntry(
-      {required this.rank,
-      required this.type,
-      required this.id,
-      required this.correctCount,
-      required this.wrongCount});
+  const TaskSolveStats(
+      {required this.correctAttempts, required this.wrongAttempts});
 
   @override
-  int get hashCode => Object.hash(rank, type, id, correctCount, wrongCount);
+  int get hashCode => Object.hash(correctAttempts, wrongAttempts);
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
 
-    return other is TaskStatEntry &&
-        other.rank == rank &&
-        other.type == type &&
-        other.id == id &&
-        other.correctCount == correctCount &&
-        other.wrongCount == wrongCount;
+    return other is TaskSolveStats &&
+        other.correctAttempts == correctAttempts &&
+        other.wrongAttempts == wrongAttempts;
   }
-
-  TaskStatEntry.ofTask(Task task)
-      : rank = task.rank,
-        type = task.type,
-        id = task.id,
-        correctCount = 0,
-        wrongCount = 0;
 }
 
 enum ExamType {
@@ -439,12 +422,14 @@ class StatsDB {
     _ignoreTaskMistake.execute([rank.index, type.index, id]);
   }
 
-  List<TaskStatEntry> mistakesByMostRecent({int maxResults = 1000}) {
+  List<(TaskRef, TaskSolveStats)> mistakesByMostRecent(
+      {int maxResults = 1000}) {
     final resultSet = _mistakesByMostRecent.select([maxResults]);
     return _entriesFromResultSet(resultSet);
   }
 
-  List<TaskStatEntry> mistakesBySuccessRate({int maxResults = 1000}) {
+  List<(TaskRef, TaskSolveStats)> mistakesBySuccessRate(
+      {int maxResults = 1000}) {
     final resultSet = _mistakesBySuccessRate.select([maxResults]);
     return _entriesFromResultSet(resultSet);
   }
@@ -479,14 +464,19 @@ class StatsDB {
     ''');
   }
 
-  List<TaskStatEntry> _entriesFromResultSet(ResultSet resultSet) => [
+  List<(TaskRef, TaskSolveStats)> _entriesFromResultSet(ResultSet resultSet) =>
+      [
         for (final row in resultSet)
-          TaskStatEntry(
-            rank: Rank.values[row['rank'] as int],
-            type: TaskType.values[row['type'] as int],
-            id: row['id'] as int,
-            correctCount: row['correct_count'] as int,
-            wrongCount: row['wrong_count'] as int,
+          (
+            TaskRef(
+              rank: Rank.values[row['rank'] as int],
+              type: TaskType.values[row['type'] as int],
+              id: row['id'] as int,
+            ),
+            TaskSolveStats(
+              correctAttempts: row['correct_count'] as int,
+              wrongAttempts: row['wrong_count'] as int,
+            )
           )
       ];
 

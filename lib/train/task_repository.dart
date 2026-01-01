@@ -80,6 +80,8 @@ class Task {
       required this.initialStones,
       required this.variationTree});
 
+  TaskRef get ref => TaskRef(rank: rank, type: type, id: id);
+
   Task withBlackToPlay() => switch (first) {
         wq.Color.black => this,
         wq.Color.white => Task(

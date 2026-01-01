@@ -2,7 +2,6 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/cancellable_isolate_stream.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
-import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_preview_tile.dart';
 import 'package:wqhub/train/task_repository.dart';
@@ -109,8 +108,7 @@ class _TaskPatternSearchResultsPageState
                 ),
                 itemCount: _tasks.length,
                 itemBuilder: (context, index) => TaskPreviewTile(
-                  task: TaskStatEntry.ofTask(_tasks[index]),
-                  showSolveRatio: false,
+                  task: _tasks[index].ref,
                 ),
               ),
             ),

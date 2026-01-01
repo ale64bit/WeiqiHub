@@ -413,6 +413,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get password => 'Passwort';
 
   @override
+  String get perTask => 'per task';
+
+  @override
   String get play => 'Spielen';
 
   @override

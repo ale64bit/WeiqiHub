@@ -9,15 +9,18 @@ import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class TaskPreviewTile extends StatefulWidget {
-  final TaskStatEntry task;
+  final TaskRef task;
+  final bool? solved;
+  final TaskSolveStats? solveStats;
   final Function()? onHideTask;
-  final bool showSolveRatio;
 
-  const TaskPreviewTile(
-      {super.key,
-      required this.task,
-      this.onHideTask,
-      this.showSolveRatio = true});
+  const TaskPreviewTile({
+    super.key,
+    required this.task,
+    this.solved,
+    this.solveStats,
+    this.onHideTask,
+  });
 
   @override
   State<TaskPreviewTile> createState() => _TaskPreviewTileState();
@@ -120,10 +123,15 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    if (widget.solved != null)
+                      switch (widget.solved!) {
+                        true => Icon(Icons.check, color: Colors.green),
+                        false => Icon(Icons.close, color: Colors.red),
+                      },
                     Text(widget.task.rank.toString()),
-                    if (widget.showSolveRatio)
+                    if (widget.solveStats != null)
                       Text(
-                          '${widget.task.correctCount} / ${widget.task.correctCount + widget.task.wrongCount}',
+                          '${widget.solveStats!.correctAttempts} / ${widget.solveStats!.correctAttempts + widget.solveStats!.wrongAttempts}',
                           style: TextTheme.of(context).labelSmall),
                   ],
                 )

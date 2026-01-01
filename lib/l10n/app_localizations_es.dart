@@ -412,6 +412,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get password => 'Contraseña';
 
   @override
+  String get perTask => 'por problema';
+
+  @override
   String get play => 'Jugar';
 
   @override

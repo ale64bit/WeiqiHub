@@ -409,6 +409,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get password => 'Parolă';
 
   @override
+  String get perTask => 'pe sarcină';
+
+  @override
   String get play => 'Joacă';
 
   @override
