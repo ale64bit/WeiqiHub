@@ -394,6 +394,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get password => '密码';
 
   @override
+  String get perTask => '每题';
+
+  @override
   String get play => '对局';
 
   @override

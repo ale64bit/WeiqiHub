@@ -411,6 +411,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get password => 'Password';
 
   @override
+  String get perTask => 'per problema';
+
+  @override
   String get play => 'Gioca';
 
   @override

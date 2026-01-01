@@ -410,6 +410,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get password => 'Пароль';
 
   @override
+  String get perTask => 'на задачу';
+
+  @override
   String get play => 'Играть';
 
   @override
