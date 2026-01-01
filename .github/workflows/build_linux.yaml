@@ -36,25 +36,25 @@ jobs:
         run: flutter pub get
       - name: Create debug symbols directory
         run: mkdir -p out/linux
-      # - name: Patch game client
-      #   run: |
-      #     rm lib/game_client/game_client_list.dart
-      #     mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
+      - name: Patch game client
+        run: |
+          rm lib/game_client/game_client_list.dart
+          mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
       - name: Run tests
         run: flutter test
       - name: Build
-        run: flutter build linux --debug --split-debug-info=out/linux
+        run: flutter build linux --obfuscate --split-debug-info=out/linux
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
           name: WeiqiHub-linux-x86_64
-          path: build/linux/x64/debug/bundle/
+          path: build/linux/x64/release/bundle/
       - name: Build AppImage 
         run: |
-          cp linux/appimage/AppRun build/linux/x64/debug/bundle/
-          cp linux/appimage/com.walruswq.wqhub.desktop build/linux/x64/debug/bundle/
-          cp linux/appimage/wqhub.png build/linux/x64/debug/bundle/
-          appimagetool build/linux/x64/debug/bundle WeiqiHub-linux-x86_64.AppImage
+          cp linux/appimage/AppRun build/linux/x64/release/bundle/
+          cp linux/appimage/com.walruswq.wqhub.desktop build/linux/x64/release/bundle/
+          cp linux/appimage/wqhub.png build/linux/x64/release/bundle/
+          appimagetool build/linux/x64/release/bundle WeiqiHub-linux-x86_64.AppImage
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
