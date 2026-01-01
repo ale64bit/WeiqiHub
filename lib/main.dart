@@ -20,6 +20,11 @@ Future<void> main() async {
     Logger.root.onRecord.listen((record) {
       log('${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}');
     });
+  } else if (kReleaseMode) {
+    Logger.root.level = Level.INFO; // defaults to Level.INFO
+    Logger.root.onRecord.listen((record) {
+      log('${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}');
+    });
   }
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
