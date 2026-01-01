@@ -45,6 +45,19 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
   );
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _updateBoard(
+        context.settings.localBoardSize, context.settings.localBoardHandicap);
+    final points = context.settings.localBoardMoves;
+    for (final p in points) {
+      _gameTree
+          .moveAnnotated((col: _turn, p: p), mode: AnnotationMode.mainline);
+      _turn = _turn.opposite;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final borderSize =
@@ -99,10 +112,13 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
             onChanged: (v) {
               _variation = v;
               if (!_variation) {
+                int count = 0;
                 while (_gameTree.isVariation) {
                   _gameTree.undo();
                   _turn = _turn.opposite;
+                  ++count;
                 }
+                context.settings.popLocalBoardMoves(count: count);
               }
               setState(() {});
             },
@@ -122,17 +138,22 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
           gameTree: _gameTree,
           onMovesSkipped: (count) {
             setState(() {
-              if (count.isOdd) {
-                _turn = _turn.opposite;
-              }
+              _turn = (_gameTree.curNode.move?.col ?? wq.Color.white).opposite;
             });
+            if (count > 0) {
+              final moves = _gameTree.lastNMoves(count: count);
+              final points = moves.map((mv) => mv?.p);
+              context.settings.pushLocalBoardMoves(points);
+            } else if (count < 0) {
+              context.settings.popLocalBoardMoves(count: count.abs());
+            }
           },
         ),
       ),
     );
   }
 
-  void _onPointClicked(p) {
+  void _onPointClicked(wq.Point p) {
     if (_gameTree.moveAnnotated((col: _turn, p: p),
             mode: _variation
                 ? AnnotationMode.variation
@@ -142,6 +163,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
       setState(() {
         _turn = _turn.opposite;
       });
+      context.settings.pushLocalBoardMoves([p]);
     }
   }
 
@@ -233,6 +255,13 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
   var _handicap = 0;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _boardSize = context.settings.localBoardSize;
+    _handicap = context.settings.localBoardHandicap;
+  }
+
+  @override
   void dispose() {
     _buttonFocusNode.dispose();
     super.dispose();
@@ -255,6 +284,9 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
                       _handicap = 0;
                     });
                     widget.onUpdateBoard(_boardSize, _handicap);
+                    context.settings.localBoardSize = size;
+                    context.settings.localBoardHandicap = 0;
+                    context.settings.clearLocalBoardState();
                   }
                 },
                 leadingIcon: Icon(_boardSize == size
@@ -275,6 +307,8 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
                       _handicap = h;
                     });
                     widget.onUpdateBoard(_boardSize, _handicap);
+                    context.settings.localBoardHandicap = _handicap;
+                    context.settings.clearLocalBoardState();
                   }
                 },
                 leadingIcon: Icon(_handicap == h

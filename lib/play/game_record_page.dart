@@ -134,7 +134,7 @@ class _GameRecordPageState extends State<GameRecordPage> {
                       SizedBox(height: 8),
                       GameNavigationBar(
                         gameTree: _gameTree,
-                        onMovesSkipped: (n) {
+                        onMovesSkipped: (_) {
                           setState(() {
                             _turn =
                                 (_gameTree.curNode.move?.col ?? wq.Color.white)
@@ -159,7 +159,7 @@ class _GameRecordPageState extends State<GameRecordPage> {
                     children: [
                       GameNavigationBar(
                         gameTree: _gameTree,
-                        onMovesSkipped: (n) {
+                        onMovesSkipped: (_) {
                           setState(() {
                             _turn =
                                 (_gameTree.curNode.move?.col ?? wq.Color.white)
