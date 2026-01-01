@@ -1,3 +1,4 @@
+import 'package:audio_session/audio_session.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
 import 'package:logging/logging.dart';
 import 'package:wqhub/settings/settings.dart';
@@ -33,6 +34,19 @@ class AudioController {
   static Future<void> init(Settings settings) async {
     _log.info('init');
     assert(_instance == null);
+
+    // Configure audio session to mix with other apps instead of interrupting them
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration(
+      avAudioSessionCategory: AVAudioSessionCategory.ambient,
+      avAudioSessionMode: AVAudioSessionMode.defaultMode,
+      androidAudioAttributes: const AndroidAudioAttributes(
+        contentType: AndroidAudioContentType.sonification,
+        usage: AndroidAudioUsage.game,
+      ),
+      androidAudioFocusGainType: AndroidAudioFocusGainType.gainTransientMayDuck,
+    ));
+
     final soloud = SoLoud.instance;
     await soloud.init();
     _instance = AudioController._(
