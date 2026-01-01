@@ -329,7 +329,7 @@ class _GamePageState extends State<GamePage> {
                           ),
                         GameState.over => GameNavigationBar(
                             gameTree: _gameTree,
-                            onMovesSkipped: (n) {
+                            onMovesSkipped: (_) {
                               setState(() {
                                 _turn = (_gameTree.curNode.move?.col ??
                                         wq.Color.white)
@@ -392,7 +392,7 @@ class _GamePageState extends State<GamePage> {
                       if (_state == GameState.over)
                         GameNavigationBar(
                           gameTree: _gameTree,
-                          onMovesSkipped: (n) {
+                          onMovesSkipped: (_) {
                             setState(() {
                               _turn = (_gameTree.curNode.move?.col ??
                                       wq.Color.white)

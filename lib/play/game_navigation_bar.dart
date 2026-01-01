@@ -108,8 +108,8 @@ class GameNavigationBar extends StatelessWidget {
       if (gameTree.undo() == null) break;
       i++;
     }
-    if (i > 0) {
-      onMovesSkipped?.call(i);
+    if (i != 0) {
+      onMovesSkipped?.call(-i);
     }
   }
 
@@ -119,7 +119,7 @@ class GameNavigationBar extends StatelessWidget {
       if (gameTree.redo() == null) break;
       i++;
     }
-    if (i > 0) {
+    if (i != 0) {
       onMovesSkipped?.call(i);
     }
   }
@@ -130,8 +130,8 @@ class GameNavigationBar extends StatelessWidget {
       if (gameTree.undo() == null) break;
       i++;
     }
-    if (i > 0) {
-      onMovesSkipped?.call(i);
+    if (i != 0) {
+      onMovesSkipped?.call(-i);
     }
   }
 }

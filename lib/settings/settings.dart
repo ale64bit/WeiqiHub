@@ -8,6 +8,7 @@ import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/board/board_sizes.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/response_delay.dart';
+import 'package:wqhub/wq/wq.dart' as wq;
 
 class Settings {
   final SharedPreferencesWithCache prefs;
@@ -15,6 +16,9 @@ class Settings {
   const Settings(this.prefs);
 
   static const _versionPatch = 'internal.version_patch';
+  static const _localBoardSize = 'internal.local_board.size';
+  static const _localBoardHandicap = 'internal.local_board.handicap';
+  static const _localBoardMoves = 'internal.local_board.moves';
   static const _themeKey = 'settings.theme';
   static const _behaviourKeyPrefix = 'settings.behaviour';
   static const _soundStoneKey = 'settings.sound.stone';
@@ -36,6 +40,29 @@ class Settings {
       prefs.setBool('$_versionPatch.$version.status', status);
   String? getSaveDirectory() => prefs.getString(_saveDirectory);
   set saveDirectory(String dir) => prefs.setString(_saveDirectory, dir);
+  int get localBoardSize => prefs.getInt(_localBoardSize) ?? 19;
+  set localBoardSize(int value) => prefs.setInt(_localBoardSize, value);
+  int get localBoardHandicap => prefs.getInt(_localBoardHandicap) ?? 0;
+  set localBoardHandicap(int value) => prefs.setInt(_localBoardHandicap, value);
+
+  Iterable<wq.Point> get localBoardMoves =>
+      (prefs.getStringList(_localBoardMoves) ?? []).map(wq.parseSgfPoint);
+
+  void pushLocalBoardMoves(Iterable<wq.Point?> ps) {
+    final moves = prefs.getStringList(_localBoardMoves) ?? [];
+    moves.addAll(ps.map((p) => p?.toSgf() ?? ''));
+    prefs.setStringList(_localBoardMoves, moves);
+  }
+
+  void popLocalBoardMoves({int count = 1}) {
+    final moves = prefs.getStringList(_localBoardMoves) ?? [];
+    for (int i = 0; i < count && moves.isNotEmpty; ++i) {
+      moves.removeLast();
+    }
+    prefs.setStringList(_localBoardMoves, moves);
+  }
+
+  void clearLocalBoardState() => prefs.setStringList(_localBoardMoves, []);
 
   // General
   ThemeMode get themeMode =>

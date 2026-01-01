@@ -90,6 +90,16 @@ class GameTree {
     return _cur;
   }
 
+  List<wq.Move?> lastNMoves({int count = 1}) {
+    final moves = <wq.Move?>[];
+    var cur = curNode;
+    for (int i = 0; i < count; ++i) {
+      moves.add(cur.move);
+      cur = cur.parent!;
+    }
+    return moves.reversedView;
+  }
+
   String sgf(
       {String? rules,
       double? komi,
