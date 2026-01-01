@@ -42,6 +42,8 @@
   "errFailedToLoadGameList": "Încărcarea listei de jocuri a eșuat. Te rugăm să încerci din nou.",
   "errFailedToUploadGameToAISensei": "Încărcarea jocului în AI Sensei a eșuat",
   "errIncorrectUsernameOrPassword": "Nume de utilizator sau parolă incorecte",
+  "errLoginFailedWithDetails": "Autentificarea a eșuat: {message}",
+  "errNetworkError": "Eroare de rețea. Te rog să verifici conexiunea și să încerci din nou.",
   "errMustBeAtLeast": "Trebuie să fie cel puțin {n}",
   "@errMustBeAtLeast": {
     "placeholders": {

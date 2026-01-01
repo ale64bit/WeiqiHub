@@ -144,6 +144,15 @@ class AppLocalizationsIt extends AppLocalizations {
       'Username o password non corretti';
 
   @override
+  String errLoginFailedWithDetails(String message) {
+    return 'Accesso non riuscito: $message';
+  }
+
+  @override
+  String get errNetworkError =>
+      'Errore di rete. Controlla la tua connessione e riprova.';
+
+  @override
   String errMustBeAtLeast(num n) {
     return 'Deve essere almeno $n';
   }

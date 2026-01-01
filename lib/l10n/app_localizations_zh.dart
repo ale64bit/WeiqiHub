@@ -138,6 +138,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get errIncorrectUsernameOrPassword => '用户名或密码错误';
 
   @override
+  String errLoginFailedWithDetails(String message) {
+    return '登录失败：$message';
+  }
+
+  @override
+  String get errNetworkError => '网络错误，请检查您的连接并重试。';
+
+  @override
   String errMustBeAtLeast(num n) {
     return '必须至少$n';
   }

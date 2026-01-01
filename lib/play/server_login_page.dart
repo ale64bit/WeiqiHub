@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/game_client/exceptions.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/login_form.dart';
@@ -82,13 +83,27 @@ class _ServerLoginPageState extends State<ServerLoginPage> {
           arguments: ServerLobbyRouteArguments(gameClient: widget.gameClient),
         );
       }
-    }, onError: (err) {
+    }).catchError((err) {
       if (context.mounted) {
         final loc = AppLocalizations.of(context)!;
+        String errorMessage;
+
+        // Determine the appropriate error message based on exception type
+        if (err is LoginException) {
+          errorMessage = switch (err.type) {
+            LoginFailureType.invalidCredentials =>
+              loc.errIncorrectUsernameOrPassword,
+            LoginFailureType.network => loc.errNetworkError,
+          };
+        } else {
+          // For unexpected exceptions, show the error message
+          errorMessage = loc.errLoginFailedWithDetails(err.toString());
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             behavior: SnackBarBehavior.floating,
-            content: Text(loc.errIncorrectUsernameOrPassword),
+            content: Text(errorMessage),
             showCloseIcon: true,
           ),
         );

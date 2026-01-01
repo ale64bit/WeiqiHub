@@ -145,6 +145,15 @@ class AppLocalizationsDe extends AppLocalizations {
       'Falscher Benutzername oder falsches Passwort';
 
   @override
+  String errLoginFailedWithDetails(String message) {
+    return 'Anmeldung fehlgeschlagen: $message';
+  }
+
+  @override
+  String get errNetworkError =>
+      'Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.';
+
+  @override
   String errMustBeAtLeast(num n) {
     return 'Muss mindestens $n sein';
   }
