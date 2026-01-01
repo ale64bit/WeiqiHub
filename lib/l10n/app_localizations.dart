@@ -368,6 +368,18 @@ abstract class AppLocalizations {
   /// **'Incorrect username or password'**
   String get errIncorrectUsernameOrPassword;
 
+  /// No description provided for @errLoginFailedWithDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed: {message}'**
+  String errLoginFailedWithDetails(String message);
+
+  /// No description provided for @errNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get errNetworkError;
+
   /// No description provided for @errMustBeAtLeast.
   ///
   /// In en, this message translates to:

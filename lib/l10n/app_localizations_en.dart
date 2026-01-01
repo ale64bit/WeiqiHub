@@ -143,6 +143,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errIncorrectUsernameOrPassword => 'Incorrect username or password';
 
   @override
+  String errLoginFailedWithDetails(String message) {
+    return 'Login failed: $message';
+  }
+
+  @override
+  String get errNetworkError =>
+      'Network error. Please check your connection and try again.';
+
+  @override
   String errMustBeAtLeast(num n) {
     return 'Must be at least $n';
   }

@@ -42,6 +42,8 @@
   "errFailedToLoadGameList": "Не удалось загрузить список партий. Пожалуйста, попробуйте снова.",
   "errFailedToUploadGameToAISensei": "Не удалось загрузить партию в AI Sensei",
   "errIncorrectUsernameOrPassword": "Неверное имя пользователя или пароль",
+  "errLoginFailedWithDetails": "Вход не выполнен: {message}",
+  "errNetworkError": "Ошибка сети. Проверьте подключение и попробуйте снова.",
   "errMustBeAtLeast": "Должно быть не менее {n}",
   "@errMustBeAtLeast": {
     "placeholders": {
