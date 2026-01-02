@@ -135,7 +135,14 @@ class _CollectionPageState extends State<CollectionPage>
             spacing: 4,
             children: <Widget>[
               TurnIcon(color: widget.taskSource.task.first),
-              Text(taskTitle),
+              Expanded(
+                child: Text(
+                  taskTitle,
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
             ],
           ),
           actions: <Widget>[
