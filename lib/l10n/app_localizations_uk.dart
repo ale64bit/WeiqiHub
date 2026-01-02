@@ -61,10 +61,22 @@ class AppLocalizationsUk extends AppLocalizations {
   String get byRank => 'За рангом';
 
   @override
+  String get byType => 'За типом';
+
+  @override
   String get cancel => 'Скасувати';
 
   @override
   String get captures => 'Захоплення';
+
+  @override
+  String get chartTitleCorrectCount => 'Правильні відповіді';
+
+  @override
+  String get chartTitleExamCompletionTime => 'Час виконання';
+
+  @override
+  String get charts => 'Графіки';
 
   @override
   String get clearBoard => 'Очистити';
@@ -260,6 +272,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String mMinutes(int m) {
     return '$m хв.';
   }
+
+  @override
+  String get maxChartPoints => 'Макс. точок';
 
   @override
   String get maxNumberOfMistakes => 'Максимальна кількість помилок';

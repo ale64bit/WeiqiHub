@@ -16,8 +16,12 @@
   "boardSize": "Dimensioni",
   "boardTheme": "Stile",
   "byRank": "Per livello",
+  "byType": "Per tipo",
   "cancel": "Annulla",
   "captures": "Prigionieri",
+  "chartTitleCorrectCount": "Risposte corrette",
+  "chartTitleExamCompletionTime": "Tempo d'esame",
+  "charts": "",
   "clearBoard": "Svuota",
   "collectStats": "Registra statistiche",
   "collections": "Raccolte",
@@ -98,6 +102,7 @@
       }
     }
   },
+  "maxChartPoints": "Punti max",
   "maxNumberOfMistakes": "Numero massimo di errori",
   "maxRank": "Livello massimo",
   "medium": "Medio",

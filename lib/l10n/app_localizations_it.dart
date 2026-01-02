@@ -61,10 +61,22 @@ class AppLocalizationsIt extends AppLocalizations {
   String get byRank => 'Per livello';
 
   @override
+  String get byType => 'Per tipo';
+
+  @override
   String get cancel => 'Annulla';
 
   @override
   String get captures => 'Prigionieri';
+
+  @override
+  String get chartTitleCorrectCount => 'Risposte corrette';
+
+  @override
+  String get chartTitleExamCompletionTime => 'Tempo d\'esame';
+
+  @override
+  String get charts => '';
 
   @override
   String get clearBoard => 'Svuota';
@@ -261,6 +273,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String mMinutes(int m) {
     return '${m}min';
   }
+
+  @override
+  String get maxChartPoints => 'Punti max';
 
   @override
   String get maxNumberOfMistakes => 'Numero massimo di errori';

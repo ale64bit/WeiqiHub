@@ -60,10 +60,22 @@ class AppLocalizationsZh extends AppLocalizations {
   String get byRank => '按段位';
 
   @override
+  String get byType => '按类型';
+
+  @override
   String get cancel => '取消';
 
   @override
   String get captures => '吃子';
+
+  @override
+  String get chartTitleCorrectCount => '正确数量';
+
+  @override
+  String get chartTitleExamCompletionTime => '考试完成时间';
+
+  @override
+  String get charts => '图表';
 
   @override
   String get clearBoard => '清空';
@@ -254,6 +266,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String mMinutes(int m) {
     return '$m分钟';
   }
+
+  @override
+  String get maxChartPoints => '最大点数';
 
   @override
   String get maxNumberOfMistakes => '最大错误数';

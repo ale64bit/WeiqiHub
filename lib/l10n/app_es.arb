@@ -16,8 +16,12 @@
   "boardSize": "Tamaño del tablero",
   "boardTheme": "Tema del tablero",
   "byRank": "Por rango",
+  "byType": "Por tipo",
   "cancel": "Cancelar",
   "captures": "Capturas",
+  "chartTitleCorrectCount": "Respuestas correctas",
+  "chartTitleExamCompletionTime": "Tiempo de examen",
+  "charts": "Gráficos",
   "clearBoard": "Limpiar",
   "collectStats": "Añadir a las estadísticas",
   "collections": "Colecciones",
@@ -98,6 +102,7 @@
       }
     }
   },
+  "maxChartPoints": "Puntos máx.",
   "maxNumberOfMistakes": "Número máximo de errores",
   "maxRank": "Rango máx.",
   "medium": "Media",

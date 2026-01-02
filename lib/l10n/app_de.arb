@@ -16,8 +16,12 @@
   "boardSize": "Brettgröße",
   "boardTheme": "Brett Aussehen",
   "byRank": "Nach Rang",
+  "byType": "Nach Typ",
   "cancel": "Abbrechen",
   "captures": "Gefangene",
+  "chartTitleCorrectCount": "Richtige Antworten",
+  "chartTitleExamCompletionTime": "Prüfungsdauer",
+  "charts": "Diagramme",
   "clearBoard": "Brett leeren",
   "collectStats": "Statistiken erfassen",
   "collections": "Sammlungen",
@@ -98,6 +102,7 @@
       }
     }
   },
+  "maxChartPoints": "Max. Punkte",
   "maxNumberOfMistakes": "Maximale Fehleranzahl",
   "maxRank": "Max. Rang",
   "medium": "Mittel",

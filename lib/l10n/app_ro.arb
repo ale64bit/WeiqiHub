@@ -16,8 +16,12 @@
   "boardSize": "Dimensiunea tablei",
   "boardTheme": "Temă a tablei",
   "byRank": "După rang",
+  "byType": "După tip",
   "cancel": "Anulează",
   "captures": "Capturi",
+  "chartTitleCorrectCount": "Răspunsuri corecte",
+  "chartTitleExamCompletionTime": "Durata examenului",
+  "charts": "Grafice",
   "clearBoard": "Curăță tabla",
   "collectStats": "Colectează statistici",
   "collections": "Colecții",
@@ -98,6 +102,7 @@
       }
     }
   },
+  "maxChartPoints": "Puncte max.",
   "maxNumberOfMistakes": "Număr maxim de greșeli",
   "maxRank": "Rang maxim",
   "medium": "Mediu",

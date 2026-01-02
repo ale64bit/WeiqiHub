@@ -16,8 +16,12 @@
   "boardSize": "Размер доски",
   "boardTheme": "Тема доски",
   "byRank": "По рангу",
+  "byType": "По типу",
   "cancel": "Отмена",
   "captures": "Захваты",
+  "chartTitleCorrectCount": "Правильные ответы",
+  "chartTitleExamCompletionTime": "Время выполнения",
+  "charts": "Графики",
   "clearBoard": "Очистить",
   "collectStats": "Добавлять в статистику",
   "collections": "Коллекции",
@@ -98,6 +102,7 @@
       }
     }
   },
+  "maxChartPoints": "Макс. точек",
   "maxNumberOfMistakes": "Максимальное количество ошибок",
   "maxRank": "Макс. ранг",
   "medium": "Средняя",
