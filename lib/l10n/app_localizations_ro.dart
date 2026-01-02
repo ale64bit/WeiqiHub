@@ -61,10 +61,22 @@ class AppLocalizationsRo extends AppLocalizations {
   String get byRank => 'După rang';
 
   @override
+  String get byType => 'După tip';
+
+  @override
   String get cancel => 'Anulează';
 
   @override
   String get captures => 'Capturi';
+
+  @override
+  String get chartTitleCorrectCount => 'Răspunsuri corecte';
+
+  @override
+  String get chartTitleExamCompletionTime => 'Durata examenului';
+
+  @override
+  String get charts => 'Grafice';
 
   @override
   String get clearBoard => 'Curăță tabla';
@@ -261,6 +273,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String mMinutes(int m) {
     return '${m}min';
   }
+
+  @override
+  String get maxChartPoints => 'Puncte max.';
 
   @override
   String get maxNumberOfMistakes => 'Număr maxim de greșeli';

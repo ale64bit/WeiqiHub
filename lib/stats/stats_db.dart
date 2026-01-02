@@ -42,6 +42,14 @@ enum ExamType {
   custom,
   topic,
   legacy;
+
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        ExamType.grading => loc.gradingExam,
+        ExamType.endgame => loc.endgameExam,
+        ExamType.custom => loc.customExam,
+        ExamType.topic => loc.topic,
+        ExamType.legacy => 'legacy',
+      };
 }
 
 @immutable
@@ -213,7 +221,9 @@ class StatsDB {
   final PreparedStatement _updateCollectionStat;
   final PreparedStatement _addExamAttempt;
   final PreparedStatement _examsSince;
+  final PreparedStatement _examsByTypeAndRank;
   final PreparedStatement _taskDailyStatsSince;
+  final PreparedStatement _taskSuccessRateByType;
 
   static Future<void> init() async {
     _log.info('init: sqlite3 ${sqlite3.version}');
@@ -292,6 +302,9 @@ class StatsDB {
         passed        BOOLEAN NOT NULL,
         duration_sec  INTEGER NOT NULL
       );
+
+      CREATE INDEX IF NOT EXISTS most_recent_exams_by_type_and_rank
+        ON exams(type, from_rank, to_rank, date DESC);
     ''');
 
     _instance = StatsDB._(db: db);
@@ -400,12 +413,25 @@ class StatsDB {
         _examsSince = db.prepare('''
           SELECT * FROM exams WHERE date >= ?;
         ''', persistent: true),
+        _examsByTypeAndRank = db.prepare('''
+          SELECT * FROM exams 
+          WHERE type = ?
+            AND ? <= from_rank 
+            AND to_rank <= ?
+          ORDER BY date DESC
+          LIMIT ?;
+        ''', persistent: true),
         _taskDailyStatsSince = db.prepare('''
           SELECT 
             COALESCE(SUM(correct_count), 0) as total_correct_count, 
             COALESCE(SUM(wrong_count), 0) as total_wrong_count 
           FROM task_daily_stats 
           WHERE date >= ?;
+        ''', persistent: true),
+        _taskSuccessRateByType = db.prepare('''
+          SELECT type, SUM(correct_count) AS correct_count, SUM(wrong_count) AS wrong_count 
+          FROM task_stats 
+          GROUP BY type;
         ''', persistent: true);
 
   void addTaskAttempt(Rank rank, TaskType type, int id, bool correct) {
@@ -425,13 +451,13 @@ class StatsDB {
   List<(TaskRef, TaskSolveStats)> mistakesByMostRecent(
       {int maxResults = 1000}) {
     final resultSet = _mistakesByMostRecent.select([maxResults]);
-    return _entriesFromResultSet(resultSet);
+    return _taskEntriesFromResultSet(resultSet);
   }
 
   List<(TaskRef, TaskSolveStats)> mistakesBySuccessRate(
       {int maxResults = 1000}) {
     final resultSet = _mistakesBySuccessRate.select([maxResults]);
-    return _entriesFromResultSet(resultSet);
+    return _taskEntriesFromResultSet(resultSet);
   }
 
   int countMistakesByRange(RankRange rankRange) {
@@ -464,7 +490,8 @@ class StatsDB {
     ''');
   }
 
-  List<(TaskRef, TaskSolveStats)> _entriesFromResultSet(ResultSet resultSet) =>
+  List<(TaskRef, TaskSolveStats)> _taskEntriesFromResultSet(
+          ResultSet resultSet) =>
       [
         for (final row in resultSet)
           (
@@ -544,9 +571,22 @@ class StatsDB {
     ]);
   }
 
+  static final _examDateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+
   List<ExamEntry> examsSince(DateTime since) {
-    final dateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-    final resultSet = _examsSince.select([dateFormat.format(since.toUtc())]);
+    final resultSet =
+        _examsSince.select([_examDateFormat.format(since.toUtc())]);
+    return _examEntriesFromResultSet(resultSet);
+  }
+
+  List<ExamEntry> recentExams(ExamType type, RankRange rankRange, int count) {
+    final event = ExamEvent(type: type);
+    final resultSet = _examsByTypeAndRank.select(
+        [jsonEncode(event), rankRange.from.index, rankRange.to.index, count]);
+    return _examEntriesFromResultSet(resultSet);
+  }
+
+  List<ExamEntry> _examEntriesFromResultSet(ResultSet resultSet) {
     final entries = <ExamEntry>[];
     for (final row in resultSet) {
       var typeStr = row['type'] as String;
@@ -558,7 +598,7 @@ class StatsDB {
         // should not happen
       }
       entries.add(ExamEntry(
-        date: dateFormat.parseUTC(row['date'] as String).toLocal(),
+        date: _examDateFormat.parseUTC(row['date'] as String).toLocal(),
         event: event,
         rankRange: RankRange(
           from: Rank.values[row['from_rank'] as int],
@@ -584,6 +624,19 @@ class StatsDB {
       );
     }
     return (0, 0);
+  }
+
+  List<(TaskType, int, int)> taskSuccessRateByType() {
+    final types = <(TaskType, int, int)>[];
+    final resultSet = _taskSuccessRateByType.select();
+    for (final row in resultSet) {
+      types.add((
+        TaskType.values[row['type'] as int],
+        row['correct_count'] as int,
+        row['wrong_count'] as int,
+      ));
+    }
+    return types;
   }
 
   void dispose() => _db.close();

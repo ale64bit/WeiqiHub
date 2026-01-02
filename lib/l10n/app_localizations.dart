@@ -212,6 +212,12 @@ abstract class AppLocalizations {
   /// **'By rank'**
   String get byRank;
 
+  /// No description provided for @byType.
+  ///
+  /// In en, this message translates to:
+  /// **'By type'**
+  String get byType;
+
   /// No description provided for @cancel.
   ///
   /// In en, this message translates to:
@@ -223,6 +229,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Captures'**
   String get captures;
+
+  /// No description provided for @chartTitleCorrectCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct count'**
+  String get chartTitleCorrectCount;
+
+  /// No description provided for @chartTitleExamCompletionTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Exam completion time'**
+  String get chartTitleExamCompletionTime;
+
+  /// No description provided for @charts.
+  ///
+  /// In en, this message translates to:
+  /// **'Charts'**
+  String get charts;
 
   /// No description provided for @clearBoard.
   ///
@@ -577,6 +601,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{m}min'**
   String mMinutes(int m);
+
+  /// No description provided for @maxChartPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Max points'**
+  String get maxChartPoints;
 
   /// No description provided for @maxNumberOfMistakes.
   ///

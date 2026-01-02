@@ -16,8 +16,12 @@
   "boardSize": "Розмір дошки",
   "boardTheme": "Тема дошки",
   "byRank": "За рангом",
+  "byType": "За типом",
   "cancel": "Скасувати",
   "captures": "Захоплення",
+  "chartTitleCorrectCount": "Правильні відповіді",
+  "chartTitleExamCompletionTime": "Час виконання",
+  "charts": "Графіки",
   "clearBoard": "Очистити",
   "collectStats": "Зібрати статистику",
   "collections": "Колекції",
@@ -98,6 +102,7 @@
       }
     }
   },
+  "maxChartPoints": "Макс. точок",
   "maxNumberOfMistakes": "Максимальна кількість помилок",
   "maxRank": "Макс. ранг",
   "medium": "Середня",

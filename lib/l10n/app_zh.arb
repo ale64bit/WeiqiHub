@@ -16,8 +16,12 @@
   "boardSize": "棋盘颜色",
   "boardTheme": "棋盘主题",
   "byRank": "按段位",
+  "byType": "按类型",
   "cancel": "取消",
   "captures": "吃子",
+  "chartTitleCorrectCount": "正确数量",
+  "chartTitleExamCompletionTime": "考试完成时间",
+  "charts": "图表",
   "clearBoard": "清空",
   "collectStats": "计入统计",
   "collections": "棋书",
@@ -98,6 +102,7 @@
       }
     }
   },
+  "maxChartPoints": "最大点数",
   "maxNumberOfMistakes": "最大错误数",
   "maxRank": "最高段位",
   "medium": "中",
