@@ -112,6 +112,7 @@ class _CollectionPageState extends State<CollectionPage>
                 status: solveStatus,
                 upsolveMode: upsolveMode,
                 onShowSolution: onShowContinuations,
+                onPlayVariation: onPlaySolution,
                 onShareTask: onShareTask,
                 onCopySgf: onCopySgf,
                 onResetTask: onResetTask,
@@ -153,6 +154,7 @@ class _CollectionPageState extends State<CollectionPage>
               : TaskActionBar(
                   upsolveMode: upsolveMode,
                   onShowSolution: onShowContinuations,
+                  onPlayVariation: onPlaySolution,
                   onShareTask: onShareTask,
                   onCopySgf: onCopySgf,
                   onResetTask: onResetTask,
@@ -289,6 +291,7 @@ class _SideBar extends StatelessWidget {
   final VariationStatus? status;
   final UpsolveMode upsolveMode;
   final Function()? onShowSolution;
+  final Function()? onPlayVariation;
   final Function()? onShareTask;
   final Function()? onCopySgf;
   final Function()? onResetTask;
@@ -307,6 +310,7 @@ class _SideBar extends StatelessWidget {
     this.status,
     required this.upsolveMode,
     required this.onShowSolution,
+    this.onPlayVariation,
     required this.onShareTask,
     this.onCopySgf,
     required this.onResetTask,
@@ -357,6 +361,7 @@ class _SideBar extends StatelessWidget {
                 : TaskActionBar(
                     upsolveMode: upsolveMode,
                     onShowSolution: onShowSolution,
+                    onPlayVariation: onPlayVariation,
                     onShareTask: onShareTask,
                     onCopySgf: onCopySgf,
                     onNextTask: onNextTask,

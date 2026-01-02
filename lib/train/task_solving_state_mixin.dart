@@ -23,6 +23,7 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   bool solveStatusNotified = false;
   IMapOfSets<wq.Point, Annotation>? continuationAnnotations;
   var upsolveMode = UpsolveMode.auto;
+  bool _isPlayingSolution = false;
 
   Task get currentTask;
   void onSolveStatus(VariationStatus status);
@@ -41,6 +42,7 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
     turn = currentTask.first;
     solveStatusNotified = false;
     upsolveMode = UpsolveMode.auto;
+    _isPlayingSolution = false;
   }
 
   void onResetTask() {
@@ -97,6 +99,45 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
       turn = turn.opposite;
       setState(() {/* Update board */});
     }
+  }
+
+  void onPlaySolution() async {
+    if (_isPlayingSolution) {
+      _isPlayingSolution = false;
+      return;
+    }
+
+    onResetTask();
+    _isPlayingSolution = true;
+
+    while (_isPlayingSolution) {
+      await Future.delayed(Duration(milliseconds: 500) +
+          context.settings.responseDelay.duration);
+
+      if (!_isPlayingSolution || solveStatusNotified) break;
+
+      final p = _vtreeIt?.nextProperMove();
+      if (p == null) break;
+
+      gameTree.moveAnnotated((col: turn, p: p), mode: AnnotationMode.variation);
+      AudioController().playForNode(gameTree.curNode);
+      continuationAnnotations = null;
+      final status = _vtreeIt!.move(p);
+      turn = turn.opposite;
+
+      if (status != null) {
+        _isPlayingSolution = false;
+      }
+
+      setState(() {/* Update board */});
+    }
+
+    final additionalDelay =
+        Duration(milliseconds: 1000) + context.settings.responseDelay.duration;
+    await Future.delayed(additionalDelay);
+
+    onResetTask();
+    _isPlayingSolution = false;
   }
 
   void _generateResponseMove(bool wideLayout) {

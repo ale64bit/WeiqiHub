@@ -7,6 +7,7 @@ class TaskActionBar extends StatelessWidget {
 
   final UpsolveMode upsolveMode;
   final Function()? onShowSolution;
+  final Function()? onPlayVariation;
   final Function()? onShareTask;
   final Function()? onCopySgf;
   final Function()? onResetTask;
@@ -19,6 +20,7 @@ class TaskActionBar extends StatelessWidget {
     super.key,
     required this.upsolveMode,
     this.onShowSolution,
+    this.onPlayVariation,
     this.onShareTask,
     this.onCopySgf,
     this.onResetTask,
@@ -90,6 +92,12 @@ class TaskActionBar extends StatelessWidget {
           child: IconButton(
             icon: Icon(Icons.lightbulb),
             onPressed: onShowSolution,
+          ),
+        ),
+        Expanded(
+          child: IconButton(
+            icon: Icon(Icons.play_circle),
+            onPressed: onPlayVariation,
           ),
         ),
         Expanded(
