@@ -115,7 +115,14 @@ class _SingleTaskPageState extends State<SingleTaskPage>
             spacing: 4,
             children: <Widget>[
               TurnIcon(color: widget.task.first),
-              Text(taskTitle),
+              Expanded(
+                child: Text(
+                  taskTitle,
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
             ],
           ),
         ),

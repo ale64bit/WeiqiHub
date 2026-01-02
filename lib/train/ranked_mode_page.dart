@@ -105,7 +105,14 @@ class _RankedModePageState extends State<RankedModePage>
             spacing: 4,
             children: <Widget>[
               TurnIcon(color: widget.taskSource.task.first),
-              Text(taskTitle),
+              Expanded(
+                child: Text(
+                  taskTitle,
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
             ],
           ),
           actions: <Widget>[

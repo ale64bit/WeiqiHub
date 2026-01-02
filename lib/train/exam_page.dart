@@ -163,7 +163,14 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
             spacing: 4,
             children: <Widget>[
               TurnIcon(color: _taskSource.task.first),
-              Text(taskTitle),
+              Expanded(
+                child: Text(
+                  taskTitle,
+                  softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
             ],
           ),
           actions: <Widget>[
