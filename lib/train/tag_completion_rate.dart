@@ -70,7 +70,9 @@ class _TagCompletionRateState extends PopAwareState<TagCompletionRate> {
       if (pass > 0) {
         passed++;
         if (rankRange.to > maxRank) maxRank = rankRange.to;
-      } else if (rankRange.from < minRank) minRank = rankRange.from;
+      } else if (rankRange.from < minRank) {
+        minRank = rankRange.from;
+      }
     }
     for (final subtag in tag.subtags()) {
       final (t, p, rr) = compute(context, subtag);

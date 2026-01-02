@@ -402,15 +402,15 @@ class _TagBucket {
   }
 }
 
-class TaskTags {
+class _TaskTags {
   final Map<(wq.Rank, TaskTag), _TagBucket> tasks;
 
-  static Future<TaskTags> loadFromRes(String resName) async {
+  static Future<_TaskTags> loadFromRes(String resName) async {
     final data = await rootBundle.load(resName);
     return _parseTags(data);
   }
 
-  static TaskTags _parseTags(ByteData data) {
+  static _TaskTags _parseTags(ByteData data) {
     final tasks = <(wq.Rank, TaskTag), _TagBucket>{};
     var offset = 0;
     var size = data.getUint16(offset);
@@ -439,10 +439,10 @@ class TaskTags {
       size = data.getUint16(offset);
       offset += 2;
     }
-    return TaskTags(tasks: tasks);
+    return _TaskTags(tasks: tasks);
   }
 
-  const TaskTags({required this.tasks});
+  const _TaskTags({required this.tasks});
 }
 
 class TaskCollection {
@@ -561,7 +561,7 @@ class TaskRepository {
     };
     final collections =
         await TaskCollection.loadFromRes('assets/tasks/col.bin');
-    final tags = await TaskTags.loadFromRes('assets/tasks/tag.bin');
+    final tags = await _TaskTags.loadFromRes('assets/tasks/tag.bin');
     _db = TaskRepository._(buckets, collections, tags);
   }
 
@@ -580,7 +580,7 @@ class TaskRepository {
   final Map<(wq.Rank, TaskType), _TaskBucket> _buckets;
   final TaskCollection _collectionRoot;
   final TreeNode<TaskCollection> _collectionTreeNode;
-  final TaskTags _tags;
+  final _TaskTags _tags;
 
   Task? readOne(wq.Rank rank, TaskType type) {
     return _buckets[(rank, type)]?.readOne();
@@ -669,10 +669,11 @@ class TaskRepository {
 
   int countByTypes(RankRange rankRange, ISet<TaskType> types) {
     var total = 0;
-    for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
+    for (int i = rankRange.from.index; i <= rankRange.to.index; ++i) {
       for (final type in types) {
         total += _buckets[(Rank.values[i], type)]?.size ?? 0;
       }
+    }
     return total;
   }
 
