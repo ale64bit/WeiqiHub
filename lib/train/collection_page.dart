@@ -50,7 +50,7 @@ class _CollectionPageState extends State<CollectionPage>
   final _timeDisplayKey = GlobalKey(debugLabel: 'time-display');
   final _stopwatch = Stopwatch();
   var _taskNumber = 1;
-  var _failedTasks = <TaskRef>[];
+  final _failedTasks = <TaskRef>[];
 
   @override
   void initState() {

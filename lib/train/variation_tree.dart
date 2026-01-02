@@ -56,7 +56,7 @@ class VariationTreeIterator {
   final _moves = <wq.Point>[];
   var _cur = 0;
 
-  VariationTreeIterator({required tree}) {
+  VariationTreeIterator({required VariationTree? tree}) {
     _trees.add(tree);
   }
 
