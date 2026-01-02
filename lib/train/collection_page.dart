@@ -6,6 +6,7 @@ import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/time_display.dart';
+import 'package:wqhub/train/collection_result_page.dart';
 import 'package:wqhub/train/task_action_bar.dart';
 import 'package:wqhub/train/task_board.dart';
 import 'package:wqhub/train/task_repository.dart';
@@ -49,6 +50,7 @@ class _CollectionPageState extends State<CollectionPage>
   final _timeDisplayKey = GlobalKey(debugLabel: 'time-display');
   final _stopwatch = Stopwatch();
   var _taskNumber = 1;
+  var _failedTasks = <TaskRef>[];
 
   @override
   void initState() {
@@ -195,6 +197,7 @@ class _CollectionPageState extends State<CollectionPage>
         wrongDelta: 1,
         durationDelta: _stopwatch.elapsed,
       );
+      _failedTasks.add(currentTask.ref);
     }
   }
 
@@ -246,45 +249,16 @@ class _CollectionPageState extends State<CollectionPage>
     if (isNewBest) {
       StatsDB().updateCollectionStat(curResult);
     }
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        final loc = AppLocalizations.of(context)!;
-        return AlertDialog(
-          title: Text(isNewBest ? loc.newBestResult : loc.result),
-          icon: isNewBest ? const Icon(Icons.emoji_events) : null,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                title: Text(loc.accuracy),
-                trailing: Text(
-                    '${curResult.correctCount}/${curResult.correctCount + curResult.wrongCount} (${(100 * curResult.correctCount / (curResult.correctCount + curResult.wrongCount)).round()}%)'),
-              ),
-              ListTile(
-                title: Text(loc.trainingTotalTime),
-                trailing: Text(curResult.duration.toString().split('.').first),
-              ),
-              ListTile(
-                title: Text(loc.trainingAvgTimePerTask),
-                trailing: Text(
-                    '${(curResult.duration.inSeconds / (curResult.correctCount + curResult.wrongCount)).toStringAsFixed(1)}s'),
-              ),
-            ],
-          ),
-          actionsAlignment: MainAxisAlignment.center,
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(loc.exit),
-            ),
-          ],
-        );
-      },
-    ).then((_) {
-      if (context.mounted) Navigator.pop(context);
-    });
+    Navigator.pushReplacementNamed(
+      context,
+      CollectionResultPage.routeName,
+      arguments: CollectionResultRouteArguments(
+        taskCollection: widget.taskCollection,
+        totalTime: activeSession.duration,
+        failedTasks: _failedTasks,
+        newBest: isNewBest,
+      ),
+    );
   }
 }
 
