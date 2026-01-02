@@ -16,6 +16,7 @@ import 'package:wqhub/settings/settings_page.dart';
 import 'package:wqhub/settings/settings_route_arguments.dart';
 import 'package:wqhub/settings/sound_settings_page.dart';
 import 'package:wqhub/train/collection_page.dart';
+import 'package:wqhub/train/collection_result_page.dart';
 import 'package:wqhub/train/collections_page.dart';
 import 'package:wqhub/train/custom_exam_page.dart';
 import 'package:wqhub/train/custom_exam_selection_page.dart';
@@ -140,6 +141,16 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             completedTasks: args.completedTasks,
             onRedo: args.onRedo,
             onNext: args.onNext,
+          ));
+    case CollectionResultPage.routeName:
+      final args = settings.arguments as CollectionResultRouteArguments;
+      return _mpr(
+          settings,
+          CollectionResultPage(
+            taskCollection: args.taskCollection,
+            totalTime: args.totalTime,
+            failedTasks: args.failedTasks,
+            newBest: args.newBest,
           ));
     case RankedModePage.routeName:
       final args = settings.arguments as RankedModeRouteArguments;
