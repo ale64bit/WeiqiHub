@@ -59,6 +59,9 @@ class OGSGameClient extends GameClient {
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
   late final HttpClient _httpClient;
 
+  // Cache for automatch stats
+  Map<String, dynamic>? _cachedAutomatchStats;
+
   @override
   ServerInfo get serverInfo => ServerInfo(
         id: 'ogs',
@@ -86,10 +89,16 @@ class OGSGameClient extends GameClient {
   @override
   ValueNotifier<DateTime> get disconnected => _disconnected;
 
+  // TODO: Make automatchPresets async to fetch fresh stats on each access.
+  // Currently stats are only fetched at login, but may be stale if user doesn't
+  // re-login. The synchronous GameClient.automatchPresets API prevents fetching
+  // on-demand. Consider making the base API async or using a Stream/ValueNotifier.
   @override
-  IList<AutomatchPreset> get automatchPresets => _createAutomatchPresets();
+  IList<AutomatchPreset> get automatchPresets =>
+      _createAutomatchPresets(_cachedAutomatchStats);
 
-  static IList<AutomatchPreset> _createAutomatchPresets() {
+  static IList<AutomatchPreset> _createAutomatchPresets(
+      Map<String, dynamic>? stats) {
     const boardSizes = [9, 13, 19];
     const speeds = ['blitz', 'rapid', 'live'];
 
@@ -156,12 +165,26 @@ class OGSGameClient extends GameClient {
         final sizeKey = '${boardSize}x$boardSize';
         final timeControl = timeControlsBySpeedAndSize[sizeKey]![speed]!;
 
+        // Extract player count from stats if available
+        int? playerCount;
+        if (stats != null) {
+          try {
+            final sizeStats = stats[sizeKey] as Map<String, dynamic>?;
+            final speedStats = sizeStats?[speed] as Map<String, dynamic>?;
+            final byoyomiCount = speedStats?['byoyomi'] as int?;
+            playerCount = byoyomiCount;
+          } catch (e) {
+            // If parsing fails, leave playerCount as null
+          }
+        }
+
         presets.add(AutomatchPreset(
           id: '${boardSize}_$speed',
           boardSize: boardSize,
           variant: Variant.standard,
           rules: Rules.japanese, // OGS uses Japanese rules for automatch
           timeControl: timeControl,
+          playerCount: playerCount,
         ));
       }
     }
@@ -172,6 +195,41 @@ class OGSGameClient extends GameClient {
   @override
   Future<ReadyInfo> ready() async {
     return ReadyInfo();
+  }
+
+  /// Fetches automatch statistics from the OGS termination-api
+  /// Uses the user's rank +/- 3 to query relevant player counts
+  Future<void> _fetchAutomatchStats() async {
+    try {
+      final rank = _userInfo.value?.rank;
+      if (rank == null) return;
+
+      // Calculate rank range: user's rank +/- 3
+      final rankIndex = Rank.values.indexOf(rank);
+      final minRankIndex =
+          (rankIndex - _defaultRankDiff).clamp(0, Rank.values.length - 1);
+      final maxRankIndex =
+          (rankIndex + _defaultRankDiff).clamp(0, Rank.values.length - 1);
+
+      // Build comma-separated list of rank indices
+      final ranks = <int>[];
+      for (int i = minRankIndex; i <= maxRankIndex; i++) {
+        ranks.add(i);
+      }
+      final ranksParam = ranks.join(',');
+
+      // Fetch stats from termination-api
+      final data = await _httpClient.getJson(
+        '/termination-api/automatch-stats',
+        queryParameters: {'ranks': ranksParam},
+        useApiPrefix: false, // termination-api is not under /api
+      );
+
+      _cachedAutomatchStats = data;
+    } catch (e) {
+      _logger.warning('Failed to fetch automatch stats: $e');
+      // Don't throw - we can continue without stats
+    }
   }
 
   @override
@@ -215,6 +273,9 @@ class OGSGameClient extends GameClient {
       } else {
         throw Exception('No JWT token received');
       }
+
+      // Fetch automatch stats in the background
+      _fetchAutomatchStats();
 
       return user;
     } on HttpStatusException catch (e) {

@@ -10,6 +10,10 @@ import 'package:http/http.dart' as http;
 /// - Common headers
 /// - API versioning
 /// - JSON encoding/decoding
+///
+/// TODO: Refactor this interface to be more ergonomic,
+/// similar to OGS's requests.ts implementation:
+/// https://github.com/online-go/online-go.com/blob/f80f1f612d971c96dcea4c79b4478c9069f3ad6e/src/lib/requests.ts
 class HttpClient {
   static const String _userAgent = 'WeiqiHub/1.0';
 
@@ -30,9 +34,12 @@ class HttpClient {
     String path, {
     Map<String, String>? queryParameters,
     int? apiVersion,
+    bool useApiPrefix = true,
   }) async {
     final response = await _get(path,
-        queryParameters: queryParameters, apiVersion: apiVersion);
+        queryParameters: queryParameters,
+        apiVersion: apiVersion,
+        useApiPrefix: useApiPrefix);
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
@@ -41,9 +48,12 @@ class HttpClient {
     String path, {
     Map<String, String>? queryParameters,
     int? apiVersion,
+    bool useApiPrefix = true,
   }) async {
     final response = await _get(path,
-        queryParameters: queryParameters, apiVersion: apiVersion);
+        queryParameters: queryParameters,
+        apiVersion: apiVersion,
+        useApiPrefix: useApiPrefix);
     return response.body;
   }
 
@@ -52,8 +62,9 @@ class HttpClient {
     String path, {
     Map<String, String>? queryParameters,
     int? apiVersion,
+    bool useApiPrefix = true,
   }) async {
-    final uri = _buildUri(path, queryParameters, apiVersion);
+    final uri = _buildUri(path, queryParameters, apiVersion, useApiPrefix);
 
     final response = await _httpClient.get(
       uri,
@@ -128,13 +139,20 @@ class HttpClient {
 
   /// Builds the complete URI for a given path and query parameters
   Uri _buildUri(
-      String path, Map<String, String>? queryParameters, int? apiVersion) {
+      String path, Map<String, String>? queryParameters, int? apiVersion,
+      [bool useApiPrefix = true]) {
     // Use provided apiVersion, or default, or none
     final version = apiVersion ?? defaultApiVersion;
 
-    String fullPath = version != null
-        ? '$serverUrl/api/v$version$path'
-        : '$serverUrl/api$path';
+    String fullPath;
+    if (!useApiPrefix) {
+      // Direct path without /api prefix (e.g., for termination-api)
+      fullPath = '$serverUrl$path';
+    } else {
+      fullPath = version != null
+          ? '$serverUrl/api/v$version$path'
+          : '$serverUrl/api$path';
+    }
 
     final uri = Uri.parse(fullPath);
 
