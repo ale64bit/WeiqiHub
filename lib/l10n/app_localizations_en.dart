@@ -120,6 +120,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dark => 'Dark';
 
   @override
+  String get deselectAll => 'Deselect all';
+
+  @override
   String get dontShowAgain => 'Don\'t show again';
 
   @override
@@ -160,10 +163,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get errNetworkError =>
-      'Network error. Please check your connection and try again.';
-
-  @override
   String errMustBeAtLeast(num n) {
     return 'Must be at least $n';
   }
@@ -175,6 +174,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errMustBeInteger => 'Must be an integer';
+
+  @override
+  String get errNetworkError =>
+      'Network error. Please check your connection and try again.';
+
+  @override
+  String get error => 'Error';
 
   @override
   String get exit => 'Exit';
@@ -306,6 +312,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure that you want to delete the previous attempt?';
 
   @override
+  String get msgConfirmDeletePreset =>
+      'Are you sure that you want to delete this preset?';
+
+  @override
   String get msgConfirmResignation => 'Are you sure that you want to resign?';
 
   @override
@@ -323,6 +333,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get msgPleaseWaitForYourTurn => 'Please, wait for your turn';
+
+  @override
+  String get msgPresetAlreadyExists =>
+      'A preset with that name already exists.';
 
   @override
   String get msgSearchingForGame => 'Searching for a game...';
@@ -432,12 +446,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseMarkDeadStones => 'Please mark the dead stones.';
 
   @override
+  String get presetName => 'Preset name';
+
+  @override
+  String get presets => 'Presets';
+
+  @override
   String get promotionRequirements => 'Promotion requirements';
 
   @override
   String pxsByoyomi(int p, int s) {
     return '$p×${s}s';
   }
+
+  @override
+  String get randomizeTaskOrientation => 'Randomize task orientation';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.';
 
   @override
   String get rank => 'Rank';
@@ -506,10 +533,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
+  String get savePreset => 'Save preset';
+
+  @override
   String get saveSGF => 'Save SGF';
 
   @override
   String get seconds => 'Seconds';
+
+  @override
+  String get selectAll => 'Select all';
 
   @override
   String get settings => 'Settings';
@@ -1357,13 +1390,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get timeFrenzyMistakesDesc =>
       'Enable to save mistakes made in Time Frenzy';
-
-  @override
-  String get randomizeTaskOrientation => 'Randomize task orientation';
-
-  @override
-  String get randomizeTaskOrientationDesc =>
-      'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.';
 
   @override
   String get timePerTask => 'Time per task';

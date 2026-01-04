@@ -120,6 +120,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get dark => 'Темна';
 
   @override
+  String get deselectAll => 'Зняти виділення';
+
+  @override
   String get dontShowAgain => 'Більше не показувати';
 
   @override
@@ -160,10 +163,6 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get errNetworkError =>
-      'Помилка мережі. Перевірте з\'єднання і спробуйте знову.';
-
-  @override
   String errMustBeAtLeast(num n) {
     return 'Повинно бути не менше $n';
   }
@@ -175,6 +174,13 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get errMustBeInteger => 'Повинно бути цілим числом';
+
+  @override
+  String get errNetworkError =>
+      'Помилка мережі. Перевірте з\'єднання і спробуйте знову.';
+
+  @override
+  String get error => 'Помилка';
 
   @override
   String get exit => 'Вийти';
@@ -307,6 +313,9 @@ class AppLocalizationsUk extends AppLocalizations {
       'Ви впевнені, що хочете почати колекцію заново? Поточний прогрес буде втрачено.';
 
   @override
+  String get msgConfirmDeletePreset => 'Видалити цей шаблон?';
+
+  @override
   String get msgConfirmResignation => 'Ви впевнені, що хочете здатися';
 
   @override
@@ -324,6 +333,9 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get msgPleaseWaitForYourTurn => 'Будь-ласка, зачекайте на ваш хід';
+
+  @override
+  String get msgPresetAlreadyExists => 'Шаблон з такою назвою вже існує.';
 
   @override
   String get msgSearchingForGame => 'Шукаю на гру...';
@@ -433,12 +445,26 @@ class AppLocalizationsUk extends AppLocalizations {
   String get pleaseMarkDeadStones => 'Будь-ласка, позначте мертві камені.';
 
   @override
+  String get presetName => 'Назва шаблону';
+
+  @override
+  String get presets => 'Шаблони';
+
+  @override
   String get promotionRequirements => 'Вимоги для підвищення';
 
   @override
   String pxsByoyomi(int p, int s) {
     return '$p×${s}s';
   }
+
+  @override
+  String get randomizeTaskOrientation =>
+      'Випадково згенерована орієнтація діаграм';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Випадково повертає діаграми вправ по горизонталі, вертакалі чи діагоналі, щоб ускладнити запам\'ятовування і покращити розпізнавання паттернів.';
 
   @override
   String get rank => 'Ранг';
@@ -507,10 +533,16 @@ class AppLocalizationsUk extends AppLocalizations {
   String get save => 'Зберегти';
 
   @override
+  String get savePreset => 'Зберегти шаблон';
+
+  @override
   String get saveSGF => 'Зберегти SGF';
 
   @override
   String get seconds => 'Секунди';
+
+  @override
+  String get selectAll => 'Вибрати все';
 
   @override
   String get settings => 'Налаштування';
@@ -1360,14 +1392,6 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get timeFrenzyMistakesDesc =>
       'Увімкнути збереження помилок зробленими в Часовому шаленстві';
-
-  @override
-  String get randomizeTaskOrientation =>
-      'Випадково згенерована орієнтація діаграм';
-
-  @override
-  String get randomizeTaskOrientationDesc =>
-      'Випадково повертає діаграми вправ по горизонталі, вертакалі чи діагоналі, щоб ускладнити запам\'ятовування і покращити розпізнавання паттернів.';
 
   @override
   String get timePerTask => 'Час на вправу';

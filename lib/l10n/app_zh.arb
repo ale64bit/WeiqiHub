@@ -35,6 +35,7 @@
   "copyTaskLink": "复制题目链接",
   "customExam": "自定义测试",
   "dark": "深色",
+  "deselectAll": "取消全选",
   "dontShowAgain": "不再显示",
   "download": "下载",
   "edgeLine": "棋盘边缘",
@@ -47,7 +48,6 @@
   "errFailedToUploadGameToAISensei": "上传棋局到 AI Sensei 失败",
   "errIncorrectUsernameOrPassword": "用户名或密码错误",
   "errLoginFailedWithDetails": "登录失败：{message}",
-  "errNetworkError": "网络错误，请检查您的连接并重试。",
   "errMustBeAtLeast": "必须至少{n}",
   "@errMustBeAtLeast": {
     "placeholders": {
@@ -65,6 +65,8 @@
     }
   },
   "errMustBeInteger": "必须为整数",
+  "errNetworkError": "网络错误，请检查您的连接并重试。",
+  "error": "错误",
   "exit": "退出",
   "exitTryMode": "退出试下模式",
   "find": "查找",
@@ -112,6 +114,7 @@
   "msgCannotUseAIRefereeYet": "您还不能使用 AI 裁判",
   "msgCannotUseForcedCountingYet": "手数不足，不可强制数子或强制点目",
   "msgConfirmDeleteCollectionProgress": "确定要删除之前的棋书进度吗？",
+  "msgConfirmDeletePreset": "确定要删除此预设吗？",
   "msgConfirmResignation": "确认认输？",
   "msgConfirmStopEvent": "确定要停止{event}吗？",
   "@msgConfirmStopEvent": {
@@ -131,6 +134,7 @@
     }
   },
   "msgPleaseWaitForYourTurn": "请等待您的回合",
+  "msgPresetAlreadyExists": "已存在同名的预设。",
   "msgSearchingForGame": "正在寻找对局...",
   "msgSgfCopied": "SGF已复制到剪贴板",
   "msgTaskLinkCopied": "题目链接已复制",
@@ -179,6 +183,8 @@
   "perTask": "每题",
   "play": "对局",
   "pleaseMarkDeadStones": "请标记死子。",
+  "presetName": "预设名称",
+  "presets": "预设",
   "promotionRequirements": "升级要求",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -191,6 +197,8 @@
       }
     }
   },
+  "randomizeTaskOrientation": "随机化题目方向",
+  "randomizeTaskOrientationDesc": "随机旋转和翻转题目，沿水平、垂直和对角轴线，防止记忆化并增强模式识别能力。",
   "rank": "段位",
   "rankedMode": "等级模式",
   "recentRecord": "当前战绩",
@@ -219,8 +227,10 @@
     }
   },
   "save": "保存",
+  "savePreset": "保存预设",
   "saveSGF": "保存SGF",
   "seconds": "秒",
+  "selectAll": "全选",
   "settings": "设置",
   "short": "短",
   "showCoordinates": "显示坐标",
@@ -496,8 +506,6 @@
   "timeFrenzy": "限时挑战",
   "timeFrenzyMistakes": "记录限时挑战错误",
   "timeFrenzyMistakesDesc": "启用以保存限时挑战中的错误",
-  "randomizeTaskOrientation": "随机化题目方向",
-  "randomizeTaskOrientationDesc": "随机旋转和翻转题目，沿水平、垂直和对角轴线，防止记忆化并增强模式识别能力。",
   "timePerTask": "单题用时",
   "today": "今日",
   "tooltipAnalyzeWithAISensei": "使用 AI Sensei 分析",

@@ -35,6 +35,7 @@
   "copyTaskLink": "Copy task link",
   "customExam": "Custom exam",
   "dark": "Dark",
+  "deselectAll": "Deselect all",
   "dontShowAgain": "Don't show again",
   "download": "Download",
   "edgeLine": "Edge line",
@@ -54,7 +55,6 @@
       }
     }
   },
-  "errNetworkError": "Network error. Please check your connection and try again.",
   "errMustBeAtLeast": "Must be at least {n}",
   "@errMustBeAtLeast": {
     "placeholders": {
@@ -72,6 +72,8 @@
     }
   },
   "errMustBeInteger": "Must be an integer",
+  "errNetworkError": "Network error. Please check your connection and try again.",
+  "error": "Error",
   "exit": "Exit",
   "exitTryMode": "Exit try mode",
   "find": "Find",
@@ -119,6 +121,7 @@
   "msgCannotUseAIRefereeYet": "AI referee cannot be used yet",
   "msgCannotUseForcedCountingYet": "Forced counting cannot be used yet",
   "msgConfirmDeleteCollectionProgress": "Are you sure that you want to delete the previous attempt?",
+  "msgConfirmDeletePreset": "Are you sure that you want to delete this preset?",
   "msgConfirmResignation": "Are you sure that you want to resign?",
   "msgConfirmStopEvent": "Are you sure that you want to stop the {event}?",
   "@msgConfirmStopEvent": {
@@ -138,6 +141,7 @@
     }
   },
   "msgPleaseWaitForYourTurn": "Please, wait for your turn",
+  "msgPresetAlreadyExists": "A preset with that name already exists.",
   "msgSearchingForGame": "Searching for a game...",
   "msgSgfCopied": "SGF copied to clipboard",
   "msgTaskLinkCopied": "Task link copied.",
@@ -186,6 +190,8 @@
   "perTask": "per task",
   "play": "Play",
   "pleaseMarkDeadStones": "Please mark the dead stones.",
+  "presetName": "Preset name",
+  "presets": "Presets",
   "promotionRequirements": "Promotion requirements",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -198,6 +204,8 @@
       }
     }
   },
+  "randomizeTaskOrientation": "Randomize task orientation",
+  "randomizeTaskOrientationDesc": "Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.",
   "rank": "Rank",
   "rankedMode": "Ranked mode",
   "recentRecord": "Recent record",
@@ -226,8 +234,10 @@
     }
   },
   "save": "Save",
+  "savePreset": "Save preset",
   "saveSGF": "Save SGF",
   "seconds": "Seconds",
+  "selectAll": "Select all",
   "settings": "Settings",
   "short": "Short",
   "showCoordinates": "Show coordinates",
@@ -503,8 +513,6 @@
   "timeFrenzy": "Time frenzy",
   "timeFrenzyMistakes": "Track Time Frenzy mistakes",
   "timeFrenzyMistakesDesc": "Enable to save mistakes made in Time Frenzy",
-  "randomizeTaskOrientation": "Randomize task orientation",
-  "randomizeTaskOrientationDesc": "Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.",
   "timePerTask": "Time per task",
   "today": "Today",
   "tooltipAnalyzeWithAISensei": "Analyze with AI Sensei",

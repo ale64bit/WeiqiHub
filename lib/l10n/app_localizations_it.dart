@@ -120,6 +120,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dark => 'Scuro';
 
   @override
+  String get deselectAll => 'Deseleziona tutto';
+
+  @override
   String get dontShowAgain => 'Non mostrare più';
 
   @override
@@ -161,10 +164,6 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get errNetworkError =>
-      'Errore di rete. Controlla la tua connessione e riprova.';
-
-  @override
   String errMustBeAtLeast(num n) {
     return 'Deve essere almeno $n';
   }
@@ -176,6 +175,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get errMustBeInteger => 'Deve essere un numero intero';
+
+  @override
+  String get errNetworkError =>
+      'Errore di rete. Controlla la tua connessione e riprova.';
+
+  @override
+  String get error => 'Errore';
 
   @override
   String get exit => 'Esci';
@@ -308,6 +314,9 @@ class AppLocalizationsIt extends AppLocalizations {
       'Vuoi davvero cancellare il precedente tentativo?';
 
   @override
+  String get msgConfirmDeletePreset => 'Eliminare questo modello?';
+
+  @override
   String get msgConfirmResignation => 'Vuoi davvero abbandonare?';
 
   @override
@@ -325,6 +334,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get msgPleaseWaitForYourTurn => 'Per favore, attendi il tuo turno';
+
+  @override
+  String get msgPresetAlreadyExists => 'Esiste già un modello con questo nome.';
 
   @override
   String get msgSearchingForGame => 'Cerco una partita...';
@@ -435,12 +447,25 @@ class AppLocalizationsIt extends AppLocalizations {
   String get pleaseMarkDeadStones => 'Indica le pietre catturate.';
 
   @override
+  String get presetName => 'Nome modello';
+
+  @override
+  String get presets => 'Modelli';
+
+  @override
   String get promotionRequirements => 'Requisiti per la promozione';
 
   @override
   String pxsByoyomi(int p, int s) {
     return '$p×${s}s';
   }
+
+  @override
+  String get randomizeTaskOrientation => 'Orientamento casuale';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Ruota e rifletti casualmente i problemi lungo gli assi orizzontale, verticale e diagonale per prevenire la memorizzazione e migliorare il riconoscimento dei pattern.';
 
   @override
   String get rank => 'Livello';
@@ -509,10 +534,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get save => 'Salva';
 
   @override
+  String get savePreset => 'Salva modello';
+
+  @override
   String get saveSGF => 'Salva SGF';
 
   @override
   String get seconds => 'Secondi';
+
+  @override
+  String get selectAll => 'Seleziona tutto';
 
   @override
   String get settings => 'Impostazioni';
@@ -1361,13 +1392,6 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get timeFrenzyMistakesDesc =>
       'Abilita il salvataggio degli errori commessi durante le sessioni di Frenesia';
-
-  @override
-  String get randomizeTaskOrientation => 'Orientamento casuale';
-
-  @override
-  String get randomizeTaskOrientationDesc =>
-      'Ruota e rifletti casualmente i problemi lungo gli assi orizzontale, verticale e diagonale per prevenire la memorizzazione e migliorare il riconoscimento dei pattern.';
 
   @override
   String get timePerTask => 'Tempo problema';

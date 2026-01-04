@@ -648,14 +648,15 @@ class TaskRepository {
     );
   }
 
-  TaskSource taskSourceByTag(RankRange rankRange, TaskTag tag) {
+  TaskSource taskSourceByTags(RankRange rankRange, ISet<TaskTag> tags) {
     final buckets = [
       for (int i = rankRange.from.index; i <= rankRange.to.index; ++i)
-        if (_tags.tasks[(Rank.values[i], tag)] != null)
-          (
-            (Rank.values[i], _tags.tasks[(Rank.values[i], tag)]!),
-            _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0
-          )
+        for (final tag in tags)
+          if (_tags.tasks[(Rank.values[i], tag)] != null)
+            (
+              (Rank.values[i], _tags.tasks[(Rank.values[i], tag)]!),
+              _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0
+            )
     ];
     return DistributionTaskSource(
       buckets: buckets,
@@ -667,7 +668,7 @@ class TaskRepository {
     );
   }
 
-  int countByTypes(RankRange rankRange, ISet<TaskType> types) {
+  int countByTypes(RankRange rankRange, Set<TaskType> types) {
     var total = 0;
     for (int i = rankRange.from.index; i <= rankRange.to.index; ++i) {
       for (final type in types) {
@@ -677,10 +678,14 @@ class TaskRepository {
     return total;
   }
 
-  int countByTag(RankRange rankRange, TaskTag tag) {
+  int approxCountByTags(RankRange rankRange, Set<TaskTag> tags) {
+    // This count is approximate since tasks can have more than one tag.
+    // However it's good enough for display purposes.
     var total = 0;
     for (int i = rankRange.from.index; i <= rankRange.to.index; ++i) {
-      total += _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0;
+      for (final tag in tags) {
+        total += _tags.tasks[(Rank.values[i], tag)]?.tasks.length ?? 0;
+      }
     }
     return total;
   }

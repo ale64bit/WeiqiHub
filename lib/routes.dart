@@ -116,18 +116,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           ));
     case CustomExamPage.routeName:
       final args = settings.arguments as CustomExamRouteArguments;
-      return _mprNoPop(
-          settings,
-          CustomExamPage(
-            taskCount: args.taskCount,
-            timePerTask: args.timePerTask,
-            rankRange: args.rankRange,
-            maxMistakes: args.maxMistakes,
-            taskSourceType: args.taskSourceType,
-            taskTypes: args.taskTypes,
-            taskTag: args.taskTag,
-            collectStats: args.collectStats,
-          ));
+      return _mprNoPop(settings, CustomExamPage(settings: args.settings));
     case ExamResultPage.routeName:
       final args = settings.arguments as ExamResultRouteArguments;
       return _mpr(

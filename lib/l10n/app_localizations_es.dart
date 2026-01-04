@@ -120,6 +120,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dark => 'Oscuro';
 
   @override
+  String get deselectAll => 'Deseleccionar todo';
+
+  @override
   String get dontShowAgain => 'No volver a mostrar';
 
   @override
@@ -161,10 +164,6 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get errNetworkError =>
-      'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
-
-  @override
   String errMustBeAtLeast(num n) {
     return 'No puede ser menor que $n';
   }
@@ -176,6 +175,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errMustBeInteger => 'Debe ser un número entero';
+
+  @override
+  String get errNetworkError =>
+      'Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get error => 'Error';
 
   @override
   String get exit => 'Salir';
@@ -308,6 +314,10 @@ class AppLocalizationsEs extends AppLocalizations {
       '¿Estás seguro(a) de que quieres abandonar el intento anterior?';
 
   @override
+  String get msgConfirmDeletePreset =>
+      '¿Está seguro de que quiere eliminar esta plantilla?';
+
+  @override
   String get msgConfirmResignation =>
       '¿Estás seguro(a) de que quieres abandonar?';
 
@@ -326,6 +336,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get msgPleaseWaitForYourTurn => 'Por favor, espera tu turno';
+
+  @override
+  String get msgPresetAlreadyExists =>
+      'Ya existe una plantilla con ese nombre.';
 
   @override
   String get msgSearchingForGame => 'Buscando partida...';
@@ -436,12 +450,25 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pleaseMarkDeadStones => 'Por favor, marca las piedras muertas.';
 
   @override
+  String get presetName => 'Nombre de plantilla';
+
+  @override
+  String get presets => 'Plantillas';
+
+  @override
   String get promotionRequirements => 'Requisitos de promoción';
 
   @override
   String pxsByoyomi(int p, int s) {
     return '$p×${s}s';
   }
+
+  @override
+  String get randomizeTaskOrientation => 'Orientación aleatoria de problemas';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Rota y refleja aleatoriamente los problemas a lo largo de los ejes horizontal, vertical y diagonal para evitar la memorización y mejorar el reconocimiento de patrones.';
 
   @override
   String get rank => 'Rango';
@@ -510,10 +537,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get save => 'Guardar';
 
   @override
+  String get savePreset => 'Guardar plantilla';
+
+  @override
   String get saveSGF => 'Guardar SGF';
 
   @override
   String get seconds => 'Segundos';
+
+  @override
+  String get selectAll => 'Seleccionar todo';
 
   @override
   String get settings => 'Preferencias';
@@ -1364,13 +1397,6 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get timeFrenzyMistakesDesc =>
       'Habilitar para guardar errores cometidos en Contrarreloj';
-
-  @override
-  String get randomizeTaskOrientation => 'Orientación aleatoria de problemas';
-
-  @override
-  String get randomizeTaskOrientationDesc =>
-      'Rota y refleja aleatoriamente los problemas a lo largo de los ejes horizontal, vertical y diagonal para evitar la memorización y mejorar el reconocimiento de patrones.';
 
   @override
   String get timePerTask => 'Tiempo por problema';

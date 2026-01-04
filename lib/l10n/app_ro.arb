@@ -35,6 +35,7 @@
   "copyTaskLink": "Copiază linkul sarcinii",
   "customExam": "Examen personalizat",
   "dark": "Întunecat",
+  "deselectAll": "Deselectează tot",
   "dontShowAgain": "Nu mai arăta din nou",
   "download": "Descarcă",
   "edgeLine": "Linie de margine",
@@ -47,7 +48,6 @@
   "errFailedToUploadGameToAISensei": "Încărcarea jocului în AI Sensei a eșuat",
   "errIncorrectUsernameOrPassword": "Nume de utilizator sau parolă incorecte",
   "errLoginFailedWithDetails": "Autentificarea a eșuat: {message}",
-  "errNetworkError": "Eroare de rețea. Te rog să verifici conexiunea și să încerci din nou.",
   "errMustBeAtLeast": "Trebuie să fie cel puțin {n}",
   "@errMustBeAtLeast": {
     "placeholders": {
@@ -65,6 +65,8 @@
     }
   },
   "errMustBeInteger": "Trebuie să fie un număr întreg",
+  "errNetworkError": "Eroare de rețea. Te rog să verifici conexiunea și să încerci din nou.",
+  "error": "Eroare",
   "exit": "Ieșire",
   "exitTryMode": "Ieși din modul de încercare",
   "find": "Caută",
@@ -112,6 +114,7 @@
   "msgCannotUseAIRefereeYet": "Arbitrul AI nu poate fi folosit încă",
   "msgCannotUseForcedCountingYet": "Numărarea forțată nu poate fi folosită încă",
   "msgConfirmDeleteCollectionProgress": "Ești sigur că vrei să ștergi încercarea anterioară?",
+  "msgConfirmDeletePreset": "Sigur doriți să ștergeți acest șablon?",
   "msgConfirmResignation": "Ești sigur că vrei să renunți?",
   "msgConfirmStopEvent": "Ești sigur că vrei să oprești {event}?",
   "@msgConfirmStopEvent": {
@@ -131,6 +134,7 @@
     }
   },
   "msgPleaseWaitForYourTurn": "Te rog, așteaptă-ți rândul",
+  "msgPresetAlreadyExists": "Există deja un șablon cu acest nume.",
   "msgSearchingForGame": "Se caută un joc...",
   "msgSgfCopied": "SGF copiat în clipboard",
   "msgTaskLinkCopied": "Linkul sarcinii a fost copiat.",
@@ -179,6 +183,8 @@
   "perTask": "pe sarcină",
   "play": "Joacă",
   "pleaseMarkDeadStones": "Te rog marchează pietrele moarte.",
+  "presetName": "Nume șablon",
+  "presets": "Șabloane",
   "promotionRequirements": "Cerințe pentru promovare",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -191,6 +197,8 @@
       }
     }
   },
+  "randomizeTaskOrientation": "Orientare aleatoare a tzumego",
+  "randomizeTaskOrientationDesc": "Rotește și reflectă aleator problemele de tsumego de-a lungul axelor orizontale, verticale și diagonale pentru a preveni memorarea și a îmbunătăți recunoașterea modelelor.",
   "rank": "Rang",
   "rankedMode": "Mod clasament",
   "recentRecord": "Rezultate recente",
@@ -219,8 +227,10 @@
     }
   },
   "save": "Salvează",
+  "savePreset": "Salvează șablon",
   "saveSGF": "Salvează SGF",
   "seconds": "Secunde",
+  "selectAll": "Selectează tot",
   "settings": "Setări",
   "short": "Scurt",
   "showCoordinates": "Afișează coordonatele",
@@ -496,8 +506,6 @@
   "timeFrenzy": "Go contra cronometru",
   "timeFrenzyMistakes": "Urmărește greșelile din Go contra cronometru",
   "timeFrenzyMistakesDesc": "Activează pentru a salva greșelile făcute în Go contra cronometru",
-  "randomizeTaskOrientation": "Orientare aleatoare a tzumego",
-  "randomizeTaskOrientationDesc": "Rotește și reflectă aleator problemele de tsumego de-a lungul axelor orizontale, verticale și diagonale pentru a preveni memorarea și a îmbunătăți recunoașterea modelelor.",
   "timePerTask": "Timp per sarcină",
   "today": "Astăzi",
   "tooltipAnalyzeWithAISensei": "Analizează cu AI Sensei",

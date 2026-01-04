@@ -326,6 +326,12 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get dark;
 
+  /// No description provided for @deselectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect all'**
+  String get deselectAll;
+
   /// No description provided for @dontShowAgain.
   ///
   /// In en, this message translates to:
@@ -398,12 +404,6 @@ abstract class AppLocalizations {
   /// **'Login failed: {message}'**
   String errLoginFailedWithDetails(String message);
 
-  /// No description provided for @errNetworkError.
-  ///
-  /// In en, this message translates to:
-  /// **'Network error. Please check your connection and try again.'**
-  String get errNetworkError;
-
   /// No description provided for @errMustBeAtLeast.
   ///
   /// In en, this message translates to:
@@ -421,6 +421,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Must be an integer'**
   String get errMustBeInteger;
+
+  /// No description provided for @errNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get errNetworkError;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
 
   /// No description provided for @exit.
   ///
@@ -662,6 +674,12 @@ abstract class AppLocalizations {
   /// **'Are you sure that you want to delete the previous attempt?'**
   String get msgConfirmDeleteCollectionProgress;
 
+  /// No description provided for @msgConfirmDeletePreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure that you want to delete this preset?'**
+  String get msgConfirmDeletePreset;
+
   /// No description provided for @msgConfirmResignation.
   ///
   /// In en, this message translates to:
@@ -691,6 +709,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please, wait for your turn'**
   String get msgPleaseWaitForYourTurn;
+
+  /// No description provided for @msgPresetAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'A preset with that name already exists.'**
+  String get msgPresetAlreadyExists;
 
   /// No description provided for @msgSearchingForGame.
   ///
@@ -842,6 +866,18 @@ abstract class AppLocalizations {
   /// **'Please mark the dead stones.'**
   String get pleaseMarkDeadStones;
 
+  /// No description provided for @presetName.
+  ///
+  /// In en, this message translates to:
+  /// **'Preset name'**
+  String get presetName;
+
+  /// No description provided for @presets.
+  ///
+  /// In en, this message translates to:
+  /// **'Presets'**
+  String get presets;
+
   /// No description provided for @promotionRequirements.
   ///
   /// In en, this message translates to:
@@ -853,6 +889,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{p}×{s}s'**
   String pxsByoyomi(int p, int s);
+
+  /// No description provided for @randomizeTaskOrientation.
+  ///
+  /// In en, this message translates to:
+  /// **'Randomize task orientation'**
+  String get randomizeTaskOrientation;
+
+  /// No description provided for @randomizeTaskOrientationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.'**
+  String get randomizeTaskOrientationDesc;
 
   /// No description provided for @rank.
   ///
@@ -980,6 +1028,12 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get save;
 
+  /// No description provided for @savePreset.
+  ///
+  /// In en, this message translates to:
+  /// **'Save preset'**
+  String get savePreset;
+
   /// No description provided for @saveSGF.
   ///
   /// In en, this message translates to:
@@ -991,6 +1045,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Seconds'**
   String get seconds;
+
+  /// No description provided for @selectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get selectAll;
 
   /// No description provided for @settings.
   ///
@@ -2641,18 +2701,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable to save mistakes made in Time Frenzy'**
   String get timeFrenzyMistakesDesc;
-
-  /// No description provided for @randomizeTaskOrientation.
-  ///
-  /// In en, this message translates to:
-  /// **'Randomize task orientation'**
-  String get randomizeTaskOrientation;
-
-  /// No description provided for @randomizeTaskOrientationDesc.
-  ///
-  /// In en, this message translates to:
-  /// **'Randomly rotates and reflects tasks along horizontal, vertical, and diagonal axes to prevent memorization and enhance pattern recognition.'**
-  String get randomizeTaskOrientationDesc;
 
   /// No description provided for @timePerTask.
   ///

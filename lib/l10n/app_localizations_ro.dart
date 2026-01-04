@@ -120,6 +120,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get dark => 'Întunecat';
 
   @override
+  String get deselectAll => 'Deselectează tot';
+
+  @override
   String get dontShowAgain => 'Nu mai arăta din nou';
 
   @override
@@ -161,10 +164,6 @@ class AppLocalizationsRo extends AppLocalizations {
   }
 
   @override
-  String get errNetworkError =>
-      'Eroare de rețea. Te rog să verifici conexiunea și să încerci din nou.';
-
-  @override
   String errMustBeAtLeast(num n) {
     return 'Trebuie să fie cel puțin $n';
   }
@@ -176,6 +175,13 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get errMustBeInteger => 'Trebuie să fie un număr întreg';
+
+  @override
+  String get errNetworkError =>
+      'Eroare de rețea. Te rog să verifici conexiunea și să încerci din nou.';
+
+  @override
+  String get error => 'Eroare';
 
   @override
   String get exit => 'Ieșire';
@@ -307,6 +313,9 @@ class AppLocalizationsRo extends AppLocalizations {
       'Ești sigur că vrei să ștergi încercarea anterioară?';
 
   @override
+  String get msgConfirmDeletePreset => 'Sigur doriți să ștergeți acest șablon?';
+
+  @override
   String get msgConfirmResignation => 'Ești sigur că vrei să renunți?';
 
   @override
@@ -324,6 +333,9 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get msgPleaseWaitForYourTurn => 'Te rog, așteaptă-ți rândul';
+
+  @override
+  String get msgPresetAlreadyExists => 'Există deja un șablon cu acest nume.';
 
   @override
   String get msgSearchingForGame => 'Se caută un joc...';
@@ -433,12 +445,25 @@ class AppLocalizationsRo extends AppLocalizations {
   String get pleaseMarkDeadStones => 'Te rog marchează pietrele moarte.';
 
   @override
+  String get presetName => 'Nume șablon';
+
+  @override
+  String get presets => 'Șabloane';
+
+  @override
   String get promotionRequirements => 'Cerințe pentru promovare';
 
   @override
   String pxsByoyomi(int p, int s) {
     return '$p×${s}s';
   }
+
+  @override
+  String get randomizeTaskOrientation => 'Orientare aleatoare a tzumego';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Rotește și reflectă aleator problemele de tsumego de-a lungul axelor orizontale, verticale și diagonale pentru a preveni memorarea și a îmbunătăți recunoașterea modelelor.';
 
   @override
   String get rank => 'Rang';
@@ -507,10 +532,16 @@ class AppLocalizationsRo extends AppLocalizations {
   String get save => 'Salvează';
 
   @override
+  String get savePreset => 'Salvează șablon';
+
+  @override
   String get saveSGF => 'Salvează SGF';
 
   @override
   String get seconds => 'Secunde';
+
+  @override
+  String get selectAll => 'Selectează tot';
 
   @override
   String get settings => 'Setări';
@@ -1365,13 +1396,6 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get timeFrenzyMistakesDesc =>
       'Activează pentru a salva greșelile făcute în Go contra cronometru';
-
-  @override
-  String get randomizeTaskOrientation => 'Orientare aleatoare a tzumego';
-
-  @override
-  String get randomizeTaskOrientationDesc =>
-      'Rotește și reflectă aleator problemele de tsumego de-a lungul axelor orizontale, verticale și diagonale pentru a preveni memorarea și a îmbunătăți recunoașterea modelelor.';
 
   @override
   String get timePerTask => 'Timp per sarcină';

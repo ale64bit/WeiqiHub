@@ -120,6 +120,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dark => 'Тёмная';
 
   @override
+  String get deselectAll => 'Снять выделение';
+
+  @override
   String get dontShowAgain => 'Больше не показывать';
 
   @override
@@ -161,10 +164,6 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get errNetworkError =>
-      'Ошибка сети. Проверьте подключение и попробуйте снова.';
-
-  @override
   String errMustBeAtLeast(num n) {
     return 'Должно быть не менее $n';
   }
@@ -176,6 +175,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get errMustBeInteger => 'Должно быть целым числом';
+
+  @override
+  String get errNetworkError =>
+      'Ошибка сети. Проверьте подключение и попробуйте снова.';
+
+  @override
+  String get error => 'Ошибка';
 
   @override
   String get exit => 'Выход';
@@ -307,6 +313,9 @@ class AppLocalizationsRu extends AppLocalizations {
       'Вы уверены, что хотите начать коллекцию заново? Текущий прогресс будет удалён.';
 
   @override
+  String get msgConfirmDeletePreset => 'Удалить этот шаблон?';
+
+  @override
   String get msgConfirmResignation => 'Вы уверены, что хотите сдаться?';
 
   @override
@@ -324,6 +333,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get msgPleaseWaitForYourTurn => 'Пожалуйста, дождитесь своего хода';
+
+  @override
+  String get msgPresetAlreadyExists => 'Шаблон с таким именем уже существует.';
 
   @override
   String get msgSearchingForGame => 'Поиск партии...';
@@ -434,12 +446,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get pleaseMarkDeadStones => 'Пожалуйста, отметьте мёртвые камни.';
 
   @override
+  String get presetName => 'Название шаблона';
+
+  @override
+  String get presets => 'Шаблоны';
+
+  @override
   String get promotionRequirements => 'Требования для повышения';
 
   @override
   String pxsByoyomi(int p, int s) {
     return '$p×$sс';
   }
+
+  @override
+  String get randomizeTaskOrientation => 'Случайная ориентация задач';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      'Случайно поворачивает и отражает задачи вдоль горизонтальной, вертикальной и диагональной осей, чтобы предотвратить запоминание и улучшить распознавание паттернов.';
 
   @override
   String get rank => 'Ранг';
@@ -508,10 +533,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get save => 'Сохранить';
 
   @override
+  String get savePreset => 'Сохранить шаблон';
+
+  @override
   String get saveSGF => 'Сохранить SGF';
 
   @override
   String get seconds => 'Секунды';
+
+  @override
+  String get selectAll => 'Выбрать все';
 
   @override
   String get settings => 'Настройки';
@@ -1361,13 +1392,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get timeFrenzyMistakesDesc =>
       'Включить для сохранения ошибок, сделанных во Временном раже';
-
-  @override
-  String get randomizeTaskOrientation => 'Случайная ориентация задач';
-
-  @override
-  String get randomizeTaskOrientationDesc =>
-      'Случайно поворачивает и отражает задачи вдоль горизонтальной, вертикальной и диагональной осей, чтобы предотвратить запоминание и улучшить распознавание паттернов.';
 
   @override
   String get timePerTask => 'Время на задачу';

@@ -5,6 +5,8 @@ import 'package:wqhub/l10n/app_localizations.dart';
 class DurationFormField extends FormField<Duration> {
   DurationFormField({
     super.key,
+    Key? minKey,
+    Key? secKey,
     String? label,
     required Duration initialValue,
     required FormFieldValidator<Duration> validator,
@@ -23,7 +25,9 @@ class DurationFormField extends FormField<Duration> {
                   children: <Widget>[
                     if (label != null) Text(label),
                     Expanded(
-                      child: IntFormField(
+                      child: intFormField(
+                        st.context,
+                        key: minKey,
                         label: loc.minutes,
                         initialValue: (st.value?.inMinutes ?? 0) % 60,
                         minValue: 0,
@@ -40,7 +44,9 @@ class DurationFormField extends FormField<Duration> {
                     ),
                     Text(':', style: TextTheme.of(st.context).headlineLarge),
                     Expanded(
-                      child: IntFormField(
+                      child: intFormField(
+                        st.context,
+                        key: secKey,
                         label: loc.seconds,
                         initialValue: (st.value?.inSeconds ?? 0) % 60,
                         minValue: 0,
