@@ -117,6 +117,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dark => '深色';
 
   @override
+  String get deselectAll => '取消全选';
+
+  @override
   String get dontShowAgain => '不再显示';
 
   @override
@@ -155,9 +158,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get errNetworkError => '网络错误，请检查您的连接并重试。';
-
-  @override
   String errMustBeAtLeast(num n) {
     return '必须至少$n';
   }
@@ -169,6 +169,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get errMustBeInteger => '必须为整数';
+
+  @override
+  String get errNetworkError => '网络错误，请检查您的连接并重试。';
+
+  @override
+  String get error => '错误';
 
   @override
   String get exit => '退出';
@@ -298,6 +304,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get msgConfirmDeleteCollectionProgress => '确定要删除之前的棋书进度吗？';
 
   @override
+  String get msgConfirmDeletePreset => '确定要删除此预设吗？';
+
+  @override
   String get msgConfirmResignation => '确认认输？';
 
   @override
@@ -315,6 +324,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get msgPleaseWaitForYourTurn => '请等待您的回合';
+
+  @override
+  String get msgPresetAlreadyExists => '已存在同名的预设。';
 
   @override
   String get msgSearchingForGame => '正在寻找对局...';
@@ -418,12 +430,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pleaseMarkDeadStones => '请标记死子。';
 
   @override
+  String get presetName => '预设名称';
+
+  @override
+  String get presets => '预设';
+
+  @override
   String get promotionRequirements => '升级要求';
 
   @override
   String pxsByoyomi(int p, int s) {
     return '$p×${s}s';
   }
+
+  @override
+  String get randomizeTaskOrientation => '随机化题目方向';
+
+  @override
+  String get randomizeTaskOrientationDesc =>
+      '随机旋转和翻转题目，沿水平、垂直和对角轴线，防止记忆化并增强模式识别能力。';
 
   @override
   String get rank => '段位';
@@ -491,10 +516,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get save => '保存';
 
   @override
+  String get savePreset => '保存预设';
+
+  @override
   String get saveSGF => '保存SGF';
 
   @override
   String get seconds => '秒';
+
+  @override
+  String get selectAll => '全选';
 
   @override
   String get settings => '设置';
@@ -1320,13 +1351,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get timeFrenzyMistakesDesc => '启用以保存限时挑战中的错误';
-
-  @override
-  String get randomizeTaskOrientation => '随机化题目方向';
-
-  @override
-  String get randomizeTaskOrientationDesc =>
-      '随机旋转和翻转题目，沿水平、垂直和对角轴线，防止记忆化并增强模式识别能力。';
 
   @override
   String get timePerTask => '单题用时';

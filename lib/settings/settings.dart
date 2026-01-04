@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/board/board_sizes.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
+import 'package:wqhub/train/custom_exam_presets.dart';
 import 'package:wqhub/train/response_delay.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
@@ -19,6 +21,7 @@ class Settings {
   static const _localBoardSize = 'internal.local_board.size';
   static const _localBoardHandicap = 'internal.local_board.handicap';
   static const _localBoardMoves = 'internal.local_board.moves';
+  static const _customExamPresets = 'internal.custom_exam_presets';
   static const _themeKey = 'settings.theme';
   static const _behaviourKeyPrefix = 'settings.behaviour';
   static const _soundStoneKey = 'settings.sound.stone';
@@ -44,6 +47,18 @@ class Settings {
   set localBoardSize(int value) => prefs.setInt(_localBoardSize, value);
   int get localBoardHandicap => prefs.getInt(_localBoardHandicap) ?? 0;
   set localBoardHandicap(int value) => prefs.setInt(_localBoardHandicap, value);
+
+  CustomExamPresets get customExamPresets {
+    final val = prefs.getString(_customExamPresets);
+    if (val == null) {
+      return CustomExamPresets.empty();
+    }
+    return CustomExamPresets.fromJson(jsonDecode(val));
+  }
+
+  set customExamPresets(CustomExamPresets presets) {
+    prefs.setString(_customExamPresets, jsonEncode(presets.toJson()));
+  }
 
   Iterable<wq.Point> get localBoardMoves =>
       (prefs.getStringList(_localBoardMoves) ?? []).map(wq.parseSgfPoint);

@@ -35,6 +35,7 @@
   "copyTaskLink": "Copiar enlace al problema",
   "customExam": "Examen personalizado",
   "dark": "Oscuro",
+  "deselectAll": "Deseleccionar todo",
   "dontShowAgain": "No volver a mostrar",
   "download": "Descargar",
   "edgeLine": "Línea de borde",
@@ -47,7 +48,6 @@
   "errFailedToUploadGameToAISensei": "Error enviando partida a AI Sensei",
   "errIncorrectUsernameOrPassword": "Nombre de usuario o contraseña incorrectos",
   "errLoginFailedWithDetails": "Error al iniciar sesión: {message}",
-  "errNetworkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.",
   "errMustBeAtLeast": "No puede ser menor que {n}",
   "@errMustBeAtLeast": {
     "placeholders": {
@@ -65,6 +65,8 @@
     }
   },
   "errMustBeInteger": "Debe ser un número entero",
+  "errNetworkError": "Error de red. Por favor, verifica tu conexión e inténtalo de nuevo.",
+  "error": "Error",
   "exit": "Salir",
   "exitTryMode": "Regresar",
   "find": "Buscar",
@@ -112,6 +114,7 @@
   "msgCannotUseAIRefereeYet": "El árbitro IA no está disponible todavía",
   "msgCannotUseForcedCountingYet": "No es posible forzar el conteo automático todavía",
   "msgConfirmDeleteCollectionProgress": "¿Estás seguro(a) de que quieres abandonar el intento anterior?",
+  "msgConfirmDeletePreset": "¿Está seguro de que quiere eliminar esta plantilla?",
   "msgConfirmResignation": "¿Estás seguro(a) de que quieres abandonar?",
   "msgConfirmStopEvent": "¿Estás seguro(a) de que quieres abandonar el {event}?",
   "@msgConfirmStopEvent": {
@@ -131,6 +134,7 @@
     }
   },
   "msgPleaseWaitForYourTurn": "Por favor, espera tu turno",
+  "msgPresetAlreadyExists": "Ya existe una plantilla con ese nombre.",
   "msgSearchingForGame": "Buscando partida...",
   "msgSgfCopied": "SGF copiado al portapapeles",
   "msgTaskLinkCopied": "Enlace al problema copiado.",
@@ -179,6 +183,8 @@
   "perTask": "por problema",
   "play": "Jugar",
   "pleaseMarkDeadStones": "Por favor, marca las piedras muertas.",
+  "presetName": "Nombre de plantilla",
+  "presets": "Plantillas",
   "promotionRequirements": "Requisitos de promoción",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -191,6 +197,8 @@
       }
     }
   },
+  "randomizeTaskOrientation": "Orientación aleatoria de problemas",
+  "randomizeTaskOrientationDesc": "Rota y refleja aleatoriamente los problemas a lo largo de los ejes horizontal, vertical y diagonal para evitar la memorización y mejorar el reconocimiento de patrones.",
   "rank": "Rango",
   "rankedMode": "Clasificatorio",
   "recentRecord": "Resultados recientes",
@@ -219,8 +227,10 @@
     }
   },
   "save": "Guardar",
+  "savePreset": "Guardar plantilla",
   "saveSGF": "Guardar SGF",
   "seconds": "Segundos",
+  "selectAll": "Seleccionar todo",
   "settings": "Preferencias",
   "short": "Corta",
   "showCoordinates": "Mostrar coordenadas",
@@ -496,8 +506,6 @@
   "timeFrenzy": "Contrarreloj",
   "timeFrenzyMistakes": "Rastrear errores en Contrarreloj",
   "timeFrenzyMistakesDesc": "Habilitar para guardar errores cometidos en Contrarreloj",
-  "randomizeTaskOrientation": "Orientación aleatoria de problemas",
-  "randomizeTaskOrientationDesc": "Rota y refleja aleatoriamente los problemas a lo largo de los ejes horizontal, vertical y diagonal para evitar la memorización y mejorar el reconocimiento de patrones.",
   "timePerTask": "Tiempo por problema",
   "today": "Hoy",
   "tooltipAnalyzeWithAISensei": "Analizar con AI Sensei",

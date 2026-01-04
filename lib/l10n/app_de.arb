@@ -35,6 +35,7 @@
   "copyTaskLink": "Aufgabenlink kopieren",
   "customExam": "Benutzerdefinierte Prüfung",
   "dark": "Dunkel",
+  "deselectAll": "Alle abwählen",
   "dontShowAgain": "Nicht erneut anzeigen",
   "download": "Herunterladen",
   "edgeLine": "Randlinie",
@@ -47,7 +48,6 @@
   "errFailedToUploadGameToAISensei": "Spiel konnte nicht zu AI Sensei hochgeladen werden",
   "errIncorrectUsernameOrPassword": "Falscher Benutzername oder falsches Passwort",
   "errLoginFailedWithDetails": "Anmeldung fehlgeschlagen: {message}",
-  "errNetworkError": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.",
   "errMustBeAtLeast": "Muss mindestens {n} sein",
   "@errMustBeAtLeast": {
     "placeholders": {
@@ -65,6 +65,8 @@
     }
   },
   "errMustBeInteger": "Muss eine ganze Zahl sein",
+  "errNetworkError": "Netzwerkfehler. Bitte überprüfe deine Verbindung und versuche es erneut.",
+  "error": "Fehler",
   "exit": "Beenden",
   "exitTryMode": "Testmodus beenden",
   "find": "Suchen",
@@ -112,6 +114,7 @@
   "msgCannotUseAIRefereeYet": "Der KI-Schiedsrichter kann noch nicht verwendet werden",
   "msgCannotUseForcedCountingYet": "Erzwungenes Zählen kann noch nicht verwendet werden",
   "msgConfirmDeleteCollectionProgress": "Bist du sicher, dass du den bisherigen Fortschritt löschen möchtest?",
+  "msgConfirmDeletePreset": "Möchten Sie diese Vorlage wirklich löschen?",
   "msgConfirmResignation": "Bist du sicher, dass du aufgeben möchtest?",
   "msgConfirmStopEvent": "Bist du sicher, dass du {event} beenden möchtest?",
   "@msgConfirmStopEvent": {
@@ -131,6 +134,7 @@
     }
   },
   "msgPleaseWaitForYourTurn": "Bitte warte auf deinen Zug",
+  "msgPresetAlreadyExists": "Eine Vorlage mit diesem Namen existiert bereits.",
   "msgSearchingForGame": "Suche nach einem Spiel...",
   "msgSgfCopied": "SGF in die Zwischenablage kopiert.",
   "msgTaskLinkCopied": "Aufgabenlink kopiert.",
@@ -179,6 +183,8 @@
   "perProblem": "pro Aufgabe",
   "play": "Spielen",
   "pleaseMarkDeadStones": "Bitte markiere die toten Steine.",
+  "presetName": "Vorlagenname",
+  "presets": "Vorlagen",
   "promotionRequirements": "Anforderungen zum Auftsieg",
   "pxsByoyomi": "{p}×{s}s",
   "@pxsByoyomi": {
@@ -191,6 +197,8 @@
       }
     }
   },
+  "randomizeTaskOrientation": "Zufällige Aufgabenorientierung",
+  "randomizeTaskOrientationDesc": "Zufälliges Drehen und Spiegeln von Aufgaben entlang horizontaler, vertikaler und diagonaler Achsen, um Auswendiglernen zu verhindern und die Mustererkennung zu verbessern.",
   "rank": "Rang",
   "rankedMode": "Gewerteter Modus",
   "recentRecord": "Letzte Ergebnisse",
@@ -219,8 +227,10 @@
     }
   },
   "save": "Sichern",
+  "savePreset": "Vorlage speichern",
   "saveSGF": "SGF speichern",
   "seconds": "Sekunden",
+  "selectAll": "Alle auswählen",
   "settings": "Einstellungen",
   "short": "Kurz",
   "showCoordinates": "Koordinaten anzeigen",
@@ -496,8 +506,6 @@
   "timeFrenzy": "Zeitrausch",
   "timeFrenzyMistakes": "Zeitrausch Fehler",
   "timeFrenzyMistakesDesc": "Fehler im Zeitrausch Modus werden gespeichert",
-  "randomizeTaskOrientation": "Zufällige Aufgabenorientierung",
-  "randomizeTaskOrientationDesc": "Zufälliges Drehen und Spiegeln von Aufgaben entlang horizontaler, vertikaler und diagonaler Achsen, um Auswendiglernen zu verhindern und die Mustererkennung zu verbessern.",
   "timePerTask": "Zeit pro Aufgabe",
   "today": "Heute",
   "tooltipAnalyzeWithAISensei": "Mit AI Sensei analysieren",
