@@ -1,6 +1,17 @@
 # Changelog
 
 ## 0.1.12
+- Ukrainian localization (@vabue)
+- OGS: fix bug where correspondence games would be resumed (@benjaminpjones)
+- OGS: fix byoyomi update bug (@benjaminpjones)
+- improve login error descriptions (@benjaminpjones)
+- set iOS app audio as background to avoid interruptions (@adudenamedruby)
+- persist local board state on shared preferences
+- add exam and task type charts to statistics
+- fix: task title overflow
+- add result page for exams and collections
+- add Custom Exam presets
+- improve selection granularity of task topics
 
 ## 0.1.11
 - OGS support (@benjaminpjones)
