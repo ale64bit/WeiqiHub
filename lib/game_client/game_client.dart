@@ -35,6 +35,7 @@ abstract class GameClient {
   ServerFeatures get serverFeatures;
   ValueNotifier<UserInfo?> get userInfo;
   IList<AutomatchPreset> get automatchPresets;
+  ValueNotifier<IMap<String, AutomatchPresetStats>> get automatchStats;
   ValueNotifier<DateTime> get disconnected;
 
   Future<ReadyInfo> ready();

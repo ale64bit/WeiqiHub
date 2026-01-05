@@ -27,8 +27,14 @@ class TestGameClient extends GameClient {
             periodCount: 3,
             timePerPeriod: Duration(seconds: 30),
           ),
-        )
+        ),
       ]);
+
+  @override
+  ValueNotifier<IMap<String, AutomatchPresetStats>> get automatchStats =>
+      ValueNotifier(IMap({
+        'test': AutomatchPresetStats(playerCount: 42),
+      }));
 
   @override
   Future<Game> findGame(String presetId) {
