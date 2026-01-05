@@ -89,6 +89,10 @@ class OGSGameClient extends GameClient {
   @override
   IList<AutomatchPreset> get automatchPresets => _createAutomatchPresets();
 
+  @override
+  ValueNotifier<IMap<String, AutomatchPresetStats>> get automatchStats =>
+      ValueNotifier(const IMapConst({}));
+
   static IList<AutomatchPreset> _createAutomatchPresets() {
     const boardSizes = [9, 13, 19];
     const speeds = ['blitz', 'rapid', 'live'];

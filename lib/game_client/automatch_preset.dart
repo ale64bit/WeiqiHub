@@ -10,19 +10,17 @@ class AutomatchPreset {
   final Variant variant;
   final Rules rules;
   final TimeControl timeControl;
-  final int? playerCount;
 
-  const AutomatchPreset(
-      {required this.id,
-      required this.boardSize,
-      required this.variant,
-      required this.rules,
-      required this.timeControl,
-      this.playerCount});
+  const AutomatchPreset({
+    required this.id,
+    required this.boardSize,
+    required this.variant,
+    required this.rules,
+    required this.timeControl,
+  });
 
   @override
-  int get hashCode =>
-      Object.hash(id, boardSize, variant, rules, timeControl, playerCount);
+  int get hashCode => Object.hash(id, boardSize, variant, rules, timeControl);
 
   @override
   bool operator ==(Object other) {
@@ -33,7 +31,12 @@ class AutomatchPreset {
         other.boardSize == boardSize &&
         other.variant == variant &&
         other.rules == rules &&
-        other.timeControl == timeControl &&
-        other.playerCount == playerCount;
+        other.timeControl == timeControl;
   }
+}
+
+class AutomatchPresetStats {
+  final int playerCount;
+
+  const AutomatchPresetStats({required this.playerCount});
 }

@@ -91,6 +91,7 @@ class _ServerLobbyPageState
         for (final preset in widget.gameClient.automatchPresets)
           AutomatchPresetListTile(
             preset: preset,
+            stats: widget.gameClient.automatchStats,
             onTap: () {
               Navigator.pushNamed(
                 context,
