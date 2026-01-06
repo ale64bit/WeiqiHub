@@ -59,8 +59,9 @@ class OGSGameClient extends GameClient {
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
   late final HttpClient _httpClient;
 
-  // Cache for automatch stats
-  Map<String, dynamic>? _cachedAutomatchStats;
+  // ValueNotifier for automatch stats
+  final ValueNotifier<IMap<String, AutomatchPresetStats>> _automatchStats =
+      ValueNotifier(const IMapConst({}));
 
   @override
   ServerInfo get serverInfo => ServerInfo(
@@ -89,16 +90,17 @@ class OGSGameClient extends GameClient {
   @override
   ValueNotifier<DateTime> get disconnected => _disconnected;
 
-  // TODO: Make automatchPresets async to fetch fresh stats on each access.
-  // Currently stats are only fetched at login, but may be stale if user doesn't
-  // re-login. The synchronous GameClient.automatchPresets API prevents fetching
-  // on-demand. Consider making the base API async or using a Stream/ValueNotifier.
   @override
-  IList<AutomatchPreset> get automatchPresets =>
-      _createAutomatchPresets(_cachedAutomatchStats);
+  IList<AutomatchPreset> get automatchPresets {
+    _refreshAutomatchStats();
+    return _createAutomatchPresets();
+  }
 
-  static IList<AutomatchPreset> _createAutomatchPresets(
-      Map<String, dynamic>? stats) {
+  @override
+  ValueNotifier<IMap<String, AutomatchPresetStats>> get automatchStats =>
+      _automatchStats;
+
+  static IList<AutomatchPreset> _createAutomatchPresets() {
     const boardSizes = [9, 13, 19];
     const speeds = ['blitz', 'rapid', 'live'];
 
@@ -165,26 +167,12 @@ class OGSGameClient extends GameClient {
         final sizeKey = '${boardSize}x$boardSize';
         final timeControl = timeControlsBySpeedAndSize[sizeKey]![speed]!;
 
-        // Extract player count from stats if available
-        int? playerCount;
-        if (stats != null) {
-          try {
-            final sizeStats = stats[sizeKey] as Map<String, dynamic>?;
-            final speedStats = sizeStats?[speed] as Map<String, dynamic>?;
-            final byoyomiCount = speedStats?['byoyomi'] as int?;
-            playerCount = byoyomiCount;
-          } catch (e) {
-            // If parsing fails, leave playerCount as null
-          }
-        }
-
         presets.add(AutomatchPreset(
           id: '${boardSize}_$speed',
           boardSize: boardSize,
           variant: Variant.standard,
           rules: Rules.japanese, // OGS uses Japanese rules for automatch
           timeControl: timeControl,
-          playerCount: playerCount,
         ));
       }
     }
@@ -199,7 +187,8 @@ class OGSGameClient extends GameClient {
 
   /// Fetches automatch statistics from the OGS termination-api
   /// Uses the user's rank +/- 3 to query relevant player counts
-  Future<void> _fetchAutomatchStats() async {
+  /// This is called automatically at login and whenever automatchPresets is accessed
+  Future<void> _refreshAutomatchStats() async {
     try {
       final rank = _userInfo.value?.rank;
       if (rank == null) return;
@@ -225,7 +214,36 @@ class OGSGameClient extends GameClient {
         useApiPrefix: false, // termination-api is not under /api
       );
 
-      _cachedAutomatchStats = data;
+      // Convert the response data into AutomatchPresetStats
+      final statsMap = <String, AutomatchPresetStats>{};
+
+      // Iterate through board sizes and speeds to match preset IDs
+      const boardSizes = [9, 13, 19];
+      const speeds = ['blitz', 'rapid', 'live'];
+
+      for (final boardSize in boardSizes) {
+        for (final speed in speeds) {
+          final sizeKey = '${boardSize}x$boardSize';
+          final presetId = '${boardSize}_$speed';
+
+          try {
+            final sizeStats = data[sizeKey] as Map<String, dynamic>?;
+            final speedStats = sizeStats?[speed] as Map<String, dynamic>?;
+            final byoyomiCount = speedStats?['byoyomi'] as int?;
+
+            if (byoyomiCount != null) {
+              statsMap[presetId] =
+                  AutomatchPresetStats(playerCount: byoyomiCount);
+            }
+          } catch (e) {
+            _logger.warning('Failed to parse stats for $presetId: $e');
+            // Continue with other presets
+          }
+        }
+      }
+
+      // Update the ValueNotifier with the new stats
+      _automatchStats.value = statsMap.lock;
     } catch (e) {
       _logger.warning('Failed to fetch automatch stats: $e');
       // Don't throw - we can continue without stats
@@ -273,9 +291,6 @@ class OGSGameClient extends GameClient {
       } else {
         throw Exception('No JWT token received');
       }
-
-      // Fetch automatch stats in the background
-      _fetchAutomatchStats();
 
       return user;
     } on HttpStatusException catch (e) {
