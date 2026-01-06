@@ -94,7 +94,7 @@ class OGSGameClient extends GameClient {
 
   @override
   IList<AutomatchPreset> get automatchPresets {
-    _refreshAutomatchStats();
+    unawaited(_refreshAutomatchStats());
     return _createAutomatchPresets();
   }
 
