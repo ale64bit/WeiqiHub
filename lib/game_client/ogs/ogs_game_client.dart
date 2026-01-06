@@ -31,6 +31,8 @@ class OGSGameClient extends GameClient {
   /// OGS default rank difference for automatch requests
   /// https://github.com/online-go/online-go.com/blob/b0d661e69cef0ce57c2c5d4e2e04109227ba9a96/src/lib/preferences.ts#L57-L58
   static const int _defaultRankDiff = 3;
+  static const List<int> _automatchBoardSizes = [9, 13, 19];
+  static const List<String> _automatchSpeeds = ['blitz', 'rapid', 'live'];
 
   final ValueNotifier<UserInfo?> _userInfo = ValueNotifier(null);
   final ValueNotifier<DateTime> _disconnected = ValueNotifier(DateTime.now());
@@ -58,6 +60,10 @@ class OGSGameClient extends GameClient {
   Completer<Game>? _automatchCompleter;
   StreamSubscription<Map<String, dynamic>>? _messageSubscription;
   late final HttpClient _httpClient;
+
+  final ValueNotifier<IMap<String, AutomatchPresetStats>> _automatchStats =
+      ValueNotifier(const IMapConst({}));
+  DateTime? _lastStatsRefresh;
 
   @override
   ServerInfo get serverInfo => ServerInfo(
@@ -87,16 +93,16 @@ class OGSGameClient extends GameClient {
   ValueNotifier<DateTime> get disconnected => _disconnected;
 
   @override
-  IList<AutomatchPreset> get automatchPresets => _createAutomatchPresets();
+  IList<AutomatchPreset> get automatchPresets {
+    unawaited(_refreshAutomatchStats());
+    return _createAutomatchPresets();
+  }
 
   @override
   ValueNotifier<IMap<String, AutomatchPresetStats>> get automatchStats =>
-      ValueNotifier(const IMapConst({}));
+      _automatchStats;
 
   static IList<AutomatchPreset> _createAutomatchPresets() {
-    const boardSizes = [9, 13, 19];
-    const speeds = ['blitz', 'rapid', 'live'];
-
     // Define time controls for each board size and speed combination based on OGS SPEED_OPTIONS
     // https://github.com/online-go/online-go.com/blob/4ed60176f8fe21960376b663515f4721dad22ab1/src/views/Play/SPEED_OPTIONS.ts#L40
     final timeControlsBySpeedAndSize = {
@@ -155,8 +161,8 @@ class OGSGameClient extends GameClient {
 
     final presets = <AutomatchPreset>[];
 
-    for (final boardSize in boardSizes) {
-      for (final speed in speeds) {
+    for (final boardSize in _automatchBoardSizes) {
+      for (final speed in _automatchSpeeds) {
         final sizeKey = '${boardSize}x$boardSize';
         final timeControl = timeControlsBySpeedAndSize[sizeKey]![speed]!;
 
@@ -176,6 +182,64 @@ class OGSGameClient extends GameClient {
   @override
   Future<ReadyInfo> ready() async {
     return ReadyInfo();
+  }
+
+  Future<void> _refreshAutomatchStats() async {
+    final now = DateTime.now();
+    if (_lastStatsRefresh != null &&
+        now.difference(_lastStatsRefresh!).inSeconds < 1) {
+      return;
+    }
+    _lastStatsRefresh = now;
+
+    try {
+      final rank = _userInfo.value?.rank;
+      if (rank == null) return;
+
+      final rankIndex = Rank.values.indexOf(rank);
+      final minRankIndex =
+          (rankIndex - _defaultRankDiff).clamp(0, Rank.values.length - 1);
+      final maxRankIndex =
+          (rankIndex + _defaultRankDiff).clamp(0, Rank.values.length - 1);
+
+      final ranks = <int>[];
+      for (int i = minRankIndex; i <= maxRankIndex; i++) {
+        ranks.add(i);
+      }
+      final ranksParam = ranks.join(',');
+
+      final data = await _httpClient.getJson(
+        '/termination-api/automatch-stats',
+        queryParameters: {'ranks': ranksParam},
+        useApiPrefix: false,
+      );
+
+      final statsMap = <String, AutomatchPresetStats>{};
+
+      for (final boardSize in _automatchBoardSizes) {
+        for (final speed in _automatchSpeeds) {
+          final sizeKey = '${boardSize}x$boardSize';
+          final presetId = '${boardSize}_$speed';
+
+          try {
+            final sizeStats = data[sizeKey] as Map<String, dynamic>?;
+            final speedStats = sizeStats?[speed] as Map<String, dynamic>?;
+            final byoyomiCount = speedStats?['byoyomi'] as int?;
+
+            if (byoyomiCount != null) {
+              statsMap[presetId] =
+                  AutomatchPresetStats(playerCount: byoyomiCount);
+            }
+          } catch (e) {
+            _logger.warning('Failed to parse stats for $presetId: $e');
+          }
+        }
+      }
+
+      _automatchStats.value = statsMap.lock;
+    } catch (e) {
+      _logger.warning('Failed to fetch automatch stats: $e');
+    }
   }
 
   @override
