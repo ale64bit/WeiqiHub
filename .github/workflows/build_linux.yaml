@@ -43,6 +43,8 @@ jobs:
       - name: Run tests
         run: flutter test
       - name: Build
+        env:
+          NO_OPUS_OGG_LIBS: 1
         run: flutter build linux --obfuscate --split-debug-info=out/linux
       - name: Upload bundle
         uses: actions/upload-artifact@v4

@@ -30,6 +30,8 @@ jobs:
       - name: Run tests
         run: flutter test
       - name: Build
+        env:
+          NO_OPUS_OGG_LIBS: 1
         run: flutter build macos --obfuscate --split-debug-info=out/macos
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
