@@ -5,7 +5,8 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/single_task_page.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_db.dart';
+import 'package:wqhub/train/task_ref.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class TaskPreviewTile extends StatefulWidget {
@@ -29,8 +30,7 @@ class TaskPreviewTile extends StatefulWidget {
 class _TaskPreviewTileState extends State<TaskPreviewTile> {
   final MenuController _menuController = MenuController();
   late var taskFut = Future(() {
-    return TaskRepository()
-        .readById(widget.task.rank, widget.task.type, widget.task.id);
+    return TaskDB().getTaskByRef(widget.task);
   });
 
   @override
@@ -38,8 +38,7 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
     super.didUpdateWidget(oldWidget);
     if (widget.task != oldWidget.task) {
       taskFut = Future(() {
-        return TaskRepository()
-            .readById(widget.task.rank, widget.task.type, widget.task.id);
+        return TaskDB().getTaskByRef(widget.task);
       });
     }
   }

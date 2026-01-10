@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
@@ -20,8 +21,8 @@ final class TimeFrenzyTaskSource extends TaskSource {
   bool randomizeLayout = false;
 
   TimeFrenzyTaskSource({required this.randomizeLayout})
-      : _cur = TaskRepository()
-            .readByTypes(Rank.k15, _taskTypes, 1)
+      : _cur = TaskDB()
+            .takeByTypes(Rank.k15, _taskTypes, 1)
             .first
             .withRandomSymmetry(randomize: randomizeLayout);
 
@@ -35,8 +36,8 @@ final class TimeFrenzyTaskSource extends TaskSource {
         _rank = max(_rank - _mistakeCount, Rank.k15.index.toDouble());
     }
     onRankChanged?.call(_rank);
-    _cur = TaskRepository()
-        .readByTypes(Rank.values[_rank.toInt()], _taskTypes, 1)
+    _cur = TaskDB()
+        .takeByTypes(Rank.values[_rank.toInt()], _taskTypes, 1)
         .first
         .withRandomSymmetry(randomize: randomizeLayout);
     return true;

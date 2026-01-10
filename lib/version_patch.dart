@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:wqhub/settings/settings.dart';
 import 'package:wqhub/stats/stats_db.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_ref.dart';
 
 void applyVersionPatch(Settings settings) {
   _versionPatch_0_1_8(settings);

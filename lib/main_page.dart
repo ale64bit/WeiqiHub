@@ -17,8 +17,9 @@ import 'package:wqhub/train/endgame_exam_selection_page.dart';
 import 'package:wqhub/train/my_mistakes_page.dart';
 import 'package:wqhub/train/ranked_mode_page.dart';
 import 'package:wqhub/train/single_task_page.dart';
+import 'package:wqhub/train/task.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_pattern_search_page.dart';
-import 'package:wqhub/train/task_repository.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/ranked_mode_task_source.dart';
 import 'package:wqhub/local_board_page.dart';
@@ -427,8 +428,8 @@ class _FindTaskDialogState extends State<_FindTaskDialog> {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context,
-                (TaskRepository().readByUri(controller.text.trim()), false));
+            Navigator.pop(
+                context, (TaskDB().getByUri(controller.text.trim()), false));
           },
           child: Text(loc.find),
         ),

@@ -1,5 +1,8 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task.dart';
+import 'package:wqhub/train/task_db.dart';
+import 'package:wqhub/train/task_ref.dart';
+import 'package:wqhub/train/task_collection.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
 
 final class CollectionTaskSource extends TaskSource {
@@ -9,14 +12,16 @@ final class CollectionTaskSource extends TaskSource {
 
   CollectionTaskSource(TaskCollection collection, {required int offset})
       : _tasks = collection.allTasks().skip(offset).toIList() {
-    _task = TaskRepository().readByRef(_tasks[0])!;
+    var ref = _tasks[0];
+    _task = TaskDB().getTaskByRef(ref)!;
   }
 
   @override
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {
     _cur++;
     if (_cur >= _tasks.length) return false;
-    _task = TaskRepository().readByRef(_tasks[_cur])!;
+    var ref = _tasks[_cur];
+    _task = TaskDB().getTaskByRef(ref)!;
     return true;
   }
 

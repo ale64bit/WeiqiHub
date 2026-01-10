@@ -13,7 +13,7 @@ import 'package:wqhub/train/custom_exam_page.dart';
 import 'package:wqhub/train/custom_exam_presets.dart';
 import 'package:wqhub/train/custom_exam_settings.dart';
 import 'package:wqhub/train/rank_range.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_source/task_source_type.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
@@ -453,9 +453,9 @@ class _CustomExamSelectionPageState
 
   int availableTasks() => switch (_taskSourceType) {
         TaskSourceType.fromTaskTypes =>
-          TaskRepository().countByTypes(_rankRange, _taskTypes),
+          TaskDB().taskCountByType(_rankRange, _taskTypes),
         TaskSourceType.fromTaskTag =>
-          TaskRepository().approxCountByTags(_rankRange, _subtags),
+          TaskDB().approxTaskCountByTag(_rankRange, _subtags),
         TaskSourceType.fromMistakes =>
           StatsDB().countMistakesByRange(_rankRange),
       };

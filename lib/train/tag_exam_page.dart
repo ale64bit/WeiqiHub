@@ -6,7 +6,7 @@ import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/exam_page.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/subtag_rank_selection_page.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_source.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
@@ -61,8 +61,8 @@ class TagExamPage extends StatelessWidget {
   TaskSource createTaskSource(BuildContext context) {
     return BlackToPlaySource(
       source: ConstTaskSource(
-          tasks: TaskRepository()
-              .readByTag(tag, rankRange, taskCount)
+          tasks: TaskDB()
+              .takeByTag(tag, rankRange, taskCount)
               .map((task) => task.withRandomSymmetry(
                   randomize: context.settings.randomizeTaskOrientation))
               .toIList()),

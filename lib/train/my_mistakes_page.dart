@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/task_preview_tile.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_ref.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 
 class MyMistakesPage extends StatefulWidget {

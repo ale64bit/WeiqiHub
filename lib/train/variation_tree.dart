@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+import 'package:petitparser/petitparser.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/symmetry.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -16,10 +15,26 @@ enum VariationStatus {
 }
 
 class VariationTree {
+  static final _parser = _VariationTreeDefinition().build();
+
   final VariationStatus? status;
   final IMap<wq.Point, VariationTree> children;
 
-  VariationTree({required this.status, required this.children});
+  const VariationTree({required this.status, required this.children});
+  factory VariationTree.parse(String vt) => _parser.parse(vt).value;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other.runtimeType != runtimeType) return false;
+
+    return other is VariationTree &&
+        other.status == status &&
+        other.children == children;
+  }
+
+  @override
+  int get hashCode => Object.hash(status, children.hashCode);
 
   VariationStatus finalStatus() =>
       status ??
@@ -49,62 +64,50 @@ class VariationTree {
       children: transformedChildren,
     );
   }
+
+  String serialize() {
+    assert((status == null) != (children.isEmpty));
+    return switch (status) {
+      null =>
+        '${children.entries.map((e) => e.key.toSgf() + e.value.serialize()).join()}<',
+      VariationStatus.correct => '0',
+      VariationStatus.wrong => '1',
+    };
+  }
 }
 
-class VariationTreeIterator {
-  final _trees = <VariationTree?>[];
-  final _moves = <wq.Point>[];
-  var _cur = 0;
-
-  VariationTreeIterator({required VariationTree? tree}) {
-    _trees.add(tree);
-  }
-
-  int get depth => _cur;
-
-  VariationTree? get tree => _trees[_cur];
-
-  VariationStatus? move(wq.Point p) {
-    if (_cur < _moves.length) {
-      if (_moves[_cur] == p) {
-        _cur++;
-      } else {
-        while (_cur < _moves.length) {
-          _trees.removeLast();
-          _moves.removeLast();
+class _VariationTreeDefinition extends GrammarDefinition<VariationTree> {
+  @override
+  Parser<VariationTree> start() => [
+        status(),
+        edges(),
+      ].toChoiceParser().map((obj) {
+        if (obj is VariationStatus) {
+          return VariationTree(status: obj, children: const IMap.empty());
+        } else if (obj is List<(wq.Point, VariationTree)>) {
+          return VariationTree(
+              status: null,
+              children:
+                  IMap.fromEntries((obj).map((x) => MapEntry(x.$1, x.$2))));
         }
-        _trees.add(tree?.children[p]);
-        _moves.add(p);
-        _cur++;
-      }
-    } else {
-      _trees.add(tree?.children[p]);
-      _moves.add(p);
-      _cur++;
-    }
-    return (tree != null) ? tree!.status : VariationStatus.wrong;
-  }
+        throw FormatException('invalid parser result type');
+      });
 
-  void undo() {
-    _cur--;
-  }
+  Parser<List<(wq.Point, VariationTree)>> edges() =>
+      edge().star().skip(after: char('<')).map((x) => x);
 
-  wq.Point? redo() {
-    if (_cur >= _moves.length) return null;
-    final p = _moves[_cur];
-    _cur++;
-    return p;
-  }
+  Parser<(wq.Point, VariationTree)> edge() => (point() & ref0(start))
+      .map((l) => (l[0] as wq.Point, l[1] as VariationTree));
 
-  wq.Point genMove() {
-    assert(tree!.children.isNotEmpty);
-    return tree!.children.keys
-        .elementAt(Random().nextInt(tree!.children.length));
-  }
+  Parser<VariationStatus> status() =>
+      [statusCorrect(), statusWrong()].toChoiceParser().map((x) => x);
 
-  List<(wq.Point, VariationStatus)> continuations() =>
-      tree?.children.entries
-          .map((e) => (e.key, e.value.finalStatus()))
-          .toList() ??
-      List.empty();
+  Parser<VariationStatus> statusCorrect() =>
+      char('0').map((_) => VariationStatus.correct);
+
+  Parser<VariationStatus> statusWrong() =>
+      char('1').map((_) => VariationStatus.wrong);
+
+  Parser<wq.Point> point() =>
+      lowercase().times(2).map((xs) => wq.parseSgfPoint(xs.join()));
 }
