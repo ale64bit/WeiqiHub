@@ -1,10 +1,10 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
-import 'package:wqhub/cancellable_isolate_stream.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/rank_range.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_preview_tile.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_ref.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -45,40 +45,40 @@ class TaskPatternSearchResultsPage extends StatefulWidget {
 
 class _TaskPatternSearchResultsPageState
     extends WindowClassAwareState<TaskPatternSearchResultsPage> {
-  late final CancellableIsolateStream<Task> _results;
-  final _tasks = <Task>[];
+  late final Stream<TaskRef> _results;
+  final _tasks = <TaskRef>[];
   final _taskAdded = <int>{};
   var _searchComplete = false;
 
   @override
   void initState() {
     super.initState();
-    _results = findTasks(
-        widget.rankRange, widget.taskTypes, widget.stones, widget.empty);
+    _results = TaskDB()
+        .searchTask(
+            widget.rankRange, widget.taskTypes, widget.stones, widget.empty)
+        .take(50);
   }
 
   @override
   void dispose() {
     _searchComplete = true;
-    _results.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _results.stream,
+      stream: _results,
       builder: (context, snapshot) {
         final loc = AppLocalizations.of(context)!;
         if (snapshot.connectionState == ConnectionState.done) {
           _searchComplete = true;
         }
         if (snapshot.hasData) {
-          Task t = snapshot.data!;
-          if (!_taskAdded.contains(t.id)) {
-            _taskAdded.add(t.id);
-            _tasks.add(t);
-            if (_tasks.length >= 100) _results.cancel();
+          TaskRef ref = snapshot.data!;
+          if (!_taskAdded.contains(ref.id)) {
+            _taskAdded.add(ref.id);
+            _tasks.add(ref);
           }
         }
         return Scaffold(
@@ -108,7 +108,7 @@ class _TaskPatternSearchResultsPageState
                 ),
                 itemCount: _tasks.length,
                 itemBuilder: (context, index) => TaskPreviewTile(
-                  task: _tasks[index].ref,
+                  task: _tasks[index],
                 ),
               ),
             ),

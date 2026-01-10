@@ -31,7 +31,7 @@ Point parseSgfPoint(String s) {
 
 extension SgfConversion on Point {
   String toSgf() => switch (this) {
-        (-1, -1) => '',
+        (-1, -1) => 'tt',
         _ => String.fromCharCodes(
             ['a'.codeUnitAt(0) + this.$2, 'a'.codeUnitAt(0) + this.$1]),
       };

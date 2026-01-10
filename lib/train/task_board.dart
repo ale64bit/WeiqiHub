@@ -5,7 +5,7 @@ import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class TaskBoard extends StatelessWidget {

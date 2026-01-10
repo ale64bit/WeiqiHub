@@ -5,7 +5,7 @@ import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/custom_exam_selection_page.dart';
 import 'package:wqhub/train/custom_exam_settings.dart';
 import 'package:wqhub/train/exam_page.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/const_task_ref_source.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
@@ -48,10 +48,10 @@ class CustomExamPage extends StatelessWidget {
 
   TaskSource createTaskSource(BuildContext context) {
     final taskSource = switch (settings.taskSourceType) {
-      TaskSourceType.fromTaskTypes => TaskRepository()
-          .taskSourceByTypes(settings.rankRange, settings.taskTypes!),
-      TaskSourceType.fromTaskTag => TaskRepository()
-          .taskSourceByTags(settings.rankRange, settings.taskSubtags!),
+      TaskSourceType.fromTaskTypes =>
+        TaskDB().taskSourceByTypes(settings.rankRange, settings.taskTypes!),
+      TaskSourceType.fromTaskTag =>
+        TaskDB().taskSourceByTags(settings.rankRange, settings.taskSubtags!),
       TaskSourceType.fromMistakes => ConstTaskRefSource(
           taskRefs: StatsDB()
               .mistakesByRankRange(settings.rankRange, settings.taskCount)),

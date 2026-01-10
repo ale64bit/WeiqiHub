@@ -1,0 +1,490 @@
+{
+    "id": 1,
+    "title": "",
+    "taskCount": 4442,
+    "children": [
+        {
+            "id": 2,
+            "title": "Around 1000 Life and Death Problems",
+            "taskCount": 993,
+            "children": [
+                {
+                    "id": 3,
+                    "title": "Part 1: Life and Death",
+                    "taskCount": 528,
+                    "children": [
+                        {
+                            "id": 4,
+                            "title": "Make life",
+                            "taskCount": 117
+                        },
+                        {
+                            "id": 5,
+                            "title": "Break eye",
+                            "taskCount": 45
+                        },
+                        {
+                            "id": 6,
+                            "title": "Eye to kill",
+                            "taskCount": 53
+                        },
+                        {
+                            "id": 7,
+                            "title": "Capturing race",
+                            "taskCount": 70
+                        },
+                        {
+                            "id": 8,
+                            "title": "Seki",
+                            "taskCount": 53
+                        },
+                        {
+                            "id": 9,
+                            "title": "Vital point",
+                            "taskCount": 62
+                        },
+                        {
+                            "id": 10,
+                            "title": "Go theory",
+                            "taskCount": 34
+                        },
+                        {
+                            "id": 11,
+                            "title": "Common shapes",
+                            "taskCount": 25
+                        },
+                        {
+                            "id": 12,
+                            "title": "Ko",
+                            "taskCount": 42
+                        },
+                        {
+                            "id": 13,
+                            "title": "Interesting tasks",
+                            "taskCount": 27
+                        }
+                    ]
+                },
+                {
+                    "id": 14,
+                    "title": "Part 2: Tesuji",
+                    "taskCount": 465,
+                    "children": [
+                        {
+                            "id": 15,
+                            "title": "Ladder",
+                            "taskCount": 25
+                        },
+                        {
+                            "id": 16,
+                            "title": "Cut",
+                            "taskCount": 36
+                        },
+                        {
+                            "id": 17,
+                            "title": "Net",
+                            "taskCount": 23
+                        },
+                        {
+                            "id": 18,
+                            "title": "Hane",
+                            "taskCount": 35
+                        },
+                        {
+                            "id": 19,
+                            "title": "Wedge",
+                            "taskCount": 35
+                        },
+                        {
+                            "id": 20,
+                            "title": "Diagonal",
+                            "taskCount": 34
+                        },
+                        {
+                            "id": 21,
+                            "title": "Bridge under",
+                            "taskCount": 24
+                        },
+                        {
+                            "id": 22,
+                            "title": "Jump",
+                            "taskCount": 33
+                        },
+                        {
+                            "id": 23,
+                            "title": "Pincer and clamp",
+                            "taskCount": 34
+                        },
+                        {
+                            "id": 24,
+                            "title": "Descend",
+                            "taskCount": 33
+                        },
+                        {
+                            "id": 25,
+                            "title": "Placement",
+                            "taskCount": 34
+                        },
+                        {
+                            "id": 26,
+                            "title": "Throw-in",
+                            "taskCount": 34
+                        },
+                        {
+                            "id": 27,
+                            "title": "Two-stone edge squeeze",
+                            "taskCount": 26
+                        },
+                        {
+                            "id": 28,
+                            "title": "Golden chicken on one foot",
+                            "taskCount": 35
+                        },
+                        {
+                            "id": 29,
+                            "title": "Under the stones",
+                            "taskCount": 24
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 30,
+            "title": "Richard Hope's Selected Tesuji",
+            "taskCount": 722,
+            "children": [
+                {
+                    "id": 31,
+                    "title": "Vol. 1",
+                    "taskCount": 121
+                },
+                {
+                    "id": 32,
+                    "title": "Vol. 2",
+                    "taskCount": 123
+                },
+                {
+                    "id": 33,
+                    "title": "Vol. 3",
+                    "taskCount": 116,
+                    "children": [
+                        {
+                            "id": 34,
+                            "title": "Connecting groups",
+                            "taskCount": 26
+                        },
+                        {
+                            "id": 35,
+                            "title": "Splitting groups",
+                            "taskCount": 54
+                        },
+                        {
+                            "id": 36,
+                            "title": "Sabaki and settling",
+                            "taskCount": 8
+                        },
+                        {
+                            "id": 37,
+                            "title": "Endgame",
+                            "taskCount": 28
+                        }
+                    ]
+                },
+                {
+                    "id": 38,
+                    "title": "Vol. 4",
+                    "taskCount": 123
+                },
+                {
+                    "id": 39,
+                    "title": "Vol. 5",
+                    "taskCount": 121,
+                    "children": [
+                        {
+                            "id": 40,
+                            "title": "Connecting",
+                            "taskCount": 16
+                        },
+                        {
+                            "id": 41,
+                            "title": "Make shape",
+                            "taskCount": 27
+                        },
+                        {
+                            "id": 42,
+                            "title": "Endgame",
+                            "taskCount": 20
+                        },
+                        {
+                            "id": 43,
+                            "title": "Life and death",
+                            "taskCount": 16
+                        },
+                        {
+                            "id": 44,
+                            "title": "Attacking",
+                            "taskCount": 32
+                        },
+                        {
+                            "id": 45,
+                            "title": "Escaping",
+                            "taskCount": 10
+                        }
+                    ]
+                },
+                {
+                    "id": 46,
+                    "title": "Vol. 6",
+                    "taskCount": 118,
+                    "children": [
+                        {
+                            "id": 47,
+                            "title": "Capturing race",
+                            "taskCount": 37
+                        },
+                        {
+                            "id": 48,
+                            "title": "Attacking",
+                            "taskCount": 39
+                        },
+                        {
+                            "id": 49,
+                            "title": "Endgame",
+                            "taskCount": 42
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 50,
+            "title": "Richard Hope's Selected Life and Death",
+            "taskCount": 728,
+            "children": [
+                {
+                    "id": 51,
+                    "title": "Vol. 1",
+                    "taskCount": 123
+                },
+                {
+                    "id": 52,
+                    "title": "Vol. 2",
+                    "taskCount": 122
+                },
+                {
+                    "id": 53,
+                    "title": "Vol. 3",
+                    "taskCount": 122
+                },
+                {
+                    "id": 54,
+                    "title": "Vol. 4",
+                    "taskCount": 121
+                },
+                {
+                    "id": 55,
+                    "title": "Vol. 5",
+                    "taskCount": 119
+                },
+                {
+                    "id": 56,
+                    "title": "Vol. 6",
+                    "taskCount": 121
+                }
+            ]
+        },
+        {
+            "id": 57,
+            "title": "Gokyo Shumyo",
+            "taskCount": 509,
+            "children": [
+                {
+                    "id": 58,
+                    "title": "Life",
+                    "taskCount": 97
+                },
+                {
+                    "id": 59,
+                    "title": "Death",
+                    "taskCount": 71
+                },
+                {
+                    "id": 60,
+                    "title": "Ko",
+                    "taskCount": 89
+                },
+                {
+                    "id": 61,
+                    "title": "Attacking",
+                    "taskCount": 96
+                },
+                {
+                    "id": 62,
+                    "title": "Attacking to kill",
+                    "taskCount": 39
+                },
+                {
+                    "id": 63,
+                    "title": "Connect under",
+                    "taskCount": 72
+                },
+                {
+                    "id": 64,
+                    "title": "Wedge, placement, peep, cut and ladder",
+                    "taskCount": 45
+                }
+            ]
+        },
+        {
+            "id": 65,
+            "title": "Xuanxuan Qijing",
+            "taskCount": 242,
+            "children": [
+                {
+                    "id": 66,
+                    "title": "Corner",
+                    "taskCount": 108
+                },
+                {
+                    "id": 67,
+                    "title": "Side",
+                    "taskCount": 99
+                },
+                {
+                    "id": 68,
+                    "title": "Center and attacking",
+                    "taskCount": 32
+                },
+                {
+                    "id": 69,
+                    "title": "Joseki",
+                    "taskCount": 3
+                }
+            ]
+        },
+        {
+            "id": 70,
+            "title": "Guanzi Pu",
+            "taskCount": 1248,
+            "children": [
+                {
+                    "id": 71,
+                    "title": "Vol. 1",
+                    "taskCount": 490,
+                    "children": [
+                        {
+                            "id": 72,
+                            "title": "Part 1",
+                            "taskCount": 63
+                        },
+                        {
+                            "id": 73,
+                            "title": "Part 2",
+                            "taskCount": 72
+                        },
+                        {
+                            "id": 74,
+                            "title": "Part 3",
+                            "taskCount": 77
+                        },
+                        {
+                            "id": 75,
+                            "title": "Part 4",
+                            "taskCount": 77
+                        },
+                        {
+                            "id": 76,
+                            "title": "Part 5",
+                            "taskCount": 78
+                        },
+                        {
+                            "id": 77,
+                            "title": "Part 6",
+                            "taskCount": 88
+                        },
+                        {
+                            "id": 78,
+                            "title": "Part 7",
+                            "taskCount": 35
+                        }
+                    ]
+                },
+                {
+                    "id": 79,
+                    "title": "Vol. 2",
+                    "taskCount": 524,
+                    "children": [
+                        {
+                            "id": 80,
+                            "title": "Part 1",
+                            "taskCount": 76
+                        },
+                        {
+                            "id": 81,
+                            "title": "Part 2",
+                            "taskCount": 86
+                        },
+                        {
+                            "id": 82,
+                            "title": "Part 3",
+                            "taskCount": 91
+                        },
+                        {
+                            "id": 83,
+                            "title": "Part 4",
+                            "taskCount": 85
+                        },
+                        {
+                            "id": 84,
+                            "title": "Part 5",
+                            "taskCount": 74
+                        },
+                        {
+                            "id": 85,
+                            "title": "Part 6",
+                            "taskCount": 73
+                        },
+                        {
+                            "id": 86,
+                            "title": "Part 7",
+                            "taskCount": 39
+                        }
+                    ]
+                },
+                {
+                    "id": 87,
+                    "title": "Vol. 3",
+                    "taskCount": 234,
+                    "children": [
+                        {
+                            "id": 88,
+                            "title": "Part 1",
+                            "taskCount": 65
+                        },
+                        {
+                            "id": 89,
+                            "title": "Part 2",
+                            "taskCount": 44
+                        },
+                        {
+                            "id": 90,
+                            "title": "Part 3",
+                            "taskCount": 67
+                        },
+                        {
+                            "id": 91,
+                            "title": "Part 4",
+                            "taskCount": 51
+                        },
+                        {
+                            "id": 92,
+                            "title": "Part 5",
+                            "taskCount": 7
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

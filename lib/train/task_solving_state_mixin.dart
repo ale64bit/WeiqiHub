@@ -9,9 +9,10 @@ import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/response_delay.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task.dart';
 import 'package:wqhub/train/upsolve_mode.dart';
 import 'package:wqhub/train/variation_tree.dart';
+import 'package:wqhub/train/variation_tree_iterator.dart';
 import 'package:wqhub/wq/annotated_game_tree.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 

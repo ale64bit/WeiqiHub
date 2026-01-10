@@ -19,7 +19,7 @@ class Sgf {
 }
 
 // See https://www.red-bean.com/sgf/sgf4.html
-class _SgfDefinition extends GrammarDefinition {
+class _SgfDefinition extends GrammarDefinition<Sgf> {
   @override
   Parser<Sgf> start() => ref0(collection)
       .skip(before: ref0(space), after: ref0(space))

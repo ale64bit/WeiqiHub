@@ -15,6 +15,7 @@ import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/wq/grid.dart';
 import 'package:wqhub/wq/rank.dart';
+import 'package:wqhub/wq/util.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:logging/logging.dart';
 

@@ -9,7 +9,8 @@ import 'package:wqhub/pop_and_window_class_aware_state.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/collection_page.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_collection.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_source/black_to_play_source.dart';
 import 'package:wqhub/train/task_source/collection_task_source.dart';
 
@@ -44,7 +45,7 @@ class _CollectionsPageState extends State<CollectionsPage> {
         title: Text(loc.collections),
       ),
       body: TreeView.simpleTyped<TaskCollection, TreeNode<TaskCollection>>(
-        tree: TaskRepository().collectionsTreeNode(),
+        tree: TaskDB().collectionTreeNode,
         showRootNode: false,
         builder: (context, item) => _CollectionTile(collection: item.data!),
       ),

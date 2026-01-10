@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/rank_range.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_ref.dart';
 import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';

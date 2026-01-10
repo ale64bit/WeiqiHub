@@ -10,7 +10,7 @@ import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/settings/settings.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/stats/stats_db.dart';
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/version_patch.dart';
 import 'package:wqhub/weiqi_hub_app.dart';
 
@@ -37,7 +37,7 @@ Future<void> main() async {
     await Future.wait(<Future>[
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),
       AudioController.init(settings),
-      TaskRepository.init(),
+      TaskDB.init(),
       StatsDB.init(),
     ]);
 

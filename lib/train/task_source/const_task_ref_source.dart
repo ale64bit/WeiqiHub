@@ -1,10 +1,12 @@
-import 'package:wqhub/train/task_repository.dart';
+import 'package:wqhub/train/task.dart';
+import 'package:wqhub/train/task_db.dart';
+import 'package:wqhub/train/task_ref.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
 
 final class ConstTaskRefSource extends TaskSource {
   final List<TaskRef> taskRefs;
   int _cur = 0;
-  late Task _curTask = TaskRepository().readByRef(taskRefs.first)!;
+  late Task _curTask = TaskDB().getTaskByRef(taskRefs.first)!;
 
   ConstTaskRefSource({required this.taskRefs}) : assert(taskRefs.isNotEmpty);
 
@@ -12,7 +14,8 @@ final class ConstTaskRefSource extends TaskSource {
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {
     _cur++;
     if (_cur >= taskRefs.length) _cur = 0;
-    _curTask = TaskRepository().readByRef(taskRefs[_cur])!;
+    var ref = taskRefs[_cur];
+    _curTask = TaskDB().getTaskByRef(ref)!;
     return true;
   }
 
