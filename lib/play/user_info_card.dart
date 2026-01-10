@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/user_info.dart';
+import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class UserInfoCard extends StatelessWidget {
   final UserInfo userInfo;
@@ -15,8 +16,10 @@ class UserInfoCard extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text(userInfo.username),
             subtitle: Text('${userInfo.winCount}W  ${userInfo.lossCount}L'),
-            trailing: Text(userInfo.rank.toString(),
-                style: TextTheme.of(context).displaySmall),
+            trailing: context.settings.hidePlayerRanks
+                ? null
+                : Text(userInfo.rank.toString(),
+                    style: TextTheme.of(context).displaySmall),
           )
         ],
       ),
