@@ -170,6 +170,12 @@ abstract class AppLocalizations {
   /// **'Auto-Match'**
   String get autoMatch;
 
+  /// No description provided for @avgRank.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. rank'**
+  String get avgRank;
+
   /// No description provided for @behaviour.
   ///
   /// In en, this message translates to:

@@ -1,4 +1,3 @@
-import 'package:animated_tree_view/helpers/collection_utils.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_source/task_source_type.dart';
@@ -58,16 +57,12 @@ class CustomExamSettings {
         taskSubtags = _maybeTaskSubtags(json['taskSubtags'] as List<dynamic>?),
         collectStats = json['collectStats'] as bool;
 
-  static ISet<TaskType>? _maybeTaskTypes(List<dynamic>? types) => types
-      ?.castToListOf<int>()
-      .map((index) => TaskType.values[index])
-      .toISet();
+  static ISet<TaskType>? _maybeTaskTypes(List<dynamic>? types) =>
+      types?.map((index) => TaskType.values[index as int]).toISet();
 
   static TaskTag? _maybeTaskTag(int? index) =>
       index == null ? null : TaskTag.values[index];
 
-  static ISet<TaskTag>? _maybeTaskSubtags(List<dynamic>? subtags) => subtags
-      ?.castToListOf<int>()
-      .map((index) => TaskTag.values[index])
-      .toISet();
+  static ISet<TaskTag>? _maybeTaskSubtags(List<dynamic>? subtags) =>
+      subtags?.map((index) => TaskTag.values[index as int]).toISet();
 }

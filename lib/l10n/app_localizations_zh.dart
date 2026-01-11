@@ -39,6 +39,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoMatch => '自动匹配';
 
   @override
+  String get avgRank => '平均段位';
+
+  @override
   String get behaviour => '操作';
 
   @override

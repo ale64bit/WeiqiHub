@@ -40,6 +40,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoMatch => 'Buscar partida';
 
   @override
+  String get avgRank => 'Rango prom.';
+
+  @override
   String get behaviour => 'Comportamiento';
 
   @override

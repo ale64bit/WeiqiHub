@@ -40,6 +40,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get autoMatch => 'Automatisches Match';
 
   @override
+  String get avgRank => 'Durchschn. Rang';
+
+  @override
   String get behaviour => 'Verhalten';
 
   @override

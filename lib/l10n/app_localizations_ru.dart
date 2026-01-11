@@ -40,6 +40,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get autoMatch => 'Автоподбор';
 
   @override
+  String get avgRank => 'Средн. ранг';
+
+  @override
   String get behaviour => 'Поведение';
 
   @override

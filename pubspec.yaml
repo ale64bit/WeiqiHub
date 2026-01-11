@@ -29,7 +29,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  animated_tree_view: ^2.3.0
   async: ^2.11.0
   convert: ^3.1.2
   crypto: ^3.0.6

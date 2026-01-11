@@ -11,7 +11,7 @@ import 'package:wqhub/settings/settings_button.dart';
 import 'package:wqhub/settings/settings_page.dart';
 import 'package:wqhub/settings/settings_route_arguments.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
-import 'package:wqhub/train/collections_page.dart';
+import 'package:wqhub/train/collection_preview_page.dart';
 import 'package:wqhub/train/custom_exam_selection_page.dart';
 import 'package:wqhub/train/endgame_exam_selection_page.dart';
 import 'package:wqhub/train/my_mistakes_page.dart';
@@ -259,7 +259,10 @@ class _Train extends StatelessWidget {
               icon: Icons.book,
               label: loc.collections,
               onPressed: () {
-                Navigator.pushNamed(context, CollectionsPage.routeName);
+                Navigator.pushNamed(context, CollectionPreviewPage.routeName,
+                    arguments: CollectionPreviewRouteArguments(
+                      collection: TaskDB().collections,
+                    ));
               },
             ),
             SectionButton(
