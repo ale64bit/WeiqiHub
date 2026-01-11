@@ -235,6 +235,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get help => 'Ajutor';
 
   @override
+  String get hidePlayerRanks => 'Ascunde rangurile jucătorilor';
+
+  @override
+  String get hidePlayerRanksDesc =>
+      'Ascunde rangurile în lobby-ul serverului și în timpul jocului';
+
+  @override
   String get helpDialogCollections =>
       'Colecțiile sunt seturi clasice, selectate cu grijă, de sarcini de înaltă calitate care au o valoare specială ca resursă de antrenament.\n\nObiectivul principal este să rezolvi o colecție cu o rată mare de succes. Un obiectiv secundar este să o rezolvi cât mai repede posibil.\n\nPentru a începe sau a continua rezolvarea unei colecții, glisează spre stânga pe elementul colecției în modul portret sau apasă butoanele Start/Continuă în modul peisaj.';
 
