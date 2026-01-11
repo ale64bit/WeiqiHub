@@ -10,7 +10,6 @@ import 'package:wqhub/train/collection_result_page.dart';
 import 'package:wqhub/train/task.dart';
 import 'package:wqhub/train/task_action_bar.dart';
 import 'package:wqhub/train/task_board.dart';
-import 'package:wqhub/train/task_ref.dart';
 import 'package:wqhub/train/task_collection.dart';
 import 'package:wqhub/train/task_solving_state_mixin.dart';
 import 'package:wqhub/train/upsolve_mode.dart';
@@ -52,7 +51,6 @@ class _CollectionPageState extends State<CollectionPage>
   final _timeDisplayKey = GlobalKey(debugLabel: 'time-display');
   final _stopwatch = Stopwatch();
   var _taskNumber = 1;
-  final _failedTasks = <TaskRef>[];
 
   @override
   void initState() {
@@ -199,7 +197,10 @@ class _CollectionPageState extends State<CollectionPage>
         wrongDelta: 1,
         durationDelta: _stopwatch.elapsed,
       );
-      _failedTasks.add(currentTask.ref);
+      StatsDB().addCollectionActiveSessionMistake(
+        widget.taskCollection.id,
+        currentTask.ref,
+      );
     }
   }
 
@@ -229,6 +230,8 @@ class _CollectionPageState extends State<CollectionPage>
   void _finishSession() {
     final activeSession =
         StatsDB().collectionActiveSession(widget.taskCollection.id)!;
+    final failedTasks =
+        StatsDB().collectionActiveSessionMistakes(widget.taskCollection.id);
     final curResult = CollectionStatEntry(
       id: widget.taskCollection.id,
       correctCount: activeSession.correctCount,
@@ -257,7 +260,7 @@ class _CollectionPageState extends State<CollectionPage>
       arguments: CollectionResultRouteArguments(
         taskCollection: widget.taskCollection,
         totalTime: activeSession.duration,
-        failedTasks: _failedTasks,
+        failedTasks: failedTasks,
         newBest: isNewBest,
       ),
     );
