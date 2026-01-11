@@ -84,6 +84,8 @@
   "gradingExam": "Esame di livello",
   "handicap": "Handicap",
   "help": "Aiuto",
+  "hidePlayerRanks": "Nascondi gradi giocatori",
+  "hidePlayerRanksDesc": "Nascondi i gradi nella lobby del server e durante la partita",
   "helpDialogCollections": "Le raccolte sono insiemi classici e curati di problemi di alta qualità che hanno un valore speciale come risorsa formativa. L'obiettivo principale è risolvere una raccolta con un alto tasso di successo. Un obiettivo secondario è risolverla il più velocemente possibile. Per iniziare o continuare a risolvere una raccolta di problemi, scorri verso sinistra sul riquadro della raccolta in modalità verticale o fai clic sui pulsanti Inizia/Continua in modalità orizzontale.",
   "helpDialogEndgameExam": "- L'esame sul fine gioco contiene 10 problemi di fine gioco. Hai 45 secondi di tempo per risolvere ogni problema.\n\n- Superi la prova se risolvi correttamente almeno 8 problemi (tasso di successo: 80%).\n\n- Superare un livello sblocca l'esame per il livello successivo.",
   "helpDialogGradingExam": "- L'esame di livello contiene 10 problemi. Hai 45 secondi di tempo per risolvere ogni problema.\n\n- Superi la prova se risolvi correttamente almeno 8 problemi (tasso di successo: 80%).\n\n- Superare un livello sblocca l'esame per il livello successivo.",
