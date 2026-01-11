@@ -126,6 +126,7 @@ class _GamePageState extends State<GamePage> {
   var _ownership = List<List<wq.Color?>>.empty();
   var _acceptedDeadStones = false;
   var _opponentAcceptedDeadStones = false;
+  var _isCountingFinal = false;
   // End state
 
   IMapOfSets<wq.Point, Annotation>? _territoryAnnotations;
@@ -321,12 +322,15 @@ class _GamePageState extends State<GamePage> {
                             onForceCounting: onForceCountingClicked,
                             onResign: onResignClicked,
                           ),
-                        GameState.counting => GameCountingBar(
-                            onAcceptDeadStones:
-                                _acceptedDeadStones ? null : onAcceptDeadStones,
-                            onRejectDeadStones: onRejectDeadStones,
-                            acceptStatus: acceptStatus,
-                          ),
+                        GameState.counting => _isCountingFinal
+                            ? SizedBox.shrink()
+                            : GameCountingBar(
+                                onAcceptDeadStones: _acceptedDeadStones
+                                    ? null
+                                    : onAcceptDeadStones,
+                                onRejectDeadStones: onRejectDeadStones,
+                                acceptStatus: acceptStatus,
+                              ),
                         GameState.over => GameNavigationBar(
                             gameTree: _gameTree,
                             onMovesSkipped: (_) {
@@ -730,9 +734,12 @@ class _GamePageState extends State<GamePage> {
         '[${_state.name}] got counting result: winner=${res.winner} lead=${res.scoreLead} isFinal=${res.isFinal}');
 
     // Build the territory annotations.
-    _ownership = res.ownership;
-    if (_ownership.isEmpty) _ownership = _defaultOwnership();
-    _territoryAnnotations = _territoryAnnotationsFromOwnership(_ownership);
+    setState(() {
+      _ownership = res.ownership;
+      if (_ownership.isEmpty) _ownership = _defaultOwnership();
+      _territoryAnnotations = _territoryAnnotationsFromOwnership(_ownership);
+      _isCountingFinal = res.isFinal;
+    });
 
     // Show counting result confirmation bottom sheet
     if (res.isFinal) {
