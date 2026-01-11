@@ -40,6 +40,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoMatch => 'Auto-Match';
 
   @override
+  String get avgRank => 'Avg. rank';
+
+  @override
   String get behaviour => 'Behaviour';
 
   @override

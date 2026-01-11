@@ -16,8 +16,8 @@ import 'package:wqhub/settings/settings_page.dart';
 import 'package:wqhub/settings/settings_route_arguments.dart';
 import 'package:wqhub/settings/sound_settings_page.dart';
 import 'package:wqhub/train/collection_page.dart';
+import 'package:wqhub/train/collection_preview_page.dart';
 import 'package:wqhub/train/collection_result_page.dart';
-import 'package:wqhub/train/collections_page.dart';
 import 'package:wqhub/train/custom_exam_page.dart';
 import 'package:wqhub/train/custom_exam_selection_page.dart';
 import 'package:wqhub/train/endgame_exam_page.dart';
@@ -51,7 +51,6 @@ final Map<String, WidgetBuilder> routes = {
   // Train
   GradingExamSelectionPage.routeName: (context) => GradingExamSelectionPage(),
   EndgameExamSelectionPage.routeName: (context) => EndgameExamSelectionPage(),
-  CollectionsPage.routeName: (context) => CollectionsPage(),
   TagsPage.routeName: (context) => TagsPage(),
   CustomExamSelectionPage.routeName: (context) => CustomExamSelectionPage(),
   MyMistakesPage.routeName: (context) => MyMistakesPage(),
@@ -105,6 +104,9 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             tag: args.tag,
             rankRange: args.rankRange,
           ));
+    case CollectionPreviewPage.routeName:
+      final args = settings.arguments as CollectionPreviewRouteArguments;
+      return _mpr(settings, CollectionPreviewPage(collection: args.collection));
     case CollectionPage.routeName:
       final args = settings.arguments as CollectionRouteArguments;
       return _mprNoPop(

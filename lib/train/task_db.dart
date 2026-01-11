@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:animated_tree_view/tree_view/tree_node.dart';
 import 'package:crypto/crypto.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/services.dart';
@@ -42,7 +41,6 @@ class TaskDB {
   final List<List<int>> _tagBucketCount;
   final List<List<int>> _tagBucketOffset;
   final TaskCollection collections;
-  final TreeNode<TaskCollection> collectionTreeNode;
 
   static Future<String> _resolveDbPath() async {
     final pkgInfo = await PackageInfo.fromPlatform();
@@ -69,6 +67,7 @@ class TaskDB {
 
     final collectionData =
         await rootBundle.loadString('assets/tasks/collections.json');
+    final collections = TaskCollection.fromJson(jsonDecode(collectionData));
     final (taskBucketCount, taskBucketOffset) = _computeTaskBuckets(db);
     final (tagBucketCount, tagBucketOffset) = _computeTagBuckets(db);
     _instance = TaskDB._(
@@ -77,7 +76,7 @@ class TaskDB {
       taskBucketOffset: taskBucketOffset,
       tagBucketCount: tagBucketCount,
       tagBucketOffset: tagBucketOffset,
-      collections: TaskCollection.fromJson(jsonDecode(collectionData)),
+      collections: collections,
     );
   }
 
@@ -137,7 +136,6 @@ class TaskDB {
         _taskBucketOffset = taskBucketOffset,
         _tagBucketCount = tagBucketCount,
         _tagBucketOffset = tagBucketOffset,
-        collectionTreeNode = _createCollectionTreeNode(collections),
         _selectTask = db.prepare(
             'SELECT * FROM tasks WHERE rank = ? AND type = ? AND id = ?;',
             persistent: true),
@@ -449,21 +447,5 @@ class TaskDB {
     final digest =
         sha256.convert(utf8.encode('${lens[0]}.${lens[1]}.$sameCol'));
     return digest.bytes[0];
-  }
-
-  static TreeNode<TaskCollection> _createCollectionTreeNode(
-      TaskCollection collections) {
-    final root = TreeNode<TaskCollection>.root(data: collections);
-    _populateCollectionTreeNode(collections, root);
-    return root;
-  }
-
-  static void _populateCollectionTreeNode(
-      TaskCollection col, TreeNode<TaskCollection> node) {
-    for (final childCol in col.children) {
-      final childNode = TreeNode<TaskCollection>(data: childCol);
-      _populateCollectionTreeNode(childCol, childNode);
-      node.add(childNode);
-    }
   }
 }

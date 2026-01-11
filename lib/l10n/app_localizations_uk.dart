@@ -40,6 +40,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get autoMatch => 'Авто-матч';
 
   @override
+  String get avgRank => 'Сер. ранг';
+
+  @override
   String get behaviour => 'Поведінка';
 
   @override
