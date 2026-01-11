@@ -215,8 +215,10 @@ class StatsDB {
   final PreparedStatement _mistakesByRankRange;
   final PreparedStatement _collectionStat;
   final PreparedStatement _collectionActiveSession;
+  final PreparedStatement _collectionActiveSessionMistakes;
   final PreparedStatement _updateCollectionActiveSession;
-  final PreparedStatement _resetCollectionActiveSession;
+  final PreparedStatement _addCollectionActiveSessionMistake;
+  final List<PreparedStatement> _resetCollectionActiveSession;
   final PreparedStatement _deleteCollectionActiveSession;
   final PreparedStatement _updateCollectionStat;
   final PreparedStatement _addExamAttempt;
@@ -237,6 +239,8 @@ class StatsDB {
     final db = sqlite3.open(filename);
 
     db.execute('''
+      PRAGMA foreign_keys = ON;
+
       ----------------------------------------------------------------------------------
       -- Task stats
       ----------------------------------------------------------------------------------
@@ -279,6 +283,18 @@ class StatsDB {
         wrong_count   INTEGER NOT NULL,
         duration_sec  INTEGER NOT NULL
       );
+
+      CREATE TABLE IF NOT EXISTS collection_active_session_mistakes (
+        id            INTEGER PRIMARY KEY,
+        collection_id INTEGER NOT NULL,
+        rank          INTEGER NOT NULL,
+        type          INTEGER NOT NULL,
+        task_id       INTEGER NOT NULL,
+        FOREIGN KEY (collection_id) REFERENCES collection_active_sessions(id) ON DELETE CASCADE
+      );
+
+      CREATE INDEX IF NOT EXISTS collection_mistakes_by_collection 
+        ON collection_active_session_mistakes(collection_id);
 
       CREATE TABLE IF NOT EXISTS collection_stats (
         id            INTEGER PRIMARY KEY,
@@ -375,6 +391,10 @@ class StatsDB {
           SELECT id, correct_count, wrong_count, duration_sec FROM collection_active_sessions
             WHERE id = ?;
         ''', persistent: true),
+        _collectionActiveSessionMistakes = db.prepare('''
+          SELECT rank, type, task_id FROM collection_active_session_mistakes
+            WHERE collection_id = ?;
+        ''', persistent: true),
         _updateCollectionActiveSession = db.prepare('''
           INSERT INTO collection_active_sessions(id, correct_count, wrong_count, duration_sec) 
             VALUES (?4, ?1, ?2, ?3)
@@ -383,6 +403,10 @@ class StatsDB {
                 wrong_count = wrong_count + ?2,
                 duration_sec = duration_sec + ?3
             WHERE id = ?4;
+        ''', persistent: true),
+        _addCollectionActiveSessionMistake = db.prepare('''
+          INSERT INTO collection_active_session_mistakes(collection_id, rank, type, task_id) 
+            VALUES (?, ?, ?, ?);
         ''', persistent: true),
         _updateCollectionStat = db.prepare('''
           INSERT INTO collection_stats(id, correct_count, wrong_count, duration_sec, completed) 
@@ -394,7 +418,7 @@ class StatsDB {
                 completed = ?5
             WHERE id = ?1;
         ''', persistent: true),
-        _resetCollectionActiveSession = db.prepare('''
+        _resetCollectionActiveSession = db.prepareMultiple('''
           INSERT INTO collection_active_sessions
             VALUES(?1, 0, 0, 0)
             ON CONFLICT(id) DO UPDATE
@@ -402,6 +426,8 @@ class StatsDB {
                 wrong_count = 0,
                 duration_sec = 0
             WHERE id = ?1;
+          DELETE FROM collection_active_session_mistakes 
+            WHERE collection_id = ?1;
         ''', persistent: true),
         _deleteCollectionActiveSession = db.prepare('''
           DELETE FROM collection_active_sessions WHERE id = ?;
@@ -534,8 +560,25 @@ class StatsDB {
     return null;
   }
 
-  void resetCollectionActiveSession(int id) =>
-      _resetCollectionActiveSession.execute([id]);
+  List<TaskRef> collectionActiveSessionMistakes(int id) {
+    final resultSet = _collectionActiveSessionMistakes.select([id]);
+    return [
+      for (final row in resultSet)
+        TaskRef(
+          rank: Rank.values[row['rank'] as int],
+          type: TaskType.values[row['type'] as int],
+          id: row['task_id'] as int,
+        )
+    ];
+  }
+
+  void resetCollectionActiveSession(int id) {
+    _db.execute('BEGIN IMMEDIATE TRANSACTION');
+    for (final stmt in _resetCollectionActiveSession) {
+      stmt.execute([id]);
+    }
+    _db.execute('COMMIT;');
+  }
 
   void deleteCollectionActiveSession(int id) =>
       _deleteCollectionActiveSession.execute([id]);
@@ -547,6 +590,10 @@ class StatsDB {
     _updateCollectionActiveSession
         .execute([correctDelta, wrongDelta, durationDelta.inSeconds, id]);
   }
+
+  void addCollectionActiveSessionMistake(int id, TaskRef ref) =>
+      _addCollectionActiveSessionMistake
+          .execute([id, ref.rank.index, ref.type.index, ref.id]);
 
   void updateCollectionStat(CollectionStatEntry entry) {
     _updateCollectionStat.execute([
