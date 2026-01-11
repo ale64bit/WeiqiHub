@@ -12,6 +12,7 @@
 - add result page for exams and collections
 - add Custom Exam presets
 - improve selection granularity of task topics
+- add setting for hiding players' rank (@adudenamedruby)
 
 ## 0.1.11
 - OGS support (@benjaminpjones)
