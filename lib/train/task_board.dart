@@ -75,7 +75,7 @@ class TaskBoard extends StatelessWidget {
     );
 
     return Dismissible(
-      key: ValueKey(task.id),
+      key: ValueKey(task.ref.id),
       resizeDuration: null,
       direction:
           dismissable ? DismissDirection.endToStart : DismissDirection.none,

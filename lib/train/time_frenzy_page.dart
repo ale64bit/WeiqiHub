@@ -72,7 +72,7 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     );
 
     final taskTitle =
-        '[${widget.taskSource.task.rank.toString()}] ${widget.taskSource.task.type.toLocalizedString(loc)}';
+        '[${widget.taskSource.task.ref.rank.toString()}] ${widget.taskSource.task.ref.type.toLocalizedString(loc)}';
 
     final timeDisplay = TimeDisplay(
       key: _timeDisplayKey,
@@ -157,8 +157,7 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     final solved = status == VariationStatus.correct;
 
     if (context.settings.trackTimeFrenzyMistakes) {
-      StatsDB().addTaskAttempt(
-          currentTask.rank, currentTask.type, currentTask.id, solved);
+      StatsDB().addTaskAttempt(currentTask.ref, solved);
     }
 
     if (solved) {
@@ -172,8 +171,8 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     }
     widget.taskSource.next(status, _stopwatch.elapsed);
     _taskNumber++;
-    if (widget.taskSource.task.rank.index > _maxRank.index) {
-      _maxRank = widget.taskSource.task.rank;
+    if (widget.taskSource.task.ref.rank.index > _maxRank.index) {
+      _maxRank = widget.taskSource.task.ref.rank;
     }
     setupCurrentTask();
     _stopwatch.reset();

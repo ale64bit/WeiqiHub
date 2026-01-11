@@ -344,9 +344,11 @@ class TaskDB {
 
   Task _taskFromRow(Row row) {
     return Task(
-      id: row['id'] as int,
-      rank: Rank.values[row['rank'] as int],
-      type: TaskType.values[row['type'] as int],
+      ref: TaskRef(
+        id: row['id'] as int,
+        rank: Rank.values[row['rank'] as int],
+        type: TaskType.values[row['type'] as int],
+      ),
       first: wq.Color.values[row['first'] as int],
       boardSize: row['board_size'] as int,
       subBoardSize: row['subboard_size'] as int,

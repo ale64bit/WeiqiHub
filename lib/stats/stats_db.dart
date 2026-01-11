@@ -460,12 +460,12 @@ class StatsDB {
           GROUP BY type;
         ''', persistent: true);
 
-  void addTaskAttempt(Rank rank, TaskType type, int id, bool correct) {
+  void addTaskAttempt(TaskRef ref, bool correct) {
     if (correct) {
-      _addTaskAttemptCorrect.execute([rank.index, type.index, id]);
+      _addTaskAttemptCorrect.execute([ref.rank.index, ref.type.index, ref.id]);
       _addDailyTaskAttemptCorrect.execute();
     } else {
-      _addTaskAttemptWrong.execute([rank.index, type.index, id]);
+      _addTaskAttemptWrong.execute([ref.rank.index, ref.type.index, ref.id]);
       _addDailyTaskAttemptWrong.execute();
     }
   }

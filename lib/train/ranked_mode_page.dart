@@ -65,7 +65,7 @@ class _RankedModePageState extends State<RankedModePage>
     );
 
     final taskTitle =
-        '[${widget.taskSource.task.rank.toString()}] ${widget.taskSource.task.type.toLocalizedString(loc)}';
+        '[${widget.taskSource.task.ref.rank.toString()}] ${widget.taskSource.task.ref.type.toLocalizedString(loc)}';
 
     final rankDisplay = Text(Rank.decimalString(widget.taskSource.rank),
         style: TextTheme.of(context).titleLarge);
@@ -151,12 +151,12 @@ class _RankedModePageState extends State<RankedModePage>
   @override
   void onSolveStatus(VariationStatus status) {
     _stopwatch.stop();
-    StatsDB().addTaskAttempt(currentTask.rank, currentTask.type, currentTask.id,
-        status == VariationStatus.correct);
+    StatsDB()
+        .addTaskAttempt(currentTask.ref, status == VariationStatus.correct);
     if (status == VariationStatus.correct) {
-      context.stats.incrementTotalPassCount(currentTask.rank);
+      context.stats.incrementTotalPassCount(currentTask.ref.rank);
     } else {
-      context.stats.incrementTotalFailCount(currentTask.rank);
+      context.stats.incrementTotalFailCount(currentTask.ref.rank);
     }
   }
 

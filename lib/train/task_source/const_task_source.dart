@@ -23,5 +23,5 @@ final class ConstTaskSource extends TaskSource {
 
   @override
   double get rank =>
-      tasks.firstOrNull?.rank.index.toDouble() ?? Rank.k15.index.toDouble();
+      tasks.firstOrNull?.ref.rank.index.toDouble() ?? Rank.k15.index.toDouble();
 }

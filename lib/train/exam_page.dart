@@ -95,7 +95,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
     );
 
     final taskTitle =
-        '[${_taskSource.task.rank.toString()}] ${_taskSource.task.type.toLocalizedString(loc)}';
+        '[${_taskSource.task.ref.rank.toString()}] ${_taskSource.task.ref.type.toLocalizedString(loc)}';
 
     final timeDisplay = TimeDisplay(
       key: _timeDisplayKey,
@@ -239,12 +239,12 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
     if (status != VariationStatus.correct) _mistakeCount++;
 
     if (widget.collectStats) {
-      StatsDB().addTaskAttempt(currentTask.rank, currentTask.type,
-          currentTask.id, status == VariationStatus.correct);
+      StatsDB()
+          .addTaskAttempt(currentTask.ref, status == VariationStatus.correct);
       if (status == VariationStatus.correct) {
-        context.stats.incrementTotalPassCount(currentTask.rank);
+        context.stats.incrementTotalPassCount(currentTask.ref.rank);
       } else {
-        context.stats.incrementTotalFailCount(currentTask.rank);
+        context.stats.incrementTotalFailCount(currentTask.ref.rank);
       }
     }
 

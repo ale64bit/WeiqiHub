@@ -2,15 +2,11 @@ import 'dart:math';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:wqhub/symmetry.dart';
 import 'package:wqhub/train/task_ref.dart';
-import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
-import 'package:wqhub/wq/rank.dart' as wq;
 import 'package:wqhub/wq/wq.dart' as wq;
 
 class Task {
-  final int id;
-  final wq.Rank rank;
-  final TaskType type;
+  final TaskRef ref;
   final wq.Color first;
   final int boardSize;
   final int subBoardSize;
@@ -20,9 +16,7 @@ class Task {
   final List<int> fingerprint;
 
   const Task({
-    required this.id,
-    required this.rank,
-    required this.type,
+    required this.ref,
     required this.first,
     required this.boardSize,
     required this.subBoardSize,
@@ -32,14 +26,10 @@ class Task {
     required this.fingerprint,
   });
 
-  TaskRef get ref => TaskRef(rank: rank, type: type, id: id);
-
   Task withBlackToPlay() => switch (first) {
         wq.Color.black => this,
         wq.Color.white => Task(
-            id: id,
-            rank: rank,
-            type: type,
+            ref: ref,
             first: wq.Color.black,
             boardSize: boardSize,
             subBoardSize: subBoardSize,
@@ -69,9 +59,7 @@ class Task {
     }
 
     return Task(
-      id: id,
-      rank: rank,
-      type: type,
+      ref: ref,
       first: first,
       boardSize: boardSize,
       subBoardSize: subBoardSize,
@@ -109,11 +97,4 @@ class Task {
   Task withRandomSymmetry({required bool randomize}) => randomize
       ? withSymmetry(Symmetry.values[Random().nextInt(Symmetry.values.length)])
       : this;
-
-  String deepLink() {
-    final rs = rank.index.toRadixString(16).padLeft(2, '0');
-    final ts = type.index.toRadixString(16).padLeft(2, '0');
-    final ids = id.toRadixString(16).padLeft(8, '0');
-    return 'wqhub://t/$rs$ts$ids';
-  }
 }

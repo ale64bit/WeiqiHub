@@ -23,6 +23,13 @@ class TaskRef {
     );
   }
 
+  String uri() {
+    final rs = rank.index.toRadixString(16).padLeft(2, '0');
+    final ts = type.index.toRadixString(16).padLeft(2, '0');
+    final ids = id.toRadixString(16).padLeft(8, '0');
+    return 'wqhub://t/$rs$ts$ids';
+  }
+
   @override
   int get hashCode => Object.hash(rank, type, id);
 
