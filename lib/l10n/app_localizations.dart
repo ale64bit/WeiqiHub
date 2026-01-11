@@ -536,6 +536,18 @@ abstract class AppLocalizations {
   /// **'Help'**
   String get help;
 
+  /// No description provided for @hidePlayerRanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide player ranks'**
+  String get hidePlayerRanks;
+
+  /// No description provided for @hidePlayerRanksDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide ranks in server lobby and during game play'**
+  String get hidePlayerRanksDesc;
+
   /// No description provided for @helpDialogCollections.
   ///
   /// In en, this message translates to:

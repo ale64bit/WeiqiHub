@@ -236,6 +236,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get help => 'Hilfe';
 
   @override
+  String get hidePlayerRanks => 'Spielerränge verbergen';
+
+  @override
+  String get hidePlayerRanksDesc =>
+      'Ränge in der Server-Lobby und während des Spiels verbergen';
+
+  @override
   String get helpDialogCollections =>
       'Kollektionen sind klassische, kuratierte Sets von hochwertigen Aufgaben, die gemeinsam einen besonderen Wert als Trainingsressource bilden.\n\nDas Hauptziel ist es, eine Kollektion mit einer hohen Erfolgsquote zu lösen. Ein Nebenziel ist es, sie so schnell wie möglich zu lösen.\n\nUm eine Kollektion zu starten oder fortzusetzen, wische im Hochformat nach links über die Kachel der Kollektion oder klicke im Querformat auf die Start-/Weiter-Buttons.';
 

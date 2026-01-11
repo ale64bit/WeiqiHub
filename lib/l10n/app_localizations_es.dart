@@ -235,6 +235,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get help => 'Ayuda';
 
   @override
+  String get hidePlayerRanks => 'Ocultar rangos de jugadores';
+
+  @override
+  String get hidePlayerRanksDesc =>
+      'Ocultar rangos en el lobby del servidor y durante las partidas';
+
+  @override
   String get helpDialogCollections =>
       'Las colecciones son libros clásicos de problemas de alta calidad que tienen un valor especial para el entrenamiento.\n\nEl objectivo principal es resolver una colección con un alto porcentaje de éxito. El objetivo secundario es resolver una colección lo más rápido posible.\n\nPara comenzar o continuar resolviendo una colección, desliza la colección hacia la izquierda en modo retrato, o haz click en el botón Comenzar/Continuar en modo paisaje.';
 
