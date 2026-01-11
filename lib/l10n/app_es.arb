@@ -85,7 +85,7 @@
   "handicap": "Handicap",
   "help": "Ayuda",
   "hidePlayerRanks": "Ocultar rangos de jugadores",
-  "hidePlayerRanksDesc": "Ocultar rangos durante el juego (toca la tarjeta del jugador para ver)",
+  "hidePlayerRanksDesc": "Ocultar rangos en el lobby del servidor y durante las partidas",
   "helpDialogCollections": "Las colecciones son libros clásicos de problemas de alta calidad que tienen un valor especial para el entrenamiento.\n\nEl objectivo principal es resolver una colección con un alto porcentaje de éxito. El objetivo secundario es resolver una colección lo más rápido posible.\n\nPara comenzar o continuar resolviendo una colección, desliza la colección hacia la izquierda en modo retrato, o haz click en el botón Comenzar/Continuar en modo paisaje.",
   "helpDialogEndgameExam": "- El examen de finales consiste de 10 problemas de finales y tienes 45 segundos para cada problema.\n\n- Apruebas el examen si resuelves 8 o más problemas correctamente (porcentaje de éxito de 80%).\n\n- Si apruebas el examen de un rango, desbloqueas el examen del rango siguiente.",
   "helpDialogGradingExam": "- El examen de rango consiste de 10 problemas y tienes 45 segundos para cada problema.\n\n- Apruebas el examen si resuelves 8 o más problemas correctamente (porcentaje de éxito de 80%).\n\n- Si apruebas el examen de un rango, desbloqueas el examen del rango siguiente.",

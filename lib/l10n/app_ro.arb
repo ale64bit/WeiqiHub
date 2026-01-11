@@ -85,7 +85,7 @@
   "handicap": "Handicap",
   "help": "Ajutor",
   "hidePlayerRanks": "Ascunde rangurile jucătorilor",
-  "hidePlayerRanksDesc": "Ascunde rangurile în timpul jocului (atinge cardul jucătorului pentru a vizualiza)",
+  "hidePlayerRanksDesc": "Ascunde rangurile în lobby-ul serverului și în timpul jocului",
   "helpDialogCollections": "Colecțiile sunt seturi clasice, selectate cu grijă, de sarcini de înaltă calitate care au o valoare specială ca resursă de antrenament.\n\nObiectivul principal este să rezolvi o colecție cu o rată mare de succes. Un obiectiv secundar este să o rezolvi cât mai repede posibil.\n\nPentru a începe sau a continua rezolvarea unei colecții, glisează spre stânga pe elementul colecției în modul portret sau apasă butoanele Start/Continuă în modul peisaj.",
   "helpDialogEndgameExam": "- Examenele de final sunt seturi de 10 sarcini de final și ai 45 de secunde pentru fiecare.\n\n- Promovezi examenul dacă rezolvi corect 8 sau mai multe (rata de succes 80%).\n\n- Promovarea examenului pentru un anumit rang deblochează examenul pentru următorul rang.",
   "helpDialogGradingExam": "- Examenele de clasificare sunt seturi de 10 sarcini și ai 45 de secunde pentru fiecare.\n\n- Promovezi examenul dacă rezolvi corect 8 sau mai multe (rata de succes 80%).\n\n- Promovarea examenului pentru un anumit rang deblochează examenul pentru următorul rang.",

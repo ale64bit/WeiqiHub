@@ -85,7 +85,7 @@
   "handicap": "Vorgabe",
   "help": "Hilfe",
   "hidePlayerRanks": "Spielerränge verbergen",
-  "hidePlayerRanksDesc": "Ränge während des Spiels verbergen (Spielerkarte antippen, um sie anzuzeigen)",
+  "hidePlayerRanksDesc": "Ränge in der Server-Lobby und während des Spiels verbergen",
   "helpDialogCollections": "Kollektionen sind klassische, kuratierte Sets von hochwertigen Aufgaben, die gemeinsam einen besonderen Wert als Trainingsressource bilden.\n\nDas Hauptziel ist es, eine Kollektion mit einer hohen Erfolgsquote zu lösen. Ein Nebenziel ist es, sie so schnell wie möglich zu lösen.\n\nUm eine Kollektion zu starten oder fortzusetzen, wische im Hochformat nach links über die Kachel der Kollektion oder klicke im Querformat auf die Start-/Weiter-Buttons.",
   "helpDialogEndgameExam": "- Endspielprüfungen bestehen aus 10 Endspielaufgaben, und du hast 45 Sekunden pro Aufgabe.\n\n- Du bestehst die Prüfung, wenn du 8 oder mehr Aufgaben korrekt löst (80 % Erfolgsquote).\n\n- Das Bestehen der Prüfung für einen bestimmten Rang schaltet die Prüfung für den nächsten Rang frei.",
   "helpDialogGradingExam": "- Einstufungsprüfung bestehen aus 10 Aufgaben, und du hast 45 Sekunden pro Aufgabe.\n\n- Du bestehst die Prüfung, wenn du 8 oder mehr Aufgaben korrekt löst (80 % Erfolgsquote).\n\n- Das Bestehen der Prüfung für einen bestimmten Rang schaltet die Prüfung für den nächsten Rang frei.",
