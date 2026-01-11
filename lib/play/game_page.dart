@@ -359,7 +359,7 @@ class _GamePageState extends State<GamePage> {
                   widget.game.myColor == wq.Color.black
                       ? blackPlayerCard
                       : whitePlayerCard,
-                  if (_state == GameState.counting) ...[
+                  if (_state == GameState.counting && !_isCountingFinal) ...[
                     Divider(),
                     Text(
                       loc.pleaseMarkDeadStones,
