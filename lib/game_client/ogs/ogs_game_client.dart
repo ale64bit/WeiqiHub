@@ -270,8 +270,6 @@ class OGSGameClient extends GameClient {
         username: userData['username'],
         rank: _ratingToRank(userData['ratings']['overall']['rating']),
         online: true,
-        winCount: 0,
-        lossCount: 0,
       );
 
       _userInfo.value = user;
@@ -539,8 +537,6 @@ class OGSGameClient extends GameClient {
           rank:
               _ratingToRank(blackPlayerData['ratings']?['overall']?['rating']),
           online: false, // Not available in this API
-          winCount: 0, // Not available in this API
-          lossCount: 0, // Not available in this API
         );
 
         final whitePlayer = UserInfo(
@@ -549,8 +545,6 @@ class OGSGameClient extends GameClient {
           rank:
               _ratingToRank(whitePlayerData['ratings']?['overall']?['rating']),
           online: false, // Not available in this API
-          winCount: 0, // Not available in this API
-          lossCount: 0, // Not available in this API
         );
 
         // Parse game result
