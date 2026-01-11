@@ -159,7 +159,7 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   }
 
   void onShareTask() {
-    final link = currentTask.deepLink();
+    final link = currentTask.ref.uri();
     Clipboard.setData(ClipboardData(text: link)).then((void _) {
       if (context.mounted) notifyTaskLinkCopied();
     });

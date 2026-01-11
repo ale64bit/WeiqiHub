@@ -82,7 +82,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
     );
 
     final taskTitle =
-        '[${widget.task.rank.toString()}] ${widget.task.type.toLocalizedString(loc)}';
+        '[${widget.task.ref.rank.toString()}] ${widget.task.ref.type.toLocalizedString(loc)}';
 
     if (wideLayout) {
       return Scaffold(
@@ -102,7 +102,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
                 onPreviousMove: onPreviousMove,
                 onNextMove: onNextMove,
                 onUpdateUpsolveMode: onUpdateUpsolveMode,
-                timeDisplay: Text(widget.task.deepLink()),
+                timeDisplay: Text(widget.task.ref.uri()),
               ),
             ],
           ),

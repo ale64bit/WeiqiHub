@@ -81,9 +81,9 @@ class _CollectionPageState extends State<CollectionPage>
     );
 
     final taskRank =
-        solveStatus != null ? widget.taskSource.task.rank.toString() : '?';
+        solveStatus != null ? widget.taskSource.task.ref.rank.toString() : '?';
     final taskTitle =
-        '[$taskRank] ${widget.taskSource.task.type.toLocalizedString(loc)}';
+        '[$taskRank] ${widget.taskSource.task.ref.type.toLocalizedString(loc)}';
 
     final timeDisplay = TimeDisplay(
       key: _timeDisplayKey,
@@ -181,17 +181,17 @@ class _CollectionPageState extends State<CollectionPage>
   @override
   void onSolveStatus(VariationStatus status) {
     _stopwatch.stop();
-    StatsDB().addTaskAttempt(currentTask.rank, currentTask.type, currentTask.id,
-        status == VariationStatus.correct);
+    StatsDB()
+        .addTaskAttempt(currentTask.ref, status == VariationStatus.correct);
     if (status == VariationStatus.correct) {
-      context.stats.incrementTotalPassCount(currentTask.rank);
+      context.stats.incrementTotalPassCount(currentTask.ref.rank);
       StatsDB().updateCollectionActiveSession(
         widget.taskCollection.id,
         correctDelta: 1,
         durationDelta: _stopwatch.elapsed,
       );
     } else {
-      context.stats.incrementTotalFailCount(currentTask.rank);
+      context.stats.incrementTotalFailCount(currentTask.ref.rank);
       StatsDB().updateCollectionActiveSession(
         widget.taskCollection.id,
         wrongDelta: 1,

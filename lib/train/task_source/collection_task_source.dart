@@ -29,5 +29,5 @@ final class CollectionTaskSource extends TaskSource {
   Task get task => _task;
 
   @override
-  double get rank => _task.rank.index.toDouble();
+  double get rank => _task.ref.rank.index.toDouble();
 }
