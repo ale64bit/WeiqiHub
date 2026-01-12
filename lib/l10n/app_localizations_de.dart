@@ -244,7 +244,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get helpDialogCollections =>
-      'Kollektionen sind klassische, kuratierte Sets von hochwertigen Aufgaben, die gemeinsam einen besonderen Wert als Trainingsressource bilden.\n\nDas Hauptziel ist es, eine Kollektion mit einer hohen Erfolgsquote zu lösen. Ein Nebenziel ist es, sie so schnell wie möglich zu lösen.\n\nUm eine Kollektion zu starten oder fortzusetzen, wische im Hochformat nach links über die Kachel der Kollektion oder klicke im Querformat auf die Start-/Weiter-Buttons.';
+      'Kollektionen sind klassische, kuratierte Sets von hochwertigen Aufgaben, die gemeinsam einen besonderen Wert als Trainingsressource bilden.\n\nDas Hauptziel ist es, eine Kollektion mit einer hohen Erfolgsquote zu lösen. Ein Nebenziel ist es, sie so schnell wie möglich zu lösen.';
 
   @override
   String get helpDialogEndgameExam =>

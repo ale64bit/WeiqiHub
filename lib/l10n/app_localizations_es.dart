@@ -243,7 +243,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get helpDialogCollections =>
-      'Las colecciones son libros clásicos de problemas de alta calidad que tienen un valor especial para el entrenamiento.\n\nEl objectivo principal es resolver una colección con un alto porcentaje de éxito. El objetivo secundario es resolver una colección lo más rápido posible.\n\nPara comenzar o continuar resolviendo una colección, desliza la colección hacia la izquierda en modo retrato, o haz click en el botón Comenzar/Continuar en modo paisaje.';
+      'Las colecciones son libros clásicos de problemas de alta calidad que tienen un valor especial para el entrenamiento.\n\nEl objectivo principal es resolver una colección con un alto porcentaje de éxito. El objetivo secundario es resolver una colección lo más rápido posible.';
 
   @override
   String get helpDialogEndgameExam =>

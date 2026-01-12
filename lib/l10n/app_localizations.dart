@@ -551,7 +551,7 @@ abstract class AppLocalizations {
   /// No description provided for @helpDialogCollections.
   ///
   /// In en, this message translates to:
-  /// **'Collections are classic, curated sets of high-quality tasks which hold special value together as a training resource.\n\nThe main goal is to solve a collection with a high success rate. A secondary goal is to solve it as fast as possible.\n\nTo start or continue solving a collection, slide left on the collection tile while in portrait mode or click the Start/Continue buttons while in landscape mode.'**
+  /// **'Collections are classic, curated sets of high-quality tasks which hold special value together as a training resource.\n\nThe main goal is to solve a collection with a high success rate. A secondary goal is to solve it as fast as possible.'**
   String get helpDialogCollections;
 
   /// No description provided for @helpDialogEndgameExam.
