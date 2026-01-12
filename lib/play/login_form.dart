@@ -45,72 +45,78 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 8.0,
-        children: <Widget>[
-          TextFormField(
-            controller: _usernameController,
-            enabled: widget.enabled,
-            maxLength: 32,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: loc.username,
+    return AutofillGroup(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 8.0,
+          children: <Widget>[
+            TextFormField(
+              controller: _usernameController,
+              enabled: widget.enabled,
+              maxLength: 32,
+              autofillHints: const [AutofillHints.username],
+              textInputAction: TextInputAction.next,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: loc.username,
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Username can not be empty';
+                }
+                return null;
+              },
             ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Username can not be empty';
-              }
-              return null;
-            },
-          ),
-          TextFormField(
-            controller: _passwordController,
-            enabled: widget.enabled,
-            maxLength: 32,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: loc.password,
+            TextFormField(
+              controller: _passwordController,
+              enabled: widget.enabled,
+              maxLength: 32,
+              autofillHints: const [AutofillHints.password],
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: loc.password,
+              ),
+              obscureText: true,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Password can not be empty';
+                }
+                return null;
+              },
             ),
-            obscureText: true,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Password can not be empty';
-              }
-              return null;
-            },
-          ),
-          widget.enabled
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  spacing: 8,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            widget.onSubmit(_usernameController.text,
-                                _passwordController.text);
-                          }
-                        },
-                        child: Text(loc.login),
-                      ),
-                    ),
-                    if (!Platform.isIOS &&
-                        !Platform.isMacOS &&
-                        widget.registerUrl != null)
+            widget.enabled
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    spacing: 8,
+                    children: [
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () => _launchUrl(widget.registerUrl!),
-                          child: Text(loc.register),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              widget.onSubmit(_usernameController.text,
+                                  _passwordController.text);
+                            }
+                          },
+                          child: Text(loc.login),
                         ),
                       ),
-                  ],
-                )
-              : CircularProgressIndicator(),
-        ],
+                      if (!Platform.isIOS &&
+                          !Platform.isMacOS &&
+                          widget.registerUrl != null)
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _launchUrl(widget.registerUrl!),
+                            child: Text(loc.register),
+                          ),
+                        ),
+                    ],
+                  )
+                : CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }
