@@ -243,7 +243,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get helpDialogCollections =>
-      'Le raccolte sono insiemi classici e curati di problemi di alta qualità che hanno un valore speciale come risorsa formativa. L\'obiettivo principale è risolvere una raccolta con un alto tasso di successo. Un obiettivo secondario è risolverla il più velocemente possibile. Per iniziare o continuare a risolvere una raccolta di problemi, scorri verso sinistra sul riquadro della raccolta in modalità verticale o fai clic sui pulsanti Inizia/Continua in modalità orizzontale.';
+      'Le raccolte sono insiemi classici e curati di problemi di alta qualità che hanno un valore speciale come risorsa formativa. L\'obiettivo principale è risolvere una raccolta con un alto tasso di successo. Un obiettivo secondario è risolverla il più velocemente possibile.';
 
   @override
   String get helpDialogEndgameExam =>

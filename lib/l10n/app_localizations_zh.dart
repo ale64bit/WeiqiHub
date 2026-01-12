@@ -235,7 +235,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get helpDialogCollections =>
-      '棋书是经典的、精选的高质量题目合集，作为训练资源具有特殊价值。\n\n主要目标是以高成功率解完一本棋书。次要目标是尽可能快地完成。\n\n要开始或继续解答棋书，请在竖屏模式下向左滑动棋书图块，或在横屏模式下点击「开始」/「继续」按钮。';
+      '棋书是经典的、精选的高质量题目合集，作为训练资源具有特殊价值。\n\n主要目标是以高成功率解完一本棋书。次要目标是尽可能快地完成。';
 
   @override
   String get helpDialogEndgameExam =>
