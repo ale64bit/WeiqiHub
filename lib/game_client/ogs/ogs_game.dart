@@ -380,8 +380,6 @@ class OGSGame extends Game {
       username: username,
       rank: rank,
       online: _chatPresenceManager.isPresent(userId),
-      winCount: 0, // We don't have win/loss counts from gamedata
-      lossCount: 0,
     );
   }
 
