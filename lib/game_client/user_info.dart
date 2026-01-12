@@ -35,8 +35,8 @@ class UserInfo {
   final String username;
   final Rank rank;
   final bool online;
-  final int winCount;
-  final int lossCount;
+  final int? winCount;
+  final int? lossCount;
   final String? streak;
   final PromotionRequirements? promotionRequirements;
 
@@ -45,8 +45,8 @@ class UserInfo {
       required this.username,
       required this.rank,
       required this.online,
-      required this.winCount,
-      required this.lossCount,
+      this.winCount,
+      this.lossCount,
       this.streak,
       this.promotionRequirements});
 
@@ -100,7 +100,5 @@ class UserInfo {
         username: '',
         rank: Rank.k18,
         online: false,
-        winCount: 0,
-        lossCount: 0,
       );
 }
