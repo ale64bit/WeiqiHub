@@ -70,7 +70,13 @@ class _ServerLobbyPageState
       valueListenable: widget.gameClient.userInfo,
       builder: (context, value, child) {
         if (value?.streak != null) {
-          return StreakCard(streak: value!.streak!);
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(loc.recentRecord),
+              StreakCard(streak: value!.streak!),
+            ],
+          );
         }
         return SizedBox();
       },
@@ -80,7 +86,13 @@ class _ServerLobbyPageState
       builder: (context, value, child) {
         final req = value?.promotionRequirements;
         if (req != null) {
-          return PromotionCard(requirements: req);
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(loc.promotionRequirements),
+              PromotionCard(requirements: req),
+            ],
+          );
         }
         return SizedBox();
       },
@@ -148,9 +160,7 @@ class _ServerLobbyPageState
                     children: [
                       Text(loc.userInfo),
                       userInfoCard,
-                      Text(loc.recentRecord),
                       streakCard,
-                      Text(loc.promotionRequirements),
                       promotionRequirementCard,
                     ],
                   ),

@@ -9,13 +9,17 @@ class UserInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final winCount = userInfo.winCount;
+    final lossCount = userInfo.lossCount;
+    final showWinLoss = winCount != null && lossCount != null;
+
     return Card(
       child: Column(
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.person),
             title: Text(userInfo.username),
-            subtitle: Text('${userInfo.winCount}W  ${userInfo.lossCount}L'),
+            subtitle: showWinLoss ? Text('${winCount}W  ${lossCount}L') : null,
             trailing: context.settings.hidePlayerRanks
                 ? null
                 : Text(userInfo.rank.toString(),

@@ -920,7 +920,7 @@ class _GamePageState extends State<GamePage> {
                   streak:
                       s.substring(max(0, s.length - maxStreakLen), s.length));
             }
-            return CircularProgressIndicator();
+            return SizedBox();
           },
         );
         final promotionRequirementCard = ValueListenableBuilder(
