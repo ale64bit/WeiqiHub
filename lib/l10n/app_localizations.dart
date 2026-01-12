@@ -506,6 +506,18 @@ abstract class AppLocalizations {
   /// **'Fox Weiqi'**
   String get foxwqName;
 
+  /// No description provided for @fullscreen.
+  ///
+  /// In en, this message translates to:
+  /// **'Fullscreen'**
+  String get fullscreen;
+
+  /// No description provided for @fullscreenDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the app in fullscreen mode. You must restart the app for this setting to take effect.'**
+  String get fullscreenDesc;
+
   /// No description provided for @gameInfo.
   ///
   /// In en, this message translates to:

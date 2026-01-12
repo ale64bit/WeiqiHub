@@ -33,9 +33,12 @@ Future<void> main() async {
         cacheOptions: const SharedPreferencesWithCacheOptions());
     final settings = Settings(sharedPreferences);
 
+    if (settings.fullscreen) {
+      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    }
+
     // Initialize singletons
     await Future.wait(<Future>[
-      SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),
       AudioController.init(settings),
       TaskDB.init(),
       StatsDB.init(),

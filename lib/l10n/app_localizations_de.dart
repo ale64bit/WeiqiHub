@@ -221,6 +221,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get foxwqName => 'Fox Weiqi';
 
   @override
+  String get fullscreen => 'Vollbild';
+
+  @override
+  String get fullscreenDesc =>
+      'App im Vollbildmodus anzeigen. Die App muss neu gestartet werden, damit diese Einstellung wirksam wird.';
+
+  @override
   String get gameInfo => 'Spielinfo';
 
   @override

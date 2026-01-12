@@ -220,6 +220,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get foxwqName => 'Фокс Вэйци';
 
   @override
+  String get fullscreen => 'Полный экран';
+
+  @override
+  String get fullscreenDesc =>
+      'Показывать приложение в полноэкранном режиме. Для применения настройки необходимо перезапустить приложение.';
+
+  @override
   String get gameInfo => 'Информация о партии';
 
   @override

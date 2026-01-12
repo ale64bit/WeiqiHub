@@ -79,6 +79,8 @@
   "forceCounting": "强制数子",
   "foxwqDesc": "野狐围棋是精心打造的专业围棋对弈、社交软件。",
   "foxwqName": "Fox Weiqi",
+  "fullscreen": "全屏",
+  "fullscreenDesc": "以全屏模式显示应用。必须重启应用此设置才能生效。",
   "gameInfo": "信息",
   "gameRecord": "棋谱",
   "gradingExam": "棋力测试",

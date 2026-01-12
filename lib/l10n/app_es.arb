@@ -79,6 +79,8 @@
   "forceCounting": "Forzar conteo",
   "foxwqDesc": "El servidor más popular de China y el mundo.",
   "foxwqName": "Fox Weiqi",
+  "fullscreen": "Pantalla completa",
+  "fullscreenDesc": "Mostrar la aplicación en modo pantalla completa. Debe reiniciar la aplicación para que esta configuración surta efecto.",
   "gameInfo": "Información de la partida",
   "gameRecord": "Partida",
   "gradingExam": "Examen de rango",

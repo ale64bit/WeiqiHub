@@ -13,6 +13,7 @@
 - add Custom Exam presets
 - improve selection granularity of task topics
 - add setting for hiding players' rank (@adudenamedruby)
+- add fullscreen setting for mobile platforms
 
 ## 0.1.11
 - OGS support (@benjaminpjones)

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
@@ -85,17 +87,6 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text(loc.hidePlayerRanks),
-          subtitle: Text(loc.hidePlayerRanksDesc),
-          trailing: Switch(
-            value: context.settings.hidePlayerRanks,
-            onChanged: (value) {
-              context.settings.hidePlayerRanks = value;
-              onChanged();
-            },
-          ),
-        ),
-        ListTile(
           title: Text(loc.edgeLine),
           trailing: SegmentedButton<BoardEdgeLine>(
             selected: <BoardEdgeLine>{context.settings.edgeLine},
@@ -115,6 +106,29 @@ class AppearanceSettingsList extends StatelessWidget {
             },
           ),
         ),
+        ListTile(
+          title: Text(loc.hidePlayerRanks),
+          subtitle: Text(loc.hidePlayerRanksDesc),
+          trailing: Switch(
+            value: context.settings.hidePlayerRanks,
+            onChanged: (value) {
+              context.settings.hidePlayerRanks = value;
+              onChanged();
+            },
+          ),
+        ),
+        if (Platform.isAndroid || Platform.isIOS)
+          ListTile(
+            title: Text(loc.fullscreen),
+            subtitle: Text(loc.fullscreenDesc),
+            trailing: Switch(
+              value: context.settings.fullscreen,
+              onChanged: (value) {
+                context.settings.fullscreen = value;
+                onChanged();
+              },
+            ),
+          ),
       ],
     );
   }

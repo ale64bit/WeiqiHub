@@ -79,6 +79,8 @@
   "forceCounting": "Auszählen erzwingen",
   "foxwqDesc": "Der beliebteste Server in China und weltweit.",
   "foxwqName": "Fox Weiqi",
+  "fullscreen": "Vollbild",
+  "fullscreenDesc": "App im Vollbildmodus anzeigen. Die App muss neu gestartet werden, damit diese Einstellung wirksam wird.",
   "gameInfo": "Spielinfo",
   "gameRecord": "Spielaufzeichnung",
   "gradingExam": "Einstufungsprüfung",
