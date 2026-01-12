@@ -219,6 +219,13 @@ class AppLocalizationsUk extends AppLocalizations {
   String get foxwqName => 'Fox Weiqi';
 
   @override
+  String get fullscreen => 'Повний екран';
+
+  @override
+  String get fullscreenDesc =>
+      'Показувати додаток у повноекранному режимі. Для застосування цього параметра необхідно перезапустити додаток.';
+
+  @override
   String get gameInfo => 'Інформація про гру';
 
   @override

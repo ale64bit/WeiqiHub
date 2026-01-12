@@ -220,6 +220,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get foxwqName => 'Fox Weiqi';
 
   @override
+  String get fullscreen => 'Schermo intero';
+
+  @override
+  String get fullscreenDesc =>
+      'Mostra l\'app in modalità schermo intero. È necessario riavviare l\'app affinché questa impostazione abbia effetto.';
+
+  @override
   String get gameInfo => 'Info partita';
 
   @override

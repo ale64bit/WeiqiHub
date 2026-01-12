@@ -33,6 +33,7 @@ class Settings {
   static const _boardStoneShadowsKey = 'settings.board.stone_shadows';
   static const _boardEdgeLine = 'settings.board.edge_line';
   static const _hidePlayerRanks = 'settings.appearance.hide_player_ranks';
+  static const _fullscreen = 'settings.appearance.fullscreen';
   static const _saveDirectory = 'settings.save_dir';
   static const _locale = 'settings.language.locale';
   static const _helpDialogPrefix = 'settings.help';
@@ -85,7 +86,7 @@ class Settings {
       ThemeMode.values[prefs.getInt(_themeKey) ?? ThemeMode.system.index];
   set themeMode(ThemeMode mode) => prefs.setInt(_themeKey, mode.index);
 
-  // Board
+  // Appearance
   BoardTheme get boardTheme =>
       BoardTheme.themes[prefs.getString(_boardTheme)] ?? BoardTheme.plain;
   bool get showCoordinates => prefs.getBool(_boardShowCoordinatesKey) ?? false;
@@ -93,6 +94,7 @@ class Settings {
   BoardEdgeLine get edgeLine =>
       BoardEdgeLine.values[prefs.getInt(_boardEdgeLine) ?? 0];
   bool get hidePlayerRanks => prefs.getBool(_hidePlayerRanks) ?? false;
+  bool get fullscreen => prefs.getBool(_fullscreen) ?? true;
 
   set boardTheme(BoardTheme theme) => prefs.setString(_boardTheme, theme.id);
   set showCoordinates(bool val) => prefs.setBool(_boardShowCoordinatesKey, val);
@@ -100,6 +102,7 @@ class Settings {
   set edgeLine(BoardEdgeLine edgeLine) =>
       prefs.setInt(_boardEdgeLine, edgeLine.index);
   set hidePlayerRanks(bool val) => prefs.setBool(_hidePlayerRanks, val);
+  set fullscreen(bool val) => prefs.setBool(_fullscreen, val);
 
   // Behaviour
   bool get confirmMoves =>

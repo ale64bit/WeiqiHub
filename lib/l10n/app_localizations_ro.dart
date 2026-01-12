@@ -220,6 +220,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String get foxwqName => 'Fox Weiqi';
 
   @override
+  String get fullscreen => 'Ecran complet';
+
+  @override
+  String get fullscreenDesc =>
+      'Afișează aplicația în mod ecran complet. Trebuie să reporniți aplicația pentru ca această setare să intre în vigoare.';
+
+  @override
   String get gameInfo => 'Informații despre joc';
 
   @override

@@ -213,6 +213,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get foxwqName => 'Fox Weiqi';
 
   @override
+  String get fullscreen => '全屏';
+
+  @override
+  String get fullscreenDesc => '以全屏模式显示应用。必须重启应用此设置才能生效。';
+
+  @override
   String get gameInfo => '信息';
 
   @override
