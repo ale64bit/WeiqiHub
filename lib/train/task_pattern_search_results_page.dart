@@ -56,7 +56,7 @@ class _TaskPatternSearchResultsPageState
     _results = TaskDB()
         .searchTask(
             widget.rankRange, widget.taskTypes, widget.stones, widget.empty)
-        .take(50);
+        .take(200);
   }
 
   @override
