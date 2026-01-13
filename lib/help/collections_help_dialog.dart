@@ -27,12 +27,6 @@ class _CollectionsHelpDialogState extends State<CollectionsHelpDialog> {
         children: [
           Text(loc.helpDialogCollections),
           SizedBox(height: 8.0),
-          Container(
-            color: ColorScheme.of(context).primaryContainer,
-            width: 100,
-            child: Icon(Icons.swipe_left),
-          ),
-          SizedBox(height: 8.0),
           CheckboxListTile(
               title: Text(loc.dontShowAgain),
               value: !context.settings.showCollectionsHelp,
