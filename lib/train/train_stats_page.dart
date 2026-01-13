@@ -373,7 +373,7 @@ class _ChartsPageState extends State<_ChartsPage> {
           leftTitles: AxisTitles(
             axisNameWidget: Text(loc.taskCorrect),
             sideTitles: SideTitles(
-              reservedSize: 30,
+              reservedSize: 40,
               showTitles: true,
               interval: 2,
             ),
@@ -423,9 +423,8 @@ class _ChartsPageState extends State<_ChartsPage> {
           leftTitles: AxisTitles(
             axisNameWidget: Text('${loc.statsDurationColumn} (${loc.seconds})'),
             sideTitles: SideTitles(
-              reservedSize: 30,
+              reservedSize: 40,
               showTitles: true,
-              interval: 20,
             ),
           ),
           rightTitles: noTitles,
