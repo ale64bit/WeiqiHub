@@ -1,3 +1,6 @@
+@Tags(['integration'])
+library;
+
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -6,23 +9,29 @@ import 'package:wqhub/game_client/ogs/ogs_game_client.dart';
 void main() {
   group('GameClient logout integration tests', () {
     // This test uses the actual OGS beta server to catch real-world crashes
-    // that mocks might not reveal.  It's a slower test so we mark it as skipped.
+    // that mocks might not reveal.
     //
-    // IMPORTANT: Skipped by default to avoid rate limiting.
-    // Set credentials via environment variables:
-    // OGS_TEST_USERNAME=your_username OGS_TEST_PASSWORD=your_password flutter test --run-skipped test/ogs_game_client_logout_test.dart
-    final testUsername = Platform.environment['OGS_TEST_USERNAME'];
-    final testPassword = Platform.environment['OGS_TEST_PASSWORD'];
+    // To run these integration tests:
+    // OGS_TEST_USERNAME=your_username OGS_TEST_PASSWORD=your_password flutter test --tags=integration
     const serverUrl = 'https://beta.online-go.com';
     const aiServerUrl = 'https://beta-ai.online-go.com';
 
-    if (testUsername == null || testPassword == null) {
-      throw Exception(
-          'OGS_TEST_USERNAME and OGS_TEST_PASSWORD environment variables must be set');
+    (String, String) getCredentials() {
+      final username = Platform.environment['OGS_TEST_USERNAME'];
+      final password = Platform.environment['OGS_TEST_PASSWORD'];
+
+      if (username == null || password == null) {
+        fail(
+            'OGS_TEST_USERNAME and OGS_TEST_PASSWORD environment variables must be set');
+      }
+
+      return (username, password);
     }
 
     test('logout should properly clean up and allow subsequent login',
         () async {
+      final (testUsername, testPassword) = getCredentials();
+
       final gameClient = OGSGameClient(
         serverUrl: serverUrl,
         aiServerUrl: aiServerUrl,
@@ -50,11 +59,11 @@ void main() {
       } finally {
         gameClient.dispose();
       }
-    },
-        timeout: Timeout(Duration(seconds: 30)),
-        skip: 'Integration test - run manually with --run-skipped');
+    }, timeout: Timeout(Duration(seconds: 30)));
 
     test('logout should prevent WebSocket auto-reconnect', () async {
+      final (testUsername, testPassword) = getCredentials();
+
       final gameClient = OGSGameClient(
         serverUrl: serverUrl,
         aiServerUrl: aiServerUrl,
@@ -82,8 +91,6 @@ void main() {
       } finally {
         gameClient.dispose();
       }
-    },
-        timeout: Timeout(Duration(seconds: 10)),
-        skip: 'Integration test - run manually with --run-skipped');
+    }, timeout: Timeout(Duration(seconds: 10)));
   });
 }
