@@ -25,6 +25,7 @@ class OGSWebSocketManager {
   Timer? _reconnectTimer;
   int _reconnectAttempts = 0;
   static const int maxReconnectAttempts = 10;
+  bool _shouldReconnect = true;
 
   // For latency tracking
   double _latency = 0.0;
@@ -55,6 +56,7 @@ class OGSWebSocketManager {
       await disconnect();
     }
 
+    _shouldReconnect = true;
     try {
       // Convert HTTP(S) URL to WebSocket URL
       final wsUrl = serverUrl
@@ -85,6 +87,7 @@ class OGSWebSocketManager {
   }
 
   Future<void> disconnect() async {
+    _shouldReconnect = false;
     _pingTimer?.cancel();
     _reconnectTimer?.cancel();
 
@@ -242,7 +245,9 @@ class OGSWebSocketManager {
   void _handleDisconnect() {
     _log.info('WebSocket disconnected');
     _connected.value = false;
-    _scheduleReconnect();
+    if (_shouldReconnect) {
+      _scheduleReconnect();
+    }
   }
 
   void _startPingTimer() {
