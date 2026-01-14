@@ -93,7 +93,7 @@ class OGSWebSocketManager {
     if (_channel != null) {
       // Check if this is a WebSocketChannel and close with proper code
       if (_channel is WebSocketChannel) {
-        await (_channel as WebSocketChannel).sink.close(status.goingAway);
+        await (_channel as WebSocketChannel).sink.close(status.normalClosure);
       } else {
         // For generic StreamChannel (like in tests), just close normally
         await _channel!.sink.close();
