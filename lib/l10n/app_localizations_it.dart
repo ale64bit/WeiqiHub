@@ -269,6 +269,9 @@ class AppLocalizationsIt extends AppLocalizations {
       '- Risolvi il maggior numero di problemi possibile in 3 minuti.\n\n- I problemi diventano via via più difficili.\n\n- Se fai 3 errori, sei fuori.';
 
   @override
+  String get hideTask => 'Rimuovi dagli errori';
+
+  @override
   String get home => 'Home';
 
   @override
