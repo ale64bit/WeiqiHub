@@ -151,6 +151,11 @@ class Settings {
   set trackTimeFrenzyMistakes(bool val) =>
       prefs.setBool('$_behaviourKeyPrefix.track_time_frenzy_mistakes', val);
 
+  bool get deleteCorrectlySolvedMistakes =>
+      prefs.getBool('$_behaviourKeyPrefix.delete_correctly_solved_istakes') ?? false;
+
+  set deleteCorrectlySolvedMistakes(bool val) =>
+      prefs.setBool('$_behaviourKeyPrefix.delete_correctly_solved_istakes', val);
   // Sound
   double get soundStone => prefs.getDouble(_soundStoneKey) ?? 1.0;
   set soundStone(double val) => prefs.setDouble(_soundStoneKey, val).then((_) {

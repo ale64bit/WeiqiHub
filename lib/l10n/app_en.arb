@@ -36,6 +36,8 @@
   "copyTaskLink": "Copy task link",
   "customExam": "Custom exam",
   "dark": "Dark",
+  "deleteCorrectlySolvedMistakes": "Remove correctly solved mistakes",
+  "deleteCorrectlySolvedMistakesDesc": "Remove previous mistakes if solved correctly later",
   "deselectAll": "Deselect all",
   "dontShowAgain": "Don't show again",
   "download": "Download",

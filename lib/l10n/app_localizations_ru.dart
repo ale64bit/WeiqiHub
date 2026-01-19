@@ -123,6 +123,14 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dark => 'Тёмная';
 
   @override
+  String get deleteCorrectlySolvedMistakes =>
+      'Remove correctly solved mistakes';
+
+  @override
+  String get deleteCorrectlySolvedMistakesDesc =>
+      'Remove previous mistakes if solved correctly later';
+
+  @override
   String get deselectAll => 'Снять выделение';
 
   @override
