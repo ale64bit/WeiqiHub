@@ -240,9 +240,14 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
 
     if (context.settings.deleteCorrectlySolvedMistakes) {
       if (status == VariationStatus.correct) {
-        StatsDB().deleteMistakes([TaskRef(rank: currentTask.ref.rank, type: currentTask.ref.type, id: currentTask.ref.id)]);
+        StatsDB().deleteMistakes([
+          TaskRef(
+              rank: currentTask.ref.rank,
+              type: currentTask.ref.type,
+              id: currentTask.ref.id)
+        ]);
       }
-    } 
+    }
     if (widget.collectStats) {
       StatsDB()
           .addTaskAttempt(currentTask.ref, status == VariationStatus.correct);
