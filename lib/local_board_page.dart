@@ -133,21 +133,35 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
         child: board,
       ),
       bottomNavigationBar: BottomAppBar(
-        child: GameNavigationBar(
-          mainAxisAlignment: MainAxisAlignment.center,
-          gameTree: _gameTree,
-          onMovesSkipped: (count) {
-            setState(() {
-              _turn = (_gameTree.curNode.move?.col ?? wq.Color.white).opposite;
-            });
-            if (count > 0) {
-              final moves = _gameTree.lastNMoves(count: count);
-              final points = moves.map((mv) => mv?.p);
-              context.settings.pushLocalBoardMoves(points);
-            } else if (count < 0) {
-              context.settings.popLocalBoardMoves(count: count.abs());
-            }
-          },
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: _onPassClicked,
+                icon: const Icon(Icons.local_parking),
+                tooltip: loc.pass,
+              ),
+              const SizedBox(width: 12),
+              GameNavigationBar(
+                mainAxisAlignment: MainAxisAlignment.center,
+                gameTree: _gameTree,
+                onMovesSkipped: (count) {
+                  setState(() {
+                    _turn = (_gameTree.curNode.move?.col ?? wq.Color.white)
+                        .opposite;
+                  });
+                  if (count > 0) {
+                    final moves = _gameTree.lastNMoves(count: count);
+                    final points = moves.map((mv) => mv?.p);
+                    context.settings.pushLocalBoardMoves(points);
+                  } else if (count < 0) {
+                    context.settings.popLocalBoardMoves(count: count.abs());
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -165,6 +179,12 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
       });
       context.settings.pushLocalBoardMoves([p]);
     }
+  }
+
+  void _onPassClicked() {
+    setState(() {
+      _turn = _turn.opposite;
+    });
   }
 
   void _updateBoard(int size, int handicap) {
