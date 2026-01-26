@@ -40,6 +40,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get autoMatch => 'Abbinamento automatico';
 
   @override
+  String get autoNext => 'Auto-next';
+
+  @override
+  String get autoNextDesc => 'Auto-next on exam pages if solved correctly';
+
+  @override
   String get avgRank => 'Media liv.';
 
   @override

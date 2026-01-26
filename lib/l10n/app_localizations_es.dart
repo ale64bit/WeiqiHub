@@ -40,6 +40,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoMatch => 'Buscar partida';
 
   @override
+  String get autoNext => 'Auto-next';
+
+  @override
+  String get autoNextDesc => 'Auto-next on exam pages if solved correctly';
+
+  @override
   String get avgRank => 'Rango prom.';
 
   @override

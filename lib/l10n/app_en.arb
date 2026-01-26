@@ -9,6 +9,8 @@
   "appearance": "Appearance",
   "autoCounting": "Auto counting",
   "autoMatch": "Auto-Match",
+  "autoNext": "Auto-next",
+  "autoNextDesc": "Auto-next on exam pages if solved correctly",
   "avgRank": "Avg. rank",
   "behaviour": "Behaviour",
   "bestResult": "Best result",

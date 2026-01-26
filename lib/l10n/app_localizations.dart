@@ -170,6 +170,18 @@ abstract class AppLocalizations {
   /// **'Auto-Match'**
   String get autoMatch;
 
+  /// No description provided for @autoNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-next'**
+  String get autoNext;
+
+  /// No description provided for @autoNextDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-next on exam pages if solved correctly'**
+  String get autoNextDesc;
+
   /// No description provided for @avgRank.
   ///
   /// In en, this message translates to:
