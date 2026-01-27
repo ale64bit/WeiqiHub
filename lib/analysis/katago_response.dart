@@ -23,7 +23,7 @@ class MoveInfo {
   final double winRate;
   final List<wq.Point?> pv;
   final int visits;
-  final List<List<double>>? ownership;
+  final List<double>? ownership;
 
   const MoveInfo({
     required this.move,
@@ -48,15 +48,26 @@ class MoveInfo {
         ownership = _from2DArray(json['ownership']);
 }
 
+double pointLoss(RootInfo root, MoveInfo move) => switch (root.currentPlayer) {
+      wq.Color.black => move.scoreLead - root.scoreLead,
+      wq.Color.white => root.scoreLead - move.scoreLead,
+    };
+
+double winrateLoss(RootInfo root, MoveInfo move) =>
+    switch (root.currentPlayer) {
+      wq.Color.black => move.winRate - root.winRate,
+      wq.Color.white => root.winRate - move.winRate,
+    };
+
 class KataGoResponse {
   final String id;
   final bool isDuringSearch;
   final int turnNumber;
   final RootInfo rootInfo;
   final List<MoveInfo> moveInfos;
-  final List<List<double>>? policy;
-  final List<List<double>>? humanPolicy;
-  final List<List<double>>? ownership;
+  final List<double>? policy;
+  final List<double>? humanPolicy;
+  final List<double>? ownership;
 
   const KataGoResponse(
       {required this.id,
@@ -90,8 +101,9 @@ wq.Point? _fromKataGoMove(String mv, int boardSize) {
   return (row, col - 'A'.codeUnitAt(0));
 }
 
-List<List<double>>? _from2DArray(dynamic l) {
-  if (l == null) return null;
-  return List<List<double>>.from(
-      l.map((innerList) => List<double>.from(List<num>.from(innerList))));
+List<double>? _from2DArray(dynamic l) {
+  if (l is List<dynamic>) {
+    return [for (final li in l) (li is double) ? li : li.toDouble()];
+  }
+  return null;
 }

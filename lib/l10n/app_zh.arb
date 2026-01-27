@@ -1,4 +1,7 @@
 {
+  "analysis": "分析",
+  "winrate": "胜率",
+  "scoreLead": "领先目数",
   "about": "关于",
   "acceptDeadStones": "确认死子",
   "accuracy": "答题准确率",

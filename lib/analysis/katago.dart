@@ -1,113 +1,47 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:logging/logging.dart';
 import 'package:wqhub/analysis/katago_request.dart';
 import 'package:wqhub/analysis/katago_response.dart';
 
-class KataGoConfig {
-  final String binaryPath;
-  final String configPath;
-  final String modelPath;
-  final String? humanModelPath;
+class TerminateRequest {
+  final String id;
+  final String terminateId;
+  final List<int>? turnNumbers;
 
-  const KataGoConfig({
-    required this.binaryPath,
-    required this.configPath,
-    required this.modelPath,
-    this.humanModelPath,
-  });
+  const TerminateRequest(
+      {required this.id, required this.terminateId, this.turnNumbers});
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'action': 'terminate',
+        'terminateId': terminateId,
+        if (turnNumbers != null) 'turnNumbers': turnNumbers,
+      };
 }
 
-class KataGo {
-  final IOSink input;
-  final Map<String, StreamController<KataGoResponse>> queries;
-  final Function() kill;
-  final bool hasHumanModel;
+class TerminateAllRequest {
+  final String id;
+  final List<int>? turnNumbers;
 
-  KataGo._({
-    required this.input,
-    required this.queries,
-    required this.kill,
-    required this.hasHumanModel,
-  });
+  const TerminateAllRequest({required this.id, this.turnNumbers});
 
-  static Future<KataGo> create(KataGoConfig config) async {
-    final proc = await Process.start(config.binaryPath, [
-      'analysis',
-      '-config',
-      config.configPath,
-      '-model',
-      config.modelPath,
-      if (config.humanModelPath != null) ...[
-        '-human-model',
-        config.humanModelPath!
-      ],
-    ]);
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'action': 'terminate_all',
+        if (turnNumbers != null) 'turnNumbers': turnNumbers,
+      };
+}
 
-    final logger = Logger('KataGo');
-    final queries = <String, StreamController<KataGoResponse>>{};
-    proc.stdout
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())
-        .forEach((line) => _parseResponse(line, queries, logger));
-    proc.stderr
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())
-        .forEach((line) {
-      logger.fine('stderr: $line');
-    });
-    proc.exitCode.then((code) {
-      logger.fine('exit code: $code');
-    });
+class VersionResponse {
+  final String version;
+  final String gitHash;
 
-    return KataGo._(
-      input: proc.stdin,
-      queries: queries,
-      kill: () => proc.kill(),
-      hasHumanModel: config.humanModelPath != null,
-    );
-  }
+  const VersionResponse({required this.version, required this.gitHash});
+}
 
-  Stream<KataGoResponse> query(KataGoRequest req) {
-    input.writeln(jsonEncode(req.toJson()));
-    final controller = StreamController<KataGoResponse>();
-    queries[req.id] = controller;
-    return controller.stream;
-  }
-
-  void cancelPendingQueries() {
-    input.writeln(jsonEncode({
-      'id': 'terminate_all-${DateTime.now().millisecondsSinceEpoch}',
-      'action': 'terminate_all',
-    }));
-    queries.clear();
-  }
-
-  void dispose() {
-    cancelPendingQueries();
-    kill();
-  }
-
-  static void _parseResponse(String line,
-      Map<String, StreamController<KataGoResponse>> queries, Logger logger) {
-    logger.fine('line: "$line"');
-    final json = jsonDecode(line);
-    switch (json['action']) {
-      case 'terminate_all':
-        break;
-      case null:
-        final resp =
-            KataGoResponse.fromJson(json, 19); // TODO fix board size injection
-        final controller = queries[resp.id];
-        if (controller != null) {
-          controller.add(resp);
-          if (!resp.isDuringSearch) {
-            controller.close();
-            queries.remove(resp.id);
-          }
-        }
-    }
-  }
+abstract interface class KataGo {
+  Future<VersionResponse> version();
+  Stream<KataGoResponse> query(KataGoRequest req);
+  void terminate(TerminateRequest req);
+  void terminateAll(TerminateAllRequest req);
+  void clearCache();
 }
