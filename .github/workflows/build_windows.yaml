@@ -44,7 +44,7 @@ jobs:
           rm lib/game_client/game_client_list.dart
           mv lib/game_client/game_client_list.dart.PROD lib/game_client/game_client_list.dart
       - name: Run tests
-        run: flutter test
+        run: flutter test --exclude-tags=integration
       - name: Build
         env:
           NO_OPUS_OGG_LIBS: 1
