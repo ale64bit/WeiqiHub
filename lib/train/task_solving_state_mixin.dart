@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:extension_type_unions/extension_type_unions.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,8 +21,9 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   var turn = wq.Color.black;
   VariationStatus? solveStatus;
   bool solveStatusNotified = false;
-  IMapOfSets<wq.Point, Annotation>? continuationAnnotations;
+  IMap<wq.Point, BoardAnnotation>? continuationAnnotations;
   var upsolveMode = UpsolveMode.auto;
+  var _firstTaskInitialized = false;
 
   Task get currentTask;
   void onSolveStatus(VariationStatus status);
@@ -31,7 +31,10 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    setupCurrentTask();
+    if (!_firstTaskInitialized) {
+      setupCurrentTask();
+      _firstTaskInitialized = true;
+    }
   }
 
   void setupCurrentTask() {
@@ -134,22 +137,17 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   }
 
   void onShowContinuations() {
-    continuationAnnotations = IMapOfSets.empty();
+    continuationAnnotations = const IMap.empty();
     final showErrorsAsCrosses = context.settings.showMoveErrorsAsCrosses;
     for (final (p, st)
         in _vtreeIt?.continuations() ?? <(wq.Point, VariationStatus)>[]) {
-      continuationAnnotations = continuationAnnotations?.add(p, (
-        type: switch (st) {
-          VariationStatus.correct => AnnotationShape.dot.u21,
-          VariationStatus.wrong => showErrorsAsCrosses
-              ? AnnotationShape.cross.u21
-              : AnnotationShape.dot.u21,
-        },
-        color: switch (st) {
-          VariationStatus.correct => Colors.green,
-          VariationStatus.wrong => Colors.red,
-        },
-      ));
+      final annotation = switch (st) {
+        VariationStatus.correct => DotAnnotation(color: Colors.green),
+        VariationStatus.wrong => showErrorsAsCrosses
+            ? CrossAnnotation(color: Colors.red)
+            : DotAnnotation(color: Colors.red),
+      };
+      continuationAnnotations = continuationAnnotations?.add(p, annotation);
     }
     if (continuationAnnotations?.isNotEmpty ?? false) {
       setState(() {

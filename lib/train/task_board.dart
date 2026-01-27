@@ -12,7 +12,7 @@ class TaskBoard extends StatelessWidget {
   final Task task;
   final wq.Color turn;
   final IMap<wq.Point, wq.Color> stones;
-  final IMapOfSets<wq.Point, Annotation> annotations;
+  final IMap<wq.Point, BoardAnnotation> annotations;
   final bool dismissable;
   final Function(wq.Point) onPointClicked;
   final Function() onDismissed;

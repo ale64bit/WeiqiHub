@@ -11,7 +11,8 @@ mixin BoardGeometry {
 
   double get halfPointSize => pointSize / 2;
 
-  bool isPointVisible(int r, int c) {
+  bool isPointVisible(wq.Point p) {
+    final (r, c) = p;
     final (r0, c0) = settings.topLeft;
     final (r1, c1) = settings.bottomRight;
     return r0 <= r && r <= r1 && c0 <= c && c <= c1;
