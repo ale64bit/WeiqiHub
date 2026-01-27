@@ -1,0 +1,7 @@
+# Test configuration for the package test runner
+# https://pub.dev/packages/test#tagging-tests
+
+tags:
+  # Integration tests that connect to real servers
+  # To exclude, use: flutter test --exclude-tags=integration
+  integration:
