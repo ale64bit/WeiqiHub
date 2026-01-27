@@ -131,7 +131,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
           '${_dateFormat.format(summary.dateTime)} - ${summary.white.username} vs ${summary.black.username}.${record.type.name}';
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
         if (context.mounted) {
-          final savePath = await FilePicker.platform.saveFile(
+          final savePath = await FilePicker.saveFile(
             fileName: fileName,
             initialDirectory: context.settings.getSaveDirectory(),
           );
@@ -220,12 +220,13 @@ class _GameListTile extends StatefulWidget {
   final Function() onDownload;
   final Function() onAISensei;
 
-  const _GameListTile(
-      {required this.summary,
-      required this.won,
-      required this.onTap,
-      required this.onDownload,
-      required this.onAISensei});
+  const _GameListTile({
+    required this.summary,
+    required this.won,
+    required this.onTap,
+    required this.onDownload,
+    required this.onAISensei,
+  });
 
   @override
   State<_GameListTile> createState() => _GameListTileState();
