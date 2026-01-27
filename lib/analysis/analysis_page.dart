@@ -195,6 +195,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     );
   }
 
+/*
   void _queryCurrentPosition() {
     final node = _gameTree.curNode;
     if (node.metadata != null) return;
@@ -226,6 +227,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       });
     });
   }
+  */
 
   void _analyzeFullGame() {
     final respStream = widget.kataGo.query(KataGoRequest(
