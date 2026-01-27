@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:extension_type_unions/extension_type_unions.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -129,7 +128,7 @@ class _GamePageState extends State<GamePage> {
   var _isCountingFinal = false;
   // End state
 
-  IMapOfSets<wq.Point, Annotation>? _territoryAnnotations;
+  IMap<wq.Point, BoardAnnotation>? _territoryAnnotations;
 
   @override
   void initState() {
@@ -1038,31 +1037,27 @@ class _GamePageState extends State<GamePage> {
     return points;
   }
 
-  IMapOfSets<wq.Point, Annotation> _territoryAnnotationsFromOwnership(
+  IMap<wq.Point, BoardAnnotation> _territoryAnnotationsFromOwnership(
       List<List<wq.Color?>> ownership) {
-    var annotations = IMapOfSets<wq.Point, Annotation>();
+    var annotations = IMap<wq.Point, BoardAnnotation>();
     for (int i = 0; i < ownership.length; ++i) {
       for (int j = 0; j < ownership[i].length; ++j) {
         if (ownership[i][j] != null) {
           final col = ownership[i][j]!;
           final p = (i, j);
-          final annotationCol = switch (col) {
+          final annotationColor = switch (col) {
             wq.Color.black => Colors.black,
             wq.Color.white => Colors.white,
           };
           switch (widget.game.rules) {
             case Rules.chinese: // Area
-              annotations = annotations.add(p, (
-                type: AnnotationShape.territory.u21,
-                color: annotationCol,
-              ));
+              annotations = annotations.add(
+                  p, TerritoryAnnotation(color: annotationColor));
             case Rules.japanese: // Territory
             case Rules.korean:
               if (col != _gameTree.stones.get(p)) {
-                annotations = annotations.add(p, (
-                  type: AnnotationShape.territory.u21,
-                  color: annotationCol,
-                ));
+                annotations = annotations.add(
+                    p, TerritoryAnnotation(color: annotationColor));
               }
           }
         }
