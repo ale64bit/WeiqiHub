@@ -1,4 +1,7 @@
 {
+  "analysis": "Analyse",
+  "winrate": "Gewinnwahrscheinlichkeit",
+  "scoreLead": "Punktevorsprung",
   "about": "Über",
   "acceptDeadStones": "Tote Steine akzeptieren",
   "accuracy": "Genauigkeit",

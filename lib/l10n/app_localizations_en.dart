@@ -9,6 +9,15 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get analysis => 'Analysis';
+
+  @override
+  String get winrate => 'Winrate';
+
+  @override
+  String get scoreLead => 'Score lead';
+
+  @override
   String get about => 'About';
 
   @override

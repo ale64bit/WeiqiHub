@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wqhub/analysis/katago_page.dart';
+import 'package:wqhub/analysis/analysis_page.dart';
 import 'package:wqhub/local_board_page.dart';
 import 'package:wqhub/main_page.dart';
 import 'package:wqhub/play/automatch_page.dart';
@@ -196,9 +196,15 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           empty: args.empty,
         ),
       );
-    case KataGoPage.routeName:
-      final args = settings.arguments as KataGoRouteArguments;
-      return _mpr(settings, KataGoPage(config: args.config));
+    case AnalysisPage.routeName:
+      final args = settings.arguments as AnalysisRouteArguments;
+      return _mpr(
+          settings,
+          AnalysisPage(
+            kataGo: args.kataGo,
+            summary: args.summary,
+            record: args.record,
+          ));
   }
   assert(false, 'Missing named route implementation: ${settings.name}');
   return null;

@@ -9,6 +9,15 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String get analysis => 'Análisis';
+
+  @override
+  String get winrate => 'Probabilidad de victoria';
+
+  @override
+  String get scoreLead => 'Ventaja en puntos';
+
+  @override
   String get about => 'Acerca de WeiqiHub';
 
   @override

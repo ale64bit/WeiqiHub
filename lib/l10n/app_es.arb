@@ -1,4 +1,7 @@
 {
+  "analysis": "Análisis",
+  "winrate": "Probabilidad de victoria",
+  "scoreLead": "Ventaja en puntos",
   "about": "Acerca de WeiqiHub",
   "acceptDeadStones": "Aceptar piedras muertas",
   "accuracy": "Precisión",
