@@ -131,7 +131,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
           '${_dateFormat.format(summary.dateTime)} - ${summary.white.username} vs ${summary.black.username}.${record.type.name}';
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
         if (context.mounted) {
-          final savePath = await FilePicker.saveFile(
+          final savePath = await FilePicker.platform.saveFile(
             fileName: fileName,
             initialDirectory: context.settings.getSaveDirectory(),
           );

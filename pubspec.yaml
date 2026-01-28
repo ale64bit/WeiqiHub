@@ -35,7 +35,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   device_info_plus: ^12.3.0
   fast_immutable_collections: ^11.0.3
-  file_picker: ^10.3.9
+  file_picker: ^10.3.10
   fixnum: ^1.1.1
   flutter:
     sdk: flutter
