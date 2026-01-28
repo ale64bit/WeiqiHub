@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:wqhub/analysis/analysis_side_bar.dart';
 import 'package:wqhub/analysis/katago.dart';
 import 'package:wqhub/analysis/katago_request.dart';
@@ -50,7 +49,18 @@ class AnalysisPage extends StatefulWidget {
 }
 
 class _AnalysisPageState extends State<AnalysisPage> {
-  final logger = Logger('AnalysisPage');
+  static const maxVisits = 1000;
+
+  static final winrateLossBands = <(double, Color)>[
+    (-0.24, Colors.purple),
+    (-0.12, Colors.red),
+    (-0.06, Colors.orange),
+    (-0.03, Colors.amberAccent),
+    (-0.01, Colors.lime),
+    (0.01, Colors.green),
+    (1.0, Colors.lightBlueAccent),
+  ];
+
   var _boardSize = 19;
   var _gameTree = AnnotatedGameTree<KataGoResponse>(19);
   var _turn = wq.Color.black;
@@ -65,7 +75,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
     super.didChangeDependencies();
     if (!_initialized) {
       _boardSize = widget.summary.boardSize;
-      _gameTree = AnnotatedGameTree(_boardSize);
+      _gameTree = AnnotatedGameTree(_boardSize,
+          lastMoveMainlineAnnotationFunc: _lastMoveMainlineAnnotation);
       _turn = wq.Color.black;
       _winrateSpots.add(FlSpot(0, 50));
       _scoreLeadSpots.add(FlSpot(0, 0));
@@ -218,7 +229,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       rules: Rules.chinese, // TODO should come from summary or record
       komi: 7.5, // TODO should come from summary or record
       boardSize: _boardSize,
-      maxVisits: 1000,
+      maxVisits: maxVisits,
       overrideSettings: {},
     ));
     respStream.forEach((resp) {
@@ -243,7 +254,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       rules: Rules.chinese, // TODO should come from summary or record
       komi: 7.5, // TODO should come from summary or record
       boardSize: _boardSize,
-      maxVisits: 50,
+      maxVisits: maxVisits,
       overrideSettings: {},
     ));
     respStream.forEach((resp) {
@@ -270,24 +281,68 @@ class _AnalysisPageState extends State<AnalysisPage> {
         ? x.order.compareTo(y.order)
         : y.visits.compareTo(x.visits));
     // Pick the N most visited points
-    for (int i = 0; i < min(10, analysis.moveInfos.length); ++i) {
+    for (int i = 0; i < analysis.moveInfos.length; ++i) {
       final info = analysis.moveInfos[i];
       if (info.move == null) continue;
       final p = info.move!;
       final mv = (p: p, col: _turn);
-      if (i < min(10, analysis.moveInfos.length) ||
-          (_gameTree.curNode.child(mv) != null)) {
-        var root = analysis.rootInfo;
+      final isTopCandidate = i < min(10, analysis.moveInfos.length);
+      final isActualMove = _gameTree.curNode.child(mv) != null;
+      if (isTopCandidate || isActualMove) {
         annotations = annotations.add(
             info.move!,
             AnalysisAnnotation(
               order: info.order,
               visits: info.visits,
-              pointLoss: pointLoss(root, info),
-              winrateLoss: winrateLoss(root, info),
+              maxVisits: maxVisits,
+              pointLoss: pointLoss(analysis.rootInfo, info),
+              actualMove: isActualMove,
             ));
       }
     }
     return annotations;
+  }
+
+  static Color _lastMoveAnnotationColor(double winrateLoss) {
+    for (final (loss, color) in winrateLossBands) {
+      if (winrateLoss < loss) {
+        return color;
+      }
+    }
+    return winrateLossBands.last.$2;
+  }
+
+  static BoardAnnotation _lastMoveMainlineAnnotation(
+      GameTreeNode<KataGoResponse> node) {
+    final (:col, :p) = node.move!;
+    Color? innerColor;
+    final wrLoss = _nodeWinrateLoss(node);
+    // TODO: need to consider when loss is 0% because it's already min/max.
+    // In such case, we need to try to use the point loss which is unbounded.
+    if (wrLoss != null) {
+      innerColor = _lastMoveAnnotationColor(wrLoss);
+    }
+    return LastMoveAnnotation(
+      turn: col,
+      innerColor: innerColor,
+    );
+  }
+
+  static double? _nodeWinrateLoss(GameTreeNode<KataGoResponse> node) {
+    final (:col, :p) = node.move!;
+    if (node.parent == null || node.parent!.metadata == null) return null;
+    // First, try to compute it directly from parent
+    final parent = node.parent!;
+    final md = parent.metadata!;
+    for (final info in md.moveInfos) {
+      if (info.move == p) {
+        if (info.order == 0) return 1.0;
+        return winrateLoss(col, md.rootInfo.winRate, info.winRate);
+      }
+    }
+    // Otherwise, try to compute it from current node root rootInfo
+    if (node.metadata == null) return null;
+    return winrateLoss(
+        col, md.rootInfo.winRate, node.metadata!.rootInfo.winRate);
   }
 }

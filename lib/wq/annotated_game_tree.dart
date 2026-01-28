@@ -16,14 +16,37 @@ typedef _AnnotationDiff = ({
 });
 
 class AnnotatedGameTree<T> extends GameTree<T> {
-  AnnotatedGameTree(super.size, {super.initialStones});
+  AnnotatedGameTree(
+    super.size, {
+    super.initialStones,
+    this.lastMoveMainlineAnnotationFunc = defaultLastMoveMainlineAnnotation,
+    this.lastMoveVariationAnnotationFunc = defaultLastMoveVariationAnnotation,
+  });
 
+  final BoardAnnotation Function(GameTreeNode<T>)
+      lastMoveMainlineAnnotationFunc;
+  final BoardAnnotation Function(GameTreeNode<T>, int)
+      lastMoveVariationAnnotationFunc;
   var _annotations = IMap<wq.Point, BoardAnnotation>();
   final List<_AnnotationDiff> _variationStack = [];
 
   IMap<wq.Point, BoardAnnotation> get annotations => _annotations;
 
   bool get isVariation => _variationStack.isNotEmpty;
+
+  static BoardAnnotation defaultLastMoveMainlineAnnotation(GameTreeNode node) {
+    final (:col, :p) = node.move!;
+    return LastMoveAnnotation(turn: col);
+  }
+
+  static BoardAnnotation defaultLastMoveVariationAnnotation(
+      GameTreeNode node, int variationMoveNumber) {
+    final (:col, :p) = node.move!;
+    return VariationAnnotation(
+      moveNumber: variationMoveNumber,
+      turn: col,
+    );
+  }
 
   GameTreeNode<T>? moveAnnotated(wq.Move mv, {required AnnotationMode mode}) {
     final prevNode = curNode;
@@ -40,16 +63,13 @@ class AnnotatedGameTree<T> extends GameTree<T> {
           _annotations = _annotations.remove(prevNode.move!.p);
         }
         // Add new annotations
-        final lastMove = LastMoveAnnotation(turn: col);
+        final lastMove = lastMoveMainlineAnnotationFunc(node);
         _annotations = _annotations.add(p, lastMove);
       case AnnotationMode.variation:
         // Compute annotation diff
-        var added = IMap<wq.Point, BoardAnnotation>({
-          p: VariationAnnotation(
-            moveNumber: _variationStack.length + 1,
-            turn: col,
-          ),
-        });
+        final lastMove =
+            lastMoveVariationAnnotationFunc(node, _variationStack.length + 1);
+        var added = IMap<wq.Point, BoardAnnotation>({p: lastMove});
         var removed = IMap.fromEntries([
           for (final p in node.diff)
             if (_annotations.containsKey(p)) MapEntry(p, _annotations.get(p)!)
@@ -104,7 +124,7 @@ class AnnotatedGameTree<T> extends GameTree<T> {
       // Mainline mode
       // Add new annotations
       if (node.move != null) {
-        final lastMove = LastMoveAnnotation(turn: node.move!.col);
+        final lastMove = lastMoveMainlineAnnotationFunc(node);
         _annotations = _annotations.add(node.move!.p, lastMove);
       }
     } else {
