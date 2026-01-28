@@ -198,7 +198,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
       final fileName = res.suggestedFilename();
 
       if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-        final savePath = await FilePicker.saveFile(
+        final savePath = await FilePicker.platform.saveFile(
           fileName: fileName,
           initialDirectory: context.settings.getSaveDirectory(),
         );
