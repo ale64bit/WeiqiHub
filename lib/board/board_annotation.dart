@@ -221,8 +221,9 @@ class _SquareAnnotationPainter extends CustomPainter {
 
 class LastMoveAnnotation extends BoardAnnotation {
   final wq.Color turn;
+  final Color? innerColor;
 
-  const LastMoveAnnotation({super.key, required this.turn});
+  const LastMoveAnnotation({super.key, required this.turn, this.innerColor});
 
   @override
   String get annotationKey => 'lastmove';
@@ -231,22 +232,32 @@ class LastMoveAnnotation extends BoardAnnotation {
   Widget build(BuildContext context) {
     return CustomPaint(
       painter: _LastMoveAnnotationPainter(
-          color: switch (turn) {
-        wq.Color.black => Colors.white,
-        wq.Color.white => Colors.black,
-      }),
+        color: switch (turn) {
+          wq.Color.black => Colors.white,
+          wq.Color.white => Colors.black,
+        },
+        innerColor: innerColor,
+      ),
     );
   }
 }
 
 class _LastMoveAnnotationPainter extends CustomPainter {
   final Color color;
+  final Color? innerColor;
 
-  const _LastMoveAnnotationPainter({required this.color});
+  const _LastMoveAnnotationPainter({required this.color, this.innerColor});
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
+    if (innerColor != null) {
+      final fillPaint = Paint()
+        ..style = PaintingStyle.fill
+        ..strokeWidth = size.width / 16
+        ..color = innerColor!;
+      canvas.drawCircle(center, size.width / 3.5, fillPaint);
+    }
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 16
@@ -255,7 +266,8 @@ class _LastMoveAnnotationPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_LastMoveAnnotationPainter old) => old.color != color;
+  bool shouldRepaint(_LastMoveAnnotationPainter old) =>
+      old.color != color || old.innerColor != innerColor;
 }
 
 class TerritoryAnnotation extends BoardAnnotation {
@@ -302,27 +314,19 @@ class _TerritoryAnnotationPainter extends CustomPainter {
 }
 
 class AnalysisAnnotation extends BoardAnnotation {
-  static final winrateLossBands = <(double, Color)>[
-    (1.0, Colors.lightBlueAccent),
-    (0.03, Colors.green),
-    (-0.01, Colors.lime),
-    (-0.03, Colors.amberAccent),
-    (-0.06, Colors.orange),
-    (-0.12, Colors.red),
-    (-0.24, Colors.purple),
-  ];
-
   final int order;
   final int visits;
-  final double winrateLoss;
+  final int maxVisits;
   final double pointLoss;
+  final bool actualMove;
 
   const AnalysisAnnotation({
     super.key,
     required this.order,
     required this.visits,
-    required this.winrateLoss,
+    required this.maxVisits,
     required this.pointLoss,
+    required this.actualMove,
   });
 
   @override
@@ -330,7 +334,7 @@ class AnalysisAnnotation extends BoardAnnotation {
 
   @override
   Widget build(BuildContext context) {
-    final annotationColor = _annotationColor().withAlpha(240);
+    final annotationColor = _annotationColor();
     final textColor = order == 0 ? Colors.pink : Colors.black;
     final text = RichText(
       textAlign: TextAlign.center,
@@ -356,14 +360,13 @@ class AnalysisAnnotation extends BoardAnnotation {
         CustomPaint(
           painter: _AnalysisAnnotationPainter(
             color: annotationColor,
-            borderColor:
-                HSVColor.fromColor(annotationColor).withValue(0.8).toColor(),
+            borderColor: actualMove ? Colors.black : _darken(annotationColor),
           ),
         ),
         FittedBox(
           fit: BoxFit.contain,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(12.0),
             child: text,
           ),
         ),
@@ -371,16 +374,19 @@ class AnalysisAnnotation extends BoardAnnotation {
     );
   }
 
+  Color _darken(Color col) => HSVColor.fromColor(col).withValue(0.8).toColor();
+
   Color _annotationColor() {
     if (order == 0) {
-      return winrateLossBands[0].$2;
+      return Colors.lightBlueAccent;
     }
-    for (final (loss, color) in winrateLossBands) {
-      if (winrateLoss >= loss) {
-        return color;
-      }
-    }
-    return winrateLossBands.last.$2;
+    final frac = visits / maxVisits;
+    return Color.from(
+      alpha: 0.8 + frac / 8,
+      red: 1.0 - frac,
+      green: 0.6 + frac / 3,
+      blue: 0,
+    );
   }
 }
 

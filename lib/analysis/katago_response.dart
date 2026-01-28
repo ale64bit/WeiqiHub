@@ -53,10 +53,9 @@ double pointLoss(RootInfo root, MoveInfo move) => switch (root.currentPlayer) {
       wq.Color.white => root.scoreLead - move.scoreLead,
     };
 
-double winrateLoss(RootInfo root, MoveInfo move) =>
-    switch (root.currentPlayer) {
-      wq.Color.black => move.winRate - root.winRate,
-      wq.Color.white => root.winRate - move.winRate,
+double winrateLoss(wq.Color turn, double from, double to) => switch (turn) {
+      wq.Color.black => to - from,
+      wq.Color.white => from - to,
     };
 
 class KataGoResponse {
