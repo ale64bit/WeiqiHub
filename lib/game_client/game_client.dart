@@ -4,6 +4,7 @@ import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/game_client/game_result.dart';
+import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/game_client/server_features.dart';
 import 'package:wqhub/game_client/server_info.dart';
 import 'package:wqhub/game_client/user_info.dart';
@@ -15,7 +16,9 @@ class ReadyInfo {}
 
 class GameSummary {
   final String id;
+  final Rules rules;
   final int boardSize;
+  final double komi;
   final UserInfo white;
   final UserInfo black;
   final DateTime dateTime;
@@ -23,7 +26,9 @@ class GameSummary {
 
   GameSummary(
       {required this.id,
+      required this.rules,
       required this.boardSize,
+      required this.komi,
       required this.white,
       required this.black,
       required this.dateTime,

@@ -159,7 +159,9 @@ class TestGameClient extends GameClient {
   Future<List<GameSummary>> listGames() => Future.value([
         GameSummary(
           id: 'gid1',
+          rules: Rules.chinese,
           boardSize: 19,
+          komi: 7.5,
           white: UserInfo(
               userId: 'uid1',
               username: 'dog123',
@@ -179,7 +181,9 @@ class TestGameClient extends GameClient {
         ),
         GameSummary(
           id: 'gid2',
+          rules: Rules.japanese,
           boardSize: 19,
+          komi: 6.5,
           white: UserInfo(
               userId: 'uid1',
               username: '黃龍士',

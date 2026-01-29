@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -518,9 +519,17 @@ class OGSGameClient extends GameClient {
       final List<dynamic> results = data['results'] ?? [];
 
       return results.map<GameSummary>((gameData) {
+        _logger.fine('gameData: ${jsonEncode(gameData)}');
         // Parse basic game info
         final gameId = gameData['id'].toString();
+        final rules = switch (gameData['rules'] as String?) {
+          'chinese' => Rules.chinese,
+          'japanese' => Rules.japanese,
+          'korean' => Rules.korean,
+          _ => Rules.japanese,
+        };
         final boardSize = gameData['width'] as int? ?? 19;
+        final komi = double.parse(gameData['komi'] as String);
 
         // Parse dates
         final endedStr = gameData['ended'] as String?;
@@ -567,7 +576,9 @@ class OGSGameClient extends GameClient {
 
         return GameSummary(
           id: gameId,
+          rules: rules,
           boardSize: boardSize,
+          komi: komi,
           white: whitePlayer,
           black: blackPlayer,
           dateTime: dateTime,

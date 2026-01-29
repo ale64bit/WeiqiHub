@@ -13,7 +13,6 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
-import 'package:wqhub/game_client/rules.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/game_navigation_bar.dart';
 import 'package:wqhub/play/player_card.dart';
@@ -253,8 +252,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
           for (final p in e.value) (col: e.key, p: p)
       ],
       moves: moves.reversed.toList(),
-      rules: Rules.chinese, // TODO should come from summary or record
-      komi: 7.5, // TODO should come from summary or record
+      rules: widget.summary.rules,
+      komi: widget.summary.komi,
       boardSize: _boardSize,
       maxVisits: maxVisits,
       overrideSettings: {},
@@ -278,8 +277,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
       ],
       analyzeTurns: List.generate(widget.record.moves.length + 1, (i) => i),
       moves: widget.record.moves,
-      rules: Rules.chinese, // TODO should come from summary or record
-      komi: 7.5, // TODO should come from summary or record
+      rules: widget.summary.rules,
+      komi: widget.summary.komi,
       boardSize: _boardSize,
       maxVisits: maxVisits,
       overrideSettings: {},
