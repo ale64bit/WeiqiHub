@@ -132,7 +132,9 @@ class AnnotatedGameTree<T> extends GameTree<T> {
       final diff = _variationStack.removeLast();
       _annotations = _applyAnnotationDiff(
           annotations, (added: diff.removed, removed: diff.added));
-      if (prevNode.move != null) node.prune(prevNode.move!);
+      if (prevNode.move != null && node.next != prevNode) {
+        node.prune(prevNode.move!);
+      }
     }
 
     return node;

@@ -133,6 +133,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
           stones: _gameTree.stones,
           annotations: _analysisAnnotations(),
           confirmTap: context.settings.confirmMoves,
+          onPointHovered: _onPointHovered,
         );
       },
     );
@@ -143,7 +144,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       color: wq.Color.black,
       captureCount: _gameTree.curNode.captureCountWhite,
       timeDisplay: SizedBox(),
-      alignment: PlayerCardAlignment.right,
+      alignment: PlayerCardAlignment.left,
     );
     final whitePlayerCard = PlayerCard(
       key: ValueKey('player-card-white'),
@@ -151,7 +152,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       color: wq.Color.white,
       captureCount: _gameTree.curNode.captureCountBlack,
       timeDisplay: SizedBox(),
-      alignment: PlayerCardAlignment.left,
+      alignment: PlayerCardAlignment.right,
     );
 
     return Scaffold(
@@ -173,9 +174,9 @@ class _AnalysisPageState extends State<AnalysisPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   spacing: 8.0,
                   children: [
-                    Expanded(child: whitePlayerCard),
-                    const Text('VS'),
                     Expanded(child: blackPlayerCard),
+                    const Text('VS'),
+                    Expanded(child: whitePlayerCard),
                   ],
                 ),
                 Expanded(
@@ -204,6 +205,32 @@ class _AnalysisPageState extends State<AnalysisPage> {
         ),
       ),
     );
+  }
+
+  void _onGoMainline() {
+    setState(() {
+      while (_gameTree.isVariation) {
+        _gameTree.undo();
+        _turn = _turn.opposite;
+      }
+    });
+  }
+
+  void _onPointHovered(wq.Point? p) {
+    _onGoMainline();
+    if (p == null) return;
+    final node = _gameTree.curNode;
+    if (node.metadata == null) return;
+    final idx = node.metadata!.moveInfos.indexWhere((info) => info.move == p);
+    if (idx < 0) return;
+    final info = node.metadata!.moveInfos[idx];
+    setState(() {
+      for (final p in info.pv) {
+        final mv = (col: _turn, p: p!);
+        _gameTree.moveAnnotated(mv, mode: AnnotationMode.variation);
+        _turn = _turn.opposite;
+      }
+    });
   }
 
 /*
@@ -260,6 +287,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     respStream.forEach((resp) {
       if (context.mounted) {
         setState(() {
+          _pruneCandidateMoves(resp);
           final x = resp.turnNumber.toDouble();
           _mainlineNodes[resp.turnNumber].metadata = resp;
           _winrateSpots[resp.turnNumber] =
@@ -276,31 +304,47 @@ class _AnalysisPageState extends State<AnalysisPage> {
     if (analysis == null) {
       return annotations;
     }
-    // Sort by number of visits
-    analysis.moveInfos.sort((x, y) => (x.visits == y.visits)
-        ? x.order.compareTo(y.order)
-        : y.visits.compareTo(x.visits));
-    // Pick the N most visited points
-    for (int i = 0; i < analysis.moveInfos.length; ++i) {
-      final info = analysis.moveInfos[i];
-      if (info.move == null) continue;
+    for (final info in analysis.moveInfos) {
       final p = info.move!;
       final mv = (p: p, col: _turn);
-      final isTopCandidate = i < min(10, analysis.moveInfos.length);
       final isActualMove = _gameTree.curNode.child(mv) != null;
-      if (isTopCandidate || isActualMove) {
-        annotations = annotations.add(
-            info.move!,
-            AnalysisAnnotation(
-              order: info.order,
-              visits: info.visits,
-              maxVisits: maxVisits,
-              pointLoss: pointLoss(analysis.rootInfo, info),
-              actualMove: isActualMove,
-            ));
-      }
+      annotations = annotations.add(
+          info.move!,
+          AnalysisAnnotation(
+            order: info.order,
+            visits: info.visits,
+            maxVisits: maxVisits,
+            pointLoss: pointLoss(analysis.rootInfo, info),
+            actualMove: isActualMove,
+          ));
     }
     return annotations;
+  }
+
+  void _removeMoveInfo(KataGoResponse resp, int i) {
+    final last = resp.moveInfos.removeLast();
+    if (i < resp.moveInfos.length - 1) {
+      resp.moveInfos[i] = last;
+    }
+  }
+
+  void _pruneCandidateMoves(KataGoResponse resp) {
+    for (int i = 0; i < resp.moveInfos.length;) {
+      final info = resp.moveInfos[i];
+      if (info.move == null) {
+        _removeMoveInfo(resp, i);
+        continue;
+      }
+      final p = info.move!;
+      final mv = (p: p, col: _turn);
+      final isTopCandidate = info.order < 10;
+      final isActualMove = _gameTree.curNode.child(mv) != null;
+      if (!(isTopCandidate || isActualMove)) {
+        _removeMoveInfo(resp, i);
+      } else {
+        ++i;
+      }
+    }
   }
 
   static Color _lastMoveAnnotationColor(double winrateLoss) {
