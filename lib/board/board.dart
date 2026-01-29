@@ -46,15 +46,17 @@ class Board extends StatefulWidget with BoardGeometry {
 }
 
 class _BoardState extends State<Board> {
+  wq.Point? lastHoverEmptyPoint;
   wq.Point? lastHoverPoint;
   wq.Point? confirmPoint;
 
   @override
   void didUpdateWidget(covariant Board oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (lastHoverPoint != null && widget.stones.containsKey(lastHoverPoint)) {
+    if (lastHoverEmptyPoint != null &&
+        widget.stones.containsKey(lastHoverEmptyPoint)) {
       setState(() {
-        lastHoverPoint = null;
+        lastHoverEmptyPoint = null;
       });
     }
     if (confirmPoint != null && widget.stones.containsKey(confirmPoint)) {
@@ -124,12 +126,12 @@ class _BoardState extends State<Board> {
             child: e.value,
           ),
       // Highlighted point marker
-      if (widget.turn != null && lastHoverPoint != null)
+      if (widget.turn != null && lastHoverEmptyPoint != null)
         PositionedPoint(
-          key: _keyHoverStone(widget.turn!, lastHoverPoint!),
+          key: _keyHoverStone(widget.turn!, lastHoverEmptyPoint!),
           size: widget.size,
           settings: widget.settings,
-          point: lastHoverPoint!,
+          point: lastHoverEmptyPoint!,
           child: Container(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -302,26 +304,33 @@ class _BoardState extends State<Board> {
 
   void _onPointerHover(PointerHoverEvent event) {
     final p = widget.offsetPoint(event.localPosition);
-    if (p == lastHoverPoint || p == confirmPoint) return;
+    if (p != lastHoverPoint) {
+      lastHoverPoint = p;
+      widget.onPointHovered?.call(lastHoverPoint);
+    }
+    if (p == lastHoverEmptyPoint || p == confirmPoint) return;
     if (p != null && widget.stones.containsKey(p)) {
-      if (lastHoverPoint != null) {
+      if (lastHoverEmptyPoint != null) {
         setState(() {
-          lastHoverPoint = null;
+          lastHoverEmptyPoint = null;
         });
       }
       return;
     }
-    widget.onPointHovered?.call(p);
     setState(() {
-      lastHoverPoint = p;
+      lastHoverEmptyPoint = p;
     });
   }
 
   void _onPointerExit(PointerExitEvent event) {
-    if (lastHoverPoint != null) {
+    if (lastHoverEmptyPoint != null) {
       setState(() {
-        lastHoverPoint = null;
+        lastHoverEmptyPoint = null;
       });
+    }
+    if (lastHoverPoint != null) {
+      lastHoverPoint = null;
+      widget.onPointHovered?.call(lastHoverPoint);
     }
   }
 
