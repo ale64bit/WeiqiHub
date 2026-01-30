@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:async';
 
 import 'package:extension_type_unions/extension_type_unions.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
@@ -26,6 +25,41 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   IMapOfSets<wq.Point, Annotation>? continuationAnnotations;
   var upsolveMode = UpsolveMode.auto;
 
+  String? _notificationMessage;
+  Color? _notificationColor;
+  IconData? _notificationIcon;
+
+  void Function()? _onNotificationChanged;
+
+  void enableSidebarNotifications(void Function() onNotificationChanged) {
+    _onNotificationChanged = onNotificationChanged;
+  }
+
+  String? get notificationMessage => _notificationMessage;
+  Color? get notificationColor => _notificationColor;
+  IconData? get notificationIcon => _notificationIcon;
+
+  void _clearNotificationState() {
+    _notificationMessage = null;
+    _notificationColor = null;
+    _notificationIcon = null;
+  }
+
+  void _setNotificationState(String message, Color color, IconData icon) {
+    setState(() {
+      _notificationMessage = message;
+      _notificationColor = color;
+      _notificationIcon = icon;
+    });
+    Future.delayed(Duration(seconds: 1), () {
+      if (mounted) {
+        setState(() {
+          _clearNotificationState();
+        });
+      }
+    });
+  }
+
   Task get currentTask;
   void onSolveStatus(VariationStatus status);
 
@@ -43,6 +77,9 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
     turn = currentTask.first;
     solveStatusNotified = false;
     upsolveMode = UpsolveMode.auto;
+    if (_onNotificationChanged == null) {
+      _clearNotificationState();
+    }
   }
 
   void onResetTask() {
@@ -192,136 +229,77 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
 
   void notifySolveStatus(VariationStatus status, bool wideLayout) {
     final loc = AppLocalizations.of(context)!;
-    if (wideLayout) {
-      // Show as overlay in sidebar area
-      final overlay = Overlay.of(context);
-      final renderBox = context.findRenderObject() as RenderBox;
-      final size = renderBox.size;
-      final sidebarSize =
-          min(size.longestSide - size.shortestSide, size.width / 3);
+    if (_onNotificationChanged != null && wideLayout) {
+      final message = status.toLocalizedString(loc);
+      final color =
+          status == VariationStatus.correct ? Colors.green : Colors.red;
+      final icon = status == VariationStatus.correct
+          ? Icons.check_circle
+          : Icons.sentiment_very_dissatisfied;
 
-      final entry = OverlayEntry(
-        builder: (context) => Positioned(
-          right: 1,
-          bottom: 50,
-          width: sidebarSize,
-          child: Material(
-            color: Colors.transparent,
-            child: Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: status == VariationStatus.correct
-                    ? Colors.green
-                    : Colors.red,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 16,
-                children: [
-                  Icon(
-                      status == VariationStatus.correct
-                          ? Icons.check_circle
-                          : Icons.sentiment_very_dissatisfied,
-                      color: Colors.white),
-                  Text(status.toLocalizedString(loc),
-                      style: TextTheme.of(context)
-                          .titleMedium
-                          ?.copyWith(color: Colors.white)),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-
-      overlay.insert(entry);
-      Timer(Duration(seconds: 1), () => entry.remove());
-    } else {
-      // Original behavior for narrow layout
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 16,
-          children: [
-            Icon(status == VariationStatus.correct
-                ? Icons.check_circle
-                : Icons.sentiment_very_dissatisfied),
-            Text(status.toLocalizedString(loc),
-                style: TextTheme.of(context).titleMedium),
-          ],
-        ),
-        duration: Duration(seconds: 1),
-        backgroundColor:
-            status == VariationStatus.correct ? Colors.green : Colors.red,
-        showCloseIcon: true,
-      ));
+      _setNotificationState(message, color, icon);
+      _onNotificationChanged!(); // Notify parent to rebuild
+      return;
     }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: 16,
+        children: [
+          Icon(status == VariationStatus.correct
+              ? Icons.check_circle
+              : Icons.sentiment_very_dissatisfied),
+          Text(status.toLocalizedString(loc),
+              style: TextTheme.of(context).titleMedium),
+        ],
+      ),
+      behavior: wideLayout ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
+      margin: _snackBarMargin(wideLayout),
+      duration: Duration(seconds: 1),
+      backgroundColor:
+          status == VariationStatus.correct ? Colors.green : Colors.red,
+      showCloseIcon: true,
+    ));
   }
 
   void notifySolveTimeout(bool wideLayout) {
     final loc = AppLocalizations.of(context)!;
-
-    if (wideLayout) {
-      // Show as overlay in sidebar area
-      final overlay = Overlay.of(context);
-      final renderBox = context.findRenderObject() as RenderBox;
-      final size = renderBox.size;
-      final sidebarSize =
-          min(size.longestSide - size.shortestSide, size.width / 3);
-
-      final entry = OverlayEntry(
-        builder: (context) => Positioned(
-          right: 1,
-          bottom: 50,
-          width: sidebarSize,
-          child: Material(
-            color: Colors.transparent,
-            child: Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 16,
-                children: [
-                  Icon(Icons.timer, color: Colors.white),
-                  Text(loc.taskTimeout,
-                      style: TextTheme.of(context)
-                          .titleMedium
-                          ?.copyWith(color: Colors.white)),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-
-      overlay.insert(entry);
-      Timer(Duration(seconds: 1), () => entry.remove());
-    } else {
-      // Original behavior for narrow layout
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 16,
-          children: [
-            Icon(Icons.timer),
-            Text(loc.taskTimeout, style: TextTheme.of(context).titleMedium),
-          ],
-        ),
-        duration: Duration(seconds: 1),
-        backgroundColor: Colors.red,
-        showCloseIcon: true,
-      ));
+    if (_onNotificationChanged != null && wideLayout) {
+      _setNotificationState(loc.taskTimeout, Colors.red, Icons.timer);
+      _onNotificationChanged!(); // Notify parent to rebuild
+      return;
     }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: 16,
+        children: [
+          Icon(Icons.timer),
+          Text(loc.taskTimeout, style: TextTheme.of(context).titleMedium),
+        ],
+      ),
+      behavior: wideLayout ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
+      margin: _snackBarMargin(wideLayout),
+      duration: Duration(seconds: 1),
+      backgroundColor: Colors.red,
+      showCloseIcon: true,
+    ));
   }
 
   void notifyTaskLinkCopied() {
     final loc = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(loc.msgTaskLinkCopied)));
+  }
+
+  EdgeInsetsGeometry? _snackBarMargin(bool wideLayout) {
+    if (wideLayout) {
+      final widgetSize = MediaQuery.sizeOf(context);
+      final sidebarSize = min(widgetSize.longestSide - widgetSize.shortestSide,
+          widgetSize.width / 3);
+      return EdgeInsets.only(right: sidebarSize);
+    } else {
+      return null;
+    }
   }
 }

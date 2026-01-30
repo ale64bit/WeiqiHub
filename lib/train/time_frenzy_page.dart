@@ -48,6 +48,9 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
   void initState() {
     super.initState();
     _stopwatch.start();
+    enableSidebarNotifications(() {
+      if (mounted) setState(() {});
+    });
   }
 
   @override
@@ -100,6 +103,9 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
                 taskNumber: _taskNumber,
                 color: widget.taskSource.task.first,
                 timeDisplay: timeDisplay,
+                notificationMessage: notificationMessage,
+                notificationColor: notificationColor,
+                notificationIcon: notificationIcon,
               ),
             ],
           ),
@@ -198,12 +204,19 @@ class _SideBar extends StatelessWidget {
   final int taskNumber;
   final wq.Color color;
   final Widget timeDisplay;
+  final String? notificationMessage;
+  final Color? notificationColor;
+  final IconData? notificationIcon;
 
-  const _SideBar(
-      {required this.taskTitle,
-      required this.taskNumber,
-      required this.color,
-      required this.timeDisplay});
+  const _SideBar({
+    required this.taskTitle,
+    required this.taskNumber,
+    required this.color,
+    required this.timeDisplay,
+    this.notificationMessage,
+    this.notificationColor,
+    this.notificationIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -251,6 +264,33 @@ class _SideBar extends StatelessWidget {
               ],
             ),
             Expanded(child: Container()),
+            if (notificationMessage != null) ...[
+              SizedBox(height: 16),
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: notificationColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 8,
+                  children: [
+                    Icon(notificationIcon, color: Colors.white),
+                    Flexible(
+                      child: Text(
+                        notificationMessage!,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             timeDisplay,
           ],
         ),
