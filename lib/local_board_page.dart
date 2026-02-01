@@ -106,17 +106,12 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
       appBar: AppBar(
         title: Text(loc.board),
         actions: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                onPressed: _onPassClicked,
-                icon: const Icon(Icons.local_parking),
-                tooltip: loc.pass,
-              ),
-              const SizedBox(width: 12),
-            ],
+          IconButton(
+            onPressed: _onPassClicked,
+            icon: const Icon(Icons.local_parking),
+            tooltip: loc.pass,
           ),
+          const SizedBox(width: 12),
           Switch(
             thumbIcon: variationThumbIcon,
             value: _variation,
