@@ -1,25 +1,52 @@
-# OGS (Online Go Server) Client
+# OGS (Online Go Server)
 
-This directory contains the implementation of a GameClient for Online Go Server (online-go.com).
+Client implementation for [online-go.com](https://online-go.com).
 
-## Files
+## Overview
 
-- `ogs_game_client.dart` - Main client implementation that handles authentication, game creation, and API communication
-- `ogs_game.dart` - Game implementation that handles real-time game state through WebSocket connections (not yet implemented)
+WeiqiHub interacts with OGS via the `GameClient` and `Game` interfaces.  OGS implementations are:
 
-## Features
+- `OGSGameClient`
+- `OGSGame`
 
-- Authentication with OGS using username/password
-- Game history browsing and sgf download
+OGS exposes a REST API and a WebSocket interface.  The OGS module uses HttpClient and OGSWebSocketManager to interact with these APIs.
 
-## API Endpoints
+## Testing
 
-- Authentication: `POST /api/v0/login`
-- CSRF Token: `GET /api/v1/ui/config`
-- Game List: `GET /api/v1/players/{user_id}/games/`
-- Game SGF: `GET /api/v1/games/{game_id}/sgf`
+### Unit Tests
 
-## TODO
+New code should have unit tests covering the happy path and key error scenarios.
+Unit tests live in `test/` and run with:
 
-- Implement gameplay
-- Implement automatch
+```bash
+flutter test --exclude-tags=integration
+```
+
+### Integration Tests
+
+Integration tests run against the real OGS beta server. You'll need a test account
+on [beta.online-go.com](https://beta.online-go.com).
+
+```bash
+OGS_TEST_USERNAME=your_username OGS_TEST_PASSWORD=your_password flutter test --tags=integration
+```
+
+### Manual Testing
+
+For interactive testing during development:
+
+1. Create a test account on [beta.online-go.com](https://beta.online-go.com)
+2. Build and run the app
+3. On the "Play" tab, select OGS
+3. Log in with your test account
+4. Use a second browser/device logged into beta.online-go.com to act as an opponent
+
+> **Note:** Use the beta server for development to avoid disrupting real games or players.  This is done automatically for non-release builds.
+
+## External References
+
+When adding new features for WeiqiHub, you'll likely want to use the official
+web client as reference.
+
+- [OGS source](https://github.com/online-go/online-go.com) — No official API docs; read their code
+- [Goban library](https://github.com/online-go/goban) — OGS's game logic reference
