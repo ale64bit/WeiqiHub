@@ -70,6 +70,7 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
   @override
   void initState() {
     super.initState();
+    _stopwatch.start();
     // NEW: Enable sidebar notifications for this page
     enableSidebarNotifications(() {
       if (mounted) setState(() {}); // Rebuild when notification changes
