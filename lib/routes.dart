@@ -80,7 +80,8 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
       return _mpr(settings, LanguagePage(rebuildApp: args.rebuildApp));
     case SingleTaskPage.routeName:
       final args = settings.arguments as SingleTaskRouteArguments;
-      return _mpr(settings, SingleTaskPage(task: args.task));
+      return _mpr(settings,
+          SingleTaskPage(task: args.task, onHideTask: args.onHideTask));
     case TimeFrenzyPage.routeName:
       final args = settings.arguments as TimeFrenzyRouteArguments;
       return _mprNoPop(settings, TimeFrenzyPage(taskSource: args.taskSource));

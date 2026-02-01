@@ -96,6 +96,7 @@
   "helpDialogGradingExam": "- El examen de rango consiste de 10 problemas y tienes 45 segundos para cada problema.\n\n- Apruebas el examen si resuelves 8 o más problemas correctamente (porcentaje de éxito de 80%).\n\n- Si apruebas el examen de un rango, desbloqueas el examen del rango siguiente.",
   "helpDialogRankedMode": "- Resuelve problemas sin límite de tiempo.\n\n- La dificultad de los problemas aumenta de acuerdo a qué tan rápido los resuelves.\n\n- Concéntrate en resolver problemas correctamente y alcanzar el rango más alto posible.",
   "helpDialogTimeFrenzy": "- Tienes 3 minutos para resolver tantos problemas como sea posible.\n\n- La dificultad de los problemas aumenta a medida que los resuelves.\n\n- Si fallas 3 problemas, el contrarreloj termina.",
+  "hideTask": "Quitar de errores",
   "home": "Inicio",
   "komi": "Komi",
   "language": "Idioma",

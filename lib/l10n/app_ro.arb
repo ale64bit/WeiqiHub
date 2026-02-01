@@ -96,6 +96,7 @@
   "helpDialogGradingExam": "- Examenele de clasificare sunt seturi de 10 sarcini și ai 45 de secunde pentru fiecare.\n\n- Promovezi examenul dacă rezolvi corect 8 sau mai multe (rata de succes 80%).\n\n- Promovarea examenului pentru un anumit rang deblochează examenul pentru următorul rang.",
   "helpDialogRankedMode": "- Rezolvă sarcini fără limită de timp.\n\n- Dificultatea sarcinilor crește în funcție de cât de repede le rezolvi.\n\n- Concentrează-te pe a rezolva corect și atinge cel mai înalt rang posibil.",
   "helpDialogTimeFrenzy": "- Ai 3 minute pentru a rezolva cât mai multe sarcini posibil.\n\n- Sarcinile devin tot mai dificile pe măsură ce le rezolvi.\n\n- Dacă faci 3 greșeli, ești eliminat.",
+  "hideTask": "Elimină din greșeli",
   "home": "Acasă",
   "komi": "Komi",
   "language": "Limbă",

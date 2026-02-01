@@ -103,6 +103,7 @@
   "helpDialogGradingExam": "- Grading exams are sets of 10 tasks and you have 45 seconds per task.\n\n- You pass the exam if you solve 8 or more correctly (80% success rate).\n\n- Passing the exam for a given rank unlocks the exam for the next rank.",
   "helpDialogRankedMode": "- Solve tasks without a time limit.\n\n- Task difficulty increases according to how fast you solve them.\n\n- Focus on solving correctly and reach the highest rank possible.",
   "helpDialogTimeFrenzy": "- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.",
+  "hideTask": "Remove from mistakes",
   "home": "Home",
   "komi": "Komi",
   "language": "Language",

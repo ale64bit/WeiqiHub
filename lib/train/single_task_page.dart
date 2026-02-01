@@ -16,16 +16,22 @@ import 'package:wqhub/wq/wq.dart' as wq;
 
 class SingleTaskRouteArguments {
   final Task task;
+  final VoidCallback? onHideTask;
 
-  const SingleTaskRouteArguments({required this.task});
+  const SingleTaskRouteArguments({required this.task, this.onHideTask});
 }
 
 class SingleTaskPage extends StatefulWidget {
   static const routeName = '/task';
 
-  const SingleTaskPage({super.key, required this.task});
+  const SingleTaskPage({
+    super.key,
+    required this.task,
+    this.onHideTask,
+  });
 
   final Task task;
+  final VoidCallback? onHideTask;
 
   @override
   State<SingleTaskPage> createState() => _SingleTaskPageState();
@@ -101,6 +107,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
                 onResetTask: onResetTask,
                 onPreviousMove: onPreviousMove,
                 onNextMove: onNextMove,
+                onHideTask: widget.onHideTask,
                 onUpdateUpsolveMode: onUpdateUpsolveMode,
                 timeDisplay: Text(widget.task.ref.uri()),
               ),
@@ -139,6 +146,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
             onResetTask: onResetTask,
             onPreviousMove: onPreviousMove,
             onNextMove: onNextMove,
+            onHideTask: widget.onHideTask,
             onUpdateUpsolveMode: onUpdateUpsolveMode,
           ),
         ),
@@ -161,6 +169,7 @@ class _SideBar extends StatelessWidget {
   final Function()? onShareTask;
   final Function()? onCopySgf;
   final Function()? onResetTask;
+  final Function()? onHideTask;
   final Function() onPreviousMove;
   final Function() onNextMove;
   final Function(UpsolveMode) onUpdateUpsolveMode;
@@ -174,6 +183,7 @@ class _SideBar extends StatelessWidget {
     required this.onShareTask,
     this.onCopySgf,
     required this.onResetTask,
+    this.onHideTask,
     required this.onPreviousMove,
     required this.onNextMove,
     required this.onUpdateUpsolveMode,
@@ -215,6 +225,7 @@ class _SideBar extends StatelessWidget {
               onShareTask: onShareTask,
               onCopySgf: onCopySgf,
               onResetTask: onResetTask,
+              onHideTask: onHideTask,
               onPreviousMove: onPreviousMove,
               onNextMove: onNextMove,
               onUpdateUpsolveMode: onUpdateUpsolveMode,

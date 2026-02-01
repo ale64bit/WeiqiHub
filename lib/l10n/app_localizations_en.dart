@@ -277,6 +277,9 @@ class AppLocalizationsEn extends AppLocalizations {
       '- You have 3 minutes to solve as many tasks as possible.\n\n- Tasks get increasingly difficult as you solve them.\n\n- If you make 3 mistakes, you are out.';
 
   @override
+  String get hideTask => 'Remove from mistakes';
+
+  @override
   String get home => 'Home';
 
   @override

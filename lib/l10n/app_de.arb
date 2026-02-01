@@ -96,6 +96,7 @@
   "helpDialogGradingExam": "- Einstufungsprüfung bestehen aus 10 Aufgaben, und du hast 45 Sekunden pro Aufgabe.\n\n- Du bestehst die Prüfung, wenn du 8 oder mehr Aufgaben korrekt löst (80 % Erfolgsquote).\n\n- Das Bestehen der Prüfung für einen bestimmten Rang schaltet die Prüfung für den nächsten Rang frei.",
   "helpDialogRankedMode": "- Löse Aufgaben ohne Zeitlimit.\n\n- Die Schwierigkeit der Aufgaben steigt entsprechend deiner Lösungs­geschwindigkeit.\n\n- Konzentriere dich darauf, korrekt zu lösen und den höchstmöglichen Rang zu erreichen.",
   "helpDialogTimeFrenzy": "- Du hast 3 Minuten Zeit, um so viele Aufgaben wie möglich zu lösen.\n\n- Die Aufgaben werden zunehmend schwieriger, je mehr du löst.\n\n- Wenn du 3 Fehler machst, bist du raus.",
+  "hideTask": "Aus Fehlern entfernen", 
   "home": "Startseite",
   "komi": "Komi",
   "language": "Sprache",

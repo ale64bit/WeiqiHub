@@ -9,6 +9,7 @@ class TaskActionBar extends StatelessWidget {
   final Function()? onShowSolution;
   final Function()? onShareTask;
   final Function()? onCopySgf;
+  final Function()? onHideTask;
   final Function()? onResetTask;
   final Function()? onNextTask;
   final Function() onPreviousMove;
@@ -21,6 +22,7 @@ class TaskActionBar extends StatelessWidget {
     this.onShowSolution,
     this.onShareTask,
     this.onCopySgf,
+    this.onHideTask,
     this.onResetTask,
     this.onNextTask,
     required this.onPreviousMove,
@@ -80,6 +82,18 @@ class TaskActionBar extends StatelessWidget {
               },
             ),
           ),
+          if (onHideTask != null)
+            PopupMenuItem(
+              onTap: onHideTask,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 8.0,
+                children: <Widget>[
+                  Icon(Icons.visibility_off),
+                  Text(loc.hideTask),
+                ],
+              ),
+            ),
         ],
       ),
     );
