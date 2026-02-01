@@ -106,6 +106,12 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
       appBar: AppBar(
         title: Text(loc.board),
         actions: <Widget>[
+          IconButton(
+            onPressed: _onPassClicked,
+            icon: const Icon(Icons.local_parking),
+            tooltip: loc.pass,
+          ),
+          const SizedBox(width: 12),
           Switch(
             thumbIcon: variationThumbIcon,
             value: _variation,
@@ -165,6 +171,12 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
       });
       context.settings.pushLocalBoardMoves([p]);
     }
+  }
+
+  void _onPassClicked() {
+    setState(() {
+      _turn = _turn.opposite;
+    });
   }
 
   void _updateBoard(int size, int handicap) {
