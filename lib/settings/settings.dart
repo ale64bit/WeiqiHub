@@ -151,6 +151,11 @@ class Settings {
   set trackTimeFrenzyMistakes(bool val) =>
       prefs.setBool('$_behaviourKeyPrefix.track_time_frenzy_mistakes', val);
 
+  bool get autoNext => prefs.getBool('$_behaviourKeyPrefix.auto_next') ?? false;
+
+  set autoNext(bool val) =>
+      prefs.setBool('$_behaviourKeyPrefix.auto_next', val);
+
   // Sound
   double get soundStone => prefs.getDouble(_soundStoneKey) ?? 1.0;
   set soundStone(double val) => prefs.setDouble(_soundStoneKey, val).then((_) {

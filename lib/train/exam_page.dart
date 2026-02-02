@@ -249,6 +249,12 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
     }
 
     _completedTasks.add((currentTask.ref, status == VariationStatus.correct));
+
+    if (context.settings.autoNext) {
+      if (status == VariationStatus.correct) {
+        _onNext();
+      }
+    }
   }
 
   void _finishExam() {

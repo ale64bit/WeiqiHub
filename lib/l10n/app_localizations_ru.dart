@@ -49,6 +49,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get autoMatch => 'Автоподбор';
 
   @override
+  String get autoNext => 'Auto-next';
+
+  @override
+  String get autoNextDesc => 'Auto-next on exam pages if solved correctly';
+
+  @override
   String get avgRank => 'Средн. ранг';
 
   @override

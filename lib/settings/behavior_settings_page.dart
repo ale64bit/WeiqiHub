@@ -120,6 +120,17 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
               },
             ),
           ),
+          ListTile(
+            title: Text(loc.autoNext),
+            subtitle: Text(loc.autoNextDesc),
+            trailing: Switch(
+              value: context.settings.autoNext,
+              onChanged: (value) {
+                context.settings.autoNext = value;
+                setState(() {});
+              },
+            ),
+          ),
         ],
       ),
     );
