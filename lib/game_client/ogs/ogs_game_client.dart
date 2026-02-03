@@ -44,7 +44,7 @@ class OGSGameClient extends GameClient {
   late final OGSWebSocketManager _webSocketManager;
 
   OGSGameClient({required this.serverUrl, required this.aiServerUrl}) {
-    _httpClient = HttpClient(serverUrl: serverUrl, defaultApiVersion: 1);
+    _httpClient = HttpClient(serverUrl: serverUrl);
     _webSocketManager = OGSWebSocketManager(serverUrl: serverUrl);
 
     // Listen to WebSocket connection status
@@ -213,7 +213,6 @@ class OGSGameClient extends GameClient {
       final data = await _httpClient.getJson(
         '/termination-api/automatch-stats',
         queryParameters: {'ranks': ranksParam},
-        useApiPrefix: false,
       );
 
       final statsMap = <String, AutomatchPresetStats>{};
@@ -248,18 +247,18 @@ class OGSGameClient extends GameClient {
   Future<UserInfo> login(String username, String password) async {
     try {
       // First, get the CSRF token
-      final csrfData = await _httpClient.getJson('/ui/config');
+      final csrfData = await _httpClient.getJson('/api/v1/ui/config');
       final csrfToken = csrfData['csrf_token'] as String?;
       _httpClient.csrfToken = csrfToken;
 
       // Now attempt login
       final loginData = await _httpClient.postJson(
-          '/login',
-          {
-            'username': username,
-            'password': password,
-          },
-          apiVersion: 0);
+        '/api/v0/login',
+        {
+          'username': username,
+          'password': password,
+        },
+      );
 
       final userData = loginData['user'];
 
@@ -326,7 +325,7 @@ class OGSGameClient extends GameClient {
 
       // Query: all ongoing games where the user is a player and "time per move" is less than 1 hour
       final data = await _httpClient.getJson(
-        '/players/${userInfo.userId}/games/',
+        '/api/v1/players/${userInfo.userId}/games/',
         queryParameters: {
           'page_size': '10',
           'page': '1',
@@ -360,7 +359,7 @@ class OGSGameClient extends GameClient {
       throw Exception('Not logged in');
     }
 
-    final responseData = await _httpClient.getJson('/games/$gameId');
+    final responseData = await _httpClient.getJson('/api/v1/games/$gameId');
     final gameData = responseData['gamedata'] as Map<String, dynamic>;
 
     // Parse game information
@@ -507,7 +506,7 @@ class OGSGameClient extends GameClient {
       }
 
       final data = await _httpClient.getJson(
-        '/players/${userInfo.userId}/games/',
+        '/api/v1/players/${userInfo.userId}/games/',
         queryParameters: {
           'page_size': '50',
           'page': '1',
@@ -593,7 +592,7 @@ class OGSGameClient extends GameClient {
   @override
   Future<GameRecord> getGame(String gameId) async {
     try {
-      final sgfContent = await _httpClient.getText('/games/$gameId/sgf');
+      final sgfContent = await _httpClient.getText('/api/v1/games/$gameId/sgf');
       return GameRecord.fromSgf(sgfContent);
     } catch (e) {
       throw Exception('Failed to get game record: $e');

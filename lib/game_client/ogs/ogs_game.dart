@@ -64,8 +64,7 @@ class OGSGame extends Game {
   })  : _webSocketManager = webSocketManager,
         _myUserId = myUserId,
         _jwtToken = jwtToken,
-        _aiHttpClient =
-            HttpClient(serverUrl: aiServerUrl, defaultApiVersion: null),
+        _aiHttpClient = HttpClient(serverUrl: aiServerUrl),
         _freeHandicapPlacement = freeHandicapPlacement {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
@@ -650,7 +649,7 @@ class OGSGame extends Game {
     };
 
     try {
-      final responseData = await _aiHttpClient.postJson('/score', payload);
+      final responseData = await _aiHttpClient.postJson('/api/score', payload);
       _logger.fine('AI server response received for game $id');
       return responseData;
     } catch (e) {
