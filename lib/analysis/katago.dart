@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:wqhub/analysis/katago_request.dart';
 import 'package:wqhub/analysis/katago_response.dart';
+import 'package:wqhub/generated/katago.pb.dart' as katagopb;
 
 class TerminateRequest {
   final String id;
@@ -16,6 +17,12 @@ class TerminateRequest {
         'terminateId': terminateId,
         if (turnNumbers != null) 'turnNumbers': turnNumbers,
       };
+
+  katagopb.TerminateRequest toProto() => katagopb.TerminateRequest(
+        id: id,
+        terminateId: terminateId,
+        turnNumbers: turnNumbers,
+      );
 }
 
 class TerminateAllRequest {
@@ -29,6 +36,11 @@ class TerminateAllRequest {
         'action': 'terminate_all',
         if (turnNumbers != null) 'turnNumbers': turnNumbers,
       };
+
+  katagopb.TerminateAllRequest toProto() => katagopb.TerminateAllRequest(
+        id: id,
+        turnNumbers: turnNumbers,
+      );
 }
 
 class VersionResponse {
@@ -43,5 +55,4 @@ abstract interface class KataGo {
   Stream<KataGoResponse> query(KataGoRequest req);
   void terminate(TerminateRequest req);
   void terminateAll(TerminateAllRequest req);
-  void clearCache();
 }

@@ -93,6 +93,12 @@ class _AnalysisPageState extends State<AnalysisPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    widget.kataGo.terminateAll(TerminateAllRequest(id: 'AnalysisPage.dispose'));
+  }
+
+  @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final borderSize =
@@ -225,9 +231,11 @@ class _AnalysisPageState extends State<AnalysisPage> {
     final info = node.metadata!.moveInfos[idx];
     setState(() {
       for (final p in info.pv) {
-        final mv = (col: _turn, p: p!);
-        _gameTree.moveAnnotated(mv, mode: AnnotationMode.variation);
-        _turn = _turn.opposite;
+        if (p != null) {
+          final mv = (col: _turn, p: p);
+          _gameTree.moveAnnotated(mv, mode: AnnotationMode.variation);
+          _turn = _turn.opposite;
+        }
       }
     });
   }
@@ -290,7 +298,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
           final x = resp.turnNumber.toDouble();
           _mainlineNodes[resp.turnNumber].metadata = resp;
           _winrateSpots[resp.turnNumber] =
-              FlSpot(x, 100 * resp.rootInfo.winRate);
+              FlSpot(x, 100 * resp.rootInfo.winrate);
           _scoreLeadSpots[resp.turnNumber] = FlSpot(x, resp.rootInfo.scoreLead);
         });
       }
@@ -380,12 +388,12 @@ class _AnalysisPageState extends State<AnalysisPage> {
     for (final info in md.moveInfos) {
       if (info.move == p) {
         if (info.order == 0) return 1.0;
-        return winrateLoss(col, md.rootInfo.winRate, info.winRate);
+        return winrateLoss(col, md.rootInfo.winrate, info.winrate);
       }
     }
     // Otherwise, try to compute it from current node root rootInfo
     if (node.metadata == null) return null;
     return winrateLoss(
-        col, md.rootInfo.winRate, node.metadata!.rootInfo.winRate);
+        col, md.rootInfo.winrate, node.metadata!.rootInfo.winrate);
   }
 }

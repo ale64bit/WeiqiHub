@@ -94,14 +94,6 @@ class LocalKataGo implements KataGo {
     queries.clear();
   }
 
-  @override
-  void clearCache() {
-    input.writeln(jsonEncode({
-      'id': _randQueryId('clear_cache'),
-      'action': 'clear_cache',
-    }));
-  }
-
   void dispose() {
     terminateAll(TerminateAllRequest(
       id: _randQueryId('terminate_all'),
