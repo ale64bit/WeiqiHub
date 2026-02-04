@@ -161,14 +161,14 @@ class AnalysisSideBar extends StatelessWidget {
             if (analysis == null) CircularProgressIndicator(),
             if (analysis != null) ...[
               EvaluationBar(
-                winRate: analysis!.rootInfo.winRate,
+                winRate: analysis!.rootInfo.winrate,
                 scoreLead: analysis!.rootInfo.scoreLead,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                      '${loc.winrate}: ${(100 * analysis!.rootInfo.winRate).floor()}%',
+                      '${loc.winrate}: ${(100 * analysis!.rootInfo.winrate).floor()}%',
                       style: TextTheme.of(context).bodyLarge),
                   Text(
                       '${loc.scoreLead}: ${fmtScore(analysis!.rootInfo.scoreLead)}',
