@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:wqhub/game_client/time_state.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
@@ -8,15 +6,12 @@ import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/time_display.dart';
 import 'package:wqhub/train/collection_result_page.dart';
 import 'package:wqhub/train/task.dart';
-import 'package:wqhub/train/task_action_bar.dart';
 import 'package:wqhub/train/task_board.dart';
 import 'package:wqhub/train/task_collection.dart';
+import 'package:wqhub/train/task_side_bar.dart';
 import 'package:wqhub/train/task_solving_state_mixin.dart';
-import 'package:wqhub/train/upsolve_mode.dart';
-import 'package:wqhub/turn_icon.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
 import 'package:wqhub/train/variation_tree.dart';
-import 'package:wqhub/wq/wq.dart' as wq;
 
 class CollectionRouteArguments {
   final TaskCollection taskCollection;
@@ -102,83 +97,32 @@ class _CollectionPageState extends State<CollectionPage>
       voiceCountdown: false,
     );
 
-    if (wideLayout) {
-      return Scaffold(
-        body: Center(
-          child: Row(
-            children: <Widget>[
-              Expanded(child: boardArea),
-              VerticalDivider(thickness: 1, width: 8),
-              _SideBar(
-                taskTitle: taskTitle,
-                taskNumber: _taskNumber,
-                taskCount: widget.taskCollection.taskCount,
-                color: widget.taskSource.task.first,
-                status: solveStatus,
-                upsolveMode: upsolveMode,
-                onShowSolution: onShowContinuations,
-                onShareTask: onShareTask,
-                onCopySgf: onCopySgf,
-                onResetTask: onResetTask,
-                onNextTask: onNextTask,
-                onExit: _onExit,
-                onPreviousMove: onPreviousMove,
-                onNextMove: onNextMove,
-                onUpdateUpsolveMode: onUpdateUpsolveMode,
-                timeDisplay: timeDisplay,
-                notificationMessage: notificationMessage,
-                notificationColor: notificationColor,
-                notificationIcon: notificationIcon,
-              ),
-            ],
-          ),
+    return TaskSideBar(
+      taskTitle: taskTitle,
+      color: widget.taskSource.task.first,
+      upsolveMode: (solveStatus == null) ? null : upsolveMode,
+      onShowSolution: onShowContinuations,
+      onShareTask: onShareTask,
+      onCopySgf: onCopySgf,
+      onResetTask: onResetTask,
+      onNextTask: onNextTask,
+      onPreviousMove: onPreviousMove,
+      onNextMove: onNextMove,
+      onUpdateUpsolveMode: onUpdateUpsolveMode,
+      timeDisplay: (solveStatus == null) ? timeDisplay : null,
+      notificationMessage: notificationMessage,
+      notificationColor: notificationColor,
+      notificationIcon: notificationIcon,
+      leading: Center(
+          child: Text('$_taskNumber/${widget.taskCollection.taskCount}')),
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.cancel),
+          onPressed: _onExit,
         ),
-      );
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          leading: Center(
-              child: Text('$_taskNumber/${widget.taskCollection.taskCount}')),
-          title: Row(
-            spacing: 4,
-            children: <Widget>[
-              TurnIcon(color: widget.taskSource.task.first),
-              Expanded(
-                child: Text(
-                  taskTitle,
-                  softWrap: true,
-                  maxLines: 2,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.cancel),
-              onPressed: _onExit,
-            ),
-          ],
-        ),
-        body: boardArea,
-        bottomNavigationBar: BottomAppBar(
-          height: upsolveMode == UpsolveMode.auto ? 80.0 : 160.0,
-          child: (solveStatus == null)
-              ? Center(child: timeDisplay)
-              : TaskActionBar(
-                  upsolveMode: upsolveMode,
-                  onShowSolution: onShowContinuations,
-                  onShareTask: onShareTask,
-                  onCopySgf: onCopySgf,
-                  onResetTask: onResetTask,
-                  onNextTask: onNextTask,
-                  onPreviousMove: onPreviousMove,
-                  onNextMove: onNextMove,
-                  onUpdateUpsolveMode: onUpdateUpsolveMode,
-                ),
-        ),
-      );
-    }
+      ],
+      child: boardArea,
+    );
   }
 
   @override
@@ -268,130 +212,6 @@ class _CollectionPageState extends State<CollectionPage>
         totalTime: activeSession.duration,
         failedTasks: failedTasks,
         newBest: isNewBest,
-      ),
-    );
-  }
-}
-
-class _SideBar extends StatelessWidget {
-  final String taskTitle;
-  final int taskNumber;
-  final int taskCount;
-  final wq.Color color;
-  final VariationStatus? status;
-  final UpsolveMode upsolveMode;
-  final Function()? onShowSolution;
-  final Function()? onShareTask;
-  final Function()? onCopySgf;
-  final Function()? onResetTask;
-  final Function()? onNextTask;
-  final Function()? onExit;
-  final Function() onPreviousMove;
-  final Function() onNextMove;
-  final Function(UpsolveMode) onUpdateUpsolveMode;
-  final Widget timeDisplay;
-  final String? notificationMessage;
-  final Color? notificationColor;
-  final IconData? notificationIcon;
-
-  const _SideBar({
-    required this.taskTitle,
-    required this.taskNumber,
-    required this.taskCount,
-    required this.color,
-    this.status,
-    required this.upsolveMode,
-    required this.onShowSolution,
-    required this.onShareTask,
-    this.onCopySgf,
-    required this.onResetTask,
-    required this.onNextTask,
-    required this.onExit,
-    required this.onPreviousMove,
-    required this.onNextMove,
-    required this.onUpdateUpsolveMode,
-    required this.timeDisplay,
-    this.notificationMessage,
-    this.notificationColor,
-    this.notificationIcon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final widgetSize = MediaQuery.sizeOf(context);
-    final sidebarSize = min(
-        widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
-    return SizedBox(
-      width: sidebarSize,
-      child: Container(
-        padding: EdgeInsets.all(8),
-        color: ColorScheme.of(context).surfaceContainer,
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                    child: Text(
-                  '$taskNumber/$taskCount',
-                  textAlign: TextAlign.center,
-                )),
-                IconButton(
-                  icon: Icon(Icons.cancel),
-                  onPressed: onExit,
-                ),
-              ],
-            ),
-            Row(
-              spacing: 8,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TurnIcon(color: color),
-                Text(taskTitle),
-              ],
-            ),
-            Expanded(child: Container()),
-            if (notificationMessage != null) ...[
-              SizedBox(height: 16),
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: notificationColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 8,
-                  children: [
-                    Icon(notificationIcon, color: Colors.white),
-                    Flexible(
-                      child: Text(
-                        notificationMessage!,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            (status == null)
-                ? Center(child: timeDisplay)
-                : TaskActionBar(
-                    upsolveMode: upsolveMode,
-                    onShowSolution: onShowSolution,
-                    onShareTask: onShareTask,
-                    onCopySgf: onCopySgf,
-                    onNextTask: onNextTask,
-                    onResetTask: onResetTask,
-                    onPreviousMove: onPreviousMove,
-                    onNextMove: onNextMove,
-                    onUpdateUpsolveMode: onUpdateUpsolveMode,
-                  ),
-          ],
-        ),
       ),
     );
   }
