@@ -50,14 +50,13 @@ class AnalysisPage extends StatefulWidget {
 class _AnalysisPageState extends State<AnalysisPage> {
   static const maxVisits = 1000;
 
-  static final winrateLossBands = <(double, Color)>[
-    (-0.24, Colors.purple),
-    (-0.12, Colors.red),
-    (-0.06, Colors.orange),
-    (-0.03, Colors.amberAccent),
-    (-0.01, Colors.lime),
-    (0.01, Colors.green),
-    (1.0, Colors.lightBlueAccent),
+  static final pointLossBands = <(double, Color)>[
+    (-12, Colors.purple),
+    (-6, Colors.red),
+    (-3, Colors.orange),
+    (-1.5, Colors.lime),
+    (-0.5, Colors.lightGreen),
+    (0.5, Colors.green),
   ];
 
   var _boardSize = 19;
@@ -321,7 +320,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
             order: info.order,
             visits: info.visits,
             maxVisits: maxVisits,
-            pointLoss: pointLoss(analysis.rootInfo, info),
+            pointLoss: _pointLoss(analysis.rootInfo.currentPlayer,
+                analysis.rootInfo.scoreLead, info.scoreLead),
             actualMove: isActualMove,
           ));
     }
@@ -354,24 +354,22 @@ class _AnalysisPageState extends State<AnalysisPage> {
     }
   }
 
-  static Color _lastMoveAnnotationColor(double winrateLoss) {
-    for (final (loss, color) in winrateLossBands) {
-      if (winrateLoss < loss) {
+  static Color _lastMoveAnnotationColor(double pointLoss) {
+    for (final (loss, color) in pointLossBands) {
+      if (pointLoss < loss) {
         return color;
       }
     }
-    return winrateLossBands.last.$2;
+    return pointLossBands.last.$2;
   }
 
   static BoardAnnotation _lastMoveMainlineAnnotation(
       GameTreeNode<KataGoResponse> node) {
     final (:col, :p) = node.move!;
     Color? innerColor;
-    final wrLoss = _nodeWinrateLoss(node);
-    // TODO: need to consider when loss is 0% because it's already min/max.
-    // In such case, we need to try to use the point loss which is unbounded.
-    if (wrLoss != null) {
-      innerColor = _lastMoveAnnotationColor(wrLoss);
+    final pointLoss = _nodePointLoss(node);
+    if (pointLoss != null) {
+      innerColor = _lastMoveAnnotationColor(pointLoss);
     }
     return LastMoveAnnotation(
       turn: col,
@@ -379,7 +377,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     );
   }
 
-  static double? _nodeWinrateLoss(GameTreeNode<KataGoResponse> node) {
+  static double? _nodePointLoss(GameTreeNode<KataGoResponse> node) {
     final (:col, :p) = node.move!;
     if (node.parent == null || node.parent!.metadata == null) return null;
     // First, try to compute it directly from parent
@@ -387,13 +385,19 @@ class _AnalysisPageState extends State<AnalysisPage> {
     final md = parent.metadata!;
     for (final info in md.moveInfos) {
       if (info.move == p) {
-        if (info.order == 0) return 1.0;
-        return winrateLoss(col, md.rootInfo.winrate, info.winrate);
+        if (info.order == 0) return 0.0;
+        return _pointLoss(col, md.rootInfo.scoreLead, info.scoreLead);
       }
     }
     // Otherwise, try to compute it from current node root rootInfo
     if (node.metadata == null) return null;
-    return winrateLoss(
-        col, md.rootInfo.winrate, node.metadata!.rootInfo.winrate);
+    return _pointLoss(
+        col, md.rootInfo.scoreLead, node.metadata!.rootInfo.scoreLead);
   }
+
+  static double _pointLoss(wq.Color turn, double from, double to) =>
+      switch (turn) {
+        wq.Color.black => to - from,
+        wq.Color.white => from - to,
+      };
 }

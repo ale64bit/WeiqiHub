@@ -63,16 +63,6 @@ class MoveInfo {
         ownership = info.ownership;
 }
 
-double pointLoss(RootInfo root, MoveInfo move) => switch (root.currentPlayer) {
-      wq.Color.black => move.scoreLead - root.scoreLead,
-      wq.Color.white => root.scoreLead - move.scoreLead,
-    };
-
-double winrateLoss(wq.Color turn, double from, double to) => switch (turn) {
-      wq.Color.black => to - from,
-      wq.Color.white => from - to,
-    };
-
 class KataGoResponse {
   final String id;
   final bool isDuringSearch;
