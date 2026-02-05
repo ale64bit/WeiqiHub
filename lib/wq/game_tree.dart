@@ -4,7 +4,7 @@ import 'package:wqhub/board/board_state.dart';
 import 'package:wqhub/wq/rank.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
-class GameTreeNode {
+class GameTreeNode<T> {
   GameTreeNode({
     required this.move,
     required this.moveNumber,
@@ -19,15 +19,17 @@ class GameTreeNode {
   final int captureCountBlack;
   final int captureCountWhite;
   final IList<wq.Point> diff;
-  final GameTreeNode? parent;
-  final Map<wq.Move, GameTreeNode> _next = {};
+  final GameTreeNode<T>? parent;
+  final Map<wq.Move, GameTreeNode<T>> _next = {};
+  T? metadata;
 
-  GameTreeNode? get next => _next.values.firstOrNull;
+  GameTreeNode<T>? get next => _next.values.firstOrNull;
+  GameTreeNode<T>? child(wq.Move mv) => _next[mv];
 
   bool prune(wq.Move mv) => _next.remove(mv) != null;
 }
 
-class GameTree {
+class GameTree<T> {
   GameTree(int size,
       {this.initialStones = const IMapOfSetsConst(IMapConst({}))})
       : _board = BoardState(size: size, initialStones: initialStones),
@@ -41,16 +43,16 @@ class GameTree {
 
   final BoardState _board;
   final IMapOfSets<wq.Color, wq.Point> initialStones;
-  GameTreeNode _cur;
+  GameTreeNode<T> _cur;
 
-  GameTreeNode get curNode => _cur;
+  GameTreeNode<T> get curNode => _cur;
   IMap<wq.Point, wq.Color> get stones => _board.stones;
 
   bool canMove(wq.Move mv) => _board.canMove(mv);
 
   int posHash() => _board.hash();
 
-  GameTreeNode? move(wq.Move mv, {bool prune = false}) {
+  GameTreeNode<T>? move(wq.Move mv, {bool prune = false}) {
     if (_cur._next.containsKey(mv)) {
       _cur = _cur._next[mv]!;
       final diff = _board.move(mv);
@@ -67,7 +69,7 @@ class GameTree {
       wq.Color.black => (0, diff.length),
       wq.Color.white => (diff.length, 0),
     };
-    final newNode = GameTreeNode(
+    final newNode = GameTreeNode<T>(
       move: mv,
       moveNumber: _cur.moveNumber + 1,
       captureCountBlack: _cur.captureCountBlack + blackCaptures,
@@ -80,7 +82,7 @@ class GameTree {
     return _cur;
   }
 
-  GameTreeNode? undo() {
+  GameTreeNode<T>? undo() {
     if (_cur.parent == null) return null;
 
     if (_cur.move != null) {
@@ -129,9 +131,11 @@ class GameTree {
 
     // Initial stones
     for (final e in initialStones.entries) {
-      buf.write('A${e.key.toString()}');
-      for (final p in e.value) {
-        buf.write('[${p.toSgf()}]');
+      if (e.value.isNotEmpty) {
+        buf.write('A${e.key.toString()}');
+        for (final p in e.value) {
+          buf.write('[${p.toSgf()}]');
+        }
       }
     }
 

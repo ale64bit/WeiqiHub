@@ -9,6 +9,15 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get analysis => '分析';
+
+  @override
+  String get winrate => '胜率';
+
+  @override
+  String get scoreLead => '领先目数';
+
+  @override
   String get about => '关于';
 
   @override

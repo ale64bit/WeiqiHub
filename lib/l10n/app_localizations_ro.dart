@@ -9,6 +9,15 @@ class AppLocalizationsRo extends AppLocalizations {
   AppLocalizationsRo([String locale = 'ro']) : super(locale);
 
   @override
+  String get analysis => 'Analiză';
+
+  @override
+  String get winrate => 'Șansă de victorie';
+
+  @override
+  String get scoreLead => 'Avans la scor';
+
+  @override
   String get about => 'Despre';
 
   @override

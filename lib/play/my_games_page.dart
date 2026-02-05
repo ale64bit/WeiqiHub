@@ -220,12 +220,13 @@ class _GameListTile extends StatefulWidget {
   final Function() onDownload;
   final Function() onAISensei;
 
-  const _GameListTile(
-      {required this.summary,
-      required this.won,
-      required this.onTap,
-      required this.onDownload,
-      required this.onAISensei});
+  const _GameListTile({
+    required this.summary,
+    required this.won,
+    required this.onTap,
+    required this.onDownload,
+    required this.onAISensei,
+  });
 
   @override
   State<_GameListTile> createState() => _GameListTileState();

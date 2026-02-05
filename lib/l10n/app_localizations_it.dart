@@ -9,6 +9,15 @@ class AppLocalizationsIt extends AppLocalizations {
   AppLocalizationsIt([String locale = 'it']) : super(locale);
 
   @override
+  String get analysis => 'Analisi';
+
+  @override
+  String get winrate => 'Probabilità di vittoria';
+
+  @override
+  String get scoreLead => 'Vantaggio nel punteggio';
+
+  @override
   String get about => 'Informazioni';
 
   @override

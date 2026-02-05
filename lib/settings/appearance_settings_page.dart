@@ -1,6 +1,5 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
-import 'package:extension_type_unions/extension_type_unions.dart';
 import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/board/board_settings.dart';
@@ -70,13 +69,8 @@ class _AppearanceSettingsPageState
             (1, 1): wq.Color.white,
             (3, 1): wq.Color.white,
           }),
-          annotations: IMapOfSets({
-            (2, 1): ISet([
-              (
-                type: AnnotationShape.circle.u21,
-                color: Colors.white,
-              ),
-            ]),
+          annotations: IMap({
+            (2, 1): LastMoveAnnotation(turn: wq.Color.black),
           }),
           confirmTap: false,
         );

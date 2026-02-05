@@ -19,6 +19,7 @@ class Board extends StatefulWidget with BoardGeometry {
     this.settings = const BoardSettings(),
     this.cursor = SystemMouseCursors.precise,
     this.onPointClicked,
+    this.onPointHovered,
     required this.turn,
     required this.stones,
     required this.annotations,
@@ -33,8 +34,9 @@ class Board extends StatefulWidget with BoardGeometry {
 
   final MouseCursor cursor;
   final void Function(wq.Point)? onPointClicked;
+  final void Function(wq.Point?)? onPointHovered;
   final IMap<wq.Point, wq.Color> stones;
-  final IMapOfSets<wq.Point, Annotation> annotations;
+  final IMap<wq.Point, BoardAnnotation> annotations;
   final wq.Color? turn;
   final bool confirmTap;
 
@@ -44,15 +46,17 @@ class Board extends StatefulWidget with BoardGeometry {
 }
 
 class _BoardState extends State<Board> {
+  wq.Point? lastHoverEmptyPoint;
   wq.Point? lastHoverPoint;
   wq.Point? confirmPoint;
 
   @override
   void didUpdateWidget(covariant Board oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (lastHoverPoint != null && widget.stones.containsKey(lastHoverPoint)) {
+    if (lastHoverEmptyPoint != null &&
+        widget.stones.containsKey(lastHoverEmptyPoint)) {
       setState(() {
-        lastHoverPoint = null;
+        lastHoverEmptyPoint = null;
       });
     }
     if (confirmPoint != null && widget.stones.containsKey(confirmPoint)) {
@@ -90,7 +94,7 @@ class _BoardState extends State<Board> {
       // Stone shadows
       if (widget.settings.stoneShadows)
         for (final e in widget.stones.entries)
-          if (widget.isPointVisible(e.key.$1, e.key.$2))
+          if (widget.isPointVisible(e.key))
             PositionedPoint(
               key: _keyStoneShadow(e.key),
               size: widget.size,
@@ -101,7 +105,7 @@ class _BoardState extends State<Board> {
             ),
       // Stone widgets
       for (final e in widget.stones.entries)
-        if (widget.isPointVisible(e.key.$1, e.key.$2))
+        if (widget.isPointVisible(e.key))
           PositionedPoint(
             key: _keyStone(e.value, e.key),
             size: widget.size,
@@ -113,22 +117,21 @@ class _BoardState extends State<Board> {
           ),
       // Annotation widgets
       for (final e in widget.annotations.entries)
-        for (final annotation in e.value)
-          if (widget.isPointVisible(e.key.$1, e.key.$2))
-            PositionedPoint(
-              key: _keyAnnotation(annotation, e.key),
-              size: widget.size,
-              settings: widget.settings,
-              point: e.key,
-              child: BoardAnnotation(annotation: annotation),
-            ),
+        if (widget.isPointVisible(e.key))
+          PositionedPoint(
+            key: _annotationKey(e.value, e.key),
+            size: widget.size,
+            settings: widget.settings,
+            point: e.key,
+            child: e.value,
+          ),
       // Highlighted point marker
-      if (widget.turn != null && lastHoverPoint != null)
+      if (widget.turn != null && lastHoverEmptyPoint != null)
         PositionedPoint(
-          key: _keyHoverStone(widget.turn!, lastHoverPoint!),
+          key: _keyHoverStone(widget.turn!, lastHoverEmptyPoint!),
           size: widget.size,
           settings: widget.settings,
-          point: lastHoverPoint!,
+          point: lastHoverEmptyPoint!,
           child: Container(
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -301,25 +304,33 @@ class _BoardState extends State<Board> {
 
   void _onPointerHover(PointerHoverEvent event) {
     final p = widget.offsetPoint(event.localPosition);
-    if (p == lastHoverPoint || p == confirmPoint) return;
+    if (p != lastHoverPoint) {
+      lastHoverPoint = p;
+      widget.onPointHovered?.call(lastHoverPoint);
+    }
+    if (p == lastHoverEmptyPoint || p == confirmPoint) return;
     if (p != null && widget.stones.containsKey(p)) {
-      if (lastHoverPoint != null) {
+      if (lastHoverEmptyPoint != null) {
         setState(() {
-          lastHoverPoint = null;
+          lastHoverEmptyPoint = null;
         });
       }
       return;
     }
     setState(() {
-      lastHoverPoint = p;
+      lastHoverEmptyPoint = p;
     });
   }
 
   void _onPointerExit(PointerExitEvent event) {
-    if (lastHoverPoint != null) {
+    if (lastHoverEmptyPoint != null) {
       setState(() {
-        lastHoverPoint = null;
+        lastHoverEmptyPoint = null;
       });
+    }
+    if (lastHoverPoint != null) {
+      lastHoverPoint = null;
+      widget.onPointHovered?.call(lastHoverPoint);
     }
   }
 
@@ -327,10 +338,8 @@ class _BoardState extends State<Board> {
   Key _keyStoneShadow(wq.Point p) => ValueKey('ss$p');
   Key _keyHoverStone(wq.Color col, wq.Point p) => ValueKey('h$col$p');
   Key _keyConfirmStone(wq.Color col, wq.Point p) => ValueKey('c$col$p');
-  Key _keyAnnotation(Annotation a, wq.Point p) => a.type.split(
-        (shape) => ValueKey('as$p'),
-        (text) => ValueKey('at$p'),
-      );
+  Key _annotationKey(BoardAnnotation annotation, wq.Point p) =>
+      ValueKey('${annotation.annotationKey}@$p');
 }
 
 class _BoardColumnCoordinates extends StatelessWidget {

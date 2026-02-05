@@ -9,6 +9,15 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
+  String get analysis => 'Анализ';
+
+  @override
+  String get winrate => 'Шанс на победу';
+
+  @override
+  String get scoreLead => 'Преимущество в очках';
+
+  @override
   String get about => 'О приложении';
 
   @override

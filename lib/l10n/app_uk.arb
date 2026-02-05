@@ -1,4 +1,7 @@
 {
+  "analysis": "Аналіз",
+  "winrate": "Шанс на перемогу",
+  "scoreLead": "Перевага в очках",
   "about": "Про WeiqiHub",
   "acceptDeadStones": "Прийняти мертві камені",
   "accuracy": "Точність",

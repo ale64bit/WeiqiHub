@@ -320,6 +320,9 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
       _mistakeCount++;
       _totalTime += widget.timePerTask;
       solveStatus = VariationStatus.wrong;
+      _completedTasks.add((currentTask.ref, false));
+      StatsDB().addTaskAttempt(currentTask.ref, false);
+      context.stats.incrementTotalFailCount(currentTask.ref.rank);
       if (!solveStatusNotified) {
         notifySolveTimeout(wideLayout);
         solveStatusNotified = true;

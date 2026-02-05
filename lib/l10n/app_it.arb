@@ -1,4 +1,7 @@
 {
+  "analysis": "Analisi",
+  "winrate": "Probabilità di vittoria",
+  "scoreLead": "Vantaggio nel punteggio",
   "about": "Informazioni",
   "acceptDeadStones": "Accetta pietre catturate",
   "accuracy": "Precisione",

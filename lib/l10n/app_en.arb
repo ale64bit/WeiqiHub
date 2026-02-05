@@ -1,4 +1,7 @@
 {
+  "analysis": "Analysis",
+  "winrate": "Winrate",
+  "scoreLead": "Score lead",
   "about": "About",
   "acceptDeadStones": "Accept dead stones",
   "accuracy": "Accuracy",

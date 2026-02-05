@@ -1,4 +1,3 @@
-import 'package:extension_type_unions/extension_type_unions.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:wqhub/board/board.dart';
@@ -40,15 +39,9 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
       edgeLine: context.settings.edgeLine,
       stoneShadows: context.settings.stoneShadows,
     );
-    final annotations = IMapOfSets.from(IMap({
-      for (final p in _empty)
-        p: ISet({
-          (
-            type: AnnotationShape.circle.u21,
-            color: Colors.blueAccent,
-          )
-        })
-    }));
+    final annotations = IMap({
+      for (final p in _empty) p: CircleAnnotation(color: Colors.blueAccent)
+    });
     final board = LayoutBuilder(
       builder: (context, constraints) {
         final boardSize = constraints.biggest.shortestSide -

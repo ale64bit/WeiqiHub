@@ -82,7 +82,7 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                   cursor: SystemMouseCursors.click,
                   turn: null,
                   stones: stones,
-                  annotations: const IMapOfSetsConst(IMapConst({})),
+                  annotations: const IMapConst({}),
                   confirmTap: context.settings.confirmMoves,
                 );
               },

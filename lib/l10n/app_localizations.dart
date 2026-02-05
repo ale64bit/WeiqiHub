@@ -110,6 +110,24 @@ abstract class AppLocalizations {
     Locale('zh')
   ];
 
+  /// No description provided for @analysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis'**
+  String get analysis;
+
+  /// No description provided for @winrate.
+  ///
+  /// In en, this message translates to:
+  /// **'Winrate'**
+  String get winrate;
+
+  /// No description provided for @scoreLead.
+  ///
+  /// In en, this message translates to:
+  /// **'Score lead'**
+  String get scoreLead;
+
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
