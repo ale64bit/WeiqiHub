@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:wqhub/analysis/analysis_charts_card.dart';
 import 'package:wqhub/analysis/analysis_util.dart';
 import 'package:wqhub/analysis/evaluation_card.dart';
@@ -68,6 +69,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
   final _scoreLeadSpots = <FlSpot>[];
   var _initialized = false;
   var _exploreMode = AnalysisExploreMode.manual;
+  String? _fullGameQueryId;
 
   @override
   void didChangeDependencies() {
@@ -95,7 +97,14 @@ class _AnalysisPageState extends State<AnalysisPage> {
   @override
   void dispose() {
     super.dispose();
-    widget.kataGo.terminateAll(TerminateAllRequest(id: 'AnalysisPage.dispose'));
+    if (_fullGameQueryId != null) {
+      widget.kataGo.terminate(
+        TerminateRequest(
+          id: Uuid().v4(),
+          terminateId: _fullGameQueryId!,
+        ),
+      );
+    }
   }
 
   @override
@@ -347,7 +356,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       cur = cur.parent!;
     }
     final respStream = widget.kataGo.query(KataGoRequest(
-      id: 'var-${DateTime.now().millisecondsSinceEpoch}',
+      id: 'var-${Uuid().v4()}',
       reportDuringSearchEvery: 0.2,
       initialPlayer: _turn,
       initialStones: [
@@ -373,8 +382,9 @@ class _AnalysisPageState extends State<AnalysisPage> {
   }
 
   void _analyzeFullGame() {
+    _fullGameQueryId = 'full-${Uuid().v4()}';
     final respStream = widget.kataGo.query(KataGoRequest(
-      id: 'full-${DateTime.now().millisecondsSinceEpoch}',
+      id: _fullGameQueryId!,
       reportDuringSearchEvery: 0.2,
       initialPlayer: wq.Color.black,
       initialStones: [
