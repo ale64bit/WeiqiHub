@@ -25,6 +25,41 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   var upsolveMode = UpsolveMode.auto;
   var _firstTaskInitialized = false;
 
+  String? _notificationMessage;
+  Color? _notificationColor;
+  IconData? _notificationIcon;
+
+  void Function()? _onNotificationChanged;
+
+  void enableSidebarNotifications(void Function() onNotificationChanged) {
+    _onNotificationChanged = onNotificationChanged;
+  }
+
+  String? get notificationMessage => _notificationMessage;
+  Color? get notificationColor => _notificationColor;
+  IconData? get notificationIcon => _notificationIcon;
+
+  void _clearNotificationState() {
+    _notificationMessage = null;
+    _notificationColor = null;
+    _notificationIcon = null;
+  }
+
+  void _setNotificationState(String message, Color color, IconData icon) {
+    setState(() {
+      _notificationMessage = message;
+      _notificationColor = color;
+      _notificationIcon = icon;
+    });
+    Future.delayed(Duration(seconds: 1), () {
+      if (mounted) {
+        setState(() {
+          _clearNotificationState();
+        });
+      }
+    });
+  }
+
   Task get currentTask;
   void onSolveStatus(VariationStatus status);
 
@@ -45,6 +80,9 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
     turn = currentTask.first;
     solveStatusNotified = false;
     upsolveMode = UpsolveMode.auto;
+    if (_onNotificationChanged == null) {
+      _clearNotificationState();
+    }
   }
 
   void onResetTask() {
@@ -189,6 +227,18 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
 
   void notifySolveStatus(VariationStatus status, bool wideLayout) {
     final loc = AppLocalizations.of(context)!;
+    if (_onNotificationChanged != null && wideLayout) {
+      final message = status.toLocalizedString(loc);
+      final color =
+          status == VariationStatus.correct ? Colors.green : Colors.red;
+      final icon = status == VariationStatus.correct
+          ? Icons.check_circle
+          : Icons.sentiment_very_dissatisfied;
+
+      _setNotificationState(message, color, icon);
+      _onNotificationChanged!(); // Notify parent to rebuild
+      return;
+    }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -212,6 +262,11 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
 
   void notifySolveTimeout(bool wideLayout) {
     final loc = AppLocalizations.of(context)!;
+    if (_onNotificationChanged != null && wideLayout) {
+      _setNotificationState(loc.taskTimeout, Colors.red, Icons.timer);
+      _onNotificationChanged!(); // Notify parent to rebuild
+      return;
+    }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.center,

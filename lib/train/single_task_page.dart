@@ -1,18 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/task.dart';
-import 'package:wqhub/train/task_action_bar.dart';
+import 'package:wqhub/train/task_side_bar.dart';
 import 'package:wqhub/train/task_solving_state_mixin.dart';
-import 'package:wqhub/train/upsolve_mode.dart';
-import 'package:wqhub/turn_icon.dart';
 import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/train/variation_tree.dart';
-import 'package:wqhub/wq/wq.dart' as wq;
 
 class SingleTaskRouteArguments {
   final Task task;
@@ -33,6 +28,15 @@ class SingleTaskPage extends StatefulWidget {
 
 class _SingleTaskPageState extends State<SingleTaskPage>
     with TaskSolvingStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    // NEW: Enable sidebar notifications for this page
+    enableSidebarNotifications(() {
+      if (mounted) setState(() {}); // Rebuild when notification changes
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -84,66 +88,28 @@ class _SingleTaskPageState extends State<SingleTaskPage>
     final taskTitle =
         '[${widget.task.ref.rank.toString()}] ${widget.task.ref.type.toLocalizedString(loc)}';
 
-    if (wideLayout) {
-      return Scaffold(
-        body: Center(
-          child: Row(
-            children: <Widget>[
-              Expanded(child: Center(child: board)),
-              VerticalDivider(thickness: 1, width: 8),
-              _SideBar(
-                taskTitle: taskTitle,
-                color: widget.task.first,
-                upsolveMode: upsolveMode,
-                onShowSolution: onShowContinuations,
-                onShareTask: onShareTask,
-                onCopySgf: onCopySgf,
-                onResetTask: onResetTask,
-                onPreviousMove: onPreviousMove,
-                onNextMove: onNextMove,
-                onUpdateUpsolveMode: onUpdateUpsolveMode,
-                timeDisplay: Text(widget.task.ref.uri()),
-              ),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            spacing: 4,
-            children: <Widget>[
-              TurnIcon(color: widget.task.first),
-              Expanded(
-                child: Text(
-                  taskTitle,
-                  softWrap: true,
-                  maxLines: 2,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: Center(
-          child: board,
-        ),
-        bottomNavigationBar: BottomAppBar(
-          height: upsolveMode == UpsolveMode.auto ? 80.0 : 160.0,
-          child: TaskActionBar(
-            upsolveMode: upsolveMode,
-            onShowSolution: onShowContinuations,
-            onShareTask: onShareTask,
-            onCopySgf: onCopySgf,
-            onResetTask: onResetTask,
-            onPreviousMove: onPreviousMove,
-            onNextMove: onNextMove,
-            onUpdateUpsolveMode: onUpdateUpsolveMode,
-          ),
-        ),
-      );
-    }
+    return TaskSideBar(
+      taskTitle: taskTitle,
+      color: widget.task.first,
+      upsolveMode: upsolveMode,
+      onShowSolution: onShowContinuations,
+      onShareTask: onShareTask,
+      onCopySgf: onCopySgf,
+      onResetTask: onResetTask,
+      onPreviousMove: onPreviousMove,
+      onNextMove: onNextMove,
+      onUpdateUpsolveMode: onUpdateUpsolveMode,
+      notificationMessage: notificationMessage,
+      notificationColor: notificationColor,
+      notificationIcon: notificationIcon,
+      leading: wideLayout
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context),
+            )
+          : null,
+      child: board,
+    );
   }
 
   @override
@@ -151,77 +117,4 @@ class _SingleTaskPageState extends State<SingleTaskPage>
 
   @override
   void onSolveStatus(VariationStatus status) {}
-}
-
-class _SideBar extends StatelessWidget {
-  final String taskTitle;
-  final wq.Color color;
-  final UpsolveMode upsolveMode;
-  final Function()? onShowSolution;
-  final Function()? onShareTask;
-  final Function()? onCopySgf;
-  final Function()? onResetTask;
-  final Function() onPreviousMove;
-  final Function() onNextMove;
-  final Function(UpsolveMode) onUpdateUpsolveMode;
-  final Widget timeDisplay;
-
-  const _SideBar({
-    required this.taskTitle,
-    required this.color,
-    required this.upsolveMode,
-    required this.onShowSolution,
-    required this.onShareTask,
-    this.onCopySgf,
-    required this.onResetTask,
-    required this.onPreviousMove,
-    required this.onNextMove,
-    required this.onUpdateUpsolveMode,
-    required this.timeDisplay,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final widgetSize = MediaQuery.sizeOf(context);
-    final sidebarSize = min(
-        widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
-    return SizedBox(
-      width: sidebarSize,
-      child: Container(
-        padding: EdgeInsets.all(8),
-        color: ColorScheme.of(context).surfaceContainer,
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-            Row(
-              spacing: 8,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TurnIcon(color: color),
-                Text(taskTitle),
-              ],
-            ),
-            Expanded(child: Container()),
-            TaskActionBar(
-              upsolveMode: upsolveMode,
-              onShowSolution: onShowSolution,
-              onShareTask: onShareTask,
-              onCopySgf: onCopySgf,
-              onResetTask: onResetTask,
-              onPreviousMove: onPreviousMove,
-              onNextMove: onNextMove,
-              onUpdateUpsolveMode: onUpdateUpsolveMode,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
