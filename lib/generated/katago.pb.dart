@@ -219,6 +219,7 @@ class Request extends $pb.GeneratedMessage {
     $core.int? maxVisits,
     $core.double? reportDuringSearchEvery,
     $core.Iterable<$core.MapEntry<$core.String, $1.Value>>? overrideSettings,
+    $core.Iterable<$core.MapEntry<$core.String, $core.String>>? metadata,
   }) {
     final result = create();
     if (id != null) result.id = id;
@@ -238,6 +239,7 @@ class Request extends $pb.GeneratedMessage {
       result.reportDuringSearchEvery = reportDuringSearchEvery;
     if (overrideSettings != null)
       result.overrideSettings.addEntries(overrideSettings);
+    if (metadata != null) result.metadata.addEntries(metadata);
     return result;
   }
 
@@ -276,6 +278,11 @@ class Request extends $pb.GeneratedMessage {
         valueFieldType: $pb.PbFieldType.OM,
         valueCreator: $1.Value.create,
         valueDefaultOrMaker: $1.Value.getDefault,
+        packageName: const $pb.PackageName('katago'))
+    ..m<$core.String, $core.String>(15, _omitFieldNames ? '' : 'metadata',
+        entryClassName: 'Request.MetadataEntry',
+        keyFieldType: $pb.PbFieldType.OS,
+        valueFieldType: $pb.PbFieldType.OS,
         packageName: const $pb.PackageName('katago'))
     ..hasRequiredFields = false;
 
@@ -398,6 +405,9 @@ class Request extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(14)
   $pb.PbMap<$core.String, $1.Value> get overrideSettings => $_getMap(13);
+
+  @$pb.TagNumber(15)
+  $pb.PbMap<$core.String, $core.String> get metadata => $_getMap(14);
 }
 
 class Response_RootInfo extends $pb.GeneratedMessage {

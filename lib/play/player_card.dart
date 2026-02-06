@@ -15,8 +15,8 @@ enum PlayerCardAlignment {
 class PlayerCard extends StatelessWidget {
   final UserInfo userInfo;
   final wq.Color color;
-  final int captureCount;
   final Widget timeDisplay;
+  final int? captureCount;
   final Function()? onTap;
   final bool showOnlineStatus;
   final PlayerCardAlignment alignment;
@@ -25,8 +25,8 @@ class PlayerCard extends StatelessWidget {
     super.key,
     required this.userInfo,
     required this.color,
-    required this.captureCount,
     required this.timeDisplay,
+    this.captureCount,
     this.onTap,
     this.showOnlineStatus = false,
     this.alignment = PlayerCardAlignment.left,
@@ -54,8 +54,9 @@ class PlayerCard extends StatelessWidget {
               overflow: TextOverflow.fade,
               softWrap: false,
             ),
-            Text('${loc.captures}: $captureCount',
-                style: TextTheme.of(context).labelSmall),
+            if (captureCount != null)
+              Text('${loc.captures}: $captureCount',
+                  style: TextTheme.of(context).labelSmall),
           ],
         ),
       ),

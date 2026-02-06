@@ -32,6 +32,7 @@ class KataGoRequest {
   final int maxVisits;
   final Map<String, dynamic> overrideSettings;
   final double? reportDuringSearchEvery;
+  final Map<String, String> metadata;
 
   const KataGoRequest({
     required this.id,
@@ -48,6 +49,7 @@ class KataGoRequest {
     required this.maxVisits,
     required this.overrideSettings,
     this.reportDuringSearchEvery,
+    required this.metadata,
   });
 
   Map<String, dynamic> toJson() => {
@@ -91,5 +93,6 @@ class KataGoRequest {
               String _ => Value(stringValue: e.value.toString()),
               _ => Value(),
             })),
+        metadata: metadata.entries,
       );
 }
