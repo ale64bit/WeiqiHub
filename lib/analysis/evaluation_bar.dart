@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wqhub/analysis/analysis_util.dart';
 
 class EvaluationBar extends StatelessWidget {
   final double winRate;
@@ -53,10 +54,4 @@ class EvaluationBar extends StatelessWidget {
       ),
     );
   }
-}
-
-String fmtScore(double x) {
-  final dec = x.toInt();
-  final frac = (x.abs() * 10).toInt() % 10;
-  return '$dec.$frac';
 }

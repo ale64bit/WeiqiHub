@@ -3,10 +3,15 @@ import 'dart:math';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:wqhub/analysis/analysis_side_bar.dart';
+import 'package:wqhub/analysis/analysis_charts_card.dart';
+import 'package:wqhub/analysis/analysis_util.dart';
+import 'package:wqhub/analysis/evaluation_card.dart';
 import 'package:wqhub/analysis/katago.dart';
 import 'package:wqhub/analysis/katago_request.dart';
 import 'package:wqhub/analysis/katago_response.dart';
+import 'package:wqhub/analysis/mistakes_card.dart';
+import 'package:wqhub/analysis/performance_dialog.dart';
+import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/board/board.dart';
 import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/board/board_settings.dart';
@@ -30,6 +35,11 @@ class AnalysisRouteArguments {
       {required this.kataGo, required this.summary, required this.record});
 }
 
+enum AnalysisExploreMode {
+  manual,
+  variationOnHover,
+}
+
 class AnalysisPage extends StatefulWidget {
   static const routeName = '/analysis';
 
@@ -50,23 +60,14 @@ class AnalysisPage extends StatefulWidget {
 class _AnalysisPageState extends State<AnalysisPage> {
   static const maxVisits = 1000;
 
-  static final pointLossBands = <(double, Color)>[
-    (-12, Colors.purple),
-    (-6, Colors.red),
-    (-3, Colors.orange),
-    (-1.5, Colors.lime),
-    (-0.5, Colors.lightGreen),
-    (0.5, Colors.green),
-  ];
-
   var _boardSize = 19;
   var _gameTree = AnnotatedGameTree<KataGoResponse>(19);
   var _turn = wq.Color.black;
   final _mainlineNodes = <GameTreeNode<KataGoResponse>>[];
-  // Chart data
   final _winrateSpots = <FlSpot>[];
   final _scoreLeadSpots = <FlSpot>[];
   var _initialized = false;
+  var _exploreMode = AnalysisExploreMode.manual;
 
   @override
   void didChangeDependencies() {
@@ -138,6 +139,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
           annotations: _analysisAnnotations(),
           confirmTap: context.settings.confirmMoves,
           onPointHovered: _onPointHovered,
+          onPointClicked: _onPointClicked,
         );
       },
     );
@@ -159,10 +161,86 @@ class _AnalysisPageState extends State<AnalysisPage> {
       alignment: PlayerCardAlignment.right,
     );
 
+    final gameNavigationBar = GameNavigationBar(
+      mainAxisAlignment: MainAxisAlignment.center,
+      gameTree: _gameTree,
+      onMovesSkipped: (count) {
+        setState(() {
+          if (count.isOdd) {
+            _turn = _turn.opposite;
+          }
+        });
+      },
+    );
+
+    final analysisSideBar = Column(
+      children: [
+        EvaluationCard(currentNode: _gameTree.curNode),
+        gameNavigationBar,
+        Expanded(
+          child: AnalysisChartsCard(
+            currentNode: _gameTree.curNode,
+            winrate: _winrateSpots,
+            scoreLead: _scoreLeadSpots,
+            onTapMove: _onGoToMove,
+          ),
+        ),
+        Expanded(
+          child: MistakesCard(
+            rootNode: _gameTree.rootNode,
+            onTapMove: _onGoToMove,
+          ),
+        ),
+      ],
+    );
+
+    final settingsDrawer = Drawer(
+      child: ListView(
+        children: [
+          ListTile(
+            leading: Icon(Icons.bar_chart),
+            title: Text('Performance'), // TODO localize
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => PerformanceDialog(
+                  summary: widget.summary,
+                  rootNode: _gameTree.rootNode,
+                ),
+              );
+            },
+          ),
+          Divider(),
+          ListTile(
+            title: Text('Mode'), // TODO localize
+            trailing: DropdownButton<AnalysisExploreMode>(
+              value: _exploreMode,
+              items: [
+                for (final mode in AnalysisExploreMode.values)
+                  DropdownMenuItem(
+                    value: mode,
+                    child: Text(mode.name),
+                  ),
+              ],
+              borderRadius: BorderRadius.circular(8),
+              onChanged: (AnalysisExploreMode? value) {
+                if (value != null) {
+                  setState(() {
+                    _exploreMode = value;
+                  });
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.analysis),
       ),
+      endDrawer: settingsDrawer,
       body: Row(
         children: [
           Expanded(
@@ -183,30 +261,11 @@ class _AnalysisPageState extends State<AnalysisPage> {
                     Expanded(child: whitePlayerCard),
                   ],
                 ),
-                Expanded(
-                  child: AnalysisSideBar(
-                    analysis: _gameTree.curNode.metadata,
-                    winrate: _winrateSpots,
-                    scoreLead: _scoreLeadSpots,
-                  ),
-                ),
+                Expanded(child: analysisSideBar),
               ],
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: GameNavigationBar(
-          mainAxisAlignment: MainAxisAlignment.center,
-          gameTree: _gameTree,
-          onMovesSkipped: (count) {
-            setState(() {
-              if (count.isOdd) {
-                _turn = _turn.opposite;
-              }
-            });
-          },
-        ),
       ),
     );
   }
@@ -220,7 +279,22 @@ class _AnalysisPageState extends State<AnalysisPage> {
     });
   }
 
+  void _onGoToMove(int moveNumber) {
+    _onGoMainline();
+    setState(() {
+      while (moveNumber < _gameTree.curNode.moveNumber &&
+          _gameTree.undo() != null) {
+        _turn = _turn.opposite;
+      }
+      while (_gameTree.curNode.moveNumber < moveNumber &&
+          _gameTree.redo() != null) {
+        _turn = _turn.opposite;
+      }
+    });
+  }
+
   void _onPointHovered(wq.Point? p) {
+    if (_exploreMode != AnalysisExploreMode.variationOnHover) return;
     _onGoMainline();
     if (p == null) return;
     final node = _gameTree.curNode;
@@ -239,7 +313,29 @@ class _AnalysisPageState extends State<AnalysisPage> {
     });
   }
 
-/*
+  void _onPointClicked(wq.Point p) {
+    if (_exploreMode != AnalysisExploreMode.manual) return;
+    if (_gameTree.moveAnnotated((col: _turn, p: p),
+            mode: AnnotationMode.variation) !=
+        null) {
+      AudioController().playForNode(_gameTree.curNode);
+      setState(() {
+        _turn = _turn.opposite;
+      });
+      _queryCurrentPosition();
+    }
+  }
+
+  Map<String, String> _queryMetadata() => {
+        'id': widget.summary.id,
+        'black_nick': widget.summary.black.username,
+        'white_nick': widget.summary.white.username,
+        'black_rank': widget.summary.black.rank.toString(),
+        'white_rank': widget.summary.white.rank.toString(),
+        'time': widget.summary.dateTime.toIso8601String(),
+        'result': widget.summary.result.result,
+      };
+
   void _queryCurrentPosition() {
     final node = _gameTree.curNode;
     if (node.metadata != null) return;
@@ -251,7 +347,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       cur = cur.parent!;
     }
     final respStream = widget.kataGo.query(KataGoRequest(
-      id: 'one-${DateTime.now().millisecondsSinceEpoch}',
+      id: 'var-${DateTime.now().millisecondsSinceEpoch}',
       reportDuringSearchEvery: 0.2,
       initialPlayer: _turn,
       initialStones: [
@@ -264,14 +360,17 @@ class _AnalysisPageState extends State<AnalysisPage> {
       boardSize: _boardSize,
       maxVisits: maxVisits,
       overrideSettings: {},
+      metadata: _queryMetadata(),
     ));
     respStream.forEach((resp) {
-      setState(() {
-        node.metadata = resp;
-      });
+      if (context.mounted) {
+        setState(() {
+          _pruneCandidateMoves(resp);
+          node.metadata = resp;
+        });
+      }
     });
   }
-  */
 
   void _analyzeFullGame() {
     final respStream = widget.kataGo.query(KataGoRequest(
@@ -289,6 +388,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
       boardSize: _boardSize,
       maxVisits: maxVisits,
       overrideSettings: {},
+      metadata: _queryMetadata(),
     ));
     respStream.forEach((resp) {
       if (context.mounted) {
@@ -320,7 +420,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
             order: info.order,
             visits: info.visits,
             maxVisits: maxVisits,
-            pointLoss: _pointLoss(analysis.rootInfo.currentPlayer,
+            pointLoss: loss(analysis.rootInfo.currentPlayer,
                 analysis.rootInfo.scoreLead, info.scoreLead),
             actualMove: isActualMove,
           ));
@@ -354,50 +454,17 @@ class _AnalysisPageState extends State<AnalysisPage> {
     }
   }
 
-  static Color _lastMoveAnnotationColor(double pointLoss) {
-    for (final (loss, color) in pointLossBands) {
-      if (pointLoss < loss) {
-        return color;
-      }
-    }
-    return pointLossBands.last.$2;
-  }
-
   static BoardAnnotation _lastMoveMainlineAnnotation(
       GameTreeNode<KataGoResponse> node) {
     final (:col, :p) = node.move!;
     Color? innerColor;
-    final pointLoss = _nodePointLoss(node);
-    if (pointLoss != null) {
-      innerColor = _lastMoveAnnotationColor(pointLoss);
+    final loss = nodeLoss(node);
+    if (loss != null) {
+      innerColor = pointLossBands[pointLossBandIndex(loss.pointLoss)].$2;
     }
     return LastMoveAnnotation(
       turn: col,
       innerColor: innerColor,
     );
   }
-
-  static double? _nodePointLoss(GameTreeNode<KataGoResponse> node) {
-    final (:col, :p) = node.move!;
-    if (node.parent == null || node.parent!.metadata == null) return null;
-    // First, try to compute it directly from parent
-    final parent = node.parent!;
-    final md = parent.metadata!;
-    for (final info in md.moveInfos) {
-      if (info.move == p) {
-        if (info.order == 0) return 0.0;
-        return _pointLoss(col, md.rootInfo.scoreLead, info.scoreLead);
-      }
-    }
-    // Otherwise, try to compute it from current node root rootInfo
-    if (node.metadata == null) return null;
-    return _pointLoss(
-        col, md.rootInfo.scoreLead, node.metadata!.rootInfo.scoreLead);
-  }
-
-  static double _pointLoss(wq.Color turn, double from, double to) =>
-      switch (turn) {
-        wq.Color.black => to - from,
-        wq.Color.white => from - to,
-      };
 }

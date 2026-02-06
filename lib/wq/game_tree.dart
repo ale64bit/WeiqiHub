@@ -46,6 +46,15 @@ class GameTree<T> {
   GameTreeNode<T> _cur;
 
   GameTreeNode<T> get curNode => _cur;
+
+  GameTreeNode<T> get rootNode {
+    var root = _cur;
+    while (root.parent != null) {
+      root = root.parent!;
+    }
+    return root;
+  }
+
   IMap<wq.Point, wq.Color> get stones => _board.stones;
 
   bool canMove(wq.Move mv) => _board.canMove(mv);
