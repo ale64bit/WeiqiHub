@@ -120,6 +120,17 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
               },
             ),
           ),
+          ListTile(
+            title: Text(loc.deleteCorrectlySolvedMistakes),
+            subtitle: Text(loc.deleteCorrectlySolvedMistakesDesc),
+            trailing: Switch(
+              value: context.settings.deleteCorrectlySolvedMistakes,
+              onChanged: (value) {
+                context.settings.deleteCorrectlySolvedMistakes = value;
+                setState(() {});
+              },
+            ),
+          ),
         ],
       ),
     );

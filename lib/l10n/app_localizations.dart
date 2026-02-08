@@ -350,6 +350,18 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get dark;
 
+  /// No description provided for @deleteCorrectlySolvedMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove correctly solved mistakes'**
+  String get deleteCorrectlySolvedMistakes;
+
+  /// No description provided for @deleteCorrectlySolvedMistakesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove previous mistakes if solved correctly later'**
+  String get deleteCorrectlySolvedMistakesDesc;
+
   /// No description provided for @deselectAll.
   ///
   /// In en, this message translates to:

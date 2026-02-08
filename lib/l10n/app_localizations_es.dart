@@ -132,6 +132,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dark => 'Oscuro';
 
   @override
+  String get deleteCorrectlySolvedMistakes =>
+      'Remove correctly solved mistakes';
+
+  @override
+  String get deleteCorrectlySolvedMistakesDesc =>
+      'Remove previous mistakes if solved correctly later';
+
+  @override
   String get deselectAll => 'Deseleccionar todo';
 
   @override
