@@ -1,12 +1,259 @@
 {
     "id": 1,
     "title": "",
-    "taskCount": 4442,
+    "taskCount": 11710,
     "children": [
         {
+            "id": 193,
+            "title": "Go Puzzles at a Glance",
+            "taskCount": 182,
+            "avgRank": 21,
+            "children": [
+                {
+                    "id": 194,
+                    "title": "Live",
+                    "taskCount": 42
+                },
+                {
+                    "id": 195,
+                    "title": "Kill",
+                    "taskCount": 140
+                }
+            ]
+        },
+        {
+            "id": 181,
+            "title": "Compact Go Puzzles to Learn the Basics",
+            "taskCount": 179,
+            "avgRank": 22,
+            "children": [
+                {
+                    "id": 182,
+                    "title": "Basic puzzles",
+                    "taskCount": 40
+                },
+                {
+                    "id": 183,
+                    "title": "Black to play and kill white",
+                    "taskCount": 40
+                },
+                {
+                    "id": 184,
+                    "title": "Black to live",
+                    "taskCount": 40
+                },
+                {
+                    "id": 185,
+                    "title": "Applications",
+                    "taskCount": 39
+                },
+                {
+                    "id": 186,
+                    "title": "Challenge puzzles",
+                    "taskCount": 20
+                }
+            ]
+        },
+        {
+            "id": 187,
+            "title": "Weiqi Rapid Drill - 800 Problems",
+            "taskCount": 781,
+            "avgRank": 22
+        },
+        {
+            "id": 196,
+            "title": "At-a-Glance Tsumego",
+            "taskCount": 179,
+            "avgRank": 23,
+            "children": [
+                {
+                    "id": 197,
+                    "title": "Part 1",
+                    "taskCount": 89,
+                    "children": [
+                        {
+                            "id": 198,
+                            "title": "1 - Life",
+                            "taskCount": 49
+                        },
+                        {
+                            "id": 199,
+                            "title": "2 - Death",
+                            "taskCount": 40
+                        }
+                    ]
+                },
+                {
+                    "id": 200,
+                    "title": "Part 2",
+                    "taskCount": 90,
+                    "children": [
+                        {
+                            "id": 201,
+                            "title": "1 - Life",
+                            "taskCount": 53
+                        },
+                        {
+                            "id": 202,
+                            "title": "2 - Death",
+                            "taskCount": 37
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 30,
+            "title": "Lee Changho's Selected Tesuji",
+            "taskCount": 722,
+            "avgRank": 25,
+            "children": [
+                {
+                    "id": 31,
+                    "title": "Vol. 1",
+                    "taskCount": 121
+                },
+                {
+                    "id": 32,
+                    "title": "Vol. 2",
+                    "taskCount": 123
+                },
+                {
+                    "id": 33,
+                    "title": "Vol. 3",
+                    "taskCount": 116,
+                    "children": [
+                        {
+                            "id": 34,
+                            "title": "Connecting groups",
+                            "taskCount": 26
+                        },
+                        {
+                            "id": 35,
+                            "title": "Splitting groups",
+                            "taskCount": 54
+                        },
+                        {
+                            "id": 36,
+                            "title": "Sabaki and settling",
+                            "taskCount": 8
+                        },
+                        {
+                            "id": 37,
+                            "title": "Endgame",
+                            "taskCount": 28
+                        }
+                    ]
+                },
+                {
+                    "id": 38,
+                    "title": "Vol. 4",
+                    "taskCount": 123
+                },
+                {
+                    "id": 39,
+                    "title": "Vol. 5",
+                    "taskCount": 121,
+                    "children": [
+                        {
+                            "id": 40,
+                            "title": "Connecting",
+                            "taskCount": 16
+                        },
+                        {
+                            "id": 41,
+                            "title": "Make shape",
+                            "taskCount": 27
+                        },
+                        {
+                            "id": 42,
+                            "title": "Endgame",
+                            "taskCount": 20
+                        },
+                        {
+                            "id": 43,
+                            "title": "Life and death",
+                            "taskCount": 16
+                        },
+                        {
+                            "id": 44,
+                            "title": "Attacking",
+                            "taskCount": 32
+                        },
+                        {
+                            "id": 45,
+                            "title": "Escaping",
+                            "taskCount": 10
+                        }
+                    ]
+                },
+                {
+                    "id": 46,
+                    "title": "Vol. 6",
+                    "taskCount": 118,
+                    "children": [
+                        {
+                            "id": 47,
+                            "title": "Capturing race",
+                            "taskCount": 37
+                        },
+                        {
+                            "id": 48,
+                            "title": "Attacking",
+                            "taskCount": 39
+                        },
+                        {
+                            "id": 49,
+                            "title": "Endgame",
+                            "taskCount": 42
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 50,
+            "title": "Lee Changho's Selected Life and Death",
+            "taskCount": 728,
+            "avgRank": 26,
+            "children": [
+                {
+                    "id": 51,
+                    "title": "Vol. 1",
+                    "taskCount": 123
+                },
+                {
+                    "id": 52,
+                    "title": "Vol. 2",
+                    "taskCount": 122
+                },
+                {
+                    "id": 53,
+                    "title": "Vol. 3",
+                    "taskCount": 122
+                },
+                {
+                    "id": 54,
+                    "title": "Vol. 4",
+                    "taskCount": 121
+                },
+                {
+                    "id": 55,
+                    "title": "Vol. 5",
+                    "taskCount": 119
+                },
+                {
+                    "id": 56,
+                    "title": "Vol. 6",
+                    "taskCount": 121
+                }
+            ]
+        },
+        {
             "id": 2,
-            "title": "Around 1000 Life and Death Problems",
+            "title": "Weiqi Life and Death 1000 Problems",
             "taskCount": 993,
+            "avgRank": 27,
             "children": [
                 {
                     "id": 3,
@@ -150,147 +397,136 @@
             ]
         },
         {
-            "id": 30,
-            "title": "Richard Hope's Selected Tesuji",
-            "taskCount": 722,
+            "id": 93,
+            "title": "All About Life and Death",
+            "taskCount": 280,
+            "avgRank": 27,
             "children": [
                 {
-                    "id": 31,
-                    "title": "Vol. 1",
-                    "taskCount": 121
+                    "id": 94,
+                    "title": "1 - Life and death on the second line",
+                    "taskCount": 29
                 },
                 {
-                    "id": 32,
-                    "title": "Vol. 2",
-                    "taskCount": 123
+                    "id": 95,
+                    "title": "2 - Six-space corner shapes",
+                    "taskCount": 35
                 },
                 {
-                    "id": 33,
-                    "title": "Vol. 3",
-                    "taskCount": 116,
-                    "children": [
-                        {
-                            "id": 34,
-                            "title": "Connecting groups",
-                            "taskCount": 26
-                        },
-                        {
-                            "id": 35,
-                            "title": "Splitting groups",
-                            "taskCount": 54
-                        },
-                        {
-                            "id": 36,
-                            "title": "Sabaki and settling",
-                            "taskCount": 8
-                        },
-                        {
-                            "id": 37,
-                            "title": "Endgame",
-                            "taskCount": 28
-                        }
-                    ]
+                    "id": 96,
+                    "title": "3 - Eight-space corner shapes",
+                    "taskCount": 47
                 },
                 {
-                    "id": 38,
-                    "title": "Vol. 4",
-                    "taskCount": 123
+                    "id": 97,
+                    "title": "4 - Comb",
+                    "taskCount": 40
                 },
                 {
-                    "id": 39,
-                    "title": "Vol. 5",
-                    "taskCount": 121,
-                    "children": [
-                        {
-                            "id": 40,
-                            "title": "Connecting",
-                            "taskCount": 16
-                        },
-                        {
-                            "id": 41,
-                            "title": "Make shape",
-                            "taskCount": 27
-                        },
-                        {
-                            "id": 42,
-                            "title": "Endgame",
-                            "taskCount": 20
-                        },
-                        {
-                            "id": 43,
-                            "title": "Life and death",
-                            "taskCount": 16
-                        },
-                        {
-                            "id": 44,
-                            "title": "Attacking",
-                            "taskCount": 32
-                        },
-                        {
-                            "id": 45,
-                            "title": "Escaping",
-                            "taskCount": 10
-                        }
-                    ]
+                    "id": 98,
+                    "title": "5 - Carpenter's square",
+                    "taskCount": 37
                 },
                 {
-                    "id": 46,
-                    "title": "Vol. 6",
-                    "taskCount": 118,
-                    "children": [
-                        {
-                            "id": 47,
-                            "title": "Capturing race",
-                            "taskCount": 37
-                        },
-                        {
-                            "id": 48,
-                            "title": "Attacking",
-                            "taskCount": 39
-                        },
-                        {
-                            "id": 49,
-                            "title": "Endgame",
-                            "taskCount": 42
-                        }
-                    ]
+                    "id": 99,
+                    "title": "6 - Second line side shapes",
+                    "taskCount": 24
+                },
+                {
+                    "id": 100,
+                    "title": "7 - Third line side shapes",
+                    "taskCount": 29
+                },
+                {
+                    "id": 101,
+                    "title": "8 - Fourth line side shapes",
+                    "taskCount": 26
+                },
+                {
+                    "id": 102,
+                    "title": "9 - Star point and 3-3 point",
+                    "taskCount": 6
+                },
+                {
+                    "id": 103,
+                    "title": "10 - Various ways of invading",
+                    "taskCount": 7
                 }
             ]
         },
         {
-            "id": 50,
-            "title": "Richard Hope's Selected Life and Death",
-            "taskCount": 728,
+            "id": 105,
+            "title": "Lee Changho’s Endgame Skills",
+            "taskCount": 198,
+            "avgRank": 27
+        },
+        {
+            "id": 188,
+            "title": "How to Improve on a 5x5 board",
+            "taskCount": 117,
+            "avgRank": 27,
             "children": [
                 {
-                    "id": 51,
-                    "title": "Vol. 1",
-                    "taskCount": 123
+                    "id": 189,
+                    "title": "Down to the final point",
+                    "taskCount": 41
                 },
                 {
-                    "id": 52,
-                    "title": "Vol. 2",
-                    "taskCount": 122
+                    "id": 190,
+                    "title": "Beware the counterattack",
+                    "taskCount": 40
                 },
                 {
-                    "id": 53,
-                    "title": "Vol. 3",
-                    "taskCount": 122
+                    "id": 191,
+                    "title": "Into the subtle and profound",
+                    "taskCount": 36
+                }
+            ]
+        },
+        {
+            "id": 180,
+            "title": "Weiqi Life and Death Drills",
+            "taskCount": 1522,
+            "avgRank": 28,
+            "children": [
+                {
+                    "id": 173,
+                    "title": "Beginner",
+                    "taskCount": 808,
+                    "children": [
+                        {
+                            "id": 174,
+                            "title": "Life and Death",
+                            "taskCount": 727
+                        },
+                        {
+                            "id": 175,
+                            "title": "Tesuji",
+                            "taskCount": 81
+                        }
+                    ]
                 },
                 {
-                    "id": 54,
-                    "title": "Vol. 4",
-                    "taskCount": 121
-                },
-                {
-                    "id": 55,
-                    "title": "Vol. 5",
-                    "taskCount": 119
-                },
-                {
-                    "id": 56,
-                    "title": "Vol. 6",
-                    "taskCount": 121
+                    "id": 176,
+                    "title": "Intermediate",
+                    "taskCount": 714,
+                    "children": [
+                        {
+                            "id": 177,
+                            "title": "Life and Death",
+                            "taskCount": 391
+                        },
+                        {
+                            "id": 178,
+                            "title": "Tesuji",
+                            "taskCount": 162
+                        },
+                        {
+                            "id": 179,
+                            "title": "Endgame",
+                            "taskCount": 161
+                        }
+                    ]
                 }
             ]
         },
@@ -298,6 +534,7 @@
             "id": 57,
             "title": "Gokyo Shumyo",
             "taskCount": 509,
+            "avgRank": 28,
             "children": [
                 {
                     "id": 58,
@@ -337,9 +574,296 @@
             ]
         },
         {
+            "id": 117,
+            "title": "Tesuji Dictionary - Segoe Kensaku, Go Seigen",
+            "taskCount": 835,
+            "avgRank": 29,
+            "children": [
+                {
+                    "id": 118,
+                    "title": "Attachment",
+                    "taskCount": 96
+                },
+                {
+                    "id": 119,
+                    "title": "Clamp attachment",
+                    "taskCount": 70
+                },
+                {
+                    "id": 120,
+                    "title": "Jump attachment",
+                    "taskCount": 12
+                },
+                {
+                    "id": 121,
+                    "title": "Bump",
+                    "taskCount": 12
+                },
+                {
+                    "id": 122,
+                    "title": "Attach across",
+                    "taskCount": 32
+                },
+                {
+                    "id": 123,
+                    "title": "Placement",
+                    "taskCount": 86
+                },
+                {
+                    "id": 124,
+                    "title": "Wedge",
+                    "taskCount": 16
+                },
+                {
+                    "id": 125,
+                    "title": "Cut",
+                    "taskCount": 79
+                },
+                {
+                    "id": 126,
+                    "title": "Hane and block",
+                    "taskCount": 67
+                },
+                {
+                    "id": 127,
+                    "title": "Diagonal",
+                    "taskCount": 41
+                },
+                {
+                    "id": 128,
+                    "title": "Diagonal attachment",
+                    "taskCount": 13
+                },
+                {
+                    "id": 129,
+                    "title": "Net",
+                    "taskCount": 51
+                },
+                {
+                    "id": 130,
+                    "title": "Ladder",
+                    "taskCount": 16
+                },
+                {
+                    "id": 131,
+                    "title": "Connect underneath",
+                    "taskCount": 46
+                },
+                {
+                    "id": 132,
+                    "title": "Sacrifice",
+                    "taskCount": 20
+                },
+                {
+                    "id": 133,
+                    "title": "Eye-stealing tesuji",
+                    "taskCount": 40
+                },
+                {
+                    "id": 134,
+                    "title": "Symmetrical shape",
+                    "taskCount": 12
+                },
+                {
+                    "id": 135,
+                    "title": "Descent",
+                    "taskCount": 24
+                },
+                {
+                    "id": 136,
+                    "title": "Angle wedge",
+                    "taskCount": 25
+                },
+                {
+                    "id": 137,
+                    "title": "Connect and die",
+                    "taskCount": 16
+                },
+                {
+                    "id": 138,
+                    "title": "Shortage of liberties",
+                    "taskCount": 7
+                },
+                {
+                    "id": 139,
+                    "title": "Squeeze",
+                    "taskCount": 14
+                },
+                {
+                    "id": 140,
+                    "title": "Squashing",
+                    "taskCount": 8
+                },
+                {
+                    "id": 141,
+                    "title": "Jump",
+                    "taskCount": 9
+                },
+                {
+                    "id": 142,
+                    "title": "Other",
+                    "taskCount": 23
+                }
+            ]
+        },
+        {
+            "id": 143,
+            "title": "Life and Death Dictionary - Segoe Kensaku",
+            "taskCount": 920,
+            "avgRank": 29,
+            "children": [
+                {
+                    "id": 144,
+                    "title": "Destroying eyes (threatening a snapback)",
+                    "taskCount": 66
+                },
+                {
+                    "id": 145,
+                    "title": "Throw in and snapback",
+                    "taskCount": 49
+                },
+                {
+                    "id": 146,
+                    "title": "1-2 point",
+                    "taskCount": 68
+                },
+                {
+                    "id": 147,
+                    "title": "Urgent enemy's vital point",
+                    "taskCount": 49
+                },
+                {
+                    "id": 148,
+                    "title": "Shortage of liberties",
+                    "taskCount": 49
+                },
+                {
+                    "id": 149,
+                    "title": "Symmetrical shape",
+                    "taskCount": 49
+                },
+                {
+                    "id": 150,
+                    "title": "Right side is sente",
+                    "taskCount": 28
+                },
+                {
+                    "id": 151,
+                    "title": "Tiger's mouth to live",
+                    "taskCount": 48
+                },
+                {
+                    "id": 152,
+                    "title": "Territory to live",
+                    "taskCount": 10
+                },
+                {
+                    "id": 153,
+                    "title": "Attack and kill",
+                    "taskCount": 28
+                },
+                {
+                    "id": 154,
+                    "title": "Profit with correct sequence",
+                    "taskCount": 49
+                },
+                {
+                    "id": 155,
+                    "title": "Under the stones",
+                    "taskCount": 68
+                },
+                {
+                    "id": 156,
+                    "title": "Diagonal",
+                    "taskCount": 48
+                },
+                {
+                    "id": 157,
+                    "title": "Jump",
+                    "taskCount": 39
+                },
+                {
+                    "id": 158,
+                    "title": "Placement",
+                    "taskCount": 40
+                },
+                {
+                    "id": 159,
+                    "title": "Descent",
+                    "taskCount": 13
+                },
+                {
+                    "id": 160,
+                    "title": "Knight's move",
+                    "taskCount": 12
+                },
+                {
+                    "id": 161,
+                    "title": "Horizontal stretch",
+                    "taskCount": 4
+                },
+                {
+                    "id": 162,
+                    "title": "Other",
+                    "taskCount": 13
+                },
+                {
+                    "id": 163,
+                    "title": "Make use of corner",
+                    "taskCount": 17
+                },
+                {
+                    "id": 164,
+                    "title": "Discard upper stone",
+                    "taskCount": 10
+                },
+                {
+                    "id": 165,
+                    "title": "Profit through sacrifice",
+                    "taskCount": 10
+                },
+                {
+                    "id": 166,
+                    "title": "Make use of right weakness",
+                    "taskCount": 17
+                },
+                {
+                    "id": 167,
+                    "title": "Clamp, attach to the side, attach across, wedge",
+                    "taskCount": 50
+                },
+                {
+                    "id": 168,
+                    "title": "Make use of surrounding stones",
+                    "taskCount": 10
+                },
+                {
+                    "id": 169,
+                    "title": "Make use of hane stone",
+                    "taskCount": 9
+                },
+                {
+                    "id": 170,
+                    "title": "Attack",
+                    "taskCount": 15
+                },
+                {
+                    "id": 171,
+                    "title": "Tesuji moves",
+                    "taskCount": 15
+                },
+                {
+                    "id": 172,
+                    "title": "Carpenter's square",
+                    "taskCount": 37
+                }
+            ]
+        },
+        {
             "id": 65,
-            "title": "Xuanxuan Qijing",
+            "title": "Gateway to All Marvels",
             "taskCount": 242,
+            "avgRank": 30,
             "children": [
                 {
                     "id": 66,
@@ -364,9 +888,74 @@
             ]
         },
         {
+            "id": 204,
+            "title": "The Book to Increase Your Fighting Strength at Go",
+            "taskCount": 312,
+            "avgRank": 30,
+            "children": [
+                {
+                    "id": 205,
+                    "title": "Volume 1",
+                    "taskCount": 157,
+                    "children": [
+                        {
+                            "id": 206,
+                            "title": "Level C",
+                            "taskCount": 21
+                        },
+                        {
+                            "id": 207,
+                            "title": "Level B",
+                            "taskCount": 61
+                        },
+                        {
+                            "id": 208,
+                            "title": "Level A",
+                            "taskCount": 75
+                        }
+                    ]
+                },
+                {
+                    "id": 209,
+                    "title": "Volume 2",
+                    "taskCount": 155,
+                    "children": [
+                        {
+                            "id": 210,
+                            "title": "Level C",
+                            "taskCount": 36
+                        },
+                        {
+                            "id": 211,
+                            "title": "Level B",
+                            "taskCount": 48
+                        },
+                        {
+                            "id": 212,
+                            "title": "Level A",
+                            "taskCount": 71
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 203,
+            "title": "Xian Ji Wu Ku",
+            "taskCount": 331,
+            "avgRank": 31
+        },
+        {
+            "id": 213,
+            "title": "Showa Tsumego",
+            "taskCount": 298,
+            "avgRank": 31
+        },
+        {
             "id": 70,
             "title": "Guanzi Pu",
             "taskCount": 1248,
+            "avgRank": 31,
             "children": [
                 {
                     "id": 71,
@@ -485,6 +1074,70 @@
                     ]
                 }
             ]
+        },
+        {
+            "id": 106,
+            "title": "Heavenly Dragons",
+            "taskCount": 982,
+            "avgRank": 32,
+            "children": [
+                {
+                    "id": 107,
+                    "title": "Part 1",
+                    "taskCount": 99
+                },
+                {
+                    "id": 108,
+                    "title": "Part 2",
+                    "taskCount": 98
+                },
+                {
+                    "id": 109,
+                    "title": "Part 3",
+                    "taskCount": 96
+                },
+                {
+                    "id": 110,
+                    "title": "Part 4",
+                    "taskCount": 94
+                },
+                {
+                    "id": 111,
+                    "title": "Part 5",
+                    "taskCount": 99
+                },
+                {
+                    "id": 112,
+                    "title": "Part 6",
+                    "taskCount": 99
+                },
+                {
+                    "id": 113,
+                    "title": "Part 7",
+                    "taskCount": 100
+                },
+                {
+                    "id": 114,
+                    "title": "Part 8",
+                    "taskCount": 99
+                },
+                {
+                    "id": 115,
+                    "title": "Part 9",
+                    "taskCount": 99
+                },
+                {
+                    "id": 116,
+                    "title": "Part 10",
+                    "taskCount": 99
+                }
+            ]
+        },
+        {
+            "id": 192,
+            "title": "Igo Hatsuyoron",
+            "taskCount": 152,
+            "avgRank": 33
         }
     ]
 }
