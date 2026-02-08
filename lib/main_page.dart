@@ -5,6 +5,7 @@ import 'package:wqhub/help/time_frenzy_help_dialog.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/main_page_bottom_navigation_bar.dart';
 import 'package:wqhub/main_page_navigation_rail.dart';
+import 'package:wqhub/p2p_battle/p2p_home_page.dart';
 import 'package:wqhub/play/server_card.dart';
 import 'package:wqhub/section_button.dart';
 import 'package:wqhub/settings/settings_button.dart';
@@ -162,6 +163,21 @@ class _Play extends StatelessWidget {
         children: <Widget>[
           for (final gameClient in gameClients)
             ServerCard(gameClient: gameClient),
+          const Divider(),
+          Card(
+            clipBehavior: Clip.hardEdge,
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, P2PHomePage.routeName);
+              },
+              child: ListTile(
+                leading: Icon(Icons.people),
+                title: Text('P2P Tsumego Battle'),
+                subtitle: Text(
+                    'Tsumego battle with other players'), //subtitle: Text(loc.p2pDesc),
+              ),
+            ),
+          ),
         ],
       ),
     );

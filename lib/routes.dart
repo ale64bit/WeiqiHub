@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/analysis/analysis_page.dart';
 import 'package:wqhub/local_board_page.dart';
 import 'package:wqhub/main_page.dart';
+import 'package:wqhub/p2p_battle/p2p_battle_page.dart';
+import 'package:wqhub/p2p_battle/p2p_home_page.dart';
+import 'package:wqhub/p2p_battle/p2p_lobby_page.dart';
+import 'package:wqhub/p2p_battle/p2p_results_page.dart';
 import 'package:wqhub/play/automatch_page.dart';
 import 'package:wqhub/play/game_page.dart';
 import 'package:wqhub/play/game_record_page.dart';
@@ -56,6 +60,7 @@ final Map<String, WidgetBuilder> routes = {
   MyMistakesPage.routeName: (context) => MyMistakesPage(),
   TrainStatsPage.routeName: (context) => TrainStatsPage(),
   TaskPatternSearchPage.routeName: (context) => TaskPatternSearchPage(),
+  P2PHomePage.routeName: (context) => const P2PHomePage(),
 };
 
 Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -205,6 +210,15 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
             summary: args.summary,
             record: args.record,
           ));
+    case P2PLobbyPage.routeName:
+      final args = settings.arguments as P2PLobbyArguments;
+      return _mpr(settings, P2PLobbyPage(args: args));
+    case P2PBattlePage.routeName:
+      final args = settings.arguments as P2PBattleArguments;
+      return _mprNoPop(settings, P2PBattlePage(args: args));
+    case P2PResultsPage.routeName:
+      final args = settings.arguments as P2PResultsArguments;
+      return _mpr(settings, P2PResultsPage(args: args));
   }
   assert(false, 'Missing named route implementation: ${settings.name}');
   return null;
