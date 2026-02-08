@@ -1,0 +1,11 @@
+name = "wqhub-p2p"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "TsumegoRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["TsumegoRoom"]

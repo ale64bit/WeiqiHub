@@ -36,6 +36,7 @@ class Settings {
   static const _fullscreen = 'settings.appearance.fullscreen';
   static const _saveDirectory = 'settings.save_dir';
   static const _locale = 'settings.language.locale';
+  static const _p2pServerUrl = 'settings.p2p.server_url';
   static const _helpDialogPrefix = 'settings.help';
 
   // Internal preferences
@@ -43,6 +44,15 @@ class Settings {
       prefs.getBool('$_versionPatch.$version.status') ?? false;
   void setVersionPatchStatus(String version, bool status) =>
       prefs.setBool('$_versionPatch.$version.status', status);
+  String get p2pServerUrl {
+    final val = prefs.getString(_p2pServerUrl);
+    if (val == null || val.isEmpty) {
+      return const String.fromEnvironment('P2P_SERVER_URL', defaultValue: '');
+    }
+    return val;
+  }
+
+  set p2pServerUrl(String val) => prefs.setString(_p2pServerUrl, val);
   String? getSaveDirectory() => prefs.getString(_saveDirectory);
   set saveDirectory(String dir) => prefs.setString(_saveDirectory, dir);
   int get localBoardSize => prefs.getInt(_localBoardSize) ?? 19;
