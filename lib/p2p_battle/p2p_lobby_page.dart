@@ -407,7 +407,7 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
               initialValue: _taskCount,
               label: 'Number of tasks',
               minValue: 1,
-              maxValue: 333, 
+              maxValue: 333,
               onChanged: (v) => _taskCount = v,
             ),
             DurationFormField(
@@ -440,9 +440,7 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
                     label: Text(type.name),
                     selected: _taskTypes.contains(type),
                     onSelected: (selected) => setState(() {
-                      selected
-                          ? _taskTypes.add(type)
-                          : _taskTypes.remove(type);
+                      selected ? _taskTypes.add(type) : _taskTypes.remove(type);
                     }),
                   )
               ],
