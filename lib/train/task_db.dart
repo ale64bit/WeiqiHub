@@ -18,7 +18,6 @@ import 'package:wqhub/train/task_collection.dart';
 import 'package:wqhub/train/task_ref.dart';
 import 'package:wqhub/train/task_source/distribution_task_source.dart';
 import 'package:wqhub/train/task_source/task_source.dart';
-import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/rank.dart';
@@ -34,12 +33,9 @@ class TaskDB {
   final PreparedStatement _selectTask;
   final PreparedStatement _selectBucketTask;
   final PreparedStatement _selectAllBucketTasks;
-  final PreparedStatement _selectTagTask;
   final PreparedStatement _selectCollectionTasks;
   final List<List<int>> _taskBucketCount;
   final List<List<int>> _taskBucketOffset;
-  final List<List<int>> _tagBucketCount;
-  final List<List<int>> _tagBucketOffset;
   final TaskCollection collections;
 
   static Future<String> _resolveDbPath() async {
@@ -69,13 +65,10 @@ class TaskDB {
         await rootBundle.loadString('assets/tasks/collections.json');
     final collections = TaskCollection.fromJson(jsonDecode(collectionData));
     final (taskBucketCount, taskBucketOffset) = _computeTaskBuckets(db);
-    final (tagBucketCount, tagBucketOffset) = _computeTagBuckets(db);
     _instance = TaskDB._(
       db: db,
       taskBucketCount: taskBucketCount,
       taskBucketOffset: taskBucketOffset,
-      tagBucketCount: tagBucketCount,
-      tagBucketOffset: tagBucketOffset,
       collections: collections,
     );
   }
@@ -101,27 +94,6 @@ class TaskDB {
     return (count, offset);
   }
 
-  static (List<List<int>>, List<List<int>>) _computeTagBuckets(Database db) {
-    final rand = Random(DateTime.now().microsecond);
-    final count = _emptyTable(TaskTag.values.length, Rank.values.length);
-    final offset = _emptyTable(TaskTag.values.length, Rank.values.length);
-
-    final resultSet = db.select('''
-      SELECT tag, rank, COUNT(*) AS total 
-        FROM task_tags 
-        GROUP BY tag, rank;
-      ''');
-    for (final row in resultSet) {
-      final tag = row['tag'] as int;
-      final rank = row['rank'] as int;
-      final total = row['total'] as int;
-      count[tag][rank] = total;
-      offset[tag][rank] = rand.nextInt(total);
-    }
-
-    return (count, offset);
-  }
-
   static List<List<int>> _emptyTable(int r, int c) =>
       List.generate(r, (_) => List.filled(c, 0));
 
@@ -129,13 +101,9 @@ class TaskDB {
     required Database db,
     required List<List<int>> taskBucketCount,
     required List<List<int>> taskBucketOffset,
-    required List<List<int>> tagBucketCount,
-    required List<List<int>> tagBucketOffset,
     required this.collections,
   })  : _taskBucketCount = taskBucketCount,
         _taskBucketOffset = taskBucketOffset,
-        _tagBucketCount = tagBucketCount,
-        _tagBucketOffset = tagBucketOffset,
         _selectTask = db.prepare(
             'SELECT * FROM tasks WHERE rank = ? AND type = ? AND id = ?;',
             persistent: true),
@@ -146,9 +114,6 @@ class TaskDB {
             SELECT id, black_stones, white_stones, fingerprint 
             FROM tasks WHERE rank = ? AND type = ?;
             ''', persistent: true),
-        _selectTagTask = db.prepare(
-            'SELECT type, id FROM task_tags WHERE tag = ? AND rank = ? LIMIT 1 OFFSET ?;',
-            persistent: true),
         _selectCollectionTasks = db.prepare(
             'SELECT rank, type, task_id FROM collection_tasks WHERE id = ? ORDER BY idx;',
             persistent: true);
@@ -156,26 +121,11 @@ class TaskDB {
   int taskCountByRankAndType(Rank rank, TaskType type) =>
       _taskBucketCount[rank.index][type.index];
 
-  int taskCountByTagAndRank(TaskTag tag, Rank rank) =>
-      _tagBucketCount[tag.index][rank.index];
-
   int taskCountByType(RankRange rankRange, Set<TaskType> types) {
     var total = 0;
     for (final rank in rankRange) {
       for (final type in types) {
         total += taskCountByRankAndType(rank, type);
-      }
-    }
-    return total;
-  }
-
-  int approxTaskCountByTag(RankRange rankRange, Set<TaskTag> tags) {
-    // This count is approximate since tasks can have more than one tag.
-    // However it's good enough for display purposes.
-    var total = 0;
-    for (final rank in rankRange) {
-      for (final tag in tags) {
-        total += taskCountByTagAndRank(tag, rank);
       }
     }
     return total;
@@ -219,20 +169,6 @@ class TaskDB {
     return null;
   }
 
-  TaskRef? randTaskByTagAndRank(TaskTag tag, Rank rank) {
-    final offset = _nextTagOffset(tag, rank);
-    final resultSet = _selectTagTask.select([tag.index, rank.index, offset]);
-    final row = resultSet.firstOrNull;
-    if (row != null) {
-      return TaskRef(
-        rank: rank,
-        type: TaskType.values[row['type'] as int],
-        id: row['id'] as int,
-      );
-    }
-    return null;
-  }
-
   IList<Task> takeByTypes(Rank rank, ISet<TaskType> types, int n) {
     assert(types.isNotEmpty);
     final bucketDist = types
@@ -241,19 +177,6 @@ class TaskDB {
     return List.generate(n, (_) {
       final (rank, type) = randomDist(bucketDist);
       return randTaskByRankAndType(rank, type)!;
-    }).toIList();
-  }
-
-  IList<Task> takeByTag(TaskTag tag, RankRange rankRange, int n) {
-    final bucketDist = [
-      for (final rank in rankRange)
-        if (taskCountByTagAndRank(tag, rank) > 0)
-          (rank, taskCountByTagAndRank(tag, rank))
-    ];
-    return List.generate(n, (_) {
-      final rank = randomDist(bucketDist);
-      final ref = randTaskByTagAndRank(tag, rank)!;
-      return getTaskByRef(ref)!;
     }).toIList();
   }
 
@@ -279,23 +202,6 @@ class TaskDB {
     return DistributionTaskSource(
       buckets: buckets,
       nextTask: (bucket) => randTaskByRankAndType(bucket.$1, bucket.$2)!,
-    );
-  }
-
-  TaskSource taskSourceByTags(RankRange rankRange, ISet<TaskTag> tags) {
-    final buckets = [
-      for (final rank in rankRange)
-        for (final tag in tags)
-          if (taskCountByTagAndRank(tag, rank) > 0)
-            ((tag, rank), taskCountByTagAndRank(tag, rank))
-    ];
-    return DistributionTaskSource(
-      buckets: buckets,
-      nextTask: ((TaskTag, Rank) bucket) {
-        final (tag, rank) = bucket;
-        final ref = randTaskByTagAndRank(tag, rank)!;
-        return getTaskByRef(ref)!;
-      },
     );
   }
 
@@ -368,15 +274,6 @@ class TaskDB {
     if (_taskBucketOffset[rank.index][type.index] >=
         _taskBucketCount[rank.index][type.index]) {
       _taskBucketOffset[rank.index][type.index] = 0;
-    }
-    return offset;
-  }
-
-  int _nextTagOffset(TaskTag tag, Rank rank) {
-    final offset = _tagBucketOffset[tag.index][rank.index]++;
-    if (_tagBucketOffset[tag.index][rank.index] >=
-        _tagBucketCount[tag.index][rank.index]) {
-      _tagBucketOffset[tag.index][rank.index] = 0;
     }
     return offset;
   }
