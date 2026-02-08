@@ -1,14 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:grpc/grpc.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
-import 'package:wqhub/analysis/analysis_page.dart';
-import 'package:wqhub/analysis/remote_katago.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
@@ -191,21 +190,15 @@ class _MyGamesPageState extends State<MyGamesPage> {
       summary,
       recordFut,
       onRecord: (context, summary, record) async {
-        Navigator.pushNamed(context, AnalysisPage.routeName,
-            arguments: AnalysisRouteArguments(
-              kataGo: RemoteKataGo(
-                channel: ClientChannel(
-                  'api.weiqihub.com',
-                  port: 32323,
-                  options: const ChannelOptions(
-                    credentials: ChannelCredentials.insecure(),
-                  ),
-                ),
-                boardSize: summary.boardSize,
-              ),
-              summary: summary,
-              record: record,
-            ));
+        final uri = Uri.https(
+          'ai-sensei.com',
+          'upload',
+          {
+            'sgf': utf8.decode(record.rawData, allowMalformed: true),
+          },
+        );
+
+        await launchUrl(uri);
       },
       onError: (err) {
         if (context.mounted) {
