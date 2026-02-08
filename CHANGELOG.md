@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.13
+- add timeout problems to exam review and stats (@Cidragon)
+- add more Collections
+- remove Topic feature
+- remove many problems
+
 ## 0.1.12
 - Ukrainian localization (@vabue)
 - OGS: fix bug where correspondence games would be resumed (@benjaminpjones)
