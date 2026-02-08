@@ -50,8 +50,7 @@ class CustomExamPage extends StatelessWidget {
     final taskSource = switch (settings.taskSourceType) {
       TaskSourceType.fromTaskTypes =>
         TaskDB().taskSourceByTypes(settings.rankRange, settings.taskTypes!),
-      TaskSourceType.fromTaskTag =>
-        TaskDB().taskSourceByTags(settings.rankRange, settings.taskSubtags!),
+      TaskSourceType.fromTaskTag => throw UnimplementedError(),
       TaskSourceType.fromMistakes => ConstTaskRefSource(
           taskRefs: StatsDB()
               .mistakesByRankRange(settings.rankRange, settings.taskCount)),

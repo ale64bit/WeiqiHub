@@ -1,12 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wqhub/train/rank_range.dart';
-import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/wq/rank.dart';
 
 class Stats {
   static const _gradingExamKeyPrefix = 'stats.grading_exam';
   static const _endgameExamKeyPrefix = 'stats.endgame_exam';
-  static const _tagExamKeyPrefix = 'stats.tag_exam';
   static const _timeFrenzyHighScoreKey = 'stats.time_frenzy.hi_score';
   static const _rankedModeRankKey = 'stats.ranked_mode.rank';
   static const _totalKeyPrefix = 'stats.total';
@@ -72,21 +69,5 @@ class Stats {
 
   void incrementTotalFailCount(Rank rank) {
     prefs.setInt('$_totalKeyPrefix.$rank.fail', getTotalFailCount(rank) + 1);
-  }
-
-  int getTagExamPassCount(TaskTag tag, RankRange rankRange) =>
-      prefs.getInt('$_tagExamKeyPrefix.${tag.index}.$rankRange.pass') ?? 0;
-
-  int getTagExamFailCount(TaskTag tag, RankRange rankRange) =>
-      prefs.getInt('$_tagExamKeyPrefix.${tag.index}.$rankRange.fail') ?? 0;
-
-  void incrementTagExamPassCount(TaskTag tag, RankRange rankRange) {
-    prefs.setInt('$_tagExamKeyPrefix.${tag.index}.$rankRange.pass',
-        getTagExamPassCount(tag, rankRange) + 1);
-  }
-
-  void incrementTagExamFailCount(TaskTag tag, RankRange rankRange) {
-    prefs.setInt('$_tagExamKeyPrefix.${tag.index}.$rankRange.fail',
-        getTagExamFailCount(tag, rankRange) + 1);
   }
 }

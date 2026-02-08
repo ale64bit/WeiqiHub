@@ -15,7 +15,6 @@ import 'package:wqhub/train/custom_exam_settings.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_source/task_source_type.dart';
-import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -50,8 +49,6 @@ class _CustomExamSelectionPageState
   var _rankRange = RankRange(from: Rank.k15, to: Rank.d7);
   var _taskSourceType = TaskSourceType.values.first;
   final _taskTypes = {TaskType.lifeAndDeath, TaskType.tesuji};
-  var _tag = TaskTag.beginner;
-  final _subtags = TaskTag.beginner.subtags().toSet();
   var _collectStats = true;
   var _presets = CustomExamPresets.empty();
 
@@ -119,15 +116,6 @@ class _CustomExamSelectionPageState
                 if (e.value.taskTypes != null) {
                   _taskTypes.clear();
                   _taskTypes.addAll(e.value.taskTypes!);
-                }
-                if (e.value.taskTag != null) {
-                  _tag = e.value.taskTag!;
-                  _subtags.clear();
-                  if (e.value.taskSubtags != null) {
-                    _subtags.addAll(e.value.taskSubtags!);
-                  } else {
-                    _subtags.addAll(_tag.subtags());
-                  }
                 }
                 _collectStats = e.value.collectStats;
               });
@@ -215,7 +203,8 @@ class _CustomExamSelectionPageState
                         labelText: loc.taskSource,
                       ),
                       items: [
-                        for (final value in TaskSourceType.values)
+                        for (final value in TaskSourceType.values
+                            .where((t) => t != TaskSourceType.fromTaskTag))
                           DropdownMenuItem(
                             value: value,
                             child: Text(value.toLocalizedString(loc)),
@@ -254,87 +243,7 @@ class _CustomExamSelectionPageState
                           ),
                           availableTasksText,
                         ],
-                      TaskSourceType.fromTaskTag => <Widget>[
-                          DropdownButtonFormField<TaskTag>(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: loc.topic,
-                            ),
-                            initialValue: _tag,
-                            items: [
-                              for (final tag in TaskTag.values
-                                  .where((t) => t.subtags().isNotEmpty))
-                                DropdownMenuItem(
-                                  value: tag,
-                                  child: Text(tag.toLocalizedString(loc)),
-                                )
-                            ],
-                            onChanged: (value) {
-                              if (value != null) {
-                                setState(() {
-                                  _tag = value;
-                                  _subtags.clear();
-                                  _subtags.addAll(_tag.subtags());
-                                });
-                              }
-                            },
-                          ),
-                          Row(
-                            spacing: 8.0,
-                            children: [
-                              Expanded(
-                                child: ElevatedButton.icon(
-                                  onPressed:
-                                      _subtags.length < _tag.subtags().length
-                                          ? () {
-                                              setState(() {
-                                                _subtags.clear();
-                                                _subtags.addAll(_tag.subtags());
-                                              });
-                                            }
-                                          : null,
-                                  icon: Icon(Icons.done_all),
-                                  label: Text(loc.selectAll),
-                                ),
-                              ),
-                              Expanded(
-                                child: ElevatedButton.icon(
-                                  onPressed: _subtags.isNotEmpty
-                                      ? () {
-                                          setState(() {
-                                            _subtags.clear();
-                                          });
-                                        }
-                                      : null,
-                                  icon: Icon(Icons.clear_all),
-                                  label: Text(loc.deselectAll),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 4.0,
-                            alignment: WrapAlignment.center,
-                            children: [
-                              for (final subtag in _tag.subtags())
-                                FilterChip(
-                                  label: Text(subtag.toLocalizedString(loc)),
-                                  selected: _subtags.contains(subtag),
-                                  onSelected: (bool selected) {
-                                    setState(() {
-                                      if (selected) {
-                                        _subtags.add(subtag);
-                                      } else {
-                                        _subtags.remove(subtag);
-                                      }
-                                    });
-                                  },
-                                )
-                            ],
-                          ),
-                          availableTasksText,
-                        ],
+                      TaskSourceType.fromTaskTag => throw UnimplementedError(),
                       TaskSourceType.fromMistakes => <Widget>[
                           availableTasksText,
                         ],
@@ -446,16 +355,13 @@ class _CustomExamSelectionPageState
         maxMistakes: _maxMistakes,
         taskSourceType: _taskSourceType,
         taskTypes: ISet(_taskTypes),
-        taskTag: _tag,
-        taskSubtags: ISet(_subtags),
         collectStats: _collectStats,
       );
 
   int availableTasks() => switch (_taskSourceType) {
         TaskSourceType.fromTaskTypes =>
           TaskDB().taskCountByType(_rankRange, _taskTypes),
-        TaskSourceType.fromTaskTag =>
-          TaskDB().approxTaskCountByTag(_rankRange, _subtags),
+        TaskSourceType.fromTaskTag => 0,
         TaskSourceType.fromMistakes =>
           StatsDB().countMistakesByRange(_rankRange),
       };
