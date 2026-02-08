@@ -141,6 +141,9 @@ class _CollectionPreviewPageState
                 final child = widget.collection.children[index];
                 if (index < widget.collection.children.length) {
                   return ListTile(
+                    leading: child.avgRank != null
+                        ? Text(child.avgRank.toString())
+                        : null,
                     title: Text(child.title),
                     subtitle: Text(loc.nTasks(child.taskCount)),
                     onTap: () {

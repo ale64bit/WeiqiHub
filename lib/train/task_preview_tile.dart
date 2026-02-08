@@ -30,7 +30,11 @@ class TaskPreviewTile extends StatefulWidget {
 class _TaskPreviewTileState extends State<TaskPreviewTile> {
   final MenuController _menuController = MenuController();
   late var taskFut = Future(() {
-    return TaskDB().getTaskByRef(widget.task);
+    final task = TaskDB().getTaskByRef(widget.task);
+    if (task == null) {
+      StatsDB().deleteMistakes([widget.task]);
+    }
+    return task;
   });
 
   @override
@@ -38,7 +42,11 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
     super.didUpdateWidget(oldWidget);
     if (widget.task != oldWidget.task) {
       taskFut = Future(() {
-        return TaskDB().getTaskByRef(widget.task);
+        final task = TaskDB().getTaskByRef(widget.task);
+        if (task == null) {
+          StatsDB().deleteMistakes([widget.task]);
+        }
+        return task;
       });
     }
   }

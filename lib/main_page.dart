@@ -27,7 +27,6 @@ import 'package:wqhub/local_board_page.dart';
 import 'package:wqhub/train/grading_exam_selection_page.dart';
 import 'package:wqhub/train/task_source/time_frenzy_task_source.dart';
 import 'package:wqhub/train/time_frenzy_page.dart';
-import 'package:wqhub/train/tags_page.dart';
 import 'package:wqhub/train/train_stats_page.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 
@@ -279,13 +278,6 @@ class _Train extends StatelessWidget {
                     arguments: CollectionPreviewRouteArguments(
                       collection: TaskDB().collections,
                     ));
-              },
-            ),
-            SectionButton(
-              icon: Icons.category,
-              label: loc.topics,
-              onPressed: () {
-                Navigator.pushNamed(context, TagsPage.routeName);
               },
             ),
             SectionButton(

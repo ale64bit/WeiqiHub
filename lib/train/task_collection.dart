@@ -7,12 +7,14 @@ class TaskCollection {
   final int id;
   final String title;
   final int taskCount;
+  final Rank? avgRank;
   final List<TaskCollection> children;
 
   const TaskCollection({
     required this.id,
     required this.title,
     required this.taskCount,
+    this.avgRank,
     required this.children,
   });
 
@@ -32,6 +34,7 @@ class TaskCollection {
         'id': id,
         'title': title,
         'taskCount': taskCount,
+        if (avgRank != null) 'avgRank': avgRank!.index,
         if (children.isNotEmpty)
           'children': [for (final child in children) child.toJson()]
       };
@@ -40,9 +43,12 @@ class TaskCollection {
         id: json['id'] as int,
         title: json['title'] as String,
         taskCount: json['taskCount'] as int,
+        avgRank: _maybeRank(json['avgRank'] as int?),
         children: [
           for (final child in (json['children'] as List<dynamic>?) ?? [])
             TaskCollection.fromJson(child as Map<String, dynamic>)
         ],
       );
+
+  static Rank? _maybeRank(int? i) => i != null ? Rank.values[i] : null;
 }

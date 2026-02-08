@@ -32,10 +32,6 @@ import 'package:wqhub/train/grading_exam_selection_page.dart';
 import 'package:wqhub/train/my_mistakes_page.dart';
 import 'package:wqhub/train/ranked_mode_page.dart';
 import 'package:wqhub/train/single_task_page.dart';
-import 'package:wqhub/train/subtag_rank_selection_page.dart';
-import 'package:wqhub/train/subtags_page.dart';
-import 'package:wqhub/train/tag_exam_page.dart';
-import 'package:wqhub/train/tags_page.dart';
 import 'package:wqhub/train/task_pattern_search_page.dart';
 import 'package:wqhub/train/task_pattern_search_results_page.dart';
 import 'package:wqhub/train/time_frenzy_page.dart';
@@ -55,7 +51,6 @@ final Map<String, WidgetBuilder> routes = {
   // Train
   GradingExamSelectionPage.routeName: (context) => GradingExamSelectionPage(),
   EndgameExamSelectionPage.routeName: (context) => EndgameExamSelectionPage(),
-  TagsPage.routeName: (context) => TagsPage(),
   CustomExamSelectionPage.routeName: (context) => CustomExamSelectionPage(),
   MyMistakesPage.routeName: (context) => MyMistakesPage(),
   TrainStatsPage.routeName: (context) => TrainStatsPage(),
@@ -95,20 +90,6 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case EndgameExamPage.routeName:
       final args = settings.arguments as EndgameExamRouteArguments;
       return _mprNoPop(settings, EndgameExamPage(rank: args.rank));
-    case SubtagsPage.routeName:
-      final args = settings.arguments as SubtagsRouteArguments;
-      return _mpr(settings, SubtagsPage(tag: args.tag));
-    case SubtagRankSelectionPage.routeName:
-      final args = settings.arguments as SubtagRankSelectionRouteArguments;
-      return _mpr(settings, SubtagRankSelectionPage(subtag: args.subtag));
-    case TagExamPage.routeName:
-      final args = settings.arguments as TagExamRouteArguments;
-      return _mprNoPop(
-          settings,
-          TagExamPage(
-            tag: args.tag,
-            rankRange: args.rankRange,
-          ));
     case CollectionPreviewPage.routeName:
       final args = settings.arguments as CollectionPreviewRouteArguments;
       return _mpr(settings, CollectionPreviewPage(collection: args.collection));

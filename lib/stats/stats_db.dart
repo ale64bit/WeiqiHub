@@ -10,7 +10,6 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/train/rank_range.dart';
 import 'package:wqhub/train/task_ref.dart';
-import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/wq/rank.dart';
 
@@ -40,14 +39,12 @@ enum ExamType {
   grading,
   endgame,
   custom,
-  topic,
   legacy;
 
   String toLocalizedString(AppLocalizations loc) => switch (this) {
         ExamType.grading => loc.gradingExam,
         ExamType.endgame => loc.endgameExam,
         ExamType.custom => loc.customExam,
-        ExamType.topic => loc.topic,
         ExamType.legacy => 'legacy',
       };
 }
@@ -55,41 +52,35 @@ enum ExamType {
 @immutable
 class ExamEvent {
   final ExamType type;
-  final TaskTag? tag;
   final String? raw;
 
-  const ExamEvent({required this.type, this.tag, this.raw});
+  const ExamEvent({required this.type, this.raw});
 
   ExamEvent.fromJson(Map<String, dynamic> json)
       : type = ExamType.values[json['type'] as int],
-        tag = _maybeAt(TaskTag.values, json['tag']),
         raw = null;
 
   Map<String, dynamic> toJson() => {
         'type': type.index,
-        if (tag != null) 'tag': tag!.index,
       };
 
   @override
-  int get hashCode => Object.hash(type, tag);
+  int get hashCode => type.index;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other.runtimeType != runtimeType) return false;
 
-    return other is ExamEvent && other.type == type && other.tag == tag;
+    return other is ExamEvent && other.type == type;
   }
 
   String toLocalizedString(AppLocalizations loc) => switch (type) {
         ExamType.grading => loc.gradingExam,
         ExamType.endgame => loc.endgameExam,
         ExamType.custom => loc.customExam,
-        ExamType.topic => '${loc.topic} (${tag?.toLocalizedString(loc)})',
         ExamType.legacy => raw!,
       };
-
-  static T? _maybeAt<T>(List<T> l, dynamic i) => i == null ? null : l[i as int];
 }
 
 @immutable
@@ -510,9 +501,7 @@ class StatsDB {
         .map((ref) => '(${ref.rank.index},${ref.type.index},${ref.id})')
         .join(',');
     _db.execute('''
-      BEGIN TRANSACTION;
         DELETE FROM task_stats WHERE (rank, type, id) IN ($entries);
-      COMMIT;
     ''');
   }
 
