@@ -501,9 +501,7 @@ class StatsDB {
         .map((ref) => '(${ref.rank.index},${ref.type.index},${ref.id})')
         .join(',');
     _db.execute('''
-      BEGIN TRANSACTION;
         DELETE FROM task_stats WHERE (rank, type, id) IN ($entries);
-      COMMIT;
     ''');
   }
 
