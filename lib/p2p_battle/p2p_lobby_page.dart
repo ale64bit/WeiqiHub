@@ -5,10 +5,8 @@ import 'package:wqhub/p2p_battle/p2p_battle_page.dart';
 import 'package:wqhub/p2p_battle/p2p_client.dart';
 import 'package:wqhub/p2p_battle/p2p_models.dart';
 import 'package:wqhub/train/rank_range.dart';
-import 'package:wqhub/stats/stats_db.dart';
 import 'package:wqhub/train/task_db.dart';
 import 'package:wqhub/train/task_source/task_source_type.dart';
-import 'package:wqhub/train/task_tag.dart';
 import 'package:wqhub/train/task_type.dart';
 import 'package:wqhub/train/variation_tree.dart';
 import 'package:wqhub/wq/rank.dart';
@@ -58,8 +56,6 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
   var _rankRange = RankRange(from: Rank.k15, to: Rank.d7);
   var _taskSourceType = TaskSourceType.values.first;
   final _taskTypes = {TaskType.lifeAndDeath, TaskType.tesuji};
-  var _tag = TaskTag.beginner;
-  final _subtags = TaskTag.beginner.subtags().toSet();
 
   @override
   void initState() {
@@ -386,23 +382,13 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
       _taskTypes
           .addAll(settings.taskTypeIndices!.map((i) => TaskType.values[i]));
     }
-    if (settings.taskTagIndex != null) {
-      _tag = TaskTag.values[settings.taskTagIndex!];
-    }
-    if (settings.taskSubtagIndices != null) {
-      _subtags.clear();
-      _subtags
-          .addAll(settings.taskSubtagIndices!.map((i) => TaskTag.values[i]));
-    }
   }
 
   int _availableTasks() => switch (_taskSourceType) {
         TaskSourceType.fromTaskTypes =>
           TaskDB().taskCountByType(_rankRange, _taskTypes),
-        TaskSourceType.fromTaskTag =>
-          TaskDB().approxTaskCountByTag(_rankRange, _subtags),
-        TaskSourceType.fromMistakes =>
-          StatsDB().countMistakesByRange(_rankRange),
+        TaskSourceType.fromTaskTag => 0,
+        TaskSourceType.fromMistakes => 0,
       };
 
   Widget _buildCreatorSetup() {
@@ -421,7 +407,7 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
               initialValue: _taskCount,
               label: 'Number of tasks',
               minValue: 1,
-              maxValue: 333, //TODO: value of tasks
+              maxValue: 333, 
               onChanged: (v) => _taskCount = v,
             ),
             DurationFormField(
@@ -445,85 +431,22 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
               },
               onChanged: (v) => setState(() => _rankRange = v),
             ),
-            DropdownButtonFormField<TaskSourceType>(
-              initialValue: _taskSourceType,
-              items: [
-                for (final v in TaskSourceType.values)
-                  if (v != TaskSourceType.fromMistakes)
-                    DropdownMenuItem(
-                        value: v,
-                        child: Text(switch (v) {
-                          TaskSourceType.fromTaskTypes => 'From Task Types',
-                          TaskSourceType.fromTaskTag => 'From Topic',
-                          _ => 'Unknown'
-                        })),
-              ],
-              onChanged: (v) => setState(() => _taskSourceType = v!),
-            ),
             // Minimalist version of filter selection
-            if (_taskSourceType == TaskSourceType.fromTaskTypes)
-              Wrap(
-                spacing: 8,
-                children: [
-                  for (final type in TaskType.values)
-                    FilterChip(
-                      label: Text(type.name),
-                      selected: _taskTypes.contains(type),
-                      onSelected: (selected) => setState(() {
-                        selected
-                            ? _taskTypes.add(type)
-                            : _taskTypes.remove(type);
-                      }),
-                    )
-                ],
-              ),
-            if (_taskSourceType == TaskSourceType.fromTaskTag) ...[
-              DropdownButtonFormField<TaskTag>(
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Topic',
-                ),
-                initialValue: _tag,
-                items: [
-                  for (final tag
-                      in TaskTag.values.where((t) => t.subtags().isNotEmpty))
-                    DropdownMenuItem(
-                      value: tag,
-                      child: Text(tag.name),
-                    )
-                ],
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      _tag = value;
-                      _subtags.clear();
-                      _subtags.addAll(_tag.subtags());
-                    });
-                  }
-                },
-              ),
-              Wrap(
-                spacing: 4.0,
-                runSpacing: 4.0,
-                alignment: WrapAlignment.center,
-                children: [
-                  for (final subtag in _tag.subtags())
-                    FilterChip(
-                      label: Text(subtag.name),
-                      selected: _subtags.contains(subtag),
-                      onSelected: (bool selected) {
-                        setState(() {
-                          if (selected) {
-                            _subtags.add(subtag);
-                          } else {
-                            _subtags.remove(subtag);
-                          }
-                        });
-                      },
-                    )
-                ],
-              ),
-            ],
+            Wrap(
+              spacing: 8,
+              children: [
+                for (final type in TaskType.values)
+                  FilterChip(
+                    label: Text(type.name),
+                    selected: _taskTypes.contains(type),
+                    onSelected: (selected) => setState(() {
+                      selected
+                          ? _taskTypes.add(type)
+                          : _taskTypes.remove(type);
+                    }),
+                  )
+              ],
+            ),
             Text('$count tasks available'),
             ElevatedButton(
               onPressed: count > 0 ? _confirmSettings : null,
@@ -545,8 +468,7 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
     final source = switch (_taskSourceType) {
       TaskSourceType.fromTaskTypes =>
         db.taskSourceByTypes(_rankRange, ISet(_taskTypes)),
-      TaskSourceType.fromTaskTag =>
-        db.taskSourceByTags(_rankRange, ISet(_subtags)),
+      TaskSourceType.fromTaskTag => throw UnimplementedError(),
       TaskSourceType.fromMistakes => throw UnimplementedError(),
     };
 
@@ -563,8 +485,8 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
       maxRankIndex: _rankRange.to.index,
       taskSourceTypeIndex: _taskSourceType.index,
       taskTypeIndices: _taskTypes.map((e) => e.index).toList(),
-      taskTagIndex: _tag.index,
-      taskSubtagIndices: _subtags.map((e) => e.index).toList(),
+      taskTagIndex: null,
+      taskSubtagIndices: null,
     ));
   }
 
@@ -596,7 +518,6 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
               label: 'Source',
               value: switch (sourceType) {
                 TaskSourceType.fromTaskTypes => 'Task Types',
-                TaskSourceType.fromTaskTag => 'Topic',
                 _ => sourceType.name,
               }),
           if (settings.taskTypeIndices != null &&
@@ -608,20 +529,6 @@ class _P2PLobbyPageState extends WindowClassAwareState<P2PLobbyPage> {
                   .map((i) => TaskType.values[i].name)
                   .join(', '),
             ),
-          if (settings.taskTagIndex != null &&
-              settings.taskSourceTypeIndex ==
-                  TaskSourceType.fromTaskTag.index) ...[
-            _SettingsRow(
-                label: 'Topic',
-                value: TaskTag.values[settings.taskTagIndex!].name),
-            if (settings.taskSubtagIndices != null)
-              _SettingsRow(
-                label: 'Subtopics',
-                value: settings.taskSubtagIndices!
-                    .map((i) => TaskTag.values[i].name)
-                    .join(', '),
-              ),
-          ],
         ],
       ),
     );
