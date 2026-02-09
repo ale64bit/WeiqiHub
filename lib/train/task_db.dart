@@ -41,12 +41,11 @@ class TaskDB {
   static Future<String> _resolveDbPath() async {
     final pkgInfo = await PackageInfo.fromPlatform();
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path =
-        join(documentsDirectory.path, 'wqhub_tasks_${pkgInfo.version}.db');
+    String path = join(documentsDirectory.path, 'wqhub_${pkgInfo.version}.db');
     final f = File(path);
     if (!f.existsSync()) {
       _log.info('copying task database to $path');
-      final data = await rootBundle.load('assets/tasks/wqhub_tasks.db');
+      final data = await rootBundle.load('assets/tasks/wqhub.db');
       f.writeAsBytesSync(data.buffer.asUint8List());
     }
     return path;
