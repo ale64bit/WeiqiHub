@@ -1,16 +1,6 @@
 import 'package:wqhub/wq/rank.dart';
 
 const endgameExamRanks = [
-  Rank.k15,
-  Rank.k14,
-  Rank.k13,
-  Rank.k12,
-  Rank.k11,
-  Rank.k10,
-  Rank.k9,
-  Rank.k8,
-  Rank.k7,
-  Rank.k6,
   Rank.k5,
   Rank.k4,
   Rank.k3,
@@ -22,5 +12,4 @@ const endgameExamRanks = [
   Rank.d4,
   Rank.d5,
   Rank.d6,
-  Rank.d7,
 ];

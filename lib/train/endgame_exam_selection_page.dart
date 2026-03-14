@@ -66,8 +66,8 @@ class _EndgameExamSelectionPageState
                   rankRange: RankRange.single(rank),
                   passCount: stats[rank]?.pass ?? 0,
                   failCount: stats[rank]?.fail ?? 0,
-                  isActive: (rank == Rank.k15) ||
-                      ((stats[Rank.values[max(Rank.k15.index, rank.index - 1)]]
+                  isActive: (rank == Rank.k5) ||
+                      ((stats[Rank.values[max(Rank.k5.index, rank.index - 1)]]
                                   ?.pass ??
                               0) >
                           0),
