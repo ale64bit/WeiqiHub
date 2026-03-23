@@ -330,8 +330,11 @@ class PandaNetGameClient extends GameClient {
     if (response.statusCode != 200) {
       throw Exception('Failed to fetch game list: ${response.statusCode}');
     }
-
-    return parseGameList(response.body, RankParsing.fromString);
+    final games = parseGameList(response.body, RankParsing.fromString);
+    for (final game in games){
+      _logger.info(game.id);
+    }
+    return games;
   }
 
   @override

@@ -18,7 +18,7 @@ Future<void> main() async {
   if (kDebugMode) {
     Logger.root.level = Level.ALL; // defaults to Level.INFO
     Logger.root.onRecord.listen((record) {
-      log('${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}');
+      print('${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}');
     });
   }
   runZonedGuarded(() async {
