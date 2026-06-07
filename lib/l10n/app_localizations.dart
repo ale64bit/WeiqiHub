@@ -158,6 +158,36 @@ abstract class AppLocalizations {
   /// **'AI Sensei'**
   String get aiSensei;
 
+  /// No description provided for @kifubara.
+  ///
+  /// In en, this message translates to:
+  /// **'Kifubara'**
+  String get kifubara;
+
+  /// No description provided for @analyze.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze'**
+  String get analyze;
+
+  /// No description provided for @analysisProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis provider'**
+  String get analysisProvider;
+
+  /// No description provided for @chooseAnalysisProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your analysis provider'**
+  String get chooseAnalysisProvider;
+
+  /// No description provided for @analysisProviderChangeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change this later in Settings.'**
+  String get analysisProviderChangeHint;
+
   /// No description provided for @alwaysBlackToPlay.
   ///
   /// In en, this message translates to:

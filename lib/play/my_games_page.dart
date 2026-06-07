@@ -12,6 +12,7 @@ import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/game_record_page.dart';
+import 'package:wqhub/settings/analysis_provider.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -63,7 +64,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
                       won: true,
                       onTap: () {},
                       onDownload: () {},
-                      onAISensei: () {},
+                      onAnalyze: () {},
                     ),
               itemBuilder: (context, index) {
                 final username =
@@ -78,7 +79,7 @@ class _MyGamesPageState extends State<MyGamesPage> {
                   won: won,
                   onTap: () => onTapGame(context, summary),
                   onDownload: () => onDownload(context, summary),
-                  onAISensei: () => onAIAnalysis(context, summary),
+                  onAnalyze: () => onAnalyze(context, summary),
                 );
               },
             );
@@ -181,36 +182,68 @@ class _MyGamesPageState extends State<MyGamesPage> {
     });
   }
 
-  void onAIAnalysis(BuildContext context, GameSummary summary) {
+  void onAnalyze(BuildContext context, GameSummary summary) async {
+    var provider = context.settings.analysisProvider;
+    if (provider == null) {
+      provider = await _chooseProvider(context);
+      if (provider == null) return;
+      if (!context.mounted) return;
+      context.settings.analysisProvider = provider;
+    }
+    _runAnalysis(context, summary, provider);
+  }
+
+  Future<AnalysisProvider?> _chooseProvider(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    return showDialog<AnalysisProvider>(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(loc.chooseAnalysisProvider),
+        children: [
+          for (final provider in AnalysisProvider.values)
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(context, provider),
+              child: Text(provider.toLocalizedString(loc)),
+            ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
+            child: Text(
+              loc.analysisProviderChangeHint,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _runAnalysis(
+      BuildContext context, GameSummary summary, AnalysisProvider provider) {
     final loc = AppLocalizations.of(context)!;
     final recordFut = widget.gameClient.getGame(summary.id);
-    _GameLoadingDialog.show(
-      context,
-      loc.msgDownloadingGame,
-      summary,
-      recordFut,
-      onRecord: (context, summary, record) async {
-        final uri = Uri.https(
-          'ai-sensei.com',
-          'upload',
-          {
-            'sgf': utf8.decode(record.rawData, allowMalformed: true),
-          },
-        );
-
-        await launchUrl(uri);
-      },
-      onError: (err) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).removeCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(loc.errFailedToUploadGameToAISensei),
-            showCloseIcon: true,
-            behavior: SnackBarBehavior.floating,
-          ));
-        }
-      },
-    );
+    _GameLoadingDialog.show(context, loc.msgDownloadingGame, summary, recordFut,
+        onRecord: (context, summary, record) async {
+      final sgf = utf8.decode(record.rawData, allowMalformed: true);
+      final uri = switch (provider) {
+        AnalysisProvider.aiSensei =>
+          Uri.https('ai-sensei.com', 'upload', {'sgf': sgf}),
+        AnalysisProvider.kifubara => Uri.https('kifubara.app', '/api/import', {
+            'sgf': sgf,
+            'source': 'weiqihub',
+            'platform': widget.gameClient.serverInfo.id,
+          }),
+      };
+      await launchUrl(uri);
+    }, onError: (err) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(loc.errFailedToDownloadGame),
+          showCloseIcon: true,
+          behavior: SnackBarBehavior.floating,
+        ));
+      }
+    });
   }
 }
 
@@ -219,14 +252,14 @@ class _GameListTile extends StatefulWidget {
   final bool won;
   final Function() onTap;
   final Function() onDownload;
-  final Function() onAISensei;
+  final Function() onAnalyze;
 
   const _GameListTile({
     required this.summary,
     required this.won,
     required this.onTap,
     required this.onDownload,
-    required this.onAISensei,
+    required this.onAnalyze,
   });
 
   @override
@@ -253,9 +286,9 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
             SlidableAction(
               backgroundColor: Colors.blue,
               icon: Icons.smart_toy,
-              label: loc.aiSensei,
+              label: loc.analyze,
               padding: EdgeInsets.all(8),
-              onPressed: (context) => widget.onAISensei(),
+              onPressed: (context) => widget.onAnalyze(),
             ),
           ],
         ),
@@ -304,8 +337,8 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
           ),
           IconButton(
             icon: const Icon(Icons.smart_toy),
-            tooltip: loc.tooltipAnalyzeWithAISensei,
-            onPressed: widget.onAISensei,
+            tooltip: loc.analyze,
+            onPressed: widget.onAnalyze,
           ),
         ],
       ),

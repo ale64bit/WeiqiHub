@@ -33,6 +33,22 @@ class AppLocalizationsUk extends AppLocalizations {
   String get aiSensei => 'AI Sensei';
 
   @override
+  String get kifubara => 'Kifubara';
+
+  @override
+  String get analyze => 'Аналіз';
+
+  @override
+  String get analysisProvider => 'Сервіс аналізу';
+
+  @override
+  String get chooseAnalysisProvider => 'Виберіть сервіс аналізу';
+
+  @override
+  String get analysisProviderChangeHint =>
+      'Це можна змінити пізніше в налаштуваннях.';
+
+  @override
   String get alwaysBlackToPlay => 'Завжди хід чорних';
 
   @override
