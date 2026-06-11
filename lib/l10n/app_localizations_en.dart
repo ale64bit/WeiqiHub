@@ -33,6 +33,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiSensei => 'AI Sensei';
 
   @override
+  String get kifubara => 'Kifubara';
+
+  @override
+  String get analyze => 'Analyze';
+
+  @override
+  String get analysisProvider => 'Analysis provider';
+
+  @override
+  String get chooseAnalysisProvider => 'Choose your analysis provider';
+
+  @override
+  String get analysisProviderChangeHint =>
+      'You can change this later in Settings.';
+
+  @override
   String get alwaysBlackToPlay => 'Always black-to-play';
 
   @override

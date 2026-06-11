@@ -33,6 +33,22 @@ class AppLocalizationsRo extends AppLocalizations {
   String get aiSensei => 'AI Sensei';
 
   @override
+  String get kifubara => 'Kifubara';
+
+  @override
+  String get analyze => 'Analizează';
+
+  @override
+  String get analysisProvider => 'Furnizor de analiză';
+
+  @override
+  String get chooseAnalysisProvider => 'Alege furnizorul de analiză';
+
+  @override
+  String get analysisProviderChangeHint =>
+      'Poți schimba asta mai târziu în Setări.';
+
+  @override
   String get alwaysBlackToPlay => 'Întotdeauna negru la mutare';
 
   @override

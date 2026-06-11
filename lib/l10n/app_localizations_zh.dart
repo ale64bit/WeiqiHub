@@ -33,6 +33,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aiSensei => 'AI Sensei';
 
   @override
+  String get kifubara => 'Kifubara';
+
+  @override
+  String get analyze => '分析';
+
+  @override
+  String get analysisProvider => '分析引擎';
+
+  @override
+  String get chooseAnalysisProvider => '选择分析引擎';
+
+  @override
+  String get analysisProviderChangeHint => '稍后可在设置中更改。';
+
+  @override
   String get alwaysBlackToPlay => '总是执黑先行';
 
   @override

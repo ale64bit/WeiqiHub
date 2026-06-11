@@ -33,6 +33,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get aiSensei => 'AI Sensei';
 
   @override
+  String get kifubara => 'Kifubara';
+
+  @override
+  String get analyze => 'Analizar';
+
+  @override
+  String get analysisProvider => 'Proveedor de análisis';
+
+  @override
+  String get chooseAnalysisProvider => 'Elige tu proveedor de análisis';
+
+  @override
+  String get analysisProviderChangeHint =>
+      'Puedes cambiarlo más tarde en Ajustes.';
+
+  @override
   String get alwaysBlackToPlay => 'Siempre juegan las negras';
 
   @override

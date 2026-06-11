@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/board/board_sizes.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
+import 'package:wqhub/settings/analysis_provider.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/train/response_delay.dart';
 
@@ -73,6 +74,29 @@ class _BehaviourSettingsPageState extends State<BehaviourSettingsPage> {
               onChanged: (ResponseDelay? delay) {
                 context.settings.responseDelay = delay!;
                 setState(() {});
+              },
+            ),
+          ),
+          ListTile(
+            title: Text(loc.analysisProvider),
+            trailing: DropdownButton<AnalysisProvider>(
+              value: context.settings.analysisProvider,
+              hint: Text(loc.chooseAnalysisProvider),
+              items: AnalysisProvider.values.map((provider) {
+                return DropdownMenuItem<AnalysisProvider>(
+                  value: provider,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(provider.toLocalizedString(loc)),
+                  ),
+                );
+              }).toList(),
+              borderRadius: BorderRadius.circular(8),
+              onChanged: (AnalysisProvider? provider) {
+                if (provider != null) {
+                  context.settings.analysisProvider = provider;
+                  setState(() {});
+                }
               },
             ),
           ),

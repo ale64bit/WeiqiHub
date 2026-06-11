@@ -8,6 +8,7 @@ import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/board/board_sizes.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
+import 'package:wqhub/settings/analysis_provider.dart';
 import 'package:wqhub/train/custom_exam_presets.dart';
 import 'package:wqhub/train/response_delay.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -125,6 +126,17 @@ class Settings {
 
   set responseDelay(ResponseDelay delay) =>
       prefs.setInt('$_behaviourKeyPrefix.response_delay', delay.index);
+
+  AnalysisProvider? get analysisProvider {
+    final i = prefs.getInt('$_behaviourKeyPrefix.analysis_provider');
+    return i == null ? null : AnalysisProvider.values[i];
+  }
+
+  set analysisProvider(AnalysisProvider? provider) {
+    if (provider != null) {
+      prefs.setInt('$_behaviourKeyPrefix.analysis_provider', provider.index);
+    }
+  }
 
   bool get alwaysBlackToPlay =>
       prefs.getBool('$_behaviourKeyPrefix.always_black_to_play') ?? true;

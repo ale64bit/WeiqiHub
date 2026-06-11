@@ -33,6 +33,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get aiSensei => 'AI Sensei';
 
   @override
+  String get kifubara => 'Kifubara';
+
+  @override
+  String get analyze => 'Анализ';
+
+  @override
+  String get analysisProvider => 'Сервис анализа';
+
+  @override
+  String get chooseAnalysisProvider => 'Выберите сервис анализа';
+
+  @override
+  String get analysisProviderChangeHint =>
+      'Это можно изменить позже в настройках.';
+
+  @override
   String get alwaysBlackToPlay => 'Всегда ход чёрных';
 
   @override
