@@ -1,0 +1,20 @@
+<ul>
+    <li>Local board</li>
+    <li>Play on OGS</li>
+    <li>Solve tsumego (no internet required):
+        <ul>
+            <li>Grading Exam: sets of 10 problems of the same rank, each with a 45s time limit.
+                Solve at least 8 to pass (a.k.a. "guan").</li>
+            <li>Endgame Exam: sets of 10 endgame problems of the same rank, each with a 45s time
+                limit. Solve at least 8 to pass.</li>
+            <li>Time Frenzy: solve as many problems as possible within 3 minutes. Difficulty
+                increases the more you solve. If you make 3 mistakes, you are out.</li>
+            <li>Ranked Mode: solve problems without a time limit. Difficulty increases the
+                more/faster you solve.</li>
+            <li>Collections: solve classic curated collections of problems without a time limit to
+                improve your reading strength.
+            </li>
+        </ul>
+    </li>
+    <li>Keep track of your solve stats and mistakes</li>
+</ul>
