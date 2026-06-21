@@ -1,0 +1,1 @@
+A unified client to the OGS Go server and offline puzzle solving
