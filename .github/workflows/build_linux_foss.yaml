@@ -13,8 +13,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.WQHUB_TOKEN }}
       - name: Install linux dependencies
         run: |
           sudo apt-get update -y
