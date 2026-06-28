@@ -258,10 +258,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get help => '帮助';
 
   @override
-  String get hidePlayerRanks => '隐藏棋手段位';
+  String get rankVisibility => '段位显示';
 
   @override
-  String get hidePlayerRanksDesc => '在服务器大厅和对局时隐藏段位';
+  String get rankVisibilityVisible => '默认';
+
+  @override
+  String get rankVisibilityHideRank => '隐藏段位信息';
+
+  @override
+  String get rankVisibilityFocusMode => '隐藏段位信息 + 胜局/晋段要求';
 
   @override
   String get helpDialogCollections =>

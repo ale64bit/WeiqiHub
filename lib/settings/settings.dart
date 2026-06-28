@@ -13,6 +13,12 @@ import 'package:wqhub/train/custom_exam_presets.dart';
 import 'package:wqhub/train/response_delay.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
+enum PlayerRankVisibility {
+  visible,
+  hideRank,
+  focusMode,
+}
+
 class Settings {
   final SharedPreferencesWithCache prefs;
 
@@ -33,7 +39,7 @@ class Settings {
   static const _boardShowCoordinatesKey = 'settings.board.show_coordinates';
   static const _boardStoneShadowsKey = 'settings.board.stone_shadows';
   static const _boardEdgeLine = 'settings.board.edge_line';
-  static const _hidePlayerRanks = 'settings.appearance.hide_player_ranks';
+  static const _rankVisibility = 'settings.appearance.rank_visibility';
   static const _fullscreen = 'settings.appearance.fullscreen';
   static const _saveDirectory = 'settings.save_dir';
   static const _locale = 'settings.language.locale';
@@ -94,7 +100,8 @@ class Settings {
   bool get stoneShadows => prefs.getBool(_boardStoneShadowsKey) ?? true;
   BoardEdgeLine get edgeLine =>
       BoardEdgeLine.values[prefs.getInt(_boardEdgeLine) ?? 0];
-  bool get hidePlayerRanks => prefs.getBool(_hidePlayerRanks) ?? false;
+  PlayerRankVisibility get rankVisibility => PlayerRankVisibility
+      .values[prefs.getInt(_rankVisibility) ?? PlayerRankVisibility.visible.index];
   bool get fullscreen => prefs.getBool(_fullscreen) ?? true;
 
   set boardTheme(BoardTheme theme) => prefs.setString(_boardTheme, theme.id);
@@ -102,7 +109,8 @@ class Settings {
   set stoneShadows(bool val) => prefs.setBool(_boardStoneShadowsKey, val);
   set edgeLine(BoardEdgeLine edgeLine) =>
       prefs.setInt(_boardEdgeLine, edgeLine.index);
-  set hidePlayerRanks(bool val) => prefs.setBool(_hidePlayerRanks, val);
+  set rankVisibility(PlayerRankVisibility val) =>
+      prefs.setInt(_rankVisibility, val.index);
   set fullscreen(bool val) => prefs.setBool(_fullscreen, val);
 
   // Behaviour

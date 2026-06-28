@@ -267,11 +267,17 @@ class AppLocalizationsRo extends AppLocalizations {
   String get help => 'Ajutor';
 
   @override
-  String get hidePlayerRanks => 'Ascunde rangurile jucătorilor';
+  String get rankVisibility => 'Vizibilitatea rangului';
 
   @override
-  String get hidePlayerRanksDesc =>
-      'Ascunde rangurile în lobby-ul serverului și în timpul jocului';
+  String get rankVisibilityVisible => 'Implicit';
+
+  @override
+  String get rankVisibilityHideRank => 'Ascunde informațiile despre rang';
+
+  @override
+  String get rankVisibilityFocusMode =>
+      'Ascunde info rang + victorii/cerințe de promovare';
 
   @override
   String get helpDialogCollections =>

@@ -13,6 +13,7 @@ import 'package:wqhub/game_client/game_record.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/game_record_page.dart';
 import 'package:wqhub/settings/analysis_provider.dart';
+import 'package:wqhub/settings/settings.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
@@ -270,6 +271,10 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
+    final gameTitle = context.settings.rankVisibility ==
+            PlayerRankVisibility.focusMode
+        ? '${widget.summary.white.username} vs ${widget.summary.black.username}'
+        : '[${widget.summary.white.rank.toString()}] ${widget.summary.white.username} vs ${widget.summary.black.username} [${widget.summary.black.rank.toString()}]';
     if (isWindowClassCompact) {
       return Slidable(
         key: ValueKey<String>(widget.summary.id),
@@ -296,8 +301,7 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
           leading: widget.won
               ? Icon(Icons.emoji_events, color: Colors.amber)
               : Icon(Icons.close, color: Colors.red),
-          title: Text(
-              '[${widget.summary.white.rank.toString()}] ${widget.summary.white.username} vs ${widget.summary.black.username} [${widget.summary.black.rank.toString()}]'),
+          title: Text(gameTitle),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -323,8 +327,7 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
           ],
         ),
       ),
-      title: Text(
-          '[${widget.summary.white.rank.toString()}] ${widget.summary.white.username} vs ${widget.summary.black.username} [${widget.summary.black.rank.toString()}]'),
+      title: Text(gameTitle),
       subtitle: Text(DateFormat.yMd().add_Hm().format(widget.summary.dateTime)),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
