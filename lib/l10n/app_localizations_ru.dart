@@ -267,11 +267,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String get help => 'Помощь';
 
   @override
-  String get hidePlayerRanks => 'Скрыть ранги игроков';
+  String get rankVisibility => 'Отображение ранга';
 
   @override
-  String get hidePlayerRanksDesc =>
-      'Скрывать ранги в лобби сервера и во время игры';
+  String get rankVisibilityVisible => 'По умолчанию';
+
+  @override
+  String get rankVisibilityHideRank => 'Скрыть сведения о ранге';
+
+  @override
+  String get rankVisibilityFocusMode =>
+      'Скрыть ранг + победы/требования для повышения';
 
   @override
   String get helpDialogCollections =>

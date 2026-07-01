@@ -266,11 +266,17 @@ class AppLocalizationsUk extends AppLocalizations {
   String get help => 'Допомога';
 
   @override
-  String get hidePlayerRanks => 'Приховати ранги гравців';
+  String get rankVisibility => 'Відображення рангу';
 
   @override
-  String get hidePlayerRanksDesc =>
-      'Приховувати ранги в лобі сервера та під час гри';
+  String get rankVisibilityVisible => 'За замовчуванням';
+
+  @override
+  String get rankVisibilityHideRank => 'Приховати інформацію про ранг';
+
+  @override
+  String get rankVisibilityFocusMode =>
+      'Приховати ранг + перемоги/вимоги для підвищення';
 
   @override
   String get helpDialogCollections =>

@@ -266,11 +266,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get help => 'Help';
 
   @override
-  String get hidePlayerRanks => 'Hide player ranks';
+  String get rankVisibility => 'Rank visibility';
 
   @override
-  String get hidePlayerRanksDesc =>
-      'Hide ranks in server lobby and during game play';
+  String get rankVisibilityVisible => 'Default';
+
+  @override
+  String get rankVisibilityHideRank => 'Hide rank information';
+
+  @override
+  String get rankVisibilityFocusMode =>
+      'Hide rank info + wins/promotion requirements';
 
   @override
   String get helpDialogCollections =>

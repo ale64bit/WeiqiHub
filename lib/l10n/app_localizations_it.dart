@@ -267,11 +267,17 @@ class AppLocalizationsIt extends AppLocalizations {
   String get help => 'Aiuto';
 
   @override
-  String get hidePlayerRanks => 'Nascondi gradi giocatori';
+  String get rankVisibility => 'Visibilità del grado';
 
   @override
-  String get hidePlayerRanksDesc =>
-      'Nascondi i gradi nella lobby del server e durante la partita';
+  String get rankVisibilityVisible => 'Predefinito';
+
+  @override
+  String get rankVisibilityHideRank => 'Nascondi informazioni sul grado';
+
+  @override
+  String get rankVisibilityFocusMode =>
+      'Nascondi info grado + vittorie/requisiti di promozione';
 
   @override
   String get helpDialogCollections =>

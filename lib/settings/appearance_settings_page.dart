@@ -81,7 +81,7 @@ class _AppearanceSettingsPageState
       appBar: AppBar(
         title: Text(loc.appearance),
       ),
-      body: isWindowClassCompact
+      body: isWindowClassCompact || isWindowClassMedium
           ? Column(
               children: [
                 Container(
