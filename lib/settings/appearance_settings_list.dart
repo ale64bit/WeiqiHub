@@ -116,23 +116,30 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text(loc.rankVisibility),
-          trailing: DropdownButton<PlayerRankVisibility>(
-            value: context.settings.rankVisibility,
-            items: PlayerRankVisibility.values.map((mode) {
-              return DropdownMenuItem<PlayerRankVisibility>(
-                value: mode,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(mode.toLocalizedString(loc)),
-                ),
-              );
-            }).toList(),
-            borderRadius: BorderRadius.circular(8),
-            onChanged: (PlayerRankVisibility? mode) {
-              context.settings.rankVisibility = mode!;
-              onChanged();
-            },
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(loc.rankVisibility),
+              DropdownButton<PlayerRankVisibility>(
+                value: context.settings.rankVisibility,
+                isExpanded: true,
+                items: PlayerRankVisibility.values.map((mode) {
+                  return DropdownMenuItem<PlayerRankVisibility>(
+                    value: mode,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(mode.toLocalizedString(loc)),
+                    ),
+                  );
+                }).toList(),
+                borderRadius: BorderRadius.circular(8),
+                onChanged: (PlayerRankVisibility? mode) {
+                  context.settings.rankVisibility = mode!;
+                  onChanged();
+                },
+              ),
+            ],
           ),
         ),
         if (Platform.isAndroid || Platform.isIOS)
