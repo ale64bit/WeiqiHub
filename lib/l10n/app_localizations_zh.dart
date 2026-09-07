@@ -63,6 +63,20 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoMatch => '自动匹配';
 
   @override
+  String get automatchRankRange => 'Rank range';
+
+  @override
+  String get automatchStrongerOpponents => 'Stronger';
+
+  @override
+  String get automatchWeakerOpponents => 'Weaker';
+
+  @override
+  String automatchSearchRange(String range) {
+    return 'Search range: $range';
+  }
+
+  @override
   String get avgRank => '平均段位';
 
   @override

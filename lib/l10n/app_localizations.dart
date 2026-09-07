@@ -218,6 +218,30 @@ abstract class AppLocalizations {
   /// **'Auto-Match'**
   String get autoMatch;
 
+  /// No description provided for @automatchRankRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Rank range'**
+  String get automatchRankRange;
+
+  /// No description provided for @automatchStrongerOpponents.
+  ///
+  /// In en, this message translates to:
+  /// **'Stronger'**
+  String get automatchStrongerOpponents;
+
+  /// No description provided for @automatchWeakerOpponents.
+  ///
+  /// In en, this message translates to:
+  /// **'Weaker'**
+  String get automatchWeakerOpponents;
+
+  /// No description provided for @automatchSearchRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Search range: {range}'**
+  String automatchSearchRange(String range);
+
   /// No description provided for @avgRank.
   ///
   /// In en, this message translates to:

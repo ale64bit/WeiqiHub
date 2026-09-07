@@ -6,6 +6,7 @@ import 'dart:math' as math;
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' show ClientException;
+import 'package:wqhub/game_client/automatch_options.dart';
 import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/exceptions.dart';
 import 'package:wqhub/game_client/game.dart';
@@ -27,12 +28,9 @@ import 'package:wqhub/wq/wq.dart' as wq;
 import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
 
-class OGSGameClient extends GameClient {
+class OGSGameClient extends GameClient implements OGSAutomatch {
   final Logger _logger = Logger('OGSGameClient');
 
-  /// OGS default rank difference for automatch requests
-  /// https://github.com/online-go/online-go.com/blob/b0d661e69cef0ce57c2c5d4e2e04109227ba9a96/src/lib/preferences.ts#L57-L58
-  static const int _defaultRankDiff = 3;
   static const List<int> _automatchBoardSizes = [9, 13, 19];
   static const List<String> _automatchSpeeds = ['blitz', 'rapid', 'live'];
 
@@ -199,10 +197,10 @@ class OGSGameClient extends GameClient {
       if (rank == null) return;
 
       final rankIndex = Rank.values.indexOf(rank);
-      final minRankIndex =
-          (rankIndex - _defaultRankDiff).clamp(0, Rank.values.length - 1);
-      final maxRankIndex =
-          (rankIndex + _defaultRankDiff).clamp(0, Rank.values.length - 1);
+      final minRankIndex = (rankIndex - AutomatchOptions.defaultRankDiff)
+          .clamp(0, Rank.values.length - 1);
+      final maxRankIndex = (rankIndex + AutomatchOptions.defaultRankDiff)
+          .clamp(0, Rank.values.length - 1);
 
       final ranks = <int>[];
       for (int i = minRankIndex; i <= maxRankIndex; i++) {
@@ -421,7 +419,15 @@ class OGSGameClient extends GameClient {
   }
 
   @override
-  Future<Game> findGame(String presetId) async {
+  Future<Game> findGame(String presetId) =>
+      _startAutomatch(presetId, const AutomatchOptions.defaults());
+
+  @override
+  Future<Game> findMatch(String presetId, AutomatchOptions options) =>
+      _startAutomatch(presetId, options);
+
+  Future<Game> _startAutomatch(
+      String presetId, AutomatchOptions options) async {
     // Parse the preset ID to extract board size and speed (format: "9_blitz", "19_live", etc.)
     final parts = presetId.split('_');
     final boardSize = int.parse(parts[0]);
@@ -441,8 +447,8 @@ class OGSGameClient extends GameClient {
       "size_speed_options": [
         {"size": "${boardSize}x$boardSize", "speed": speed, "system": "byoyomi"}
       ],
-      "lower_rank_diff": _defaultRankDiff,
-      "upper_rank_diff": _defaultRankDiff,
+      "lower_rank_diff": options.lowerRankDiff,
+      "upper_rank_diff": options.upperRankDiff,
       "rules": {"condition": "required", "value": "japanese"},
       "handicap": {"condition": "preferred", "value": "enabled"}
     };

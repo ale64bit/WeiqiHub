@@ -65,6 +65,20 @@ class AppLocalizationsIt extends AppLocalizations {
   String get autoMatch => 'Abbinamento automatico';
 
   @override
+  String get automatchRankRange => 'Rank range';
+
+  @override
+  String get automatchStrongerOpponents => 'Stronger';
+
+  @override
+  String get automatchWeakerOpponents => 'Weaker';
+
+  @override
+  String automatchSearchRange(String range) {
+    return 'Search range: $range';
+  }
+
+  @override
   String get avgRank => 'Media liv.';
 
   @override

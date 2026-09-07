@@ -156,6 +156,7 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
           AutomatchPage(
             gameClient: args.gameClient,
             preset: args.preset,
+            automatchOptions: args.automatchOptions,
           ));
     case GamePage.routeName:
       final args = settings.arguments as GameRouteArguments;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/audio/audio_controller.dart';
+import 'package:wqhub/game_client/automatch_options.dart';
 import 'package:wqhub/game_client/automatch_preset.dart';
 import 'package:wqhub/game_client/game.dart';
 import 'package:wqhub/game_client/game_client.dart';
@@ -10,8 +11,12 @@ class AutomatchRouteArguments {
   final GameClient gameClient;
   final AutomatchPreset preset;
 
+  /// Server-specific options for the request. When null (or when [gameClient]
+  /// does not implement [OGSAutomatch]), the default matchmaking is used.
+  final AutomatchOptions? automatchOptions;
+
   const AutomatchRouteArguments(
-      {required this.gameClient, required this.preset});
+      {required this.gameClient, required this.preset, this.automatchOptions});
 }
 
 class AutomatchPage extends StatefulWidget {
@@ -19,17 +24,29 @@ class AutomatchPage extends StatefulWidget {
 
   final GameClient gameClient;
   final AutomatchPreset preset;
+  final AutomatchOptions? automatchOptions;
 
   const AutomatchPage(
-      {super.key, required this.gameClient, required this.preset});
+      {super.key,
+      required this.gameClient,
+      required this.preset,
+      this.automatchOptions});
 
   @override
   State<AutomatchPage> createState() => _AutomatchPageState();
 }
 
 class _AutomatchPageState extends State<AutomatchPage> {
-  late final Future<Game> _findGame =
-      widget.gameClient.findGame(widget.preset.id);
+  late final Future<Game> _findGame = _startSearch();
+
+  Future<Game> _startSearch() {
+    final gameClient = widget.gameClient;
+    final options = widget.automatchOptions;
+    if (options != null && gameClient is OGSAutomatch) {
+      return (gameClient as OGSAutomatch).findMatch(widget.preset.id, options);
+    }
+    return gameClient.findGame(widget.preset.id);
+  }
 
   @override
   void initState() {

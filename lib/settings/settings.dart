@@ -7,6 +7,7 @@ import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/board/board_sizes.dart';
+import 'package:wqhub/game_client/automatch_options.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/settings/analysis_provider.dart';
 import 'package:wqhub/train/custom_exam_presets.dart';
@@ -44,6 +45,7 @@ class Settings {
   static const _saveDirectory = 'settings.save_dir';
   static const _locale = 'settings.language.locale';
   static const _helpDialogPrefix = 'settings.help';
+  static const _ogsAutomatchPrefix = 'settings.ogs.automatch';
 
   // Internal preferences
   bool getVersionPatchStatus(String version) =>
@@ -100,8 +102,8 @@ class Settings {
   bool get stoneShadows => prefs.getBool(_boardStoneShadowsKey) ?? true;
   BoardEdgeLine get edgeLine =>
       BoardEdgeLine.values[prefs.getInt(_boardEdgeLine) ?? 0];
-  PlayerRankVisibility get rankVisibility => PlayerRankVisibility
-      .values[prefs.getInt(_rankVisibility) ?? PlayerRankVisibility.visible.index];
+  PlayerRankVisibility get rankVisibility => PlayerRankVisibility.values[
+      prefs.getInt(_rankVisibility) ?? PlayerRankVisibility.visible.index];
   bool get fullscreen => prefs.getBool(_fullscreen) ?? true;
 
   set boardTheme(BoardTheme theme) => prefs.setString(_boardTheme, theme.id);
@@ -215,6 +217,19 @@ class Settings {
   void setPassword(String serverId, String password) {
     prefs.setString('$_credentialsPrefix.$serverId.password', password);
   }
+
+  // OGS automatch
+  int get ogsAutomatchUpperRankDiff =>
+      prefs.getInt('$_ogsAutomatchPrefix.upper_rank_diff') ??
+      AutomatchOptions.defaultRankDiff;
+  set ogsAutomatchUpperRankDiff(int val) =>
+      prefs.setInt('$_ogsAutomatchPrefix.upper_rank_diff', val);
+
+  int get ogsAutomatchLowerRankDiff =>
+      prefs.getInt('$_ogsAutomatchPrefix.lower_rank_diff') ??
+      AutomatchOptions.defaultRankDiff;
+  set ogsAutomatchLowerRankDiff(int val) =>
+      prefs.setInt('$_ogsAutomatchPrefix.lower_rank_diff', val);
 
   // Help
   bool get showCollectionsHelp =>
