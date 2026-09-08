@@ -17,6 +17,17 @@
   "appearance": "Appearance",
   "autoCounting": "Auto counting",
   "autoMatch": "Auto-Match",
+  "automatchRankRange": "Rank range",
+  "automatchStrongerOpponents": "Stronger",
+  "automatchWeakerOpponents": "Weaker",
+  "automatchSearchRange": "Search range: {range}",
+  "@automatchSearchRange": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      }
+    }
+  },
   "avgRank": "Avg. rank",
   "behaviour": "Behaviour",
   "bestResult": "Best result",

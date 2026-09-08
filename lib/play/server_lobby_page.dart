@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:wqhub/audio/audio_controller.dart';
+import 'package:wqhub/game_client/automatch_options.dart';
 import 'package:wqhub/game_client/user_info.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
 import 'package:wqhub/play/automatch_page.dart';
 import 'package:wqhub/game_client/game_client.dart';
 import 'package:wqhub/play/automatch_preset_list_tile.dart';
+import 'package:wqhub/play/automatch_rank_range_field.dart';
 import 'package:wqhub/play/game_page.dart';
 import 'package:wqhub/play/my_games_page.dart';
 import 'package:wqhub/play/promotion_card.dart';
@@ -102,6 +104,12 @@ class _ServerLobbyPageState
       },
     );
 
+    final supportsRankRange = widget.gameClient is OGSAutomatch;
+    final automatchOptions = AutomatchOptions(
+      upperRankDiff: context.settings.ogsAutomatchUpperRankDiff,
+      lowerRankDiff: context.settings.ogsAutomatchLowerRankDiff,
+    );
+
     final automatchPresetList = ListView(
       children: <Widget>[
         for (final preset in widget.gameClient.automatchPresets)
@@ -115,12 +123,32 @@ class _ServerLobbyPageState
                 arguments: AutomatchRouteArguments(
                   gameClient: widget.gameClient,
                   preset: preset,
+                  automatchOptions: supportsRankRange ? automatchOptions : null,
                 ),
               );
             },
           )
       ],
     );
+
+    final rankRangeSection = supportsRankRange
+        ? Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            child: ValueListenableBuilder(
+              valueListenable: widget.gameClient.userInfo,
+              builder: (context, info, child) => AutomatchRankRangeField(
+                options: automatchOptions,
+                playerRank: info?.rank,
+                onChanged: (opts) => setState(() {
+                  context.settings.ogsAutomatchUpperRankDiff =
+                      opts.upperRankDiff;
+                  context.settings.ogsAutomatchLowerRankDiff =
+                      opts.lowerRankDiff;
+                }),
+              ),
+            ),
+          )
+        : const SizedBox.shrink();
 
     return Scaffold(
       appBar: AppBar(
@@ -144,6 +172,7 @@ class _ServerLobbyPageState
                 promotionRequirementCard,
                 Divider(),
                 Text(loc.autoMatch),
+                rankRangeSection,
                 Expanded(child: automatchPresetList),
               ],
             )
@@ -177,6 +206,7 @@ class _ServerLobbyPageState
                         loc.autoMatch,
                         style: TextTheme.of(context).titleLarge,
                       ),
+                      rankRangeSection,
                       Expanded(child: automatchPresetList),
                     ],
                   ),

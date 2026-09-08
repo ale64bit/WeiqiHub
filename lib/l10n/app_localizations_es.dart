@@ -65,6 +65,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoMatch => 'Buscar partida';
 
   @override
+  String get automatchRankRange => 'Rank range';
+
+  @override
+  String get automatchStrongerOpponents => 'Stronger';
+
+  @override
+  String get automatchWeakerOpponents => 'Weaker';
+
+  @override
+  String automatchSearchRange(String range) {
+    return 'Search range: $range';
+  }
+
+  @override
   String get avgRank => 'Rango prom.';
 
   @override
