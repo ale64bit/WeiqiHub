@@ -4,7 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/board/board_settings.dart';
 import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/l10n/app_localizations.dart';
+import 'package:wqhub/settings/settings.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
+
+extension on PlayerRankVisibility {
+  String toLocalizedString(AppLocalizations loc) => switch (this) {
+        PlayerRankVisibility.visible => loc.rankVisibilityVisible,
+        PlayerRankVisibility.hideRank => loc.rankVisibilityHideRank,
+        PlayerRankVisibility.focusMode => loc.rankVisibilityFocusMode,
+      };
+}
 
 extension on ThemeMode {
   String toLocalizedString(AppLocalizations loc) => switch (this) {
@@ -107,14 +116,30 @@ class AppearanceSettingsList extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text(loc.hidePlayerRanks),
-          subtitle: Text(loc.hidePlayerRanksDesc),
-          trailing: Switch(
-            value: context.settings.hidePlayerRanks,
-            onChanged: (value) {
-              context.settings.hidePlayerRanks = value;
-              onChanged();
-            },
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(loc.rankVisibility),
+              DropdownButton<PlayerRankVisibility>(
+                value: context.settings.rankVisibility,
+                isExpanded: true,
+                items: PlayerRankVisibility.values.map((mode) {
+                  return DropdownMenuItem<PlayerRankVisibility>(
+                    value: mode,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(mode.toLocalizedString(loc)),
+                    ),
+                  );
+                }).toList(),
+                borderRadius: BorderRadius.circular(8),
+                onChanged: (PlayerRankVisibility? mode) {
+                  context.settings.rankVisibility = mode!;
+                  onChanged();
+                },
+              ),
+            ],
           ),
         ),
         if (Platform.isAndroid || Platform.isIOS)

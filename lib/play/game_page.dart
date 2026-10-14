@@ -23,6 +23,7 @@ import 'package:wqhub/play/player_card.dart';
 import 'package:wqhub/play/promotion_card.dart';
 import 'package:wqhub/play/streak_card.dart';
 import 'package:wqhub/play/user_info_card.dart';
+import 'package:wqhub/settings/settings.dart';
 import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/time_display.dart';
 import 'package:wqhub/timed_dialog.dart';
@@ -912,7 +913,9 @@ class _GamePageState extends State<GamePage> {
         final streakCard = ValueListenableBuilder(
           valueListenable: userInfo,
           builder: (context, value, child) {
-            if (value.streak != null) {
+            if (value.streak != null &&
+                context.settings.rankVisibility !=
+                    PlayerRankVisibility.focusMode) {
               const maxStreakLen = 15;
               final s = value.streak!;
               return StreakCard(
@@ -926,7 +929,9 @@ class _GamePageState extends State<GamePage> {
           valueListenable: userInfo,
           builder: (context, value, child) {
             final req = value.promotionRequirements;
-            if (req != null) {
+            if (req != null &&
+                context.settings.rankVisibility !=
+                    PlayerRankVisibility.focusMode) {
               return PromotionCard(requirements: req);
             }
             return SizedBox();

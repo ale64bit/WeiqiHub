@@ -11,6 +11,8 @@ import 'package:wqhub/play/promotion_card.dart';
 import 'package:wqhub/play/streak_card.dart';
 import 'package:wqhub/play/user_info_card.dart';
 import 'package:wqhub/pop_and_window_class_aware_state.dart';
+import 'package:wqhub/settings/settings.dart';
+import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 class ServerLobbyRouteArguments {
   final GameClient gameClient;
@@ -69,7 +71,8 @@ class _ServerLobbyPageState
     final streakCard = ValueListenableBuilder(
       valueListenable: widget.gameClient.userInfo,
       builder: (context, value, child) {
-        if (value?.streak != null) {
+        if (value?.streak != null &&
+            context.settings.rankVisibility != PlayerRankVisibility.focusMode) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -85,7 +88,8 @@ class _ServerLobbyPageState
       valueListenable: widget.gameClient.userInfo,
       builder: (context, value, child) {
         final req = value?.promotionRequirements;
-        if (req != null) {
+        if (req != null &&
+            context.settings.rankVisibility != PlayerRankVisibility.focusMode) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
