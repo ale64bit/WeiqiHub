@@ -8,11 +8,12 @@ class PromotionRequirements {
   final int? doubleUp;
   final int? doubleDown;
 
-  const PromotionRequirements(
-      {required this.up,
-      required this.down,
-      required this.doubleUp,
-      required this.doubleDown});
+  const PromotionRequirements({
+    required this.up,
+    required this.down,
+    required this.doubleUp,
+    required this.doubleDown,
+  });
 
   @override
   int get hashCode => Object.hash(up, down, doubleUp, doubleDown);
@@ -40,15 +41,16 @@ class UserInfo {
   final String? streak;
   final PromotionRequirements? promotionRequirements;
 
-  const UserInfo(
-      {required this.userId,
-      required this.username,
-      required this.rank,
-      required this.online,
-      this.winCount,
-      this.lossCount,
-      this.streak,
-      this.promotionRequirements});
+  const UserInfo({
+    required this.userId,
+    required this.username,
+    required this.rank,
+    required this.online,
+    this.winCount,
+    this.lossCount,
+    this.streak,
+    this.promotionRequirements,
+  });
 
   UserInfo copyWith({
     String? userId,
@@ -59,22 +61,28 @@ class UserInfo {
     int? lossCount,
     String? streak,
     PromotionRequirements? promotionRequirements,
-  }) =>
-      UserInfo(
-        userId: userId ?? this.userId,
-        username: username ?? this.username,
-        rank: rank ?? this.rank,
-        online: online ?? this.online,
-        winCount: winCount ?? this.winCount,
-        lossCount: lossCount ?? this.lossCount,
-        streak: streak ?? this.streak,
-        promotionRequirements:
-            promotionRequirements ?? this.promotionRequirements,
-      );
+  }) => UserInfo(
+    userId: userId ?? this.userId,
+    username: username ?? this.username,
+    rank: rank ?? this.rank,
+    online: online ?? this.online,
+    winCount: winCount ?? this.winCount,
+    lossCount: lossCount ?? this.lossCount,
+    streak: streak ?? this.streak,
+    promotionRequirements: promotionRequirements ?? this.promotionRequirements,
+  );
 
   @override
-  int get hashCode => Object.hash(userId, username, rank, online, winCount,
-      lossCount, streak, promotionRequirements);
+  int get hashCode => Object.hash(
+    userId,
+    username,
+    rank,
+    online,
+    winCount,
+    lossCount,
+    streak,
+    promotionRequirements,
+  );
 
   @override
   bool operator ==(Object other) {
@@ -95,10 +103,6 @@ class UserInfo {
   String toString() =>
       '{id=$userId, nick=$username, rank=$rank win=$winCount loss=$lossCount}';
 
-  static UserInfo empty() => const UserInfo(
-        userId: '',
-        username: '',
-        rank: Rank.k18,
-        online: false,
-      );
+  static UserInfo empty() =>
+      const UserInfo(userId: '', username: '', rank: Rank.k18, online: false);
 }

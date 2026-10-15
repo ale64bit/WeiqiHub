@@ -10,8 +10,10 @@ class AutomatchRouteArguments {
   final GameClient gameClient;
   final AutomatchPreset preset;
 
-  const AutomatchRouteArguments(
-      {required this.gameClient, required this.preset});
+  const AutomatchRouteArguments({
+    required this.gameClient,
+    required this.preset,
+  });
 }
 
 class AutomatchPage extends StatefulWidget {
@@ -20,42 +22,51 @@ class AutomatchPage extends StatefulWidget {
   final GameClient gameClient;
   final AutomatchPreset preset;
 
-  const AutomatchPage(
-      {super.key, required this.gameClient, required this.preset});
+  const AutomatchPage({
+    super.key,
+    required this.gameClient,
+    required this.preset,
+  });
 
   @override
   State<AutomatchPage> createState() => _AutomatchPageState();
 }
 
 class _AutomatchPageState extends State<AutomatchPage> {
-  late final Future<Game> _findGame =
-      widget.gameClient.findGame(widget.preset.id);
+  late final Future<Game> _findGame = widget.gameClient.findGame(
+    widget.preset.id,
+  );
 
   @override
   void initState() {
-    _findGame.then((game) {
-      if (context.mounted) {
-        AudioController().startToPlay();
-        Navigator.pushReplacementNamed(
-          context,
-          GamePage.routeName,
-          arguments: GameRouteArguments(
-            serverFeatures: widget.gameClient.serverFeatures,
-            game: game,
-            gameListener: null,
-          ),
-        );
-      }
-    }, onError: (err) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(err),
-          showCloseIcon: true,
-          behavior: SnackBarBehavior.floating,
-        ));
-        Navigator.pop(context);
-      }
-    });
+    _findGame.then(
+      (game) {
+        if (context.mounted) {
+          AudioController().startToPlay();
+          Navigator.pushReplacementNamed(
+            context,
+            GamePage.routeName,
+            arguments: GameRouteArguments(
+              serverFeatures: widget.gameClient.serverFeatures,
+              game: game,
+              gameListener: null,
+            ),
+          );
+        }
+      },
+      onError: (err) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(err),
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          Navigator.pop(context);
+        }
+      },
+    );
     super.initState();
   }
 
@@ -80,10 +91,11 @@ class _AutomatchPageState extends State<AutomatchPage> {
                 CircularProgressIndicator(),
                 SizedBox(height: 16),
                 ElevatedButton(
-                    onPressed: () {
-                      widget.gameClient.stopAutomatch();
-                    },
-                    child: Text(loc.cancel)),
+                  onPressed: () {
+                    widget.gameClient.stopAutomatch();
+                  },
+                  child: Text(loc.cancel),
+                ),
               ],
             ),
           );

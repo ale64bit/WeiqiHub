@@ -12,18 +12,20 @@ class SaveSgfFormResult {
   final double? komi;
   final String? result;
 
-  SaveSgfFormResult(
-      {required this.blackNick,
-      required this.blackRank,
-      required this.whiteNick,
-      required this.whiteRank,
-      required this.rules,
-      required this.komi,
-      required this.result});
+  SaveSgfFormResult({
+    required this.blackNick,
+    required this.blackRank,
+    required this.whiteNick,
+    required this.whiteRank,
+    required this.rules,
+    required this.komi,
+    required this.result,
+  });
 
   String suggestedFilename() {
-    final buf =
-        StringBuffer(DateFormat('yyyy.MM.dd hh.mm').format(DateTime.now()));
+    final buf = StringBuffer(
+      DateFormat('yyyy.MM.dd hh.mm').format(DateTime.now()),
+    );
     if (blackNick != null && whiteNick != null) {
       buf.write(' $blackNick vs $whiteNick');
     }
@@ -79,9 +81,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                   child: TextFormField(
                     controller: _blackNickController,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: loc.black,
-                    ),
+                    decoration: InputDecoration(hintText: loc.black),
                   ),
                 ),
                 Padding(
@@ -98,10 +98,12 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                       });
                     },
                     dropdownMenuEntries: Rank.values
-                        .map((rank) => DropdownMenuEntry<Rank>(
-                              value: rank,
-                              label: rank.toString(),
-                            ))
+                        .map(
+                          (rank) => DropdownMenuEntry<Rank>(
+                            value: rank,
+                            label: rank.toString(),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
@@ -113,9 +115,7 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                   child: TextFormField(
                     controller: _whiteNickController,
                     textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: loc.white,
-                    ),
+                    decoration: InputDecoration(hintText: loc.white),
                   ),
                 ),
                 Padding(
@@ -132,10 +132,12 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                       });
                     },
                     dropdownMenuEntries: Rank.values
-                        .map((rank) => DropdownMenuEntry<Rank>(
-                              value: rank,
-                              label: rank.toString(),
-                            ))
+                        .map(
+                          (rank) => DropdownMenuEntry<Rank>(
+                            value: rank,
+                            label: rank.toString(),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
@@ -159,32 +161,29 @@ class _SaveSgfFormState extends State<SaveSgfForm> {
                 }
                 return null;
               },
-              decoration: InputDecoration(
-                hintText: '${loc.komi} (e.g. 6.5)',
-              ),
+              decoration: InputDecoration(hintText: '${loc.komi} (e.g. 6.5)'),
             ),
             TextFormField(
               controller: _resultController,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: '${loc.result} (e.g. B+R)',
-              ),
+              decoration: InputDecoration(hintText: '${loc.result} (e.g. B+R)'),
             ),
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   Navigator.pop(
-                      context,
-                      SaveSgfFormResult(
-                        blackNick: _nullIfEmpty(_blackNickController.text),
-                        blackRank: blackRank,
-                        whiteNick: _nullIfEmpty(_whiteNickController.text),
-                        whiteRank: whiteRank,
-                        rules: _nullIfEmpty(_rulesController.text),
-                        komi: double.tryParse(_komiController.text),
-                        result: _nullIfEmpty(_resultController.text),
-                      ));
+                    context,
+                    SaveSgfFormResult(
+                      blackNick: _nullIfEmpty(_blackNickController.text),
+                      blackRank: blackRank,
+                      whiteNick: _nullIfEmpty(_whiteNickController.text),
+                      whiteRank: whiteRank,
+                      rules: _nullIfEmpty(_rulesController.text),
+                      komi: double.tryParse(_komiController.text),
+                      result: _nullIfEmpty(_resultController.text),
+                    ),
+                  );
                 }
               },
               child: Text(loc.save),

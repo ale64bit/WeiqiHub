@@ -55,13 +55,11 @@ class TaskDB {
     assert(_instance == null);
     _log.info('loading task database');
 
-    final db = sqlite3.open(
-      await _resolveDbPath(),
-      mode: OpenMode.readOnly,
-    );
+    final db = sqlite3.open(await _resolveDbPath(), mode: OpenMode.readOnly);
 
-    final collectionData =
-        await rootBundle.loadString('assets/tasks/collections.json');
+    final collectionData = await rootBundle.loadString(
+      'assets/tasks/collections.json',
+    );
     final collections = TaskCollection.fromJson(jsonDecode(collectionData));
     final (taskBucketCount, taskBucketOffset) = _computeTaskBuckets(db);
     _instance = TaskDB._(
@@ -101,21 +99,24 @@ class TaskDB {
     required List<List<int>> taskBucketCount,
     required List<List<int>> taskBucketOffset,
     required this.collections,
-  })  : _taskBucketCount = taskBucketCount,
-        _taskBucketOffset = taskBucketOffset,
-        _selectTask = db.prepare(
-            'SELECT * FROM tasks WHERE rank = ? AND type = ? AND id = ?;',
-            persistent: true),
-        _selectBucketTask = db.prepare(
-            'SELECT * FROM tasks WHERE rank = ? AND type = ? LIMIT 1 OFFSET ?;',
-            persistent: true),
-        _selectAllBucketTasks = db.prepare('''
+  }) : _taskBucketCount = taskBucketCount,
+       _taskBucketOffset = taskBucketOffset,
+       _selectTask = db.prepare(
+         'SELECT * FROM tasks WHERE rank = ? AND type = ? AND id = ?;',
+         persistent: true,
+       ),
+       _selectBucketTask = db.prepare(
+         'SELECT * FROM tasks WHERE rank = ? AND type = ? LIMIT 1 OFFSET ?;',
+         persistent: true,
+       ),
+       _selectAllBucketTasks = db.prepare('''
             SELECT id, black_stones, white_stones, fingerprint 
             FROM tasks WHERE rank = ? AND type = ?;
             ''', persistent: true),
-        _selectCollectionTasks = db.prepare(
-            'SELECT rank, type, task_id FROM collection_tasks WHERE id = ? ORDER BY idx;',
-            persistent: true);
+       _selectCollectionTasks = db.prepare(
+         'SELECT rank, type, task_id FROM collection_tasks WHERE id = ? ORDER BY idx;',
+         persistent: true,
+       );
 
   int taskCountByRankAndType(Rank rank, TaskType type) =>
       _taskBucketCount[rank.index][type.index];
@@ -159,8 +160,11 @@ class TaskDB {
 
   Task? randTaskByRankAndType(Rank rank, TaskType type) {
     final offset = _nextTaskOffset(rank, type);
-    final resultSet =
-        _selectBucketTask.select([rank.index, type.index, offset]);
+    final resultSet = _selectBucketTask.select([
+      rank.index,
+      type.index,
+      offset,
+    ]);
     final row = resultSet.firstOrNull;
     if (row != null) {
       return _taskFromRow(row);
@@ -187,7 +191,7 @@ class TaskDB {
           rank: Rank.values[row['rank'] as int],
           type: TaskType.values[row['type'] as int],
           id: row['task_id'] as int,
-        )
+        ),
     ].toIList();
   }
 
@@ -196,7 +200,7 @@ class TaskDB {
       for (final rank in rankRange)
         for (final taskType in taskTypes)
           if (taskCountByRankAndType(rank, taskType) > 0)
-            ((rank, taskType), taskCountByRankAndType(rank, taskType))
+            ((rank, taskType), taskCountByRankAndType(rank, taskType)),
     ];
     return DistributionTaskSource(
       buckets: buckets,
@@ -205,11 +209,12 @@ class TaskDB {
   }
 
   Stream<TaskRef> searchTaskInBucket(
-      Rank rank,
-      TaskType type,
-      IMap<wq.Point, wq.Color> wantStones,
-      ISet<wq.Point> wantEmpty,
-      Set<int> wantFeatures) async* {
+    Rank rank,
+    TaskType type,
+    IMap<wq.Point, wq.Color> wantStones,
+    ISet<wq.Point> wantEmpty,
+    Set<int> wantFeatures,
+  ) async* {
     final cursor = _selectAllBucketTasks.selectCursor([rank.index, type.index]);
     while (cursor.moveNext()) {
       final row = cursor.current;
@@ -225,17 +230,17 @@ class TaskDB {
           p: wq.Color.white,
       });
       if (_matchStones(wantStones, wantEmpty, gotStones)) {
-        yield TaskRef(
-          rank: rank,
-          type: type,
-          id: row['id'] as int,
-        );
+        yield TaskRef(rank: rank, type: type, id: row['id'] as int);
       }
     }
   }
 
-  Stream<TaskRef> searchTask(RankRange rankRange, ISet<TaskType> types,
-      IMap<wq.Point, wq.Color> stones, ISet<wq.Point> empty) async* {
+  Stream<TaskRef> searchTask(
+    RankRange rankRange,
+    ISet<TaskType> types,
+    IMap<wq.Point, wq.Color> stones,
+    ISet<wq.Point> empty,
+  ) async* {
     final features = _computePatternFeatures(stones);
     for (final rank in rankRange) {
       for (final type in types) {
@@ -255,10 +260,7 @@ class TaskDB {
       first: wq.Color.values[row['first'] as int],
       boardSize: row['board_size'] as int,
       subBoardSize: row['subboard_size'] as int,
-      topLeft: (
-        row['top_left_r'] as int,
-        row['top_left_c'] as int,
-      ),
+      topLeft: (row['top_left_r'] as int, row['top_left_c'] as int),
       initialStones: IMapOfSets({
         wq.Color.black: parseStonesString(row['black_stones'] as String),
         wq.Color.white: parseStonesString(row['white_stones'] as String),
@@ -336,12 +338,19 @@ class TaskDB {
   }
 
   int _fingerprint(
-      int rx, int cx, wq.Color xCol, int ry, int cy, wq.Color yCol) {
+    int rx,
+    int cx,
+    wq.Color xCol,
+    int ry,
+    int cy,
+    wq.Color yCol,
+  ) {
     final lens = [(rx - ry).abs(), (cx - cy).abs()];
     lens.sort();
     final sameCol = xCol == yCol ? 1 : 0;
-    final digest =
-        sha256.convert(utf8.encode('${lens[0]}.${lens[1]}.$sameCol'));
+    final digest = sha256.convert(
+      utf8.encode('${lens[0]}.${lens[1]}.$sameCol'),
+    );
     return digest.bytes[0];
   }
 }

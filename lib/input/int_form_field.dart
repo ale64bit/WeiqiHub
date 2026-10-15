@@ -31,10 +31,7 @@ Widget intFormField(
   return TextFormField(
     key: key,
     keyboardType: TextInputType.number,
-    decoration: InputDecoration(
-      border: OutlineInputBorder(),
-      labelText: label,
-    ),
+    decoration: InputDecoration(border: OutlineInputBorder(), labelText: label),
     validator: (value) => validator(value).$2,
     initialValue: initialValue?.toString(),
     inputFormatters: [FilteringTextInputFormatter.digitsOnly],

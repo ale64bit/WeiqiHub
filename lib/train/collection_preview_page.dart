@@ -74,9 +74,7 @@ class _CollectionPreviewPageState
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(loc.nTasks(widget.collection.taskCount)),
-                  ],
+                  children: [Text(loc.nTasks(widget.collection.taskCount))],
                 ),
               ),
               FutureBuilder(
@@ -101,7 +99,8 @@ class _CollectionPreviewPageState
                         children: [
                           Text('${loc.minRank}: $minRank'),
                           Text(
-                              '${loc.avgRank}: ${Rank.values[(r / n).floor()]}'),
+                            '${loc.avgRank}: ${Rank.values[(r / n).floor()]}',
+                          ),
                           Text('${loc.maxRank}: $maxRank'),
                         ],
                       ),
@@ -118,19 +117,13 @@ class _CollectionPreviewPageState
       ),
     );
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
+      appBar: AppBar(title: Text(title)),
       body: Column(
         children: [
           if (widget.collection.id != 1)
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Card(
-                child: Center(
-                  child: currentInfo,
-                ),
-              ),
+              child: Card(child: Center(child: currentInfo)),
             ),
           Expanded(
             child: ListView.builder(
@@ -180,7 +173,8 @@ class _CollectionPreviewPageState
                           child: FilledButton(
                             onPressed: () => onContinue(),
                             child: Text(
-                                '${loc.continue_} (${_currentProgress()}%)'),
+                              '${loc.continue_} (${_currentProgress()}%)',
+                            ),
                           ),
                         ),
                     ],
@@ -195,23 +189,26 @@ class _CollectionPreviewPageState
   void onStart(AppLocalizations loc) {
     if (_session != null) {
       showDialog(
-          context: context,
-          builder: (context) => ConfirmDialog(
-              title: loc.confirm,
-              content: loc.msgConfirmDeleteCollectionProgress,
-              onYes: () {
-                Navigator.pop(context);
-                StatsDB().resetCollectionActiveSession(widget.collection.id);
-                onContinue();
-              },
-              onNo: () => Navigator.pop(context)));
+        context: context,
+        builder: (context) => ConfirmDialog(
+          title: loc.confirm,
+          content: loc.msgConfirmDeleteCollectionProgress,
+          onYes: () {
+            Navigator.pop(context);
+            StatsDB().resetCollectionActiveSession(widget.collection.id);
+            onContinue();
+          },
+          onNo: () => Navigator.pop(context),
+        ),
+      );
       return;
     }
     onContinue();
   }
 
   void onContinue() {
-    final activeSession = _session ??
+    final activeSession =
+        _session ??
         CollectionActiveSession(
           id: widget.collection.id,
           correctCount: 0,
@@ -233,8 +230,9 @@ class _CollectionPreviewPageState
     );
   }
 
-  int _currentProgress() => (100 *
-          ((_session?.correctCount ?? 0) + (_session?.wrongCount ?? 0)) /
-          widget.collection.taskCount)
-      .round();
+  int _currentProgress() =>
+      (100 *
+              ((_session?.correctCount ?? 0) + (_session?.wrongCount ?? 0)) /
+              widget.collection.taskCount)
+          .round();
 }

@@ -24,10 +24,8 @@ class _TimedDialogState extends State<TimedDialog>
 
   @override
   void initState() {
-    controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    )..addListener(() {
+    controller = AnimationController(vsync: this, duration: widget.duration)
+      ..addListener(() {
         setState(() {});
       });
     controller.reverse(from: 1.0);
@@ -49,9 +47,7 @@ class _TimedDialogState extends State<TimedDialog>
         children: <Widget>[
           Text(widget.content),
           SizedBox(height: 16),
-          LinearProgressIndicator(
-            value: controller.value,
-          ),
+          LinearProgressIndicator(value: controller.value),
           SizedBox(height: 16),
           if (widget.onCancel != null)
             ElevatedButton(

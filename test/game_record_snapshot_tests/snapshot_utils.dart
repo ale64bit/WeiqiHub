@@ -18,11 +18,13 @@ String createSnapshot(GameRecord record) {
   final data = {
     'type': record.type.toString(),
     'moves': record.moves
-        .map((move) => {
-              'color': move.col.toString(),
-              'row': move.p.$1,
-              'col': move.p.$2,
-            })
+        .map(
+          (move) => {
+            'color': move.col.toString(),
+            'row': move.p.$1,
+            'col': move.p.$2,
+          },
+        )
         .toList(),
   };
 

@@ -30,14 +30,14 @@ class AnalysisRouteArguments {
   final GameSummary summary;
   final GameRecord record;
 
-  const AnalysisRouteArguments(
-      {required this.kataGo, required this.summary, required this.record});
+  const AnalysisRouteArguments({
+    required this.kataGo,
+    required this.summary,
+    required this.record,
+  });
 }
 
-enum AnalysisExploreMode {
-  manual,
-  variationOnHover,
-}
+enum AnalysisExploreMode { manual, variationOnHover }
 
 class AnalysisPage extends StatefulWidget {
   static const routeName = '/analysis';
@@ -46,11 +46,12 @@ class AnalysisPage extends StatefulWidget {
   final GameSummary summary;
   final GameRecord record;
 
-  const AnalysisPage(
-      {super.key,
-      required this.kataGo,
-      required this.summary,
-      required this.record});
+  const AnalysisPage({
+    super.key,
+    required this.kataGo,
+    required this.summary,
+    required this.record,
+  });
 
   @override
   State<AnalysisPage> createState() => _AnalysisPageState();
@@ -74,15 +75,18 @@ class _AnalysisPageState extends State<AnalysisPage> {
     super.didChangeDependencies();
     if (!_initialized) {
       _boardSize = widget.summary.boardSize;
-      _gameTree = AnnotatedGameTree(_boardSize,
-          lastMoveMainlineAnnotationFunc: _lastMoveMainlineAnnotation);
+      _gameTree = AnnotatedGameTree(
+        _boardSize,
+        lastMoveMainlineAnnotationFunc: _lastMoveMainlineAnnotation,
+      );
       _turn = wq.Color.black;
       _winrateSpots.add(FlSpot(0, 50));
       _scoreLeadSpots.add(FlSpot(0, 0));
       _mainlineNodes.add(_gameTree.curNode);
       for (final (i, mv) in widget.record.moves.indexed) {
-        _mainlineNodes
-            .add(_gameTree.moveAnnotated(mv, mode: AnnotationMode.mainline)!);
+        _mainlineNodes.add(
+          _gameTree.moveAnnotated(mv, mode: AnnotationMode.mainline)!,
+        );
         _winrateSpots.add(FlSpot(i.toDouble(), 50));
         _scoreLeadSpots.add(FlSpot(i.toDouble(), 0));
         _turn = _turn.opposite;
@@ -97,10 +101,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
     super.dispose();
     if (_fullGameQueryId != null) {
       widget.kataGo.terminate(
-        TerminateRequest(
-          id: Uuid().v4(),
-          terminateId: _fullGameQueryId!,
-        ),
+        TerminateRequest(id: Uuid().v4(), terminateId: _fullGameQueryId!),
       );
     }
   }
@@ -125,10 +126,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
         : null;
     final boardSettings = BoardSettings(
       size: _boardSize,
-      subBoard: SubBoard(
-        topLeft: (0, 0),
-        size: _boardSize,
-      ),
+      subBoard: SubBoard(topLeft: (0, 0), size: _boardSize),
       theme: context.settings.boardTheme,
       edgeLine: context.settings.edgeLine,
       border: border,
@@ -136,7 +134,8 @@ class _AnalysisPageState extends State<AnalysisPage> {
     );
     final board = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -224,10 +223,7 @@ class _AnalysisPageState extends State<AnalysisPage> {
               value: _exploreMode,
               items: [
                 for (final mode in AnalysisExploreMode.values)
-                  DropdownMenuItem(
-                    value: mode,
-                    child: Text(mode.name),
-                  ),
+                  DropdownMenuItem(value: mode, child: Text(mode.name)),
               ],
               borderRadius: BorderRadius.circular(8),
               onChanged: (AnalysisExploreMode? value) {
@@ -244,18 +240,11 @@ class _AnalysisPageState extends State<AnalysisPage> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.analysis),
-      ),
+      appBar: AppBar(title: Text(loc.analysis)),
       endDrawer: settingsDrawer,
       body: Row(
         children: [
-          Expanded(
-            flex: 2,
-            child: Center(
-              child: board,
-            ),
-          ),
+          Expanded(flex: 2, child: Center(child: board)),
           Expanded(
             child: Column(
               children: [
@@ -322,8 +311,10 @@ class _AnalysisPageState extends State<AnalysisPage> {
 
   void _onPointClicked(wq.Point p) {
     if (_exploreMode != AnalysisExploreMode.manual) return;
-    if (_gameTree.moveAnnotated((col: _turn, p: p),
-            mode: AnnotationMode.variation) !=
+    if (_gameTree.moveAnnotated((
+          col: _turn,
+          p: p,
+        ), mode: AnnotationMode.variation) !=
         null) {
       AudioController().playForNode(_gameTree.curNode);
       setState(() {
@@ -334,14 +325,14 @@ class _AnalysisPageState extends State<AnalysisPage> {
   }
 
   Map<String, String> _queryMetadata() => {
-        'id': widget.summary.id,
-        'black_nick': widget.summary.black.username,
-        'white_nick': widget.summary.white.username,
-        'black_rank': widget.summary.black.rank.toString(),
-        'white_rank': widget.summary.white.rank.toString(),
-        'time': widget.summary.dateTime.toIso8601String(),
-        'result': widget.summary.result.result,
-      };
+    'id': widget.summary.id,
+    'black_nick': widget.summary.black.username,
+    'white_nick': widget.summary.white.username,
+    'black_rank': widget.summary.black.rank.toString(),
+    'white_rank': widget.summary.white.rank.toString(),
+    'time': widget.summary.dateTime.toIso8601String(),
+    'result': widget.summary.result.result,
+  };
 
   void _queryCurrentPosition() {
     final node = _gameTree.curNode;
@@ -353,22 +344,24 @@ class _AnalysisPageState extends State<AnalysisPage> {
       moves.add(cur.move!);
       cur = cur.parent!;
     }
-    final respStream = widget.kataGo.query(KataGoRequest(
-      id: 'var-${Uuid().v4()}',
-      reportDuringSearchEvery: 0.2,
-      initialPlayer: _turn,
-      initialStones: [
-        for (final e in _gameTree.initialStones.entries)
-          for (final p in e.value) (col: e.key, p: p)
-      ],
-      moves: moves.reversed.toList(),
-      rules: widget.summary.rules,
-      komi: widget.summary.komi,
-      boardSize: _boardSize,
-      maxVisits: maxVisits,
-      overrideSettings: {},
-      metadata: _queryMetadata(),
-    ));
+    final respStream = widget.kataGo.query(
+      KataGoRequest(
+        id: 'var-${Uuid().v4()}',
+        reportDuringSearchEvery: 0.2,
+        initialPlayer: _turn,
+        initialStones: [
+          for (final e in _gameTree.initialStones.entries)
+            for (final p in e.value) (col: e.key, p: p),
+        ],
+        moves: moves.reversed.toList(),
+        rules: widget.summary.rules,
+        komi: widget.summary.komi,
+        boardSize: _boardSize,
+        maxVisits: maxVisits,
+        overrideSettings: {},
+        metadata: _queryMetadata(),
+      ),
+    );
     respStream.forEach((resp) {
       if (context.mounted) {
         setState(() {
@@ -381,31 +374,35 @@ class _AnalysisPageState extends State<AnalysisPage> {
 
   void _analyzeFullGame() {
     _fullGameQueryId = 'full-${Uuid().v4()}';
-    final respStream = widget.kataGo.query(KataGoRequest(
-      id: _fullGameQueryId!,
-      reportDuringSearchEvery: 0.2,
-      initialPlayer: wq.Color.black,
-      initialStones: [
-        for (final e in _gameTree.initialStones.entries)
-          for (final p in e.value) (col: e.key, p: p)
-      ],
-      analyzeTurns: List.generate(widget.record.moves.length + 1, (i) => i),
-      moves: widget.record.moves,
-      rules: widget.summary.rules,
-      komi: widget.summary.komi,
-      boardSize: _boardSize,
-      maxVisits: maxVisits,
-      overrideSettings: {},
-      metadata: _queryMetadata(),
-    ));
+    final respStream = widget.kataGo.query(
+      KataGoRequest(
+        id: _fullGameQueryId!,
+        reportDuringSearchEvery: 0.2,
+        initialPlayer: wq.Color.black,
+        initialStones: [
+          for (final e in _gameTree.initialStones.entries)
+            for (final p in e.value) (col: e.key, p: p),
+        ],
+        analyzeTurns: List.generate(widget.record.moves.length + 1, (i) => i),
+        moves: widget.record.moves,
+        rules: widget.summary.rules,
+        komi: widget.summary.komi,
+        boardSize: _boardSize,
+        maxVisits: maxVisits,
+        overrideSettings: {},
+        metadata: _queryMetadata(),
+      ),
+    );
     respStream.forEach((resp) {
       if (context.mounted) {
         setState(() {
           _pruneCandidateMoves(resp);
           final x = resp.turnNumber.toDouble();
           _mainlineNodes[resp.turnNumber].metadata = resp;
-          _winrateSpots[resp.turnNumber] =
-              FlSpot(x, 100 * resp.rootInfo.winrate);
+          _winrateSpots[resp.turnNumber] = FlSpot(
+            x,
+            100 * resp.rootInfo.winrate,
+          );
           _scoreLeadSpots[resp.turnNumber] = FlSpot(x, resp.rootInfo.scoreLead);
         });
       }
@@ -423,15 +420,19 @@ class _AnalysisPageState extends State<AnalysisPage> {
       final mv = (p: p, col: _turn);
       final isActualMove = _gameTree.curNode.child(mv) != null;
       annotations = annotations.add(
-          info.move!,
-          AnalysisAnnotation(
-            order: info.order,
-            visits: info.visits,
-            maxVisits: maxVisits,
-            pointLoss: loss(analysis.rootInfo.currentPlayer,
-                analysis.rootInfo.scoreLead, info.scoreLead),
-            actualMove: isActualMove,
-          ));
+        info.move!,
+        AnalysisAnnotation(
+          order: info.order,
+          visits: info.visits,
+          maxVisits: maxVisits,
+          pointLoss: loss(
+            analysis.rootInfo.currentPlayer,
+            analysis.rootInfo.scoreLead,
+            info.scoreLead,
+          ),
+          actualMove: isActualMove,
+        ),
+      );
     }
     return annotations;
   }
@@ -463,16 +464,14 @@ class _AnalysisPageState extends State<AnalysisPage> {
   }
 
   static BoardAnnotation _lastMoveMainlineAnnotation(
-      GameTreeNode<KataGoResponse> node) {
+    GameTreeNode<KataGoResponse> node,
+  ) {
     final (:col, :p) = node.move!;
     Color? innerColor;
     final loss = nodeLoss(node);
     if (loss != null) {
       innerColor = pointLossBands[pointLossBandIndex(loss.pointLoss)].$2;
     }
-    return LastMoveAnnotation(
-      turn: col,
-      innerColor: innerColor,
-    );
+    return LastMoveAnnotation(turn: col, innerColor: innerColor);
   }
 }

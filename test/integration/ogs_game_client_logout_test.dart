@@ -22,44 +22,48 @@ void main() {
 
       if (username == null || password == null) {
         fail(
-            'OGS_TEST_USERNAME and OGS_TEST_PASSWORD environment variables must be set');
+          'OGS_TEST_USERNAME and OGS_TEST_PASSWORD environment variables must be set',
+        );
       }
 
       return (username, password);
     }
 
-    test('logout should properly clean up and allow subsequent login',
-        () async {
-      final (testUsername, testPassword) = getCredentials();
+    test(
+      'logout should properly clean up and allow subsequent login',
+      () async {
+        final (testUsername, testPassword) = getCredentials();
 
-      final gameClient = OGSGameClient(
-        serverUrl: serverUrl,
-        aiServerUrl: aiServerUrl,
-      );
+        final gameClient = OGSGameClient(
+          serverUrl: serverUrl,
+          aiServerUrl: aiServerUrl,
+        );
 
-      try {
-        final userInfo = await gameClient.login(testUsername, testPassword);
-        expect(userInfo.username, testUsername);
-        expect(gameClient.userInfo.value, isNotNull);
+        try {
+          final userInfo = await gameClient.login(testUsername, testPassword);
+          expect(userInfo.username, testUsername);
+          expect(gameClient.userInfo.value, isNotNull);
 
-        await Future.delayed(Duration(milliseconds: 500));
+          await Future.delayed(Duration(milliseconds: 500));
 
-        gameClient.logout();
+          gameClient.logout();
 
-        await Future.delayed(Duration(milliseconds: 500));
+          await Future.delayed(Duration(milliseconds: 500));
 
-        expect(gameClient.userInfo.value, isNull);
+          expect(gameClient.userInfo.value, isNull);
 
-        final userInfo2 = await gameClient.login(testUsername, testPassword);
-        expect(userInfo2.username, testUsername);
-        expect(gameClient.userInfo.value, isNotNull);
+          final userInfo2 = await gameClient.login(testUsername, testPassword);
+          expect(userInfo2.username, testUsername);
+          expect(gameClient.userInfo.value, isNotNull);
 
-        gameClient.logout();
-        await Future.delayed(Duration(milliseconds: 500));
-      } finally {
-        gameClient.dispose();
-      }
-    }, timeout: Timeout(Duration(seconds: 30)));
+          gameClient.logout();
+          await Future.delayed(Duration(milliseconds: 500));
+        } finally {
+          gameClient.dispose();
+        }
+      },
+      timeout: Timeout(Duration(seconds: 30)),
+    );
 
     test('logout should prevent WebSocket auto-reconnect', () async {
       final (testUsername, testPassword) = getCredentials();
@@ -84,8 +88,11 @@ void main() {
 
         await Future.delayed(Duration(seconds: 3));
 
-        expect(disconnectCount, equals(1),
-            reason: 'Should only disconnect once, not auto-reconnect');
+        expect(
+          disconnectCount,
+          equals(1),
+          reason: 'Should only disconnect once, not auto-reconnect',
+        );
 
         gameClient.disconnected.removeListener(countDisconnects);
       } finally {

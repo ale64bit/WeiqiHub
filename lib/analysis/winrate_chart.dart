@@ -8,11 +8,12 @@ class WinrateChart extends StatelessWidget {
   final List<FlSpot> winrate;
   final Function(int) onTapMove;
 
-  const WinrateChart(
-      {super.key,
-      required this.currentNode,
-      required this.winrate,
-      required this.onTapMove});
+  const WinrateChart({
+    super.key,
+    required this.currentNode,
+    required this.winrate,
+    required this.onTapMove,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,16 +23,11 @@ class WinrateChart extends StatelessWidget {
     final chartBackgroundColor = Color.fromARGB(150, 80, 80, 100);
     return LineChart(
       LineChartData(
-        gridData: FlGridData(
-          show: true,
-        ),
+        gridData: FlGridData(show: true),
         titlesData: FlTitlesData(
           show: true,
           leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              reservedSize: 40,
-              showTitles: true,
-            ),
+            sideTitles: SideTitles(reservedSize: 40, showTitles: true),
           ),
           rightTitles: noTitles,
           topTitles: noTitles,
@@ -81,12 +77,13 @@ class WinrateChart extends StatelessWidget {
         maxY: 100.0,
         extraLinesData: ExtraLinesData(
           horizontalLines: [
-            HorizontalLine(y: 50, color: Colors.green.withAlpha(150))
+            HorizontalLine(y: 50, color: Colors.green.withAlpha(150)),
           ],
           verticalLines: [
             VerticalLine(
-                x: currentNode.moveNumber.toDouble(),
-                color: Colors.amber.withAlpha(100))
+              x: currentNode.moveNumber.toDouble(),
+              color: Colors.amber.withAlpha(100),
+            ),
           ],
         ),
       ),

@@ -67,8 +67,13 @@ void main() {
       final client = HttpClient(serverUrl: serverUrl, httpClient: mockClient);
       expect(
         () => client.getJson('/test'),
-        throwsA(isA<HttpStatusException>()
-            .having((e) => e.statusCode, 'statusCode', 404)),
+        throwsA(
+          isA<HttpStatusException>().having(
+            (e) => e.statusCode,
+            'statusCode',
+            404,
+          ),
+        ),
       );
       client.dispose();
     });

@@ -6,8 +6,8 @@ enum Rules {
   korean;
 
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        Rules.chinese => loc.rulesChinese,
-        Rules.japanese => loc.rulesJapanese,
-        Rules.korean => loc.rulesKorean,
-      };
+    Rules.chinese => loc.rulesChinese,
+    Rules.japanese => loc.rulesJapanese,
+    Rules.korean => loc.rulesKorean,
+  };
 }

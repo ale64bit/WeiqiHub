@@ -82,7 +82,8 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
 
             final board = LayoutBuilder(
               builder: (context, constraints) {
-                final boardSize = constraints.biggest.shortestSide -
+                final boardSize =
+                    constraints.biggest.shortestSide -
                     2 * (boardSettings.border?.size ?? 0);
                 return Board(
                   size: boardSize,
@@ -121,9 +122,7 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                           child: const Text('Hide task'),
                         ),
                       ],
-                      child: Center(
-                        child: board,
-                      ),
+                      child: Center(child: board),
                     ),
                   ),
                 ),
@@ -138,10 +137,11 @@ class _TaskPreviewTileState extends State<TaskPreviewTile> {
                     Text(widget.task.rank.toString()),
                     if (widget.solveStats != null)
                       Text(
-                          '${widget.solveStats!.correctAttempts} / ${widget.solveStats!.correctAttempts + widget.solveStats!.wrongAttempts}',
-                          style: TextTheme.of(context).labelSmall),
+                        '${widget.solveStats!.correctAttempts} / ${widget.solveStats!.correctAttempts + widget.solveStats!.wrongAttempts}',
+                        style: TextTheme.of(context).labelSmall,
+                      ),
                   ],
-                )
+                ),
               ],
             );
           }

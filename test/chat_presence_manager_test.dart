@@ -16,8 +16,10 @@ void main() {
       serverToClient = StreamController<dynamic>();
       clientToServer = StreamController<dynamic>();
 
-      final mockChannel =
-          StreamChannel(serverToClient.stream, clientToServer.sink);
+      final mockChannel = StreamChannel(
+        serverToClient.stream,
+        clientToServer.sink,
+      );
 
       webSocketManager = OGSWebSocketManager(
         serverUrl: 'wss://test',
@@ -49,10 +51,14 @@ void main() {
       await expectLater(
         clientToServer.stream.map((msg) => jsonDecode(msg.toString())),
         emitsInOrder([
-          predicate((List data) =>
-              data[0] == 'chat/join' && data[1]['channel'] == 'game-123'),
-          predicate((List data) =>
-              data[0] == 'chat/part' && data[1]['channel'] == 'game-123'),
+          predicate(
+            (List data) =>
+                data[0] == 'chat/join' && data[1]['channel'] == 'game-123',
+          ),
+          predicate(
+            (List data) =>
+                data[0] == 'chat/part' && data[1]['channel'] == 'game-123',
+          ),
         ]),
       );
     });
@@ -66,25 +72,29 @@ void main() {
       );
 
       // Users join
-      serverToClient.add(jsonEncode([
-        'chat-join',
-        {
-          'channel': 'game-123',
-          'users': [
-            {'id': 1, 'username': 'alice'},
-            {'id': 2, 'username': 'bob'},
-          ],
-        }
-      ]));
+      serverToClient.add(
+        jsonEncode([
+          'chat-join',
+          {
+            'channel': 'game-123',
+            'users': [
+              {'id': 1, 'username': 'alice'},
+              {'id': 2, 'username': 'bob'},
+            ],
+          },
+        ]),
+      );
 
       // One user leaves
-      serverToClient.add(jsonEncode([
-        'chat-part',
-        {
-          'channel': 'game-123',
-          'user': {'id': 1, 'username': 'alice'},
-        }
-      ]));
+      serverToClient.add(
+        jsonEncode([
+          'chat-part',
+          {
+            'channel': 'game-123',
+            'user': {'id': 1, 'username': 'alice'},
+          },
+        ]),
+      );
 
       // Verify presence updates
       await expectLater(

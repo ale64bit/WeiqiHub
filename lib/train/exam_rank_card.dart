@@ -11,13 +11,14 @@ class ExamRankCard extends StatelessWidget {
   final bool isActive;
   final Function()? onTap;
 
-  const ExamRankCard(
-      {super.key,
-      required this.rankRange,
-      required this.passCount,
-      required this.failCount,
-      required this.isActive,
-      this.onTap});
+  const ExamRankCard({
+    super.key,
+    required this.rankRange,
+    required this.passCount,
+    required this.failCount,
+    required this.isActive,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,29 +46,29 @@ class ExamRankCard extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    rankRange.toString(),
-                    style: textTheme.titleLarge,
-                  ),
+                  Text(rankRange.toString(), style: textTheme.titleLarge),
                   Row(
                     children: <Widget>[
                       Expanded(
-                          child: Text(
-                        '✓ $passCount',
-                        textAlign: TextAlign.center,
-                        style: textTheme.labelSmall,
-                      )),
+                        child: Text(
+                          '✓ $passCount',
+                          textAlign: TextAlign.center,
+                          style: textTheme.labelSmall,
+                        ),
+                      ),
                       Expanded(
-                          child: Text(
-                        '✗ $failCount',
-                        textAlign: TextAlign.center,
-                        style: textTheme.labelSmall,
-                      )),
+                        child: Text(
+                          '✗ $failCount',
+                          textAlign: TextAlign.center,
+                          style: textTheme.labelSmall,
+                        ),
+                      ),
                     ],
                   ),
                   Text(
-                    NumberFormat.percentPattern()
-                        .format((passCount) / max(passCount + failCount, 1)),
+                    NumberFormat.percentPattern().format(
+                      (passCount) / max(passCount + failCount, 1),
+                    ),
                     style: textTheme.labelSmall,
                   ),
                 ],

@@ -12,7 +12,7 @@ class RemoteKataGo implements KataGo {
   final pbgrpc.KataGoClient client;
 
   RemoteKataGo({required this.channel, required this.boardSize})
-      : client = pbgrpc.KataGoClient(channel);
+    : client = pbgrpc.KataGoClient(channel);
 
   @override
   Stream<KataGoResponse> query(KataGoRequest req) async* {

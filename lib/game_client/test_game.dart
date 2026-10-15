@@ -44,8 +44,9 @@ class TestGame extends Game {
 
   @override
   Future<void> toggleManuallyRemovedStones(
-          List<wq.Point> stones, bool removed) =>
-      Future.value();
+    List<wq.Point> stones,
+    bool removed,
+  ) => Future.value();
 
   @override
   Future<void> forceCounting() => Future.value();
@@ -58,12 +59,14 @@ class TestGame extends Game {
 
   @override
   Future<void> pass() {
-    _countingResultController.add(CountingResult(
-      winner: wq.Color.black,
-      scoreLead: 0,
-      ownership: List.empty(),
-      isFinal: false,
-    ));
+    _countingResultController.add(
+      CountingResult(
+        winner: wq.Color.black,
+        scoreLead: 0,
+        ownership: List.empty(),
+        isFinal: false,
+      ),
+    );
     return Future.value();
   }
 

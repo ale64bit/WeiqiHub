@@ -27,15 +27,20 @@ class MyGamesRouteArguments {
   final GameClient gameClient;
   final Future<List<GameSummary>> gameList;
 
-  const MyGamesRouteArguments(
-      {required this.gameClient, required this.gameList});
+  const MyGamesRouteArguments({
+    required this.gameClient,
+    required this.gameList,
+  });
 }
 
 class MyGamesPage extends StatefulWidget {
   static const routeName = '/play/my_games';
 
-  const MyGamesPage(
-      {super.key, required this.gameClient, required this.gameList});
+  const MyGamesPage({
+    super.key,
+    required this.gameClient,
+    required this.gameList,
+  });
 
   final GameClient gameClient;
   final Future<List<GameSummary>> gameList;
@@ -71,7 +76,8 @@ class _MyGamesPageState extends State<MyGamesPage> {
                 final username =
                     widget.gameClient.userInfo.value?.username ?? '';
                 final summary = items[index];
-                final won = (summary.result.winner == wq.Color.black &&
+                final won =
+                    (summary.result.winner == wq.Color.black &&
                         username == summary.black.username) ||
                     (summary.result.winner == wq.Color.white &&
                         username == summary.white.username);
@@ -105,20 +111,19 @@ class _MyGamesPageState extends State<MyGamesPage> {
         Navigator.pushNamed(
           context,
           GameRecordPage.routeName,
-          arguments: GameRecordRouteArguments(
-            summary: summary,
-            record: record,
-          ),
+          arguments: GameRecordRouteArguments(summary: summary, record: record),
         );
       },
       onError: (err) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(loc.errFailedToDownloadGame),
-            showCloseIcon: true,
-            behavior: SnackBarBehavior.floating,
-          ));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(loc.errFailedToDownloadGame),
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         }
       },
     );
@@ -127,60 +132,70 @@ class _MyGamesPageState extends State<MyGamesPage> {
   void onDownload(BuildContext context, GameSummary summary) {
     final loc = AppLocalizations.of(context)!;
     final recordFut = widget.gameClient.getGame(summary.id);
-    _GameLoadingDialog.show(context, loc.msgDownloadingGame, summary, recordFut,
-        onRecord: (context, summary, record) async {
-      final fileName =
-          '${_dateFormat.format(summary.dateTime)} - ${summary.white.username} vs ${summary.black.username}.${record.type.name}';
-      if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
-        if (context.mounted) {
-          final savePath = await FilePicker.platform.saveFile(
-            fileName: fileName,
-            initialDirectory: context.settings.getSaveDirectory(),
+    _GameLoadingDialog.show(
+      context,
+      loc.msgDownloadingGame,
+      summary,
+      recordFut,
+      onRecord: (context, summary, record) async {
+        final fileName =
+            '${_dateFormat.format(summary.dateTime)} - ${summary.white.username} vs ${summary.black.username}.${record.type.name}';
+        if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+          if (context.mounted) {
+            final savePath = await FilePicker.platform.saveFile(
+              fileName: fileName,
+              initialDirectory: context.settings.getSaveDirectory(),
+            );
+            if (savePath != null) {
+              final f = File(savePath);
+              await f.writeAsBytes(record.rawData);
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(loc.msgGameSavedTo(savePath)),
+                  showCloseIcon: true,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+              context.settings.saveDirectory = dirname(savePath);
+            }
+          }
+        } else {
+          Rect? sharePositionOrigin;
+          if (defaultTargetPlatform == TargetPlatform.iOS) {
+            DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+            IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+            if (iosInfo.model.toLowerCase().contains('ipad')) {
+              // see https://github.com/fluttercommunity/plus_plugins/issues/3645#issuecomment-3360156193
+              sharePositionOrigin = Rect.fromLTWH(0, 0, 1, 1);
+            }
+          }
+          final params = ShareParams(
+            files: [
+              XFile.fromData(
+                Uint8List.fromList(record.rawData),
+                mimeType: 'application/x-go-${record.type.name}',
+              ),
+            ],
+            fileNameOverrides: [fileName],
+            sharePositionOrigin: sharePositionOrigin,
           );
-          if (savePath != null) {
-            final f = File(savePath);
-            await f.writeAsBytes(record.rawData);
-            ScaffoldMessenger.of(context).removeCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(loc.msgGameSavedTo(savePath)),
+          await SharePlus.instance.share(params);
+        }
+      },
+      onError: (err) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(loc.errFailedToDownloadGame),
               showCloseIcon: true,
               behavior: SnackBarBehavior.floating,
-            ));
-            context.settings.saveDirectory = dirname(savePath);
-          }
+            ),
+          );
         }
-      } else {
-        Rect? sharePositionOrigin;
-        if (defaultTargetPlatform == TargetPlatform.iOS) {
-          DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-          IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-          if (iosInfo.model.toLowerCase().contains('ipad')) {
-            // see https://github.com/fluttercommunity/plus_plugins/issues/3645#issuecomment-3360156193
-            sharePositionOrigin = Rect.fromLTWH(0, 0, 1, 1);
-          }
-        }
-        final params = ShareParams(
-          files: [
-            XFile.fromData(
-              Uint8List.fromList(record.rawData),
-              mimeType: 'application/x-go-${record.type.name}',
-            )
-          ],
-          fileNameOverrides: [fileName],
-          sharePositionOrigin: sharePositionOrigin,
-        );
-        await SharePlus.instance.share(params);
-      }
-    }, onError: (err) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.errFailedToDownloadGame),
-          showCloseIcon: true,
-          behavior: SnackBarBehavior.floating,
-        ));
-      }
-    });
+      },
+    );
   }
 
   void onAnalyze(BuildContext context, GameSummary summary) async {
@@ -219,32 +234,45 @@ class _MyGamesPageState extends State<MyGamesPage> {
   }
 
   void _runAnalysis(
-      BuildContext context, GameSummary summary, AnalysisProvider provider) {
+    BuildContext context,
+    GameSummary summary,
+    AnalysisProvider provider,
+  ) {
     final loc = AppLocalizations.of(context)!;
     final recordFut = widget.gameClient.getGame(summary.id);
-    _GameLoadingDialog.show(context, loc.msgDownloadingGame, summary, recordFut,
-        onRecord: (context, summary, record) async {
-      final sgf = utf8.decode(record.rawData, allowMalformed: true);
-      final uri = switch (provider) {
-        AnalysisProvider.aiSensei =>
-          Uri.https('ai-sensei.com', 'upload', {'sgf': sgf}),
-        AnalysisProvider.kifubara => Uri.https('kifubara.app', '/api/import', {
+    _GameLoadingDialog.show(
+      context,
+      loc.msgDownloadingGame,
+      summary,
+      recordFut,
+      onRecord: (context, summary, record) async {
+        final sgf = utf8.decode(record.rawData, allowMalformed: true);
+        final uri = switch (provider) {
+          AnalysisProvider.aiSensei => Uri.https('ai-sensei.com', 'upload', {
             'sgf': sgf,
-            'source': 'weiqihub',
-            'platform': widget.gameClient.serverInfo.id,
           }),
-      };
-      await launchUrl(uri);
-    }, onError: (err) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).removeCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.errFailedToDownloadGame),
-          showCloseIcon: true,
-          behavior: SnackBarBehavior.floating,
-        ));
-      }
-    });
+          AnalysisProvider.kifubara =>
+            Uri.https('kifubara.app', '/api/import', {
+              'sgf': sgf,
+              'source': 'weiqihub',
+              'platform': widget.gameClient.serverInfo.id,
+            }),
+        };
+        await launchUrl(uri);
+      },
+      onError: (err) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(loc.errFailedToDownloadGame),
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      },
+    );
   }
 }
 
@@ -271,8 +299,8 @@ class _GameListTileState extends WindowClassAwareState<_GameListTile> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final gameTitle = context.settings.rankVisibility ==
-            PlayerRankVisibility.focusMode
+    final gameTitle =
+        context.settings.rankVisibility == PlayerRankVisibility.focusMode
         ? '${widget.summary.white.username} vs ${widget.summary.black.username}'
         : '[${widget.summary.white.rank.toString()}] ${widget.summary.white.username} vs ${widget.summary.black.username} [${widget.summary.black.rank.toString()}]';
     if (isWindowClassCompact) {
@@ -355,8 +383,11 @@ class _GameLoadingDialog extends StatelessWidget {
   final GameSummary summary;
   final CancelableOperation<GameRecord> record;
 
-  const _GameLoadingDialog(
-      {required this.title, required this.summary, required this.record});
+  const _GameLoadingDialog({
+    required this.title,
+    required this.summary,
+    required this.record,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -371,41 +402,44 @@ class _GameLoadingDialog extends StatelessWidget {
       ),
       actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[
-        TextButton(
-          onPressed: () => record.cancel(),
-          child: Text(loc.cancel),
-        ),
+        TextButton(onPressed: () => record.cancel(), child: Text(loc.cancel)),
       ],
     );
   }
 
-  static void show(BuildContext context, String title, GameSummary summary,
-      Future<GameRecord> recordFut,
-      {required Function(BuildContext, GameSummary, GameRecord) onRecord,
-      required Function(dynamic) onError}) {
+  static void show(
+    BuildContext context,
+    String title,
+    GameSummary summary,
+    Future<GameRecord> recordFut, {
+    required Function(BuildContext, GameSummary, GameRecord) onRecord,
+    required Function(dynamic) onError,
+  }) {
     final recordOp = CancelableOperation.fromFuture(recordFut);
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => _GameLoadingDialog(
-              title: title,
-              summary: summary,
-              record: recordOp,
-            ));
-    recordOp.then((record) {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-      onRecord(context, summary, record);
-    }, onError: (err, trace) {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-      onError(err);
-    }, onCancel: () {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-    });
+      context: context,
+      barrierDismissible: false,
+      builder: (context) =>
+          _GameLoadingDialog(title: title, summary: summary, record: recordOp),
+    );
+    recordOp.then(
+      (record) {
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+        onRecord(context, summary, record);
+      },
+      onError: (err, trace) {
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+        onError(err);
+      },
+      onCancel: () {
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+      },
+    );
   }
 }

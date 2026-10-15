@@ -67,8 +67,10 @@ class _RankedModePageState extends State<RankedModePage>
     final taskTitle =
         '[${widget.taskSource.task.ref.rank.toString()}] ${widget.taskSource.task.ref.type.toLocalizedString(loc)}';
 
-    final rankDisplay = Text(Rank.decimalString(widget.taskSource.rank),
-        style: TextTheme.of(context).titleLarge);
+    final rankDisplay = Text(
+      Rank.decimalString(widget.taskSource.rank),
+      style: TextTheme.of(context).titleLarge,
+    );
 
     if (wideLayout) {
       return Scaffold(
@@ -151,8 +153,10 @@ class _RankedModePageState extends State<RankedModePage>
   @override
   void onSolveStatus(VariationStatus status) {
     _stopwatch.stop();
-    StatsDB()
-        .addTaskAttempt(currentTask.ref, status == VariationStatus.correct);
+    StatsDB().addTaskAttempt(
+      currentTask.ref,
+      status == VariationStatus.correct,
+    );
     if (status == VariationStatus.correct) {
       context.stats.incrementTotalPassCount(currentTask.ref.rank);
     } else {
@@ -162,8 +166,10 @@ class _RankedModePageState extends State<RankedModePage>
 
   void onNextTask() {
     widget.taskSource.next(
-        solveStatus ?? VariationStatus.wrong, _stopwatch.elapsed,
-        onRankChanged: context.stats.updateRankedModeRank);
+      solveStatus ?? VariationStatus.wrong,
+      _stopwatch.elapsed,
+      onRankChanged: context.stats.updateRankedModeRank,
+    );
     _taskNumber++;
     solveStatus = null;
     setState(() {
@@ -211,7 +217,9 @@ class _SideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final widgetSize = MediaQuery.sizeOf(context);
     final sidebarSize = min(
-        widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
+      widgetSize.longestSide - widgetSize.shortestSide,
+      widgetSize.width / 3,
+    );
     return SizedBox(
       width: sidebarSize,
       child: Container(
@@ -222,10 +230,8 @@ class _SideBar extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child: Text(
-                  '$taskNumber',
-                  textAlign: TextAlign.center,
-                )),
+                  child: Text('$taskNumber', textAlign: TextAlign.center),
+                ),
                 IconButton(
                   icon: Icon(Icons.cancel),
                   onPressed: () {
@@ -244,9 +250,7 @@ class _SideBar extends StatelessWidget {
             ),
             Expanded(child: Container()),
             (status == null)
-                ? Center(
-                    child: timeDisplay,
-                  )
+                ? Center(child: timeDisplay)
                 : TaskActionBar(
                     upsolveMode: upsolveMode,
                     onShowSolution: onShowSolution,

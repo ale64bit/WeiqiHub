@@ -35,16 +35,21 @@ class MainRouteArguments {
   final MainPageDestination destination;
   final Function() rebuildApp;
 
-  const MainRouteArguments(
-      {required this.destination, required this.rebuildApp});
+  const MainRouteArguments({
+    required this.destination,
+    required this.rebuildApp,
+  });
 }
 
 class MainPage extends StatefulWidget {
   final MainPageDestination destination;
   final Function() rebuildApp;
 
-  const MainPage(
-      {super.key, required this.destination, required this.rebuildApp});
+  const MainPage({
+    super.key,
+    required this.destination,
+    required this.rebuildApp,
+  });
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -69,8 +74,9 @@ class _MainPageState extends WindowClassAwareState<MainPage> {
           : Row(
               children: <Widget>[
                 MainPageNavigationRail(
-                    currentDestination: _selectedDestination,
-                    onDestinationSelected: _setSelectedDestination),
+                  currentDestination: _selectedDestination,
+                  onDestinationSelected: _setSelectedDestination,
+                ),
                 const VerticalDivider(thickness: 1, width: 1),
                 Expanded(child: _destinationBody()),
               ],
@@ -90,8 +96,9 @@ class _MainPageState extends WindowClassAwareState<MainPage> {
                 Navigator.pushNamed(
                   context,
                   SettingsPage.routeName,
-                  arguments:
-                      SettingsRouteArguments(rebuildApp: widget.rebuildApp),
+                  arguments: SettingsRouteArguments(
+                    rebuildApp: widget.rebuildApp,
+                  ),
                 );
               },
             ),
@@ -99,17 +106,18 @@ class _MainPageState extends WindowClassAwareState<MainPage> {
   }
 
   Widget _destinationBody() => switch (_selectedDestination) {
-        MainPageDestination.home => const _Home(),
-        MainPageDestination.play => const _Play(),
-        MainPageDestination.train => _Train(
-              columns: switch (windowClass) {
-            WindowClass.compact => 2,
-            WindowClass.medium => 3,
-            WindowClass.expanded => 4,
-            WindowClass.large => 4,
-            WindowClass.extraLarge => 4,
-          }),
-      };
+    MainPageDestination.home => const _Home(),
+    MainPageDestination.play => const _Play(),
+    MainPageDestination.train => _Train(
+      columns: switch (windowClass) {
+        WindowClass.compact => 2,
+        WindowClass.medium => 3,
+        WindowClass.expanded => 4,
+        WindowClass.large => 4,
+        WindowClass.extraLarge => 4,
+      },
+    ),
+  };
 
   void _setSelectedDestination(MainPageDestination dest) {
     setState(() {
@@ -193,7 +201,9 @@ class _Train extends StatelessWidget {
               label: loc.gradingExam,
               onPressed: () {
                 Navigator.pushNamed(
-                    context, GradingExamSelectionPage.routeName);
+                  context,
+                  GradingExamSelectionPage.routeName,
+                );
               },
             ),
             SectionButton(
@@ -201,7 +211,9 @@ class _Train extends StatelessWidget {
               label: loc.endgameExam,
               onPressed: () {
                 Navigator.pushNamed(
-                    context, EndgameExamSelectionPage.routeName);
+                  context,
+                  EndgameExamSelectionPage.routeName,
+                );
               },
             ),
             SectionButton(
@@ -220,8 +232,9 @@ class _Train extends StatelessWidget {
                     arguments: TimeFrenzyRouteArguments(
                       taskSource: BlackToPlaySource(
                         source: TimeFrenzyTaskSource(
-                            randomizeLayout:
-                                context.settings.randomizeTaskOrientation),
+                          randomizeLayout:
+                              context.settings.randomizeTaskOrientation,
+                        ),
                         blackToPlay: context.settings.alwaysBlackToPlay,
                       ),
                     ),
@@ -245,8 +258,9 @@ class _Train extends StatelessWidget {
                     arguments: RankedModeRouteArguments(
                       taskSource: BlackToPlaySource(
                         source: RankedModeTaskSource(
-                            context.stats.rankedModeRank,
-                            context.settings.randomizeTaskOrientation),
+                          context.stats.rankedModeRank,
+                          context.settings.randomizeTaskOrientation,
+                        ),
                         blackToPlay: context.settings.alwaysBlackToPlay,
                       ),
                     ),
@@ -258,10 +272,13 @@ class _Train extends StatelessWidget {
               icon: Icons.book,
               label: loc.collections,
               onPressed: () {
-                Navigator.pushNamed(context, CollectionPreviewPage.routeName,
-                    arguments: CollectionPreviewRouteArguments(
-                      collection: TaskDB().collections,
-                    ));
+                Navigator.pushNamed(
+                  context,
+                  CollectionPreviewPage.routeName,
+                  arguments: CollectionPreviewRouteArguments(
+                    collection: TaskDB().collections,
+                  ),
+                );
               },
             ),
             SectionButton(
@@ -314,7 +331,8 @@ class _Train extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(parentContext).pop();
                   WidgetsBinding.instance.addPostFrameCallback(
-                      (_) => showFindTaskByLinkDialog(parentContext));
+                    (_) => showFindTaskByLinkDialog(parentContext),
+                  );
                 },
               ),
               ElevatedButton.icon(
@@ -347,45 +365,53 @@ class _Train extends StatelessWidget {
     showDialog<(Task?, bool)>(
       context: context,
       builder: (context) => _FindTaskDialog(),
-    ).then((res) {
-      if (res != null) {
-        var (task, dismissed) = res;
-        if (dismissed) return;
-        if (task != null) {
-          if (context.mounted) {
-            if (context.settings.alwaysBlackToPlay) {
-              task = task.withBlackToPlay();
-            }
-            task = task.withRandomSymmetry(
-                randomize: context.settings.randomizeTaskOrientation);
+    ).then(
+      (res) {
+        if (res != null) {
+          var (task, dismissed) = res;
+          if (dismissed) return;
+          if (task != null) {
+            if (context.mounted) {
+              if (context.settings.alwaysBlackToPlay) {
+                task = task.withBlackToPlay();
+              }
+              task = task.withRandomSymmetry(
+                randomize: context.settings.randomizeTaskOrientation,
+              );
 
-            Navigator.pushNamed(
-              context,
-              SingleTaskPage.routeName,
-              arguments: SingleTaskRouteArguments(task: task),
-            );
+              Navigator.pushNamed(
+                context,
+                SingleTaskPage.routeName,
+                arguments: SingleTaskRouteArguments(task: task),
+              );
+            }
+          } else {
+            if (context.mounted) {
+              final loc = AppLocalizations.of(context)!;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(loc.taskNotFound),
+                  dismissDirection: DismissDirection.horizontal,
+                  showCloseIcon: true,
+                ),
+              );
+            }
           }
-        } else {
-          if (context.mounted) {
-            final loc = AppLocalizations.of(context)!;
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        }
+      },
+      onError: (err) {
+        if (context.mounted) {
+          final loc = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
               content: Text(loc.taskNotFound),
               dismissDirection: DismissDirection.horizontal,
               showCloseIcon: true,
-            ));
-          }
+            ),
+          );
         }
-      }
-    }, onError: (err) {
-      if (context.mounted) {
-        final loc = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.taskNotFound),
-          dismissDirection: DismissDirection.horizontal,
-          showCloseIcon: true,
-        ));
-      }
-    });
+      },
+    );
   }
 }
 
@@ -423,8 +449,10 @@ class _FindTaskDialogState extends State<_FindTaskDialog> {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(
-                context, (TaskDB().getByUri(controller.text.trim()), false));
+            Navigator.pop(context, (
+              TaskDB().getByUri(controller.text.trim()),
+              false,
+            ));
           },
           child: Text(loc.find),
         ),

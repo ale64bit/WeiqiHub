@@ -5,11 +5,12 @@ class VerticalIconButton extends StatelessWidget {
   final String label;
   final Function() onTap;
 
-  const VerticalIconButton(
-      {super.key,
-      required this.icon,
-      required this.label,
-      required this.onTap});
+  const VerticalIconButton({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +21,7 @@ class VerticalIconButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         spacing: 4.0,
-        children: [
-          icon,
-          Text(label),
-        ],
+        children: [icon, Text(label)],
       ),
     );
   }

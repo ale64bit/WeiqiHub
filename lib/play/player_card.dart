@@ -8,10 +8,7 @@ import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 import 'package:wqhub/turn_icon.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
-enum PlayerCardAlignment {
-  left,
-  right,
-}
+enum PlayerCardAlignment { left, right }
 
 class PlayerCard extends StatelessWidget {
   final UserInfo userInfo;
@@ -56,8 +53,10 @@ class PlayerCard extends StatelessWidget {
               softWrap: false,
             ),
             if (captureCount != null)
-              Text('${loc.captures}: $captureCount',
-                  style: TextTheme.of(context).labelSmall),
+              Text(
+                '${loc.captures}: $captureCount',
+                style: TextTheme.of(context).labelSmall,
+              ),
           ],
         ),
       ),
@@ -70,10 +69,7 @@ class PlayerCard extends StatelessWidget {
           duration: Duration(seconds: 1),
           curve: Curves.linear,
         ),
-      Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: timeDisplay,
-      ),
+      Padding(padding: const EdgeInsets.all(4.0), child: timeDisplay),
     ];
     return Card(
       clipBehavior: Clip.hardEdge,

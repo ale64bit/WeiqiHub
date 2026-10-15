@@ -27,21 +27,21 @@ class Task {
   });
 
   Task withBlackToPlay() => switch (first) {
-        wq.Color.black => this,
-        wq.Color.white => Task(
-            ref: ref,
-            first: wq.Color.black,
-            boardSize: boardSize,
-            subBoardSize: subBoardSize,
-            topLeft: topLeft,
-            initialStones: IMapOfSets({
-              wq.Color.black: initialStones.get(wq.Color.white),
-              wq.Color.white: initialStones.get(wq.Color.black),
-            }),
-            variationTree: variationTree,
-            fingerprint: fingerprint,
-          ),
-      };
+    wq.Color.black => this,
+    wq.Color.white => Task(
+      ref: ref,
+      first: wq.Color.black,
+      boardSize: boardSize,
+      subBoardSize: subBoardSize,
+      topLeft: topLeft,
+      initialStones: IMapOfSets({
+        wq.Color.black: initialStones.get(wq.Color.white),
+        wq.Color.white: initialStones.get(wq.Color.black),
+      }),
+      variationTree: variationTree,
+      fingerprint: fingerprint,
+    ),
+  };
 
   Task withSymmetry(Symmetry symmetry) {
     if (symmetry == Symmetry.identity) {
@@ -71,7 +71,11 @@ class Task {
   }
 
   static wq.Point _transformTopLeft(
-      wq.Point topLeft, int boardSize, int subBoardSize, Symmetry symmetry) {
+    wq.Point topLeft,
+    int boardSize,
+    int subBoardSize,
+    Symmetry symmetry,
+  ) {
     if (symmetry == Symmetry.identity) return topLeft;
 
     final (x1, y1) = topLeft;

@@ -40,8 +40,10 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
   void setupCurrentTask() {
     continuationAnnotations = null;
     _vtreeIt = VariationTreeIterator(tree: currentTask.variationTree);
-    gameTree = AnnotatedGameTree(currentTask.boardSize,
-        initialStones: currentTask.initialStones);
+    gameTree = AnnotatedGameTree(
+      currentTask.boardSize,
+      initialStones: currentTask.initialStones,
+    );
     turn = currentTask.first;
     solveStatusNotified = false;
     upsolveMode = UpsolveMode.auto;
@@ -60,8 +62,10 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
       return;
     }
 
-    if (gameTree
-            .moveAnnotated((col: turn, p: p), mode: AnnotationMode.variation) !=
+    if (gameTree.moveAnnotated((
+          col: turn,
+          p: p,
+        ), mode: AnnotationMode.variation) !=
         null) {
       AudioController().playForNode(gameTree.curNode);
       continuationAnnotations = null;
@@ -79,7 +83,9 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
             });
         }
       }
-      setState(() {/* Update board */});
+      setState(() {
+        /* Update board */
+      });
     }
   }
 
@@ -89,7 +95,9 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
       _vtreeIt?.undo();
       continuationAnnotations = null;
       turn = turn.opposite;
-      setState(() {/* Update board */});
+      setState(() {
+        /* Update board */
+      });
     }
   }
 
@@ -99,7 +107,9 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
       gameTree.moveAnnotated((col: turn, p: p), mode: AnnotationMode.variation);
       continuationAnnotations = null;
       turn = turn.opposite;
-      setState(() {/* Update board */});
+      setState(() {
+        /* Update board */
+      });
     }
   }
 
@@ -107,14 +117,18 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
     if (solveStatusNotified) return;
 
     final resp = _vtreeIt!.genMove();
-    gameTree
-        .moveAnnotated((col: turn, p: resp), mode: AnnotationMode.variation);
+    gameTree.moveAnnotated((
+      col: turn,
+      p: resp,
+    ), mode: AnnotationMode.variation);
     turn = turn.opposite;
     final status = _vtreeIt!.move(resp);
     if (status != null) {
       _setSolveStatus(status, wideLayout);
     }
-    setState(() {/* Update board */});
+    setState(() {
+      /* Update board */
+    });
   }
 
   void _setSolveStatus(VariationStatus status, bool wideLayout) {
@@ -143,9 +157,10 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
         in _vtreeIt?.continuations() ?? <(wq.Point, VariationStatus)>[]) {
       final annotation = switch (st) {
         VariationStatus.correct => DotAnnotation(color: Colors.green),
-        VariationStatus.wrong => showErrorsAsCrosses
-            ? CrossAnnotation(color: Colors.red)
-            : DotAnnotation(color: Colors.red),
+        VariationStatus.wrong =>
+          showErrorsAsCrosses
+              ? CrossAnnotation(color: Colors.red)
+              : DotAnnotation(color: Colors.red),
       };
       continuationAnnotations = continuationAnnotations?.add(p, annotation);
     }
@@ -189,57 +204,73 @@ mixin TaskSolvingStateMixin<T extends StatefulWidget> on State<T> {
 
   void notifySolveStatus(VariationStatus status, bool wideLayout) {
     final loc = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 16,
-        children: [
-          Icon(status == VariationStatus.correct
-              ? Icons.check_circle
-              : Icons.sentiment_very_dissatisfied),
-          Text(status.toLocalizedString(loc),
-              style: TextTheme.of(context).titleMedium),
-        ],
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 16,
+          children: [
+            Icon(
+              status == VariationStatus.correct
+                  ? Icons.check_circle
+                  : Icons.sentiment_very_dissatisfied,
+            ),
+            Text(
+              status.toLocalizedString(loc),
+              style: TextTheme.of(context).titleMedium,
+            ),
+          ],
+        ),
+        behavior: wideLayout
+            ? SnackBarBehavior.floating
+            : SnackBarBehavior.fixed,
+        margin: _snackBarMargin(wideLayout),
+        duration: Duration(seconds: 1),
+        backgroundColor: status == VariationStatus.correct
+            ? Colors.green
+            : Colors.red,
+        showCloseIcon: true,
       ),
-      behavior: wideLayout ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
-      margin: _snackBarMargin(wideLayout),
-      duration: Duration(seconds: 1),
-      backgroundColor:
-          status == VariationStatus.correct ? Colors.green : Colors.red,
-      showCloseIcon: true,
-    ));
+    );
   }
 
   void notifySolveTimeout(bool wideLayout) {
     final loc = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        spacing: 16,
-        children: [
-          Icon(Icons.timer),
-          Text(loc.taskTimeout, style: TextTheme.of(context).titleMedium),
-        ],
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 16,
+          children: [
+            Icon(Icons.timer),
+            Text(loc.taskTimeout, style: TextTheme.of(context).titleMedium),
+          ],
+        ),
+        behavior: wideLayout
+            ? SnackBarBehavior.floating
+            : SnackBarBehavior.fixed,
+        margin: _snackBarMargin(wideLayout),
+        duration: Duration(seconds: 1),
+        backgroundColor: Colors.red,
+        showCloseIcon: true,
       ),
-      behavior: wideLayout ? SnackBarBehavior.floating : SnackBarBehavior.fixed,
-      margin: _snackBarMargin(wideLayout),
-      duration: Duration(seconds: 1),
-      backgroundColor: Colors.red,
-      showCloseIcon: true,
-    ));
+    );
   }
 
   void notifyTaskLinkCopied() {
     final loc = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(loc.msgTaskLinkCopied)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(loc.msgTaskLinkCopied)));
   }
 
   EdgeInsetsGeometry? _snackBarMargin(bool wideLayout) {
     if (wideLayout) {
       final widgetSize = MediaQuery.sizeOf(context);
-      final sidebarSize = min(widgetSize.longestSide - widgetSize.shortestSide,
-          widgetSize.width / 3);
+      final sidebarSize = min(
+        widgetSize.longestSide - widgetSize.shortestSide,
+        widgetSize.width / 3,
+      );
       return EdgeInsets.only(right: sidebarSize);
     } else {
       return null;

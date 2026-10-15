@@ -70,14 +70,15 @@ class _MyMistakesPageState extends WindowClassAwareState<MyMistakesPage> {
             itemBuilder: (context, index) {
               final (ref, stats) = tasks[index];
               return TaskPreviewTile(
-                  task: ref,
-                  solveStats: stats,
-                  onHideTask: () {
-                    StatsDB().ignoreTaskMistake(ref.rank, ref.type, ref.id);
-                    setState(() {
-                      tasks.removeAt(index);
-                    });
+                task: ref,
+                solveStats: stats,
+                onHideTask: () {
+                  StatsDB().ignoreTaskMistake(ref.rank, ref.type, ref.id);
+                  setState(() {
+                    tasks.removeAt(index);
                   });
+                },
+              );
             },
           ),
         ),
@@ -96,16 +97,17 @@ enum _SortMode {
       UnmodifiableListView<_SortModeEntry>(
         values.map<_SortModeEntry>(
           (l) => _SortModeEntry(
-              value: l,
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(l.toLocalizedString(loc)),
-              )),
+            value: l,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Text(l.toLocalizedString(loc)),
+            ),
+          ),
         ),
       );
 
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        _SortMode.recent => loc.sortModeRecent,
-        _SortMode.difficult => loc.sortModeDifficult,
-      };
+    _SortMode.recent => loc.sortModeRecent,
+    _SortMode.difficult => loc.sortModeDifficult,
+  };
 }

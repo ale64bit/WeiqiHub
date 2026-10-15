@@ -62,11 +62,15 @@ class GradingExamPage extends StatelessWidget {
   TaskSource createTaskSource(BuildContext context) {
     return BlackToPlaySource(
       source: ConstTaskSource(
-          tasks: TaskDB()
-              .takeByTypes(rank, taskTypes, taskCount)
-              .map((task) => task.withRandomSymmetry(
-                  randomize: context.settings.randomizeTaskOrientation))
-              .toIList()),
+        tasks: TaskDB()
+            .takeByTypes(rank, taskTypes, taskCount)
+            .map(
+              (task) => task.withRandomSymmetry(
+                randomize: context.settings.randomizeTaskOrientation,
+              ),
+            )
+            .toIList(),
+      ),
       blackToPlay: context.settings.alwaysBlackToPlay,
     );
   }

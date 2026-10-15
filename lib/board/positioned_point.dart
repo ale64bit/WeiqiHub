@@ -30,10 +30,7 @@ class PositionedPoint extends StatelessWidget with BoardGeometry {
       height: pointSize + 2 * extraSize,
       left: offset.dx - extraSize,
       top: offset.dy - extraSize,
-      child: Padding(
-        padding: const EdgeInsets.all(1.0),
-        child: child,
-      ),
+      child: Padding(padding: const EdgeInsets.all(1.0), child: child),
     );
   }
 }

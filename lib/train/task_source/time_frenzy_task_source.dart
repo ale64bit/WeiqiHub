@@ -21,10 +21,10 @@ final class TimeFrenzyTaskSource extends TaskSource {
   bool randomizeLayout = false;
 
   TimeFrenzyTaskSource({required this.randomizeLayout})
-      : _cur = TaskDB()
-            .takeByTypes(Rank.k15, _taskTypes, 1)
-            .first
-            .withRandomSymmetry(randomize: randomizeLayout);
+    : _cur = TaskDB()
+          .takeByTypes(Rank.k15, _taskTypes, 1)
+          .first
+          .withRandomSymmetry(randomize: randomizeLayout);
 
   @override
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {

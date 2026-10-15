@@ -17,24 +17,22 @@ import 'package:wqhub/wq/wq.dart' as wq;
 class TestGameClient extends GameClient {
   @override
   IList<AutomatchPreset> get automatchPresets => IList([
-        AutomatchPreset(
-          id: 'test',
-          boardSize: 19,
-          variant: Variant.standard,
-          rules: Rules.chinese,
-          timeControl: TimeControl(
-            mainTime: Duration(minutes: 1),
-            periodCount: 3,
-            timePerPeriod: Duration(seconds: 30),
-          ),
-        ),
-      ]);
+    AutomatchPreset(
+      id: 'test',
+      boardSize: 19,
+      variant: Variant.standard,
+      rules: Rules.chinese,
+      timeControl: TimeControl(
+        mainTime: Duration(minutes: 1),
+        periodCount: 3,
+        timePerPeriod: Duration(seconds: 30),
+      ),
+    ),
+  ]);
 
   @override
   ValueNotifier<IMap<String, AutomatchPresetStats>> get automatchStats =>
-      ValueNotifier(IMap({
-        'test': AutomatchPresetStats(playerCount: 42),
-      }));
+      ValueNotifier(IMap({'test': AutomatchPresetStats(playerCount: 42)}));
 
   @override
   Future<Game> findGame(String presetId) {
@@ -91,15 +89,16 @@ class TestGameClient extends GameClient {
   Future<Game?> ongoingGame() => Future.value(null);
 
   @override
-  Future<UserInfo> login(String username, String password) =>
-      Future.value(UserInfo(
-        userId: 'test_black_id',
-        username: 'blackNick',
-        rank: Rank.k15,
-        online: true,
-        winCount: 0,
-        lossCount: 0,
-      ));
+  Future<UserInfo> login(String username, String password) => Future.value(
+    UserInfo(
+      userId: 'test_black_id',
+      username: 'blackNick',
+      rank: Rank.k15,
+      online: true,
+      winCount: 0,
+      lossCount: 0,
+    ),
+  );
 
   @override
   void logout() {}
@@ -109,99 +108,100 @@ class TestGameClient extends GameClient {
 
   @override
   ServerFeatures get serverFeatures => ServerFeatures(
-        manualCounting: false,
-        automaticCounting: true,
-        aiReferee: true,
-        aiRefereeMinMoveCount: const IMapConst({
-          19: 150,
-        }),
-        forcedCounting: true,
-        forcedCountingMinMoveCount: const IMapConst({
-          19: 350,
-        }),
-        localTimeControl: true,
-      );
+    manualCounting: false,
+    automaticCounting: true,
+    aiReferee: true,
+    aiRefereeMinMoveCount: const IMapConst({19: 150}),
+    forcedCounting: true,
+    forcedCountingMinMoveCount: const IMapConst({19: 350}),
+    localTimeControl: true,
+  );
 
   @override
   ServerInfo get serverInfo => ServerInfo(
-        id: 'test',
-        name: (_) => 'Test Server',
-        nativeName: 'Test Server',
-        description: (_) =>
-            'A dummy server to easily test layout changes, etc.',
-        homeUrl: 'https://weiqihub.com',
-      );
+    id: 'test',
+    name: (_) => 'Test Server',
+    nativeName: 'Test Server',
+    description: (_) => 'A dummy server to easily test layout changes, etc.',
+    homeUrl: 'https://weiqihub.com',
+  );
 
   @override
   void stopAutomatch() {}
 
   @override
-  ValueNotifier<UserInfo?> get userInfo => ValueNotifier(UserInfo(
-        userId: 'test_user_id',
-        username: 'testUser123',
-        rank: Rank.k15,
-        online: true,
-        winCount: 23,
-        lossCount: 14,
-        streak: 'WW?WLLLWL=WWWLWWWLWW',
-        promotionRequirements: PromotionRequirements(
-          up: 4,
-          down: 9,
-          doubleUp: null,
-          doubleDown: 12,
-        ),
-      ));
+  ValueNotifier<UserInfo?> get userInfo => ValueNotifier(
+    UserInfo(
+      userId: 'test_user_id',
+      username: 'testUser123',
+      rank: Rank.k15,
+      online: true,
+      winCount: 23,
+      lossCount: 14,
+      streak: 'WW?WLLLWL=WWWLWWWLWW',
+      promotionRequirements: PromotionRequirements(
+        up: 4,
+        down: 9,
+        doubleUp: null,
+        doubleDown: 12,
+      ),
+    ),
+  );
 
   @override
   ValueNotifier<DateTime> get disconnected => ValueNotifier(DateTime.now());
 
   @override
   Future<List<GameSummary>> listGames() => Future.value([
-        GameSummary(
-          id: 'gid1',
-          rules: Rules.chinese,
-          boardSize: 19,
-          komi: 7.5,
-          white: UserInfo(
-              userId: 'uid1',
-              username: 'dog123',
-              rank: Rank.k18,
-              online: true,
-              winCount: 0,
-              lossCount: 0),
-          black: UserInfo(
-              userId: 'uid2',
-              username: 'cat4567',
-              rank: Rank.k18,
-              online: true,
-              winCount: 0,
-              lossCount: 0),
-          dateTime: DateTime.now(),
-          result: GameResult(winner: wq.Color.black, result: 'B+R'),
-        ),
-        GameSummary(
-          id: 'gid2',
-          rules: Rules.japanese,
-          boardSize: 19,
-          komi: 6.5,
-          white: UserInfo(
-              userId: 'uid1',
-              username: '黃龍士',
-              rank: Rank.d9,
-              online: true,
-              winCount: 0,
-              lossCount: 0),
-          black: UserInfo(
-              userId: 'uid2',
-              username: 'RandomPerson32',
-              rank: Rank.k2,
-              online: true,
-              winCount: 0,
-              lossCount: 0),
-          dateTime: DateTime.now(),
-          result: GameResult(winner: wq.Color.white, result: 'W+12.5'),
-        ),
-      ]);
+    GameSummary(
+      id: 'gid1',
+      rules: Rules.chinese,
+      boardSize: 19,
+      komi: 7.5,
+      white: UserInfo(
+        userId: 'uid1',
+        username: 'dog123',
+        rank: Rank.k18,
+        online: true,
+        winCount: 0,
+        lossCount: 0,
+      ),
+      black: UserInfo(
+        userId: 'uid2',
+        username: 'cat4567',
+        rank: Rank.k18,
+        online: true,
+        winCount: 0,
+        lossCount: 0,
+      ),
+      dateTime: DateTime.now(),
+      result: GameResult(winner: wq.Color.black, result: 'B+R'),
+    ),
+    GameSummary(
+      id: 'gid2',
+      rules: Rules.japanese,
+      boardSize: 19,
+      komi: 6.5,
+      white: UserInfo(
+        userId: 'uid1',
+        username: '黃龍士',
+        rank: Rank.d9,
+        online: true,
+        winCount: 0,
+        lossCount: 0,
+      ),
+      black: UserInfo(
+        userId: 'uid2',
+        username: 'RandomPerson32',
+        rank: Rank.k2,
+        online: true,
+        winCount: 0,
+        lossCount: 0,
+      ),
+      dateTime: DateTime.now(),
+      result: GameResult(winner: wq.Color.white, result: 'W+12.5'),
+    ),
+  ]);
 
   @override
   Future<GameRecord> getGame(String gameId) {

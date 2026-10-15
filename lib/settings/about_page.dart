@@ -11,9 +11,7 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.about),
-      ),
+      appBar: AppBar(title: Text(loc.about)),
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,

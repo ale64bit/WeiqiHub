@@ -19,9 +19,6 @@ class ImageBoardBackground extends BoardBackground {
   const ImageBoardBackground({super.key, required this.image});
 
   @override
-  Widget build(BuildContext context) => Image(
-        image: image,
-        fit: BoxFit.contain,
-        repeat: ImageRepeat.repeat,
-      );
+  Widget build(BuildContext context) =>
+      Image(image: image, fit: BoxFit.contain, repeat: ImageRepeat.repeat);
 }

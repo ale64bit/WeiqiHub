@@ -43,9 +43,7 @@ class _GradingExamSelectionPageState
     final loc = AppLocalizations.of(context)!;
     final stats = loadStats();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.gradingExam),
-      ),
+      appBar: AppBar(title: Text(loc.gradingExam)),
       body: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 800),
@@ -66,7 +64,8 @@ class _GradingExamSelectionPageState
                   rankRange: RankRange.single(rank),
                   passCount: stats[rank]?.pass ?? 0,
                   failCount: stats[rank]?.fail ?? 0,
-                  isActive: (rank == Rank.k15) ||
+                  isActive:
+                      (rank == Rank.k15) ||
                       ((stats[Rank.values[max(Rank.k15.index, rank.index - 1)]]
                                   ?.pass ??
                               0) >

@@ -55,14 +55,12 @@ class Gib {
       }
       return GibGameCmd(cmd: '', args: parts);
     });
-    return Gib._(
-      headers: headers,
-      game: cmds.toList(growable: false),
-    );
+    return Gib._(headers: headers, game: cmds.toList(growable: false));
   }
 
   static (Iterable<int>, Map<String, Map<String, List<int>>>) _parseHeaders(
-      Iterable<int> it) {
+    Iterable<int> it,
+  ) {
     return it.skipSpace().tag(r'\HS', r'\HE', (it) {
       Map<String, Map<String, List<int>>> headers = {};
       while (utf8.decode(it.take(3).toList(), allowMalformed: true) != r'\HE') {
@@ -75,7 +73,8 @@ class Gib {
   }
 
   static (Iterable<int>, (String, Map<String, List<int>>)) _parseHeader(
-      Iterable<int> it) {
+    Iterable<int> it,
+  ) {
     return it.skipSpace().tag(r'\[', r'\]', (it) {
       final (itAfterName, name) = it.propName();
       it = itAfterName.matchEqual();
@@ -83,8 +82,9 @@ class Gib {
       while (!it.isBackslash()) {
         final (itAfterKey, key) = it.collectUntil(':'.codeUnitAt(0));
         it = itAfterKey.matchColon();
-        final (itAfterValue, value) =
-            it.collectUntilCond((it) => it.isComma() || it.isBackslash());
+        final (itAfterValue, value) = it.collectUntilCond(
+          (it) => it.isComma() || it.isBackslash(),
+        );
         it = itAfterValue;
         header[utf8.decode(key)] = value;
         if (it.isBackslash()) break;
@@ -96,8 +96,9 @@ class Gib {
 
   static (Iterable<int>, String) _parseGame(Iterable<int> it) {
     return it.skipSpace().tag(r'\GS', r'\GE', (it) {
-      final (itAfterGame, data) =
-          it.skipSpace().collectUntil(r'\'.codeUnitAt(0));
+      final (itAfterGame, data) = it.skipSpace().collectUntil(
+        r'\'.codeUnitAt(0),
+      );
       return (itAfterGame, utf8.decode(data).trim());
     });
   }

@@ -23,7 +23,7 @@ void main() {
       final grid = [
         ['A', 'B', null],
         ['B', 'A', 'A'],
-        [null, 'B', 'A']
+        [null, 'B', 'A'],
       ];
 
       final counts = count2D(grid);

@@ -31,16 +31,17 @@ class ExamResultRouteArguments {
 class ExamResultPage extends StatefulWidget {
   static const routeName = '/train/exam_result';
 
-  const ExamResultPage(
-      {super.key,
-      required this.event,
-      required this.totalTime,
-      required this.passed,
-      required this.taskCount,
-      required this.mistakeCount,
-      required this.completedTasks,
-      required this.onRedo,
-      required this.onNext});
+  const ExamResultPage({
+    super.key,
+    required this.event,
+    required this.totalTime,
+    required this.passed,
+    required this.taskCount,
+    required this.mistakeCount,
+    required this.completedTasks,
+    required this.onRedo,
+    required this.onNext,
+  });
 
   final ExamEvent event;
   final Duration totalTime;
@@ -73,10 +74,12 @@ class _ExamResultPageState extends WindowClassAwareState<ExamResultPage> {
                 true => Icon(Icons.mood, color: Colors.green),
                 false => Icon(Icons.mood_bad, color: Colors.red),
               },
-              title:
-                  Text(widget.passed ? loc.trainingPassed : loc.trainingFailed),
+              title: Text(
+                widget.passed ? loc.trainingPassed : loc.trainingFailed,
+              ),
               subtitle: Text(
-                  '${widget.taskCount - widget.mistakeCount} / ${widget.taskCount} ($successRate%)'),
+                '${widget.taskCount - widget.mistakeCount} / ${widget.taskCount} ($successRate%)',
+              ),
               trailing: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -87,7 +90,8 @@ class _ExamResultPageState extends WindowClassAwareState<ExamResultPage> {
                     style: TextTheme.of(context).headlineSmall,
                   ),
                   Text(
-                      '${loc.sSeconds((widget.totalTime.inSeconds / widget.taskCount).round())} ${loc.perTask}')
+                    '${loc.sSeconds((widget.totalTime.inSeconds / widget.taskCount).round())} ${loc.perTask}',
+                  ),
                 ],
               ),
             ),
@@ -110,10 +114,7 @@ class _ExamResultPageState extends WindowClassAwareState<ExamResultPage> {
             itemCount: widget.completedTasks.length,
             itemBuilder: (context, index) {
               final (ref, solved) = widget.completedTasks[index];
-              return TaskPreviewTile(
-                task: ref,
-                solved: solved,
-              );
+              return TaskPreviewTile(task: ref, solved: solved);
             },
           ),
         ),

@@ -10,10 +10,7 @@ class LoginException implements Exception {
   final LoginFailureType type;
   final Object? cause;
 
-  const LoginException({
-    required this.type,
-    this.cause,
-  });
+  const LoginException({required this.type, this.cause});
 
   @override
   String toString() => 'LoginException($type)';

@@ -3,10 +3,7 @@ import 'package:wqhub/board/board_theme.dart';
 import 'package:wqhub/board/coordinate_style.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
-enum BoardEdgeLine {
-  single,
-  thick,
-}
+enum BoardEdgeLine { single, thick }
 
 @immutable
 class BoardBorderSettings {
@@ -93,7 +90,14 @@ class BoardSettings {
 
   @override
   int get hashCode => Object.hash(
-      size, subBoard, theme, edgeLine, border, stoneShadows, interactive);
+    size,
+    subBoard,
+    theme,
+    edgeLine,
+    border,
+    stoneShadows,
+    interactive,
+  );
 
   @override
   bool operator ==(Object other) {

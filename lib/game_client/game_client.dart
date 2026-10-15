@@ -24,15 +24,16 @@ class GameSummary {
   final DateTime dateTime;
   final GameResult result;
 
-  GameSummary(
-      {required this.id,
-      required this.rules,
-      required this.boardSize,
-      required this.komi,
-      required this.white,
-      required this.black,
-      required this.dateTime,
-      required this.result});
+  GameSummary({
+    required this.id,
+    required this.rules,
+    required this.boardSize,
+    required this.komi,
+    required this.white,
+    required this.black,
+    required this.dateTime,
+    required this.result,
+  });
 }
 
 abstract class GameClient {

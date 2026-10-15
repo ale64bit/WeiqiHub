@@ -61,11 +61,11 @@ class OGSGame extends Game {
     required String jwtToken,
     required String aiServerUrl,
     required bool freeHandicapPlacement,
-  })  : _webSocketManager = webSocketManager,
-        _myUserId = myUserId,
-        _jwtToken = jwtToken,
-        _aiHttpClient = HttpClient(serverUrl: aiServerUrl),
-        _freeHandicapPlacement = freeHandicapPlacement {
+  }) : _webSocketManager = webSocketManager,
+       _myUserId = myUserId,
+       _jwtToken = jwtToken,
+       _aiHttpClient = HttpClient(serverUrl: aiServerUrl),
+       _freeHandicapPlacement = freeHandicapPlacement {
     _logger.info('Initialized OGSGame with id: $id');
     _moveController = StreamController<wq.Move?>.broadcast();
     _countingResultController = StreamController<CountingResult>.broadcast();
@@ -94,8 +94,9 @@ class OGSGame extends Game {
       channel: 'game-$id',
       webSocketManager: _webSocketManager,
     );
-    _presenceSubscription =
-        _chatPresenceManager.presenceUpdates.listen(_handlePresenceUpdate);
+    _presenceSubscription = _chatPresenceManager.presenceUpdates.listen(
+      _handlePresenceUpdate,
+    );
 
     _setupGame();
   }
@@ -120,17 +121,21 @@ class OGSGame extends Game {
       }
     } catch (error) {
       _logger.warning(
-          'Failed to send stone removal ${agree ? "acceptance" : "rejection"} for game $id: $error');
+        'Failed to send stone removal ${agree ? "acceptance" : "rejection"} for game $id: $error',
+      );
       rethrow;
     }
   }
 
   @override
   Future<void> toggleManuallyRemovedStones(
-      List<wq.Point> stones, bool removed) async {
+    List<wq.Point> stones,
+    bool removed,
+  ) async {
     if (_currentPhase != 'stone removal') {
       _logger.warning(
-          'toggleManuallyRemovedStones called outside of stone removal phase');
+        'toggleManuallyRemovedStones called outside of stone removal phase',
+      );
       return;
     }
 
@@ -144,10 +149,12 @@ class OGSGame extends Game {
       });
 
       _logger.fine(
-          'Sent stone removal proposal for game $id: stones=$stonesString, removed=$removed');
+        'Sent stone removal proposal for game $id: stones=$stonesString, removed=$removed',
+      );
     } catch (error) {
       _logger.warning(
-          'Failed to send stone removal proposal for game $id: $error');
+        'Failed to send stone removal proposal for game $id: $error',
+      );
       rethrow;
     }
   }
@@ -190,9 +197,7 @@ class OGSGame extends Game {
   @override
   Future<void> resign() async {
     try {
-      _webSocketManager.send('game/resign', {
-        'game_id': int.parse(id),
-      });
+      _webSocketManager.send('game/resign', {'game_id': int.parse(id)});
     } catch (error) {
       _logger.warning('Failed to send resignation for game $id: $error');
       rethrow;
@@ -292,13 +297,15 @@ class OGSGame extends Game {
     final moveData = data['move'] as dynamic;
 
     _logger.fine(
-        'Received move: game_id=$gameId, move_number=$moveNumber, move=$moveData');
+      'Received move: game_id=$gameId, move_number=$moveNumber, move=$moveData',
+    );
 
     final color = colorToMove(
-        // move number from the server is 1-indexed
-        moveNumber - 1,
-        handicap: handicap,
-        freeHandicapPlacement: _freeHandicapPlacement);
+      // move number from the server is 1-indexed
+      moveNumber - 1,
+      handicap: handicap,
+      freeHandicapPlacement: _freeHandicapPlacement,
+    );
 
     wq.Point point;
 
@@ -394,7 +401,10 @@ class OGSGame extends Game {
   }
 
   GameResult _parseGameResult(
-      int winnerId, String outcome, Map<String, dynamic>? players) {
+    int winnerId,
+    String outcome,
+    Map<String, dynamic>? players,
+  ) {
     wq.Color? winner;
 
     if (players != null) {
@@ -433,7 +443,8 @@ class OGSGame extends Game {
       _countingResultResponsesController.add(true);
     } catch (error) {
       _logger.warning(
-          'Error handling removed stones accepted for game $id: $error');
+        'Error handling removed stones accepted for game $id: $error',
+      );
     }
   }
 
@@ -487,7 +498,8 @@ class OGSGame extends Game {
       updatePlayerTimer(whiteTimeData, _whiteTimer, white.value.userId);
 
       _logger.fine(
-          'Updated clock for game $id: blackTime=${blackTime.value}, whiteTime=${whiteTime.value}');
+        'Updated clock for game $id: blackTime=${blackTime.value}, whiteTime=${whiteTime.value}',
+      );
     } catch (error) {
       _logger.warning('Error handling clock update for game $id: $error');
     }
@@ -540,7 +552,8 @@ class OGSGame extends Game {
 
   /// Calculate territory ownership and score from OGS ownership data
   CountingResult _calculateCountingResultFromOwnership(
-      Map<String, dynamic> data) {
+    Map<String, dynamic> data,
+  ) {
     _logger.fine('Calculating area ownership from OGS territory data');
 
     final ownershipData = data['ownership'] as List<dynamic>;
@@ -560,7 +573,8 @@ class OGSGame extends Game {
     final removedStones = parseStonesString(allRemovedString).toSet();
 
     _logger.fine(
-        'Removed stones from message: $allRemovedString -> ${removedStones.length} stones');
+      'Removed stones from message: $allRemovedString -> ${removedStones.length} stones',
+    );
 
     final territoryCounts = count2D(ownership);
     final blackTerritory = territoryCounts[wq.Color.black] ?? 0;
@@ -593,8 +607,9 @@ class OGSGame extends Game {
     _ensureLivingStonesMarkedInOwnership(ownership, removedStones);
 
     _logger.fine(
-        'Score from ownership: Black=$blackScore (area: $blackTerritory, captures: $whiteCaptures), '
-        'White=$whiteScore (area: $whiteTerritory, captures: $blackCaptures, komi: $komi)');
+      'Score from ownership: Black=$blackScore (area: $blackTerritory, captures: $whiteCaptures), '
+      'White=$whiteScore (area: $whiteTerritory, captures: $blackCaptures, komi: $komi)',
+    );
     _logger.fine('Winner: $winner, Lead: $scoreLead');
 
     return CountingResult(
@@ -616,26 +631,29 @@ class OGSGame extends Game {
     }
 
     final board = generate2D<int>(
-        boardSize,
-        (row, col) => switch (boardState[(row, col)]) {
-              null => 0,
-              wq.Color.black => 1,
-              wq.Color.white => 2,
-            });
+      boardSize,
+      (row, col) => switch (boardState[(row, col)]) {
+        null => 0,
+        wq.Color.black => 1,
+        wq.Color.white => 2,
+      },
+    );
 
     return board;
   }
 
   /// Gives the rules string expected by OGS APIs
   String _rulesToOgsString(Rules rules) => switch (rules) {
-        Rules.chinese => 'chinese',
-        Rules.japanese => 'japanese',
-        Rules.korean => 'korean',
-      };
+    Rules.chinese => 'chinese',
+    Rules.japanese => 'japanese',
+    Rules.korean => 'korean',
+  };
 
   /// Gets a score evaluation from the server
   Future<Map<String, dynamic>?> _callAIServer(
-      List<List<int>> boardState, String playerToMove) async {
+    List<List<int>> boardState,
+    String playerToMove,
+  ) async {
     _logger.fine('Calling AI server for game $id');
 
     final payload = {
@@ -688,8 +706,10 @@ class OGSGame extends Game {
         final y = stone['y'] as int?;
         if (x != null && y != null) {
           // Convert to SGF coordinate format
-          final point =
-              (y, x); // Note: AI response uses (x,y) but our Point is (row,col)
+          final point = (
+            y,
+            x,
+          ); // Note: AI response uses (x,y) but our Point is (row,col)
           stonesList.add(point.toSgf());
         }
       }
@@ -720,7 +740,9 @@ class OGSGame extends Game {
   /// OGS ownership may represent territory (stones are neutral) or area, depending on ruleset.
   /// WQHub ownership expects ownership to represent area regardless (stones belong to their color).
   void _ensureLivingStonesMarkedInOwnership(
-      List<List<wq.Color?>> ownership, Set<wq.Point> deadStones) {
+    List<List<wq.Color?>> ownership,
+    Set<wq.Point> deadStones,
+  ) {
     // Reconstruct the current board state to identify living stones
     final currentBoardState = BoardState(size: boardSize);
     for (final move in _allMoves) {

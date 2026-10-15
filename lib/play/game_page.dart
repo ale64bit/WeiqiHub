@@ -47,10 +47,11 @@ class GameRouteArguments {
   final Game game;
   final GameListener? gameListener;
 
-  const GameRouteArguments(
-      {required this.serverFeatures,
-      required this.game,
-      required this.gameListener});
+  const GameRouteArguments({
+    required this.serverFeatures,
+    required this.game,
+    required this.gameListener,
+  });
 }
 
 /*
@@ -85,13 +86,7 @@ Transitions:
 
   (tree, turn, _)        --- game result -->  (tree, turn, over)
 */
-enum GameState {
-  playing,
-  acking,
-  agreeToCounting,
-  counting,
-  over,
-}
+enum GameState { playing, acking, agreeToCounting, counting, over }
 
 class GamePage extends StatefulWidget {
   static const routeName = '/play/game';
@@ -156,9 +151,9 @@ class _GamePageState extends State<GamePage> {
       onGameResult(res);
       widget.gameListener?.onResult(widget.game.id, res);
     }, onError: onGameError);
-    widget.game
-        .automaticCountingResponses()
-        .forEach(onAgreeToAutomaticCounting);
+    widget.game.automaticCountingResponses().forEach(
+      onAgreeToAutomaticCounting,
+    );
     widget.game.countingResultResponses().forEach(onAcceptCountingResult);
     widget.game.countingResults().forEach(onCountingResult);
 
@@ -195,7 +190,8 @@ class _GamePageState extends State<GamePage> {
     );
     final board = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -204,9 +200,9 @@ class _GamePageState extends State<GamePage> {
           // Show the hovering stone only when we can actually place a stone.
           turn:
               ((_turn == widget.game.myColor && _state == GameState.playing) ||
-                      _state == GameState.over)
-                  ? _turn
-                  : null,
+                  _state == GameState.over)
+              ? _turn
+              : null,
           stones: _gameTree.stones,
           annotations: _territoryAnnotations ?? _gameTree.annotations,
           confirmTap: context.settings.confirmMoves,
@@ -281,13 +277,13 @@ class _GamePageState extends State<GamePage> {
         widget.game.white.value.username,
         widget.game.myColor == wq.Color.white
             ? _acceptedDeadStones
-            : _opponentAcceptedDeadStones
+            : _opponentAcceptedDeadStones,
       ),
       (
         widget.game.black.value.username,
         widget.game.myColor == wq.Color.black
             ? _acceptedDeadStones
-            : _opponentAcceptedDeadStones
+            : _opponentAcceptedDeadStones,
       ),
     ];
 
@@ -313,35 +309,36 @@ class _GamePageState extends State<GamePage> {
                       switch (_state) {
                         GameState.playing ||
                         GameState.acking ||
-                        GameState.agreeToCounting =>
-                          GameplayBar(
-                            features: widget.serverFeatures,
-                            onPass: onPassClicked,
-                            onAutomaticCounting: onAutomaticCountingClicked,
-                            onAIReferee: onAIRefereeClicked,
-                            onForceCounting: onForceCountingClicked,
-                            onResign: onResignClicked,
-                          ),
-                        GameState.counting => _isCountingFinal
-                            ? SizedBox.shrink()
-                            : GameCountingBar(
-                                onAcceptDeadStones: _acceptedDeadStones
-                                    ? null
-                                    : onAcceptDeadStones,
-                                onRejectDeadStones: onRejectDeadStones,
-                                acceptStatus: acceptStatus,
-                              ),
+                        GameState.agreeToCounting => GameplayBar(
+                          features: widget.serverFeatures,
+                          onPass: onPassClicked,
+                          onAutomaticCounting: onAutomaticCountingClicked,
+                          onAIReferee: onAIRefereeClicked,
+                          onForceCounting: onForceCountingClicked,
+                          onResign: onResignClicked,
+                        ),
+                        GameState.counting =>
+                          _isCountingFinal
+                              ? SizedBox.shrink()
+                              : GameCountingBar(
+                                  onAcceptDeadStones: _acceptedDeadStones
+                                      ? null
+                                      : onAcceptDeadStones,
+                                  onRejectDeadStones: onRejectDeadStones,
+                                  acceptStatus: acceptStatus,
+                                ),
                         GameState.over => GameNavigationBar(
-                            gameTree: _gameTree,
-                            onMovesSkipped: (_) {
-                              setState(() {
-                                _turn = (_gameTree.curNode.move?.col ??
-                                        wq.Color.white)
-                                    .opposite;
-                              });
-                            },
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          ),
+                          gameTree: _gameTree,
+                          onMovesSkipped: (_) {
+                            setState(() {
+                              _turn =
+                                  (_gameTree.curNode.move?.col ??
+                                          wq.Color.white)
+                                      .opposite;
+                            });
+                          },
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        ),
                       },
                     ],
                   ),
@@ -361,10 +358,7 @@ class _GamePageState extends State<GamePage> {
                       : whitePlayerCard,
                   if (_state == GameState.counting && !_isCountingFinal) ...[
                     Divider(),
-                    Text(
-                      loc.pleaseMarkDeadStones,
-                      textAlign: TextAlign.center,
-                    ),
+                    Text(loc.pleaseMarkDeadStones, textAlign: TextAlign.center),
                     SizedBox(height: 8.0),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -398,9 +392,10 @@ class _GamePageState extends State<GamePage> {
                           gameTree: _gameTree,
                           onMovesSkipped: (_) {
                             setState(() {
-                              _turn = (_gameTree.curNode.move?.col ??
-                                      wq.Color.white)
-                                  .opposite;
+                              _turn =
+                                  (_gameTree.curNode.move?.col ??
+                                          wq.Color.white)
+                                      .opposite;
                             });
                           },
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -460,32 +455,39 @@ class _GamePageState extends State<GamePage> {
     }
 
     // First try to apply the move to the tree to check validity
-    final node = _gameTree.moveAnnotated((col: _turn, p: p),
-        mode: _state == GameState.over
-            ? AnnotationMode.variation
-            : AnnotationMode.mainline);
+    final node = _gameTree.moveAnnotated(
+      (col: _turn, p: p),
+      mode: _state == GameState.over
+          ? AnnotationMode.variation
+          : AnnotationMode.mainline,
+    );
     if (node == null) return;
 
     AudioController().playForNode(_gameTree.curNode);
 
     if (_state == GameState.playing) {
       // If we are playing, send the move command to the game client
-      widget.game.move((col: _turn, p: p)).then((_) {
-        if (_state == GameState.acking) {
-          setState(() {
-            _state = GameState.playing;
-          });
-        }
-      }, onError: (err) {
-        _log.fine('move error: $err');
-        // If the move could not be processed, undo it
-        if (_state != GameState.acking) return;
-        _gameTree.undo();
-        setState(() {
-          _turn = _turn.opposite;
-          _state = GameState.playing;
-        });
-      });
+      widget.game
+          .move((col: _turn, p: p))
+          .then(
+            (_) {
+              if (_state == GameState.acking) {
+                setState(() {
+                  _state = GameState.playing;
+                });
+              }
+            },
+            onError: (err) {
+              _log.fine('move error: $err');
+              // If the move could not be processed, undo it
+              if (_state != GameState.acking) return;
+              _gameTree.undo();
+              setState(() {
+                _turn = _turn.opposite;
+                _state = GameState.playing;
+              });
+            },
+          );
       // Go into acking to wait for move confirmation
       _state = GameState.acking;
     }
@@ -518,32 +520,36 @@ class _GamePageState extends State<GamePage> {
     //  - game is ongoing and it's our turn
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(loc.msgPleaseWaitForYourTurn),
-        showCloseIcon: true,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.msgPleaseWaitForYourTurn),
+          showCloseIcon: true,
+        ),
+      );
       return;
     }
 
     // Pass doesn't need to be checked for validity.
 
     // Send the pass command to the game client
-    widget.game.pass().then((_) {
-      _log.fine('pass ok');
-      if (_state == GameState.acking) _state = GameState.playing;
-    }, onError: (err) {
-      // If the pass could not be processed, undo it
-      if (_state != GameState.acking) return;
-      setState(() {
-        _state = GameState.playing;
-      });
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.msgYouCannotPass),
-          showCloseIcon: true,
-        ));
-      }
-    });
+    widget.game.pass().then(
+      (_) {
+        _log.fine('pass ok');
+        if (_state == GameState.acking) _state = GameState.playing;
+      },
+      onError: (err) {
+        // If the pass could not be processed, undo it
+        if (_state != GameState.acking) return;
+        setState(() {
+          _state = GameState.playing;
+        });
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(loc.msgYouCannotPass), showCloseIcon: true),
+          );
+        }
+      },
+    );
 
     // Toggle current turn
     setState(() {
@@ -559,11 +565,13 @@ class _GamePageState extends State<GamePage> {
         return;
       case GameState.playing:
         // If we are playing, assume our opponent passed.
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.pass),
-          behavior: SnackBarBehavior.floating,
-          showCloseIcon: true,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loc.pass),
+            behavior: SnackBarBehavior.floating,
+            showCloseIcon: true,
+          ),
+        );
         AudioController().pass();
         setState(() {
           _state = GameState.playing;
@@ -571,11 +579,13 @@ class _GamePageState extends State<GamePage> {
         });
       case GameState.acking:
         // If we are acking, assume this is the ack for our pass request.
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.pass),
-          behavior: SnackBarBehavior.floating,
-          showCloseIcon: true,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loc.pass),
+            behavior: SnackBarBehavior.floating,
+            showCloseIcon: true,
+          ),
+        );
         AudioController().pass();
         setState(() {
           _state = GameState.playing;
@@ -611,42 +621,46 @@ class _GamePageState extends State<GamePage> {
     // We can only request automatic counting if we are playing and it's our turn.
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(loc.msgPleaseWaitForYourTurn),
-        showCloseIcon: true,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.msgPleaseWaitForYourTurn),
+          showCloseIcon: true,
+        ),
+      );
       return;
     }
 
     // Send automatic counting command to game client
-    widget.game.automaticCounting().then((info) {
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          routeSettings: RouteSettings(name: _waitingDialogName),
-          builder: (context) {
-            final loc = AppLocalizations.of(context)!;
-            return TimedDialog(
-              title: loc.autoCounting,
-              content: loc.msgWaitingForOpponentsDecision,
-              duration: info.timeout,
-            );
-          },
-        );
-      }
-      _log.fine('transition: ${_state.name} -> agreeToCounting');
-      setState(() {
-        _state = GameState.agreeToCounting;
-      });
-    }, onError: (err) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(err),
-          showCloseIcon: true,
-        ));
-      }
-    });
+    widget.game.automaticCounting().then(
+      (info) {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            routeSettings: RouteSettings(name: _waitingDialogName),
+            builder: (context) {
+              final loc = AppLocalizations.of(context)!;
+              return TimedDialog(
+                title: loc.autoCounting,
+                content: loc.msgWaitingForOpponentsDecision,
+                duration: info.timeout,
+              );
+            },
+          );
+        }
+        _log.fine('transition: ${_state.name} -> agreeToCounting');
+        setState(() {
+          _state = GameState.agreeToCounting;
+        });
+      },
+      onError: (err) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(err), showCloseIcon: true));
+        }
+      },
+    );
   }
 
   void onAgreeToAutomaticCounting(bool agree) {
@@ -692,10 +706,12 @@ class _GamePageState extends State<GamePage> {
       // If opponent refuses, go back into playing state
       if (context.mounted) {
         final loc = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.msgYourOpponentRefusesToCount),
-          showCloseIcon: true,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loc.msgYourOpponentRefusesToCount),
+            showCloseIcon: true,
+          ),
+        );
       }
       setState(() {
         _state = GameState.playing;
@@ -712,10 +728,12 @@ class _GamePageState extends State<GamePage> {
       maybeDismissRoute(_countingResultBottomSheetName);
       if (context.mounted) {
         final loc = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.msgYourOpponentDisagreesWithCountingResult),
-          showCloseIcon: true,
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(loc.msgYourOpponentDisagreesWithCountingResult),
+            showCloseIcon: true,
+          ),
+        );
       }
 
       setState(() {
@@ -731,7 +749,8 @@ class _GamePageState extends State<GamePage> {
 
   void onCountingResult(CountingResult res) {
     _log.fine(
-        '[${_state.name}] got counting result: winner=${res.winner} lead=${res.scoreLead} isFinal=${res.isFinal}');
+      '[${_state.name}] got counting result: winner=${res.winner} lead=${res.scoreLead} isFinal=${res.isFinal}',
+    );
 
     // Build the territory annotations.
     setState(() {
@@ -745,27 +764,28 @@ class _GamePageState extends State<GamePage> {
     if (res.isFinal) {
       if (context.mounted) {
         showModalBottomSheet(
-            context: context,
-            isDismissible: false,
-            routeSettings: RouteSettings(name: _countingResultBottomSheetName),
-            builder: (context) {
-              return CountingResultBottomSheet(
-                scoreLead: res.scoreLead,
-                winner: res.winner,
-                onAccept: () {
-                  widget.game.acceptCountingResult(true);
-                  maybeDismissRoute(_countingResultBottomSheetName);
-                },
-                onReject: () {
-                  widget.game.acceptCountingResult(false);
-                  maybeDismissRoute(_countingResultBottomSheetName);
-                  setState(() {
-                    _state = GameState.playing;
-                    _territoryAnnotations = null;
-                  });
-                },
-              );
-            });
+          context: context,
+          isDismissible: false,
+          routeSettings: RouteSettings(name: _countingResultBottomSheetName),
+          builder: (context) {
+            return CountingResultBottomSheet(
+              scoreLead: res.scoreLead,
+              winner: res.winner,
+              onAccept: () {
+                widget.game.acceptCountingResult(true);
+                maybeDismissRoute(_countingResultBottomSheetName);
+              },
+              onReject: () {
+                widget.game.acceptCountingResult(false);
+                maybeDismissRoute(_countingResultBottomSheetName);
+                setState(() {
+                  _state = GameState.playing;
+                  _territoryAnnotations = null;
+                });
+              },
+            );
+          },
+        );
       }
     }
 
@@ -784,30 +804,36 @@ class _GamePageState extends State<GamePage> {
     // We can only request AI referee if we are playing and it's our turn.
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(loc.msgPleaseWaitForYourTurn),
-        showCloseIcon: true,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.msgPleaseWaitForYourTurn),
+          showCloseIcon: true,
+        ),
+      );
       return;
     }
     if (_gameTree.curNode.moveNumber <
         (widget.serverFeatures.aiRefereeMinMoveCount[widget.game.boardSize] ??
             (1 << 30))) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(loc.msgCannotUseAIRefereeYet),
-        showCloseIcon: true,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.msgCannotUseAIRefereeYet),
+          showCloseIcon: true,
+        ),
+      );
       return;
     }
 
-    widget.game.aiReferee().then((_) {}, onError: (err) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('$err'),
-          showCloseIcon: true,
-        ));
-      }
-    });
+    widget.game.aiReferee().then(
+      (_) {},
+      onError: (err) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('$err'), showCloseIcon: true));
+        }
+      },
+    );
   }
 
   void onForceCountingClicked() {
@@ -815,31 +841,38 @@ class _GamePageState extends State<GamePage> {
     // We can only request forced counting if we are playing and it's our turn.
     if (_state != GameState.playing) return;
     if (_turn != widget.game.myColor) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(loc.msgPleaseWaitForYourTurn),
-        showCloseIcon: true,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.msgPleaseWaitForYourTurn),
+          showCloseIcon: true,
+        ),
+      );
       return;
     }
     if (_gameTree.curNode.moveNumber <
-        (widget.serverFeatures
-                .forcedCountingMinMoveCount[widget.game.boardSize] ??
+        (widget.serverFeatures.forcedCountingMinMoveCount[widget
+                .game
+                .boardSize] ??
             (1 << 30))) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(loc.msgCannotUseForcedCountingYet),
-        showCloseIcon: true,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(loc.msgCannotUseForcedCountingYet),
+          showCloseIcon: true,
+        ),
+      );
       return;
     }
 
-    widget.game.forceCounting().then((_) {}, onError: (err) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('$err'),
-          showCloseIcon: true,
-        ));
-      }
-    });
+    widget.game.forceCounting().then(
+      (_) {},
+      onError: (err) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('$err'), showCloseIcon: true));
+        }
+      },
+    );
   }
 
   void onGameResult(GameResult res) {
@@ -877,11 +910,13 @@ class _GamePageState extends State<GamePage> {
 
   void onGameError(err) {
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(err),
-        showCloseIcon: true,
-        behavior: SnackBarBehavior.floating,
-      ));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(err),
+          showCloseIcon: true,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
       Navigator.popUntil(context, (route) => route.isFirst);
     }
   }
@@ -900,7 +935,9 @@ class _GamePageState extends State<GamePage> {
   }
 
   Future<void> _showUserInfoDialog(
-      BuildContext context, ValueNotifier<UserInfo> userInfo) {
+    BuildContext context,
+    ValueNotifier<UserInfo> userInfo,
+  ) {
     return showDialog<void>(
       context: context,
       builder: (context) {
@@ -919,8 +956,8 @@ class _GamePageState extends State<GamePage> {
               const maxStreakLen = 15;
               final s = value.streak!;
               return StreakCard(
-                  streak:
-                      s.substring(max(0, s.length - maxStreakLen), s.length));
+                streak: s.substring(max(0, s.length - maxStreakLen), s.length),
+              );
             }
             return SizedBox();
           },
@@ -943,11 +980,7 @@ class _GamePageState extends State<GamePage> {
             constraints: BoxConstraints(minWidth: 400),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                userInfoCard,
-                streakCard,
-                promotionRequirementCard,
-              ],
+              children: [userInfoCard, streakCard, promotionRequirementCard],
             ),
           ),
         );
@@ -975,7 +1008,9 @@ class _GamePageState extends State<GamePage> {
 
   List<List<wq.Color?>> _defaultOwnership() {
     final ownership = generate2D(
-        widget.game.boardSize, (i, j) => _gameTree.stones.get((i, j)));
+      widget.game.boardSize,
+      (i, j) => _gameTree.stones.get((i, j)),
+    );
     _updateEmptyRegionOwnership(ownership);
     return ownership;
   }
@@ -1028,7 +1063,9 @@ class _GamePageState extends State<GamePage> {
   }
 
   static ISet<wq.Point> _collectGroup(
-      IMap<wq.Point, wq.Color> stones, wq.Point p) {
+    IMap<wq.Point, wq.Color> stones,
+    wq.Point p,
+  ) {
     final groupCol = stones.get(p);
     var points = const ISet<wq.Point>.empty();
     if (groupCol == null) return points;
@@ -1043,7 +1080,8 @@ class _GamePageState extends State<GamePage> {
   }
 
   IMap<wq.Point, BoardAnnotation> _territoryAnnotationsFromOwnership(
-      List<List<wq.Color?>> ownership) {
+    List<List<wq.Color?>> ownership,
+  ) {
     var annotations = IMap<wq.Point, BoardAnnotation>();
     for (int i = 0; i < ownership.length; ++i) {
       for (int j = 0; j < ownership[i].length; ++j) {
@@ -1057,12 +1095,16 @@ class _GamePageState extends State<GamePage> {
           switch (widget.game.rules) {
             case Rules.chinese: // Area
               annotations = annotations.add(
-                  p, TerritoryAnnotation(color: annotationColor));
+                p,
+                TerritoryAnnotation(color: annotationColor),
+              );
             case Rules.japanese: // Territory
             case Rules.korean:
               if (col != _gameTree.stones.get(p)) {
                 annotations = annotations.add(
-                    p, TerritoryAnnotation(color: annotationColor));
+                  p,
+                  TerritoryAnnotation(color: annotationColor),
+                );
               }
           }
         }
@@ -1081,30 +1123,28 @@ class _GameInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Card(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          loc.gameInfo,
-          textAlign: TextAlign.center,
-          style: TextTheme.of(context).titleLarge,
-        ),
-        Text(
-          '${loc.rules}: ${game.rules.toLocalizedString(loc)}',
-          textAlign: TextAlign.center,
-        ),
-        if (game.handicap > 1)
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           Text(
-            '${loc.handicap}: ${game.handicap}',
+            loc.gameInfo,
+            textAlign: TextAlign.center,
+            style: TextTheme.of(context).titleLarge,
+          ),
+          Text(
+            '${loc.rules}: ${game.rules.toLocalizedString(loc)}',
             textAlign: TextAlign.center,
           ),
-        if (game.handicap <= 1)
-          Text(
-            '${loc.komi}: ${game.komi}',
-            textAlign: TextAlign.center,
-          ),
-      ],
-    ));
+          if (game.handicap > 1)
+            Text(
+              '${loc.handicap}: ${game.handicap}',
+              textAlign: TextAlign.center,
+            ),
+          if (game.handicap <= 1)
+            Text('${loc.komi}: ${game.komi}', textAlign: TextAlign.center),
+        ],
+      ),
+    );
   }
 }

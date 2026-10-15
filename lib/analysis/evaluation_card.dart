@@ -32,12 +32,14 @@ class EvaluationCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                      '${loc.winrate}: ${(100 * analysis.rootInfo.winrate).floor()}%',
-                      style: TextTheme.of(context).bodyLarge),
+                    '${loc.winrate}: ${(100 * analysis.rootInfo.winrate).floor()}%',
+                    style: TextTheme.of(context).bodyLarge,
+                  ),
                   if (loss != null)
-                    Text('Point loss: ${fmtScore(loss.pointLoss)}',
-                        style:
-                            TextTheme.of(context).bodyLarge), // TODO localize
+                    Text(
+                      'Point loss: ${fmtScore(loss.pointLoss)}',
+                      style: TextTheme.of(context).bodyLarge,
+                    ), // TODO localize
                 ],
               ),
             ],

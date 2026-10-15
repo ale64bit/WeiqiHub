@@ -6,8 +6,11 @@ import 'package:wqhub/settings/stats.dart';
 class SharedPreferencesInheritedWidget extends InheritedWidget {
   final SharedPreferencesWithCache sharedPreferences;
 
-  const SharedPreferencesInheritedWidget(
-      {super.key, required super.child, required this.sharedPreferences});
+  const SharedPreferencesInheritedWidget({
+    super.key,
+    required super.child,
+    required this.sharedPreferences,
+  });
 
   static SharedPreferencesInheritedWidget? of(BuildContext context) {
     return context

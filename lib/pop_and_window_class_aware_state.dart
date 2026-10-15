@@ -3,7 +3,8 @@ import 'package:wqhub/routes.dart';
 import 'package:wqhub/window_class_aware_state.dart';
 
 abstract class PopAndWindowClassAwareState<T extends StatefulWidget>
-    extends WindowClassAwareState<T> with RouteAware {
+    extends WindowClassAwareState<T>
+    with RouteAware {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();

@@ -16,10 +16,9 @@ class GameTimer extends ValueNotifier<(int, TimeState)> {
   TimeState _baseState;
   DateTime? _startTime;
 
-  GameTimer({
-    required TimeState initialState,
-  })  : _baseState = initialState,
-        super((0, initialState));
+  GameTimer({required TimeState initialState})
+    : _baseState = initialState,
+      super((0, initialState));
 
   /// Whether the timer is currently running.
   bool get isRunning => _timer != null && _timer!.isActive;

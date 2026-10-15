@@ -17,10 +17,7 @@ class _GradingExamHelpDialogState extends State<GradingExamHelpDialog> {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 8.0,
-        children: [
-          const Icon(Icons.help),
-          Text(loc.help),
-        ],
+        children: [const Icon(Icons.help), Text(loc.help)],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -28,12 +25,13 @@ class _GradingExamHelpDialogState extends State<GradingExamHelpDialog> {
           Text(loc.helpDialogGradingExam),
           SizedBox(height: 16.0),
           CheckboxListTile(
-              title: Text(loc.dontShowAgain),
-              value: !context.settings.showGradingExamHelp,
-              onChanged: (value) {
-                context.settings.showGradingExamHelp = !value!;
-                setState(() {});
-              }),
+            title: Text(loc.dontShowAgain),
+            value: !context.settings.showGradingExamHelp,
+            onChanged: (value) {
+              context.settings.showGradingExamHelp = !value!;
+              setState(() {});
+            },
+          ),
         ],
       ),
       actions: <Widget>[

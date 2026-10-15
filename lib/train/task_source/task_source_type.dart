@@ -6,8 +6,8 @@ enum TaskSourceType {
   fromMistakes;
 
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        TaskSourceType.fromTaskTypes => loc.taskSourceFromTaskTypes,
-        TaskSourceType.fromTaskTag => loc.taskSourceFromTaskTopic,
-        TaskSourceType.fromMistakes => loc.taskSourceFromMyMistakes,
-      };
+    TaskSourceType.fromTaskTypes => loc.taskSourceFromTaskTypes,
+    TaskSourceType.fromTaskTag => loc.taskSourceFromTaskTopic,
+    TaskSourceType.fromMistakes => loc.taskSourceFromMyMistakes,
+  };
 }

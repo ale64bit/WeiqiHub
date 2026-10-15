@@ -46,10 +46,7 @@ class TaskActionBar extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 8.0,
-              children: <Widget>[
-                Icon(Icons.share),
-                Text(loc.copyTaskLink),
-              ],
+              children: <Widget>[Icon(Icons.share), Text(loc.copyTaskLink)],
             ),
           ),
           PopupMenuItem(
@@ -57,10 +54,7 @@ class TaskActionBar extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               spacing: 8.0,
-              children: <Widget>[
-                Icon(Icons.copy),
-                Text(loc.copySGF),
-              ],
+              children: <Widget>[Icon(Icons.copy), Text(loc.copySGF)],
             ),
           ),
           PopupMenuItem(
@@ -70,13 +64,13 @@ class TaskActionBar extends StatelessWidget {
               spacing: 8.0,
               children: switch (upsolveMode) {
                 UpsolveMode.auto => <Widget>[
-                    Icon(Icons.touch_app),
-                    Text(loc.tryCustomMoves),
-                  ],
+                  Icon(Icons.touch_app),
+                  Text(loc.tryCustomMoves),
+                ],
                 UpsolveMode.manual => <Widget>[
-                    Icon(Icons.touch_app),
-                    Text(loc.exitTryMode),
-                  ],
+                  Icon(Icons.touch_app),
+                  Text(loc.exitTryMode),
+                ],
               },
             ),
           ),
@@ -93,10 +87,7 @@ class TaskActionBar extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: IconButton(
-            icon: Icon(Icons.replay),
-            onPressed: onResetTask,
-          ),
+          child: IconButton(icon: Icon(Icons.replay), onPressed: onResetTask),
         ),
         if (onNextTask != null)
           Expanded(

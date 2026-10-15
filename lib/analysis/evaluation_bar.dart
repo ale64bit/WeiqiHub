@@ -5,8 +5,11 @@ class EvaluationBar extends StatelessWidget {
   final double winRate;
   final double scoreLead;
 
-  const EvaluationBar(
-      {super.key, required this.winRate, required this.scoreLead});
+  const EvaluationBar({
+    super.key,
+    required this.winRate,
+    required this.scoreLead,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +17,17 @@ class EvaluationBar extends StatelessWidget {
     final scoreContainer = winRate < 0.5
         ? Container(
             alignment: Alignment.centerRight,
-            child: Text('W+${fmtScore(scoreLead.abs())} ',
-                style: TextStyle(color: Colors.black, fontSize: barHeight / 2)),
+            child: Text(
+              'W+${fmtScore(scoreLead.abs())} ',
+              style: TextStyle(color: Colors.black, fontSize: barHeight / 2),
+            ),
           )
         : Container(
             alignment: Alignment.centerLeft,
-            child: Text(' B+${fmtScore(scoreLead)}',
-                style: TextStyle(color: Colors.white, fontSize: barHeight / 2)),
+            child: Text(
+              ' B+${fmtScore(scoreLead)}',
+              style: TextStyle(color: Colors.white, fontSize: barHeight / 2),
+            ),
           );
     return Container(
       padding: EdgeInsets.all(2.0),

@@ -137,8 +137,10 @@ class OGSWebSocketManager {
   }
 
   /// Send a message and return a Future that completes when the server responds
-  Future<dynamic> sendAndGetResponse(String command,
-      [Map<String, dynamic>? data]) {
+  Future<dynamic> sendAndGetResponse(
+    String command, [
+    Map<String, dynamic>? data,
+  ]) {
     final completer = Completer<dynamic>();
 
     if (_channel != null && _connected.value) {
@@ -196,7 +198,8 @@ class OGSWebSocketManager {
             }
           } else {
             _log.warning(
-                'Received response for unknown request ID: $requestId');
+              'Received response for unknown request ID: $requestId',
+            );
           }
 
           return;
@@ -213,10 +216,7 @@ class OGSWebSocketManager {
         }
 
         // Emit the message to listeners
-        _messageController.add({
-          'event': command,
-          'data': payload,
-        });
+        _messageController.add({'event': command, 'data': payload});
       }
     } catch (e) {
       _log.warning('Error parsing message \'$message\': $e');
@@ -276,10 +276,12 @@ class OGSWebSocketManager {
 
     _reconnectTimer?.cancel();
     final delay = Duration(
-        seconds: math.min(30, math.pow(2, _reconnectAttempts).toInt()));
+      seconds: math.min(30, math.pow(2, _reconnectAttempts).toInt()),
+    );
 
     _log.info(
-        'Scheduling reconnect in ${delay.inSeconds} seconds (attempt ${_reconnectAttempts + 1})');
+      'Scheduling reconnect in ${delay.inSeconds} seconds (attempt ${_reconnectAttempts + 1})',
+    );
 
     _reconnectTimer = Timer(delay, () {
       _reconnectAttempts++;

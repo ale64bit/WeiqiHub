@@ -31,28 +31,27 @@ class _SgfDefinition extends GrammarDefinition<Sgf> {
   Parser<SgfTree> gameTree() =>
       (ref0(nodeSeq) & ref0(gameTree).starSeparated(ref0(space)))
           .skip(before: char('(').trim(), after: char(')').trim())
-          .map((l) => SgfTree(
-                nodes: l[0],
-                children: l[1].elements,
-              ));
+          .map((l) => SgfTree(nodes: l[0], children: l[1].elements));
 
   Parser<List<SgfNode>> nodeSeq() =>
       ref0(node).plusSeparated(ref0(space)).map((r) => r.elements);
 
   Parser<SgfNode> node() =>
-      (char(';') & ref0(space) & ref0(prop).starSeparated(ref0(space)))
-          .map((l) {
+      (char(';') & ref0(space) & ref0(prop).starSeparated(ref0(space))).map((
+        l,
+      ) {
         return {for (final (k, vs) in l[2].elements) k: vs};
       });
 
   Parser<(String, List<String>)> prop() =>
-      (ref0(propIdent) & ref0(space) & ref0(propValues))
-          .map((l) => (l[0], l[2]));
+      (ref0(propIdent) & ref0(space) & ref0(propValues)).map(
+        (l) => (l[0], l[2]),
+      );
 
   Parser<String> propIdent() => (letter() & letter().star()).flatten().map((s) {
-        // Extract only uppercase letters (e.g., "CoPyright" -> "CP", "GM" -> "GM")
-        return s.split('').where((c) => c.toUpperCase() == c).join();
-      });
+    // Extract only uppercase letters (e.g., "CoPyright" -> "CP", "GM" -> "GM")
+    return s.split('').where((c) => c.toUpperCase() == c).join();
+  });
 
   Parser<List<String>> propValues() =>
       ref0(propValue).plusSeparated(ref0(space)).map((sl) => sl.elements);

@@ -41,8 +41,11 @@ void main() async {
   print('\n✅ Generated $sgfCount SGF snapshots and $gibCount GIB snapshots');
 }
 
-Future<void> generateSnapshot(String inputPath, String outputPath,
-    {required bool isSgf}) async {
+Future<void> generateSnapshot(
+  String inputPath,
+  String outputPath, {
+  required bool isSgf,
+}) async {
   print('Generating $outputPath...');
 
   final GameRecord record;

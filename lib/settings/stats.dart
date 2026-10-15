@@ -20,12 +20,16 @@ class Stats {
 
   void incrementGradingExamPassCount(Rank rank) {
     prefs.setInt(
-        '$_gradingExamKeyPrefix.$rank.pass', getGradingExamPassCount(rank) + 1);
+      '$_gradingExamKeyPrefix.$rank.pass',
+      getGradingExamPassCount(rank) + 1,
+    );
   }
 
   void incrementGradingExamFailCount(Rank rank) {
     prefs.setInt(
-        '$_gradingExamKeyPrefix.$rank.fail', getGradingExamFailCount(rank) + 1);
+      '$_gradingExamKeyPrefix.$rank.fail',
+      getGradingExamFailCount(rank) + 1,
+    );
   }
 
   int getEndgameExamPassCount(Rank rank) =>
@@ -36,12 +40,16 @@ class Stats {
 
   void incrementEndgameExamPassCount(Rank rank) {
     prefs.setInt(
-        '$_endgameExamKeyPrefix.$rank.pass', getEndgameExamPassCount(rank) + 1);
+      '$_endgameExamKeyPrefix.$rank.pass',
+      getEndgameExamPassCount(rank) + 1,
+    );
   }
 
   void incrementEndgameExamFailCount(Rank rank) {
     prefs.setInt(
-        '$_endgameExamKeyPrefix.$rank.fail', getEndgameExamFailCount(rank) + 1);
+      '$_endgameExamKeyPrefix.$rank.fail',
+      getEndgameExamFailCount(rank) + 1,
+    );
   }
 
   int get timeFrenzyHighScore => prefs.getInt(_timeFrenzyHighScoreKey) ?? 0;

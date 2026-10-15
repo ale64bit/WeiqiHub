@@ -69,24 +69,24 @@ class OGSGameClient extends GameClient {
 
   @override
   ServerInfo get serverInfo => ServerInfo(
-        id: 'ogs',
-        name: (loc) => loc.ogsName,
-        nativeName: 'OGS',
-        description: (loc) => loc.ogsDesc,
-        homeUrl: serverUrl,
-        registerUrl: Uri.parse('$serverUrl/register'),
-      );
+    id: 'ogs',
+    name: (loc) => loc.ogsName,
+    nativeName: 'OGS',
+    description: (loc) => loc.ogsDesc,
+    homeUrl: serverUrl,
+    registerUrl: Uri.parse('$serverUrl/register'),
+  );
 
   @override
   ServerFeatures get serverFeatures => ServerFeatures(
-        manualCounting: true,
-        automaticCounting: false,
-        aiReferee: false, // OGS's AI referee cannot be called on-demand
-        aiRefereeMinMoveCount: const IMapConst({}),
-        forcedCounting: false, // OGS handles counting differently
-        forcedCountingMinMoveCount: const IMapConst({}),
-        localTimeControl: false, // OGS uses GameTimer for local countdown
-      );
+    manualCounting: true,
+    automaticCounting: false,
+    aiReferee: false, // OGS's AI referee cannot be called on-demand
+    aiRefereeMinMoveCount: const IMapConst({}),
+    forcedCounting: false, // OGS handles counting differently
+    forcedCountingMinMoveCount: const IMapConst({}),
+    localTimeControl: false, // OGS uses GameTimer for local countdown
+  );
 
   @override
   ValueNotifier<UserInfo?> get userInfo => _userInfo;
@@ -168,13 +168,15 @@ class OGSGameClient extends GameClient {
         final sizeKey = '${boardSize}x$boardSize';
         final timeControl = timeControlsBySpeedAndSize[sizeKey]![speed]!;
 
-        presets.add(AutomatchPreset(
-          id: '${boardSize}_$speed',
-          boardSize: boardSize,
-          variant: Variant.standard,
-          rules: Rules.japanese, // OGS uses Japanese rules for automatch
-          timeControl: timeControl,
-        ));
+        presets.add(
+          AutomatchPreset(
+            id: '${boardSize}_$speed',
+            boardSize: boardSize,
+            variant: Variant.standard,
+            rules: Rules.japanese, // OGS uses Japanese rules for automatch
+            timeControl: timeControl,
+          ),
+        );
       }
     }
 
@@ -199,10 +201,14 @@ class OGSGameClient extends GameClient {
       if (rank == null) return;
 
       final rankIndex = Rank.values.indexOf(rank);
-      final minRankIndex =
-          (rankIndex - _defaultRankDiff).clamp(0, Rank.values.length - 1);
-      final maxRankIndex =
-          (rankIndex + _defaultRankDiff).clamp(0, Rank.values.length - 1);
+      final minRankIndex = (rankIndex - _defaultRankDiff).clamp(
+        0,
+        Rank.values.length - 1,
+      );
+      final maxRankIndex = (rankIndex + _defaultRankDiff).clamp(
+        0,
+        Rank.values.length - 1,
+      );
 
       final ranks = <int>[];
       for (int i = minRankIndex; i <= maxRankIndex; i++) {
@@ -228,8 +234,9 @@ class OGSGameClient extends GameClient {
             final byoyomiCount = speedStats?['byoyomi'] as int?;
 
             if (byoyomiCount != null) {
-              statsMap[presetId] =
-                  AutomatchPresetStats(playerCount: byoyomiCount);
+              statsMap[presetId] = AutomatchPresetStats(
+                playerCount: byoyomiCount,
+              );
             }
           } catch (e) {
             _logger.warning('Failed to parse stats for $presetId: $e');
@@ -252,13 +259,10 @@ class OGSGameClient extends GameClient {
       _httpClient.csrfToken = csrfToken;
 
       // Now attempt login
-      final loginData = await _httpClient.postJson(
-        '/api/v0/login',
-        {
-          'username': username,
-          'password': password,
-        },
-      );
+      final loginData = await _httpClient.postJson('/api/v0/login', {
+        'username': username,
+        'password': password,
+      });
 
       final userData = loginData['user'];
 
@@ -288,18 +292,13 @@ class OGSGameClient extends GameClient {
       // Handle HTTP status errors
       if (e.statusCode == 401 || e.statusCode == 403) {
         // Authentication failed - wrong username or password
-        throw const LoginException(
-          type: LoginFailureType.invalidCredentials,
-        );
+        throw const LoginException(type: LoginFailureType.invalidCredentials);
       }
       rethrow;
     } catch (e) {
       // Check for network-related exceptions
       if (e is SocketException || e is ClientException) {
-        throw LoginException(
-          type: LoginFailureType.network,
-          cause: e,
-        );
+        throw LoginException(type: LoginFailureType.network, cause: e);
       }
       rethrow;
     }
@@ -381,8 +380,9 @@ class OGSGameClient extends GameClient {
     final timeControlData = gameData['time_control'] as Map<String, dynamic>?;
     final timeControl = TimeControl(
       mainTime: Duration(seconds: timeControlData?['main_time'] as int? ?? 300),
-      timePerPeriod:
-          Duration(seconds: timeControlData?['period_time'] as int? ?? 30),
+      timePerPeriod: Duration(
+        seconds: timeControlData?['period_time'] as int? ?? 30,
+      ),
       periodCount: timeControlData?['periods'] as int? ?? 5,
     );
 
@@ -400,8 +400,11 @@ class OGSGameClient extends GameClient {
       throw Exception('Unable to determine player color for game $gameId');
     }
 
-    final previousMoves =
-        _parseMovesFromGameData(gameData, handicap, freeHandicapPlacement);
+    final previousMoves = _parseMovesFromGameData(
+      gameData,
+      handicap,
+      freeHandicapPlacement,
+    );
 
     return OGSGame(
       id: gameId,
@@ -432,19 +435,24 @@ class OGSGameClient extends GameClient {
     _automatchCompleter = Completer<Game>();
 
     // Set up message listener for automatch responses
-    _messageSubscription =
-        _webSocketManager.messages.listen(_handleAutomatchResponse);
+    _messageSubscription = _webSocketManager.messages.listen(
+      _handleAutomatchResponse,
+    );
 
     // Create the automatch payload data matching OGS format
     final automatchData = {
       "uuid": _currentAutomatchUuid!,
       "size_speed_options": [
-        {"size": "${boardSize}x$boardSize", "speed": speed, "system": "byoyomi"}
+        {
+          "size": "${boardSize}x$boardSize",
+          "speed": speed,
+          "system": "byoyomi",
+        },
       ],
       "lower_rank_diff": _defaultRankDiff,
       "upper_rank_diff": _defaultRankDiff,
       "rules": {"condition": "required", "value": "japanese"},
-      "handicap": {"condition": "preferred", "value": "enabled"}
+      "handicap": {"condition": "preferred", "value": "enabled"},
     };
 
     // Send the automatch request via WebSocket
@@ -484,8 +492,9 @@ class OGSGameClient extends GameClient {
   void stopAutomatch() {
     // Send automatch cancel request to OGS with the stored UUID
     if (_currentAutomatchUuid != null) {
-      _webSocketManager
-          .send('automatch/cancel', {'uuid': _currentAutomatchUuid!});
+      _webSocketManager.send('automatch/cancel', {
+        'uuid': _currentAutomatchUuid!,
+      });
       _currentAutomatchUuid = null; // Clear the stored UUID after cancellation
     }
 
@@ -532,8 +541,9 @@ class OGSGameClient extends GameClient {
 
         // Parse dates
         final endedStr = gameData['ended'] as String?;
-        final dateTime =
-            endedStr != null ? DateTime.parse(endedStr) : DateTime.now();
+        final dateTime = endedStr != null
+            ? DateTime.parse(endedStr)
+            : DateTime.now();
 
         // Parse players
         final blackPlayerData = gameData['players']['black'];
@@ -542,16 +552,18 @@ class OGSGameClient extends GameClient {
         final blackPlayer = UserInfo(
           userId: blackPlayerData['id'].toString(),
           username: blackPlayerData['username'] ?? '',
-          rank:
-              _ratingToRank(blackPlayerData['ratings']?['overall']?['rating']),
+          rank: _ratingToRank(
+            blackPlayerData['ratings']?['overall']?['rating'],
+          ),
           online: false, // Not available in this API
         );
 
         final whitePlayer = UserInfo(
           userId: whitePlayerData['id'].toString(),
           username: whitePlayerData['username'] ?? '',
-          rank:
-              _ratingToRank(whitePlayerData['ratings']?['overall']?['rating']),
+          rank: _ratingToRank(
+            whitePlayerData['ratings']?['overall']?['rating'],
+          ),
           online: false, // Not available in this API
         );
 
@@ -617,16 +629,25 @@ class OGSGameClient extends GameClient {
   }
 
   List<wq.Move> _parseMovesFromGameData(
-      Map<String, dynamic> gameData, int handicap, bool freeHandicapPlacement) {
+    Map<String, dynamic> gameData,
+    int handicap,
+    bool freeHandicapPlacement,
+  ) {
     final moves = <wq.Move>[];
 
     // Extract initial_state - this powers "forked" games, and, more importantly, handicap stones
     final initialState = gameData['initial_state'] as Map<String, dynamic>?;
     if (initialState != null) {
-      moves.addAll(parseStonesString(initialState['black'] as String? ?? "")
-          .map((point) => (col: wq.Color.black, p: point)));
-      moves.addAll(parseStonesString(initialState['white'] as String? ?? "")
-          .map((point) => (col: wq.Color.white, p: point)));
+      moves.addAll(
+        parseStonesString(
+          initialState['black'] as String? ?? "",
+        ).map((point) => (col: wq.Color.black, p: point)),
+      );
+      moves.addAll(
+        parseStonesString(
+          initialState['white'] as String? ?? "",
+        ).map((point) => (col: wq.Color.white, p: point)),
+      );
     }
 
     final movesData = gameData['moves'] as List<dynamic>?;
@@ -637,8 +658,11 @@ class OGSGameClient extends GameClient {
     for (int i = 0; i < movesData.length; i++) {
       final moveData = movesData[i];
 
-      final color = colorToMove(i,
-          handicap: handicap, freeHandicapPlacement: freeHandicapPlacement);
+      final color = colorToMove(
+        i,
+        handicap: handicap,
+        freeHandicapPlacement: freeHandicapPlacement,
+      );
 
       if (moveData is List && moveData.length >= 2) {
         // OGS format: [col, row, time] where -1,-1 is pass

@@ -11,8 +11,11 @@ class _LocalizedVoice {
   final AudioSource pass;
   final List<AudioSource> count;
 
-  _LocalizedVoice(
-      {required this.startToPlay, required this.pass, required this.count});
+  _LocalizedVoice({
+    required this.startToPlay,
+    required this.pass,
+    required this.count,
+  });
 }
 
 class AudioController {
@@ -40,16 +43,18 @@ class AudioController {
     // Configure audio session to mix with other apps instead of interrupting them
     if (Platform.isIOS) {
       final session = await AudioSession.instance;
-      await session.configure(AudioSessionConfiguration(
-        avAudioSessionCategory: AVAudioSessionCategory.ambient,
-        avAudioSessionMode: AVAudioSessionMode.defaultMode,
-        androidAudioAttributes: const AndroidAudioAttributes(
-          contentType: AndroidAudioContentType.sonification,
-          usage: AndroidAudioUsage.game,
+      await session.configure(
+        AudioSessionConfiguration(
+          avAudioSessionCategory: AVAudioSessionCategory.ambient,
+          avAudioSessionMode: AVAudioSessionMode.defaultMode,
+          androidAudioAttributes: const AndroidAudioAttributes(
+            contentType: AndroidAudioContentType.sonification,
+            usage: AndroidAudioUsage.game,
+          ),
+          androidAudioFocusGainType:
+              AndroidAudioFocusGainType.gainTransientMayDuck,
         ),
-        androidAudioFocusGainType:
-            AndroidAudioFocusGainType.gainTransientMayDuck,
-      ));
+      );
     }
 
     final soloud = SoLoud.instance;
@@ -62,12 +67,13 @@ class AudioController {
       correct: await soloud.loadAsset('assets/sounds/correct.mp3'),
       wrong: await soloud.loadAsset('assets/sounds/wrong.mp3'),
       enVoice: _LocalizedVoice(
-        startToPlay:
-            await soloud.loadAsset('assets/sounds/en/start_to_play.mp3'),
+        startToPlay: await soloud.loadAsset(
+          'assets/sounds/en/start_to_play.mp3',
+        ),
         pass: await soloud.loadAsset('assets/sounds/en/pass.mp3'),
         count: await Future.wait([
           for (int i = 1; i <= 9; ++i)
-            soloud.loadAsset('assets/sounds/en/$i.mp3')
+            soloud.loadAsset('assets/sounds/en/$i.mp3'),
         ]),
       ),
       stoneVolume: settings.soundStone,
@@ -87,12 +93,12 @@ class AudioController {
     required this.stoneVolume,
     required this.voiceVolume,
     required this.uiVolume,
-  })  : _stone = stone,
-        _captureOne = captureOne,
-        _captureMany = captureMany,
-        _correct = correct,
-        _wrong = wrong,
-        _enVoice = enVoice;
+  }) : _stone = stone,
+       _captureOne = captureOne,
+       _captureMany = captureMany,
+       _correct = correct,
+       _wrong = wrong,
+       _enVoice = enVoice;
 
   void dispose() {
     _soloud.deinit();
@@ -133,7 +139,8 @@ class AudioController {
   Future<void> count(int i) async {
     if (i < 1 || i > _enVoice.count.length) {
       _log.warning(
-          'Invalid count value: $i (expected 1-${_enVoice.count.length})');
+        'Invalid count value: $i (expected 1-${_enVoice.count.length})',
+      );
       return;
     }
     await _soloud.play(_enVoice.count[i - 1], volume: voiceVolume);

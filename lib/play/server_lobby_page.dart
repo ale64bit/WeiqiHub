@@ -118,7 +118,7 @@ class _ServerLobbyPageState
                 ),
               );
             },
-          )
+          ),
       ],
     );
 

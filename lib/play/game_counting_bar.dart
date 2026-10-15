@@ -48,11 +48,13 @@ class GameCountingBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               spacing: 4.0,
               children: [
-                Icon(accepted ? Icons.check_circle : Icons.cancel,
-                    color: accepted ? Colors.green : Colors.redAccent),
+                Icon(
+                  accepted ? Icons.check_circle : Icons.cancel,
+                  color: accepted ? Colors.green : Colors.redAccent,
+                ),
                 Text(nick),
               ],
-            )
+            ),
         ],
       ),
     );

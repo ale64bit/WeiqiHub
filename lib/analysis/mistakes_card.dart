@@ -9,8 +9,11 @@ class MistakesCard extends StatelessWidget {
   final GameTreeNode<KataGoResponse> rootNode;
   final Function(int) onTapMove;
 
-  const MistakesCard(
-      {super.key, required this.rootNode, required this.onTapMove});
+  const MistakesCard({
+    super.key,
+    required this.rootNode,
+    required this.onTapMove,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +24,10 @@ class MistakesCard extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('Mistakes',
-                style: TextTheme.of(context).titleLarge), // TODO localize
+            child: Text(
+              'Mistakes',
+              style: TextTheme.of(context).titleLarge,
+            ), // TODO localize
           ),
           Expanded(
             child: Row(
@@ -37,16 +42,16 @@ class MistakesCard extends StatelessWidget {
                             leading: Text('${mistake.moveNumber}'),
                             title: Text(
                               fmtScore(mistake.pointLoss),
-                              style: DefaultTextStyle.of(context)
-                                  .style
+                              style: DefaultTextStyle.of(context).style
                                   .copyWith(
                                     color: pointLossColor(mistake.pointLoss),
                                   ),
                             ),
-                            trailing:
-                                Text('${(100 * mistake.winrateLoss).toInt()}%'),
+                            trailing: Text(
+                              '${(100 * mistake.winrateLoss).toInt()}%',
+                            ),
                             onTap: () => onTapMove(mistake.moveNumber),
-                          )
+                          ),
                       ],
                     ),
                   ),
@@ -66,11 +71,13 @@ class MistakesCard extends StatelessWidget {
       final loss = nodeLoss(cur);
       if (loss != null && cur.move != null) {
         final turn = cur.move!.col.index;
-        mistakes[turn].add(_Mistake(
-          moveNumber: cur.moveNumber,
-          pointLoss: loss.pointLoss,
-          winrateLoss: loss.winrateLoss,
-        ));
+        mistakes[turn].add(
+          _Mistake(
+            moveNumber: cur.moveNumber,
+            pointLoss: loss.pointLoss,
+            winrateLoss: loss.winrateLoss,
+          ),
+        );
       }
     }
     for (final m in mistakes) {
@@ -94,8 +101,9 @@ class _Mistake {
   final double pointLoss;
   final double winrateLoss;
 
-  const _Mistake(
-      {required this.moveNumber,
-      required this.pointLoss,
-      required this.winrateLoss});
+  const _Mistake({
+    required this.moveNumber,
+    required this.pointLoss,
+    required this.winrateLoss,
+  });
 }

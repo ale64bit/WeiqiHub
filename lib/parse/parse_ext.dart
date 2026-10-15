@@ -9,7 +9,8 @@ extension ParseExt on Iterable<int> {
 
   Iterable<int> skipSpace() {
     return skipWhile(
-        (c) => c == _space || c == _tab || c == _newLine || c == _cr);
+      (c) => c == _space || c == _tab || c == _newLine || c == _cr,
+    );
   }
 
   Iterable<int> match(int want) {
@@ -28,18 +29,21 @@ extension ParseExt on Iterable<int> {
       s.codeUnits.fold(this, (it, i) => it.match(i));
 
   (Iterable<int>, T) tag<T>(
-      String open, String close, (Iterable<int>, T) Function(Iterable<int>) f) {
+    String open,
+    String close,
+    (Iterable<int>, T) Function(Iterable<int>) f,
+  ) {
     final (it, t) = f(matchString(open));
     return (it.skipSpace().matchString(close), t);
   }
 
   (Iterable<int>, T) parentheses<T>(
-          (Iterable<int>, T) Function(Iterable<int>) f) =>
-      tag('(', ')', f);
+    (Iterable<int>, T) Function(Iterable<int>) f,
+  ) => tag('(', ')', f);
 
   (Iterable<int>, T) brackets<T>(
-          (Iterable<int>, T) Function(Iterable<int>) f) =>
-      tag('[', ']', f);
+    (Iterable<int>, T) Function(Iterable<int>) f,
+  ) => tag('[', ']', f);
 
   (Iterable<int>, String) propName() {
     var it = this;
@@ -55,7 +59,8 @@ extension ParseExt on Iterable<int> {
       collectUntilCond((it) => it.first == ch);
 
   (Iterable<int>, List<int>) collectUntilCond(
-      bool Function(Iterable<int>) cond) {
+    bool Function(Iterable<int>) cond,
+  ) {
     var it = this;
     final ret = <int>[];
     while (!cond(it)) {

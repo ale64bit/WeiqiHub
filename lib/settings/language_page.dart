@@ -40,7 +40,7 @@ class _LanguagePageState extends State<LanguagePage> {
               RadioListTile<Locale>(
                 title: Text(nativeLanguageName[loc.languageCode]!),
                 value: loc,
-              )
+              ),
           ],
         ),
       ),

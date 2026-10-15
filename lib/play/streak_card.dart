@@ -11,16 +11,27 @@ class StreakCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: streak.characters
-            .map((ch) => switch (ch) {
-                  'W' => const Icon(Icons.circle_outlined,
-                      color: Colors.green, size: 16),
-                  'L' => const Icon(Icons.close, color: Colors.red, size: 16),
-                  '=' =>
-                    const Icon(Icons.drag_handle, color: Colors.blue, size: 16),
-                  '.' =>
-                    const Icon(Icons.more_horiz, color: Colors.grey, size: 16),
-                  _ => const Icon(Icons.question_mark, size: 16),
-                })
+            .map(
+              (ch) => switch (ch) {
+                'W' => const Icon(
+                  Icons.circle_outlined,
+                  color: Colors.green,
+                  size: 16,
+                ),
+                'L' => const Icon(Icons.close, color: Colors.red, size: 16),
+                '=' => const Icon(
+                  Icons.drag_handle,
+                  color: Colors.blue,
+                  size: 16,
+                ),
+                '.' => const Icon(
+                  Icons.more_horiz,
+                  color: Colors.grey,
+                  size: 16,
+                ),
+                _ => const Icon(Icons.question_mark, size: 16),
+              },
+            )
             .toList(),
       ),
     );

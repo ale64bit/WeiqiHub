@@ -19,8 +19,9 @@ mixin BoardGeometry {
   }
 
   Offset pointOrigin(int r, int c) => Offset(
-      (c - (settings.subBoard?.topLeft.$2 ?? 0)) * pointSize,
-      (r - (settings.subBoard?.topLeft.$1 ?? 0)) * pointSize);
+    (c - (settings.subBoard?.topLeft.$2 ?? 0)) * pointSize,
+    (r - (settings.subBoard?.topLeft.$1 ?? 0)) * pointSize,
+  );
 
   Offset pointCenter(int r, int c) =>
       pointOrigin(r, c) + Offset(halfPointSize, halfPointSize);

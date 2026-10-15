@@ -67,7 +67,8 @@ class _SingleTaskPageState extends State<SingleTaskPage>
 
     final board = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -126,9 +127,7 @@ class _SingleTaskPageState extends State<SingleTaskPage>
             ],
           ),
         ),
-        body: Center(
-          child: board,
-        ),
+        body: Center(child: board),
         bottomNavigationBar: BottomAppBar(
           height: upsolveMode == UpsolveMode.auto ? 80.0 : 160.0,
           child: TaskActionBar(
@@ -184,7 +183,9 @@ class _SideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final widgetSize = MediaQuery.sizeOf(context);
     final sidebarSize = min(
-        widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
+      widgetSize.longestSide - widgetSize.shortestSide,
+      widgetSize.width / 3,
+    );
     return SizedBox(
       width: sidebarSize,
       child: Container(

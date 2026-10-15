@@ -37,22 +37,24 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
   var _variation = false;
 
   static const WidgetStateProperty<Icon> variationThumbIcon =
-      WidgetStateProperty<Icon>.fromMap(
-    <WidgetStatesConstraint, Icon>{
-      WidgetState.selected: Icon(Icons.hdr_auto),
-      WidgetState.any: Icon(Icons.lens),
-    },
-  );
+      WidgetStateProperty<Icon>.fromMap(<WidgetStatesConstraint, Icon>{
+        WidgetState.selected: Icon(Icons.hdr_auto),
+        WidgetState.any: Icon(Icons.lens),
+      });
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _updateBoard(
-        context.settings.localBoardSize, context.settings.localBoardHandicap);
+      context.settings.localBoardSize,
+      context.settings.localBoardHandicap,
+    );
     final points = context.settings.localBoardMoves;
     for (final p in points) {
-      _gameTree
-          .moveAnnotated((col: _turn, p: p), mode: AnnotationMode.mainline);
+      _gameTree.moveAnnotated((
+        col: _turn,
+        p: p,
+      ), mode: AnnotationMode.mainline);
       _turn = _turn.opposite;
     }
   }
@@ -77,10 +79,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
         : null;
     final boardSettings = BoardSettings(
       size: _boardSize,
-      subBoard: SubBoard(
-        topLeft: (0, 0),
-        size: _boardSize,
-      ),
+      subBoard: SubBoard(topLeft: (0, 0), size: _boardSize),
       theme: context.settings.boardTheme,
       edgeLine: context.settings.edgeLine,
       border: border,
@@ -88,7 +87,8 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
     );
     final board = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -129,15 +129,10 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
               setState(() {});
             },
           ),
-          _LocalBoardMenu(
-            onUpdateBoard: _updateBoard,
-            onSaveSgf: _onSaveSgf,
-          ),
+          _LocalBoardMenu(onUpdateBoard: _updateBoard, onSaveSgf: _onSaveSgf),
         ],
       ),
-      body: Center(
-        child: board,
-      ),
+      body: Center(child: board),
       bottomNavigationBar: BottomAppBar(
         child: GameNavigationBar(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -160,10 +155,10 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
   }
 
   void _onPointClicked(wq.Point p) {
-    if (_gameTree.moveAnnotated((col: _turn, p: p),
-            mode: _variation
-                ? AnnotationMode.variation
-                : AnnotationMode.mainline) !=
+    if (_gameTree.moveAnnotated(
+          (col: _turn, p: p),
+          mode: _variation ? AnnotationMode.variation : AnnotationMode.mainline,
+        ) !=
         null) {
       AudioController().playForNode(_gameTree.curNode);
       setState(() {
@@ -182,21 +177,27 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
   void _updateBoard(int size, int handicap) {
     _boardSize = size;
     _handicap = handicap;
-    _gameTree = AnnotatedGameTree(_boardSize,
-        initialStones: IMapOfSets({
-          wq.Color.black: handicapPosition.getOrNull((_boardSize, _handicap)) ??
-              const ISetConst({}),
-        }));
+    _gameTree = AnnotatedGameTree(
+      _boardSize,
+      initialStones: IMapOfSets({
+        wq.Color.black:
+            handicapPosition.getOrNull((_boardSize, _handicap)) ??
+            const ISetConst({}),
+      }),
+    );
     _turn = (_handicap > 1) ? wq.Color.white : wq.Color.black;
-    setState(() {/* Update board */});
+    setState(() {
+      /* Update board */
+    });
   }
 
   Future<void> _onSaveSgf() async {
     final res = await showModalBottomSheet<SaveSgfFormResult>(
-        context: context,
-        builder: (context) {
-          return SaveSgfForm();
-        });
+      context: context,
+      builder: (context) {
+        return SaveSgfForm();
+      },
+    );
     if (res != null) {
       final sgfData = _gameTree.sgf(
         rules: res.rules,
@@ -218,11 +219,13 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
           final f = File(savePath);
           await f.writeAsBytes(utf8.encode(sgfData));
           ScaffoldMessenger.of(context).removeCurrentSnackBar();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('SGF saved to $savePath'),
-            showCloseIcon: true,
-            behavior: SnackBarBehavior.floating,
-          ));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('SGF saved to $savePath'),
+              showCloseIcon: true,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
           context.settings.saveDirectory = dirname(savePath);
         }
       } else {
@@ -240,7 +243,7 @@ class _LocalBoardPageState extends State<LocalBoardPage> {
             XFile.fromData(
               utf8.encode(sgfData),
               mimeType: 'application/x-go-sgf',
-            )
+            ),
           ],
           fileNameOverrides: [fileName],
           sharePositionOrigin: sharePositionOrigin,
@@ -301,11 +304,13 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
                     context.settings.clearLocalBoardState();
                   }
                 },
-                leadingIcon: Icon(_boardSize == size
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank),
+                leadingIcon: Icon(
+                  _boardSize == size
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank,
+                ),
                 child: Text(loc.nxnBoardSize(size)),
-              )
+              ),
           ],
           child: Text(loc.boardSize),
         ),
@@ -323,11 +328,13 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
                     context.settings.clearLocalBoardState();
                   }
                 },
-                leadingIcon: Icon(_handicap == h
-                    ? Icons.check_box
-                    : Icons.check_box_outline_blank),
+                leadingIcon: Icon(
+                  _handicap == h
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank,
+                ),
                 child: Text('$h'),
-              )
+              ),
           ],
           child: Text(loc.handicap),
         ),
@@ -350,9 +357,9 @@ class _LocalBoardMenuState extends State<_LocalBoardMenu> {
   }
 
   int _maxHandicapForBoardSize(int size) => switch (size) {
-        9 => 5,
-        13 => 9,
-        19 => 9,
-        _ => 0,
-      };
+    9 => 5,
+    13 => 9,
+    19 => 9,
+    _ => 0,
+  };
 }
