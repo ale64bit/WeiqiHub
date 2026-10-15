@@ -12,7 +12,8 @@ class UserInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final winCount = userInfo.winCount;
     final lossCount = userInfo.lossCount;
-    final showWinLoss = winCount != null &&
+    final showWinLoss =
+        winCount != null &&
         lossCount != null &&
         context.settings.rankVisibility != PlayerRankVisibility.focusMode;
 
@@ -23,12 +24,14 @@ class UserInfoCard extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text(userInfo.username),
             subtitle: showWinLoss ? Text('${winCount}W  ${lossCount}L') : null,
-            trailing: context.settings.rankVisibility !=
-                    PlayerRankVisibility.visible
+            trailing:
+                context.settings.rankVisibility != PlayerRankVisibility.visible
                 ? null
-                : Text(userInfo.rank.toString(),
-                    style: TextTheme.of(context).displaySmall),
-          )
+                : Text(
+                    userInfo.rank.toString(),
+                    style: TextTheme.of(context).displaySmall,
+                  ),
+          ),
         ],
       ),
     );

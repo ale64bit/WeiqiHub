@@ -11,24 +11,20 @@ class TextAnnotation extends BoardAnnotation {
   final String text;
   final Color color;
 
-  const TextAnnotation({
-    super.key,
-    required this.text,
-    required this.color,
-  });
+  const TextAnnotation({super.key, required this.text, required this.color});
 
   @override
   String get annotationKey => 'text';
 
   @override
   Widget build(BuildContext context) => FittedBox(
-        fit: BoxFit.contain,
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: DefaultTextStyle.of(context).style.copyWith(color: color),
-        ),
-      );
+    fit: BoxFit.contain,
+    child: Text(
+      text,
+      textAlign: TextAlign.center,
+      style: DefaultTextStyle.of(context).style.copyWith(color: color),
+    ),
+  );
 }
 
 class DotAnnotation extends BoardAnnotation {
@@ -41,9 +37,7 @@ class DotAnnotation extends BoardAnnotation {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _DotAnnotationPainter(color: color),
-    );
+    return CustomPaint(painter: _DotAnnotationPainter(color: color));
   }
 }
 
@@ -75,9 +69,7 @@ class CircleAnnotation extends BoardAnnotation {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _CircleAnnotationPainter(color: color),
-    );
+    return CustomPaint(painter: _CircleAnnotationPainter(color: color));
   }
 }
 
@@ -110,9 +102,7 @@ class CrossAnnotation extends BoardAnnotation {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _CrossAnnotationPainter(color: color),
-    );
+    return CustomPaint(painter: _CrossAnnotationPainter(color: color));
   }
 }
 
@@ -128,10 +118,16 @@ class _CrossAnnotationPainter extends CustomPainter {
       ..strokeWidth = size.width / 16
       ..color = color;
     final offset = size.width / 4;
-    canvas.drawLine(Offset(offset, offset),
-        Offset(size.width - offset, size.height - offset), paint);
-    canvas.drawLine(Offset(size.width - offset, offset),
-        Offset((offset), size.height - offset), paint);
+    canvas.drawLine(
+      Offset(offset, offset),
+      Offset(size.width - offset, size.height - offset),
+      paint,
+    );
+    canvas.drawLine(
+      Offset(size.width - offset, offset),
+      Offset((offset), size.height - offset),
+      paint,
+    );
   }
 
   @override
@@ -148,9 +144,7 @@ class TriangleAnnotation extends BoardAnnotation {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _TriangleAnnotationPainter(color: color),
-    );
+    return CustomPaint(painter: _TriangleAnnotationPainter(color: color));
   }
 }
 
@@ -188,9 +182,7 @@ class SquareAnnotation extends BoardAnnotation {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _SquareAnnotationPainter(color: color),
-    );
+    return CustomPaint(painter: _SquareAnnotationPainter(color: color));
   }
 }
 
@@ -207,12 +199,13 @@ class _SquareAnnotationPainter extends CustomPainter {
       ..strokeWidth = size.width / 16
       ..color = color;
     canvas.drawRect(
-        Rect.fromCenter(
-          center: center,
-          width: size.width / 2,
-          height: size.height / 2,
-        ),
-        paint);
+      Rect.fromCenter(
+        center: center,
+        width: size.width / 2,
+        height: size.height / 2,
+      ),
+      paint,
+    );
   }
 
   @override
@@ -280,9 +273,7 @@ class TerritoryAnnotation extends BoardAnnotation {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: _TerritoryAnnotationPainter(color: color),
-    );
+    return CustomPaint(painter: _TerritoryAnnotationPainter(color: color));
   }
 }
 
@@ -338,17 +329,16 @@ class AnalysisAnnotation extends BoardAnnotation {
     final textColor = order == 0 ? Colors.pink : Colors.black;
     final text = RichText(
       textAlign: TextAlign.center,
-      strutStyle: StrutStyle(
-        height: 0.8,
-      ),
+      strutStyle: StrutStyle(height: 0.8),
       text: TextSpan(
         text: '${(pointLoss * 10).toInt() / 10}\n',
         style: TextTheme.of(context).displayLarge!.copyWith(color: textColor),
         children: [
           TextSpan(
             text: visits < 1000 ? '$visits' : '${(visits / 1000).floor()}k',
-            style:
-                TextTheme.of(context).displaySmall!.copyWith(color: textColor),
+            style: TextTheme.of(
+              context,
+            ).displaySmall!.copyWith(color: textColor),
           ),
         ],
       ),
@@ -365,10 +355,7 @@ class AnalysisAnnotation extends BoardAnnotation {
         ),
         FittedBox(
           fit: BoxFit.contain,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: text,
-          ),
+          child: Padding(padding: const EdgeInsets.all(12.0), child: text),
         ),
       ],
     );
@@ -394,8 +381,10 @@ class _AnalysisAnnotationPainter extends CustomPainter {
   final Color color;
   final Color borderColor;
 
-  const _AnalysisAnnotationPainter(
-      {required this.color, required this.borderColor});
+  const _AnalysisAnnotationPainter({
+    required this.color,
+    required this.borderColor,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -449,8 +438,9 @@ class VariationAnnotation extends BoardAnnotation {
           child: Text(
             '$moveNumber',
             textAlign: TextAlign.center,
-            style:
-                DefaultTextStyle.of(context).style.copyWith(color: textColor),
+            style: DefaultTextStyle.of(
+              context,
+            ).style.copyWith(color: textColor),
           ),
         ),
         CustomPaint(

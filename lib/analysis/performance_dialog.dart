@@ -12,8 +12,11 @@ import 'package:wqhub/wq/wq.dart' as wq;
 class PerformanceDialog extends StatelessWidget {
   final GameSummary summary;
   final GameTreeNode<KataGoResponse> rootNode;
-  const PerformanceDialog(
-      {super.key, required this.summary, required this.rootNode});
+  const PerformanceDialog({
+    super.key,
+    required this.summary,
+    required this.rootNode,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -152,10 +155,11 @@ class _MoveStats {
   final List<List<int>> moveCount;
   final List<double> meanLoss;
 
-  _MoveStats(
-      {required this.totalMoves,
-      required this.moveCount,
-      required this.meanLoss});
+  _MoveStats({
+    required this.totalMoves,
+    required this.moveCount,
+    required this.meanLoss,
+  });
 }
 
 class _MoveCountBar extends StatelessWidget {
@@ -164,11 +168,12 @@ class _MoveCountBar extends StatelessWidget {
   final Color color;
   final TextDirection direction;
 
-  const _MoveCountBar(
-      {required this.moveCount,
-      required this.totalCount,
-      required this.color,
-      required this.direction});
+  const _MoveCountBar({
+    required this.moveCount,
+    required this.totalCount,
+    required this.color,
+    required this.direction,
+  });
 
   @override
   Widget build(BuildContext context) {

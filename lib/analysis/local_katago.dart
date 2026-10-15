@@ -42,7 +42,7 @@ class LocalKataGo implements KataGo {
       config.modelPath,
       if (config.humanModelPath != null) ...[
         '-human-model',
-        config.humanModelPath!
+        config.humanModelPath!,
       ],
     ]);
 
@@ -52,12 +52,11 @@ class LocalKataGo implements KataGo {
         .transform(utf8.decoder)
         .transform(const LineSplitter())
         .forEach((line) => _parseResponse(line, queries, logger));
-    proc.stderr
-        .transform(utf8.decoder)
-        .transform(const LineSplitter())
-        .forEach((line) {
-      logger.fine('stderr: $line');
-    });
+    proc.stderr.transform(utf8.decoder).transform(const LineSplitter()).forEach(
+      (line) {
+        logger.fine('stderr: $line');
+      },
+    );
     proc.exitCode.then((code) {
       logger.fine('exit code: $code');
     });
@@ -95,24 +94,27 @@ class LocalKataGo implements KataGo {
   }
 
   void dispose() {
-    terminateAll(TerminateAllRequest(
-      id: _randQueryId('terminate_all'),
-    ));
+    terminateAll(TerminateAllRequest(id: _randQueryId('terminate_all')));
     kill();
   }
 
   String _randQueryId(String prefix) =>
       '$prefix-${DateTime.now().millisecondsSinceEpoch}';
 
-  static void _parseResponse(String line,
-      Map<String, StreamController<KataGoResponse>> queries, Logger logger) {
+  static void _parseResponse(
+    String line,
+    Map<String, StreamController<KataGoResponse>> queries,
+    Logger logger,
+  ) {
     final json = jsonDecode(line);
     switch (json['action']) {
       case 'terminate_all':
         break;
       case null:
-        final resp =
-            KataGoResponse.fromJson(json, 19); // TODO fix board size injection
+        final resp = KataGoResponse.fromJson(
+          json,
+          19,
+        ); // TODO fix board size injection
         final controller = queries[resp.id];
         if (controller != null) {
           controller.add(resp);

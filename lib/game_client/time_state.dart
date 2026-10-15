@@ -6,10 +6,11 @@ class TimeState {
   final Duration periodTimeLeft;
   final int periodCount;
 
-  const TimeState(
-      {required this.mainTimeLeft,
-      required this.periodTimeLeft,
-      required this.periodCount});
+  const TimeState({
+    required this.mainTimeLeft,
+    required this.periodTimeLeft,
+    required this.periodCount,
+  });
 
   @override
   int get hashCode => Object.hash(mainTimeLeft, periodTimeLeft, periodCount);

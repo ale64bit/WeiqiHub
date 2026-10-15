@@ -18,10 +18,8 @@ class HttpClient {
 
   String? csrfToken;
 
-  HttpClient({
-    required this.serverUrl,
-    http.Client? httpClient,
-  }) : _httpClient = httpClient ?? http.Client();
+  HttpClient({required this.serverUrl, http.Client? httpClient})
+    : _httpClient = httpClient ?? http.Client();
 
   /// Makes a GET request and returns the parsed JSON response
   Future<Map<String, dynamic>> getJson(
@@ -48,10 +46,7 @@ class HttpClient {
   }) async {
     final uri = _buildUri(path, queryParameters);
 
-    final response = await _httpClient.get(
-      uri,
-      headers: _buildHeaders(),
-    );
+    final response = await _httpClient.get(uri, headers: _buildHeaders());
 
     _checkResponse(response);
     return response;
@@ -127,9 +122,7 @@ class HttpClient {
     bool includeContentType = false,
     bool includeCsrf = false,
   }) {
-    final headers = <String, String>{
-      'User-Agent': _userAgent,
-    };
+    final headers = <String, String>{'User-Agent': _userAgent};
 
     if (includeContentType) {
       headers['Content-Type'] = 'application/json';

@@ -4,17 +4,12 @@ import 'package:wqhub/generated/katago.pb.dart' as katagopb;
 import 'package:wqhub/wq/wq.dart' as wq;
 
 extension KataGoMove on wq.Move {
-  List<String> toKataGoMove() => [
-        col.toString(),
-        '(${p.$2},${p.$1})',
-      ];
+  List<String> toKataGoMove() => [col.toString(), '(${p.$2},${p.$1})'];
 }
 
 extension ProtoMove on wq.Move {
-  katagopb.Request_Move toProtoMove() => katagopb.Request_Move(
-        color: col.toString(),
-        point: '(${p.$2},${p.$1})',
-      );
+  katagopb.Request_Move toProtoMove() =>
+      katagopb.Request_Move(color: col.toString(), point: '(${p.$2},${p.$1})');
 }
 
 class KataGoRequest {
@@ -53,46 +48,46 @@ class KataGoRequest {
   });
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'initialStones': initialStones.map((mv) => mv.toKataGoMove()).toList(),
-        if (initialPlayer != null) 'initialPlayer': initialPlayer.toString(),
-        'moves': moves.map((mv) => mv.toKataGoMove()).toList(),
-        'rules': rules.name,
-        'komi': komi,
-        'boardXSize': boardSize,
-        'boardYSize': boardSize,
-        if (analyzeTurns != null) 'analyzeTurns': analyzeTurns,
-        'includePolicy': includePolicy,
-        'includeOwnership': includeOwnership,
-        'includeMovesOwnership': includeMovesOwnership,
-        'maxVisits': maxVisits,
-        'overrideSettings': overrideSettings,
-        if (reportDuringSearchEvery != null)
-          'reportDuringSearchEvery': reportDuringSearchEvery,
-      };
+    'id': id,
+    'initialStones': initialStones.map((mv) => mv.toKataGoMove()).toList(),
+    if (initialPlayer != null) 'initialPlayer': initialPlayer.toString(),
+    'moves': moves.map((mv) => mv.toKataGoMove()).toList(),
+    'rules': rules.name,
+    'komi': komi,
+    'boardXSize': boardSize,
+    'boardYSize': boardSize,
+    if (analyzeTurns != null) 'analyzeTurns': analyzeTurns,
+    'includePolicy': includePolicy,
+    'includeOwnership': includeOwnership,
+    'includeMovesOwnership': includeMovesOwnership,
+    'maxVisits': maxVisits,
+    'overrideSettings': overrideSettings,
+    if (reportDuringSearchEvery != null)
+      'reportDuringSearchEvery': reportDuringSearchEvery,
+  };
 
   katagopb.Request toProto() => katagopb.Request(
-        id: id,
-        initialStones: initialStones.map((mv) => mv.toProtoMove()),
-        initialPlayer: initialPlayer?.toString(),
-        moves: moves.map((mv) => mv.toProtoMove()),
-        rules: rules.name,
-        komi: komi,
-        boardSize: boardSize,
-        analyzeTurns: analyzeTurns,
-        includePolicy: includePolicy,
-        includeOwnership: includeOwnership,
-        includeMovesOwnership: includeMovesOwnership,
-        maxVisits: maxVisits,
-        reportDuringSearchEvery: reportDuringSearchEvery,
-        overrideSettings: overrideSettings.entries.map((e) => MapEntry(
-            e.key,
-            switch (e.value) {
-              num n => Value(numberValue: n.toDouble()),
-              bool b => Value(boolValue: b),
-              String _ => Value(stringValue: e.value.toString()),
-              _ => Value(),
-            })),
-        metadata: metadata.entries,
-      );
+    id: id,
+    initialStones: initialStones.map((mv) => mv.toProtoMove()),
+    initialPlayer: initialPlayer?.toString(),
+    moves: moves.map((mv) => mv.toProtoMove()),
+    rules: rules.name,
+    komi: komi,
+    boardSize: boardSize,
+    analyzeTurns: analyzeTurns,
+    includePolicy: includePolicy,
+    includeOwnership: includeOwnership,
+    includeMovesOwnership: includeMovesOwnership,
+    maxVisits: maxVisits,
+    reportDuringSearchEvery: reportDuringSearchEvery,
+    overrideSettings: overrideSettings.entries.map(
+      (e) => MapEntry(e.key, switch (e.value) {
+        num n => Value(numberValue: n.toDouble()),
+        bool b => Value(boolValue: b),
+        String _ => Value(stringValue: e.value.toString()),
+        _ => Value(),
+      }),
+    ),
+    metadata: metadata.entries,
+  );
 }

@@ -13,11 +13,7 @@ import 'package:wqhub/train/custom_exam_presets.dart';
 import 'package:wqhub/train/response_delay.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
-enum PlayerRankVisibility {
-  visible,
-  hideRank,
-  focusMode,
-}
+enum PlayerRankVisibility { visible, hideRank, focusMode }
 
 class Settings {
   final SharedPreferencesWithCache prefs;
@@ -100,8 +96,9 @@ class Settings {
   bool get stoneShadows => prefs.getBool(_boardStoneShadowsKey) ?? true;
   BoardEdgeLine get edgeLine =>
       BoardEdgeLine.values[prefs.getInt(_boardEdgeLine) ?? 0];
-  PlayerRankVisibility get rankVisibility => PlayerRankVisibility
-      .values[prefs.getInt(_rankVisibility) ?? PlayerRankVisibility.visible.index];
+  PlayerRankVisibility get rankVisibility =>
+      PlayerRankVisibility.values[prefs.getInt(_rankVisibility) ??
+          PlayerRankVisibility.visible.index];
   bool get fullscreen => prefs.getBool(_fullscreen) ?? true;
 
   set boardTheme(BoardTheme theme) => prefs.setString(_boardTheme, theme.id);
@@ -128,8 +125,10 @@ class Settings {
   set confirmMovesBoardSize(int boardSize) =>
       prefs.setInt('$_behaviourKeyPrefix.confirm_moves_board_size', boardSize);
 
-  ResponseDelay get responseDelay => ResponseDelay.values[
-      prefs.getInt('$_behaviourKeyPrefix.response_delay') ??
+  ResponseDelay get responseDelay =>
+      ResponseDelay.values[prefs.getInt(
+            '$_behaviourKeyPrefix.response_delay',
+          ) ??
           ResponseDelay.short.index];
 
   set responseDelay(ResponseDelay delay) =>
@@ -174,18 +173,18 @@ class Settings {
   // Sound
   double get soundStone => prefs.getDouble(_soundStoneKey) ?? 1.0;
   set soundStone(double val) => prefs.setDouble(_soundStoneKey, val).then((_) {
-        AudioController().stoneVolume = val;
-      });
+    AudioController().stoneVolume = val;
+  });
 
   double get soundVoice => prefs.getDouble(_soundVoiceKey) ?? 1.0;
   set soundVoice(double val) => prefs.setDouble(_soundVoiceKey, val).then((_) {
-        AudioController().voiceVolume = val;
-      });
+    AudioController().voiceVolume = val;
+  });
 
   double get soundUI => prefs.getDouble(_soundUIKey) ?? 1.0;
   set soundUI(double val) => prefs.setDouble(_soundUIKey, val).then((_) {
-        AudioController().uiVolume = val;
-      });
+    AudioController().uiVolume = val;
+  });
 
   // Locale
   Locale get locale => Locale(prefs.getString(_locale) ?? _defaultLocale());

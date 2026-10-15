@@ -10,9 +10,7 @@ class RankRange with IterableMixin<Rank> {
 
   const RankRange({required this.from, required this.to});
 
-  const RankRange.single(Rank rank)
-      : from = rank,
-        to = rank;
+  const RankRange.single(Rank rank) : from = rank, to = rank;
 
   bool isSingle() => from == to;
 

@@ -20,11 +20,11 @@ final class RankedModeTaskSource extends TaskSource {
   bool randomizeLayout;
 
   RankedModeTaskSource(double rank, this.randomizeLayout)
-      : _rank = rank,
-        _cur = TaskDB()
-            .takeByTypes(Rank.values[rank.toInt()], _taskTypes, 1)
-            .first
-            .withRandomSymmetry(randomize: randomizeLayout);
+    : _rank = rank,
+      _cur = TaskDB()
+          .takeByTypes(Rank.values[rank.toInt()], _taskTypes, 1)
+          .first
+          .withRandomSymmetry(randomize: randomizeLayout);
 
   @override
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {

@@ -41,10 +41,7 @@ class _MainPageBottomNavigationBarState
         }
       },
       items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: loc.home,
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: loc.home),
         BottomNavigationBarItem(
           icon: Icon(Icons.sports_esports),
           label: loc.play,

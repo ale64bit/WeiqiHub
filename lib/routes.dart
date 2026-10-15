@@ -58,18 +58,18 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case Navigator.defaultRouteName:
       final args = settings.arguments as MainRouteArguments;
       return _mpr(
-          settings,
-          MainPage(
-            destination: args.destination,
-            rebuildApp: args.rebuildApp,
-          ));
+        settings,
+        MainPage(destination: args.destination, rebuildApp: args.rebuildApp),
+      );
     case SettingsPage.routeName:
       final args = settings.arguments as SettingsRouteArguments;
       return _mpr(settings, SettingsPage(rebuildApp: args.rebuildApp));
     case AppearanceSettingsPage.routeName:
       final args = settings.arguments as SettingsRouteArguments;
       return _mpr(
-          settings, AppearanceSettingsPage(rebuildApp: args.rebuildApp));
+        settings,
+        AppearanceSettingsPage(rebuildApp: args.rebuildApp),
+      );
     case LanguagePage.routeName:
       final args = settings.arguments as SettingsRouteArguments;
       return _mpr(settings, LanguagePage(rebuildApp: args.rebuildApp));
@@ -91,39 +91,42 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case CollectionPage.routeName:
       final args = settings.arguments as CollectionRouteArguments;
       return _mprNoPop(
-          settings,
-          CollectionPage(
-            taskCollection: args.taskCollection,
-            taskSource: args.taskSource,
-            initialTask: args.initialTask,
-          ));
+        settings,
+        CollectionPage(
+          taskCollection: args.taskCollection,
+          taskSource: args.taskSource,
+          initialTask: args.initialTask,
+        ),
+      );
     case CustomExamPage.routeName:
       final args = settings.arguments as CustomExamRouteArguments;
       return _mprNoPop(settings, CustomExamPage(settings: args.settings));
     case ExamResultPage.routeName:
       final args = settings.arguments as ExamResultRouteArguments;
       return _mpr(
-          settings,
-          ExamResultPage(
-            event: args.event,
-            totalTime: args.totalTime,
-            passed: args.passed,
-            taskCount: args.taskCount,
-            mistakeCount: args.mistakeCount,
-            completedTasks: args.completedTasks,
-            onRedo: args.onRedo,
-            onNext: args.onNext,
-          ));
+        settings,
+        ExamResultPage(
+          event: args.event,
+          totalTime: args.totalTime,
+          passed: args.passed,
+          taskCount: args.taskCount,
+          mistakeCount: args.mistakeCount,
+          completedTasks: args.completedTasks,
+          onRedo: args.onRedo,
+          onNext: args.onNext,
+        ),
+      );
     case CollectionResultPage.routeName:
       final args = settings.arguments as CollectionResultRouteArguments;
       return _mpr(
-          settings,
-          CollectionResultPage(
-            taskCollection: args.taskCollection,
-            totalTime: args.totalTime,
-            failedTasks: args.failedTasks,
-            newBest: args.newBest,
-          ));
+        settings,
+        CollectionResultPage(
+          taskCollection: args.taskCollection,
+          totalTime: args.totalTime,
+          failedTasks: args.failedTasks,
+          newBest: args.newBest,
+        ),
+      );
     case RankedModePage.routeName:
       final args = settings.arguments as RankedModeRouteArguments;
       return _mprNoPop(settings, RankedModePage(taskSource: args.taskSource));
@@ -136,36 +139,31 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case MyGamesPage.routeName:
       final args = settings.arguments as MyGamesRouteArguments;
       return _mpr(
-          settings,
-          MyGamesPage(
-            gameClient: args.gameClient,
-            gameList: args.gameList,
-          ));
+        settings,
+        MyGamesPage(gameClient: args.gameClient, gameList: args.gameList),
+      );
     case GameRecordPage.routeName:
       final args = settings.arguments as GameRecordRouteArguments;
       return _mpr(
-          settings,
-          GameRecordPage(
-            summary: args.summary,
-            record: args.record,
-          ));
+        settings,
+        GameRecordPage(summary: args.summary, record: args.record),
+      );
     case AutomatchPage.routeName:
       final args = settings.arguments as AutomatchRouteArguments;
       return _mprNoPop(
-          settings,
-          AutomatchPage(
-            gameClient: args.gameClient,
-            preset: args.preset,
-          ));
+        settings,
+        AutomatchPage(gameClient: args.gameClient, preset: args.preset),
+      );
     case GamePage.routeName:
       final args = settings.arguments as GameRouteArguments;
       return _mprNoPop(
-          settings,
-          GamePage(
-            serverFeatures: args.serverFeatures,
-            game: args.game,
-            gameListener: args.gameListener,
-          ));
+        settings,
+        GamePage(
+          serverFeatures: args.serverFeatures,
+          game: args.game,
+          gameListener: args.gameListener,
+        ),
+      );
     case TaskPatternSearchResultsPage.routeName:
       final args = settings.arguments as TaskPatternSearchResultsRouteArguments;
       return _mpr(
@@ -180,26 +178,22 @@ Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     case AnalysisPage.routeName:
       final args = settings.arguments as AnalysisRouteArguments;
       return _mpr(
-          settings,
-          AnalysisPage(
-            kataGo: args.kataGo,
-            summary: args.summary,
-            record: args.record,
-          ));
+        settings,
+        AnalysisPage(
+          kataGo: args.kataGo,
+          summary: args.summary,
+          record: args.record,
+        ),
+      );
   }
   assert(false, 'Missing named route implementation: ${settings.name}');
   return null;
 }
 
-Route<dynamic> _mpr(RouteSettings settings, Widget w) => MaterialPageRoute(
-      settings: settings,
-      builder: (context) => w,
-    );
+Route<dynamic> _mpr(RouteSettings settings, Widget w) =>
+    MaterialPageRoute(settings: settings, builder: (context) => w);
 
 Route<dynamic> _mprNoPop(RouteSettings settings, Widget w) => MaterialPageRoute(
-      settings: settings,
-      builder: (context) => PopScope(
-        canPop: false,
-        child: w,
-      ),
-    );
+  settings: settings,
+  builder: (context) => PopScope(canPop: false, child: w),
+);

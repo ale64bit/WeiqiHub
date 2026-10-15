@@ -6,10 +6,11 @@ class TimeControl {
   final int periodCount;
   final Duration timePerPeriod;
 
-  const TimeControl(
-      {required this.mainTime,
-      required this.periodCount,
-      required this.timePerPeriod});
+  const TimeControl({
+    required this.mainTime,
+    required this.periodCount,
+    required this.timePerPeriod,
+  });
 
   @override
   int get hashCode => Object.hash(mainTime, periodCount, timePerPeriod);

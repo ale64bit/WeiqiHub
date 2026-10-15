@@ -17,10 +17,7 @@ class _EndgameExamHelpDialogState extends State<EndgameExamHelpDialog> {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 8.0,
-        children: [
-          const Icon(Icons.help),
-          Text(loc.help),
-        ],
+        children: [const Icon(Icons.help), Text(loc.help)],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -28,12 +25,13 @@ class _EndgameExamHelpDialogState extends State<EndgameExamHelpDialog> {
           Text(loc.helpDialogEndgameExam),
           SizedBox(height: 16.0),
           CheckboxListTile(
-              title: Text(loc.dontShowAgain),
-              value: !context.settings.showEndgameExamHelp,
-              onChanged: (value) {
-                context.settings.showEndgameExamHelp = !value!;
-                setState(() {});
-              }),
+            title: Text(loc.dontShowAgain),
+            value: !context.settings.showEndgameExamHelp,
+            onChanged: (value) {
+              context.settings.showEndgameExamHelp = !value!;
+              setState(() {});
+            },
+          ),
         ],
       ),
       actions: <Widget>[

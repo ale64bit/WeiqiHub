@@ -6,12 +6,13 @@ class BlinkingIcon extends StatefulWidget {
   final Duration duration;
   final Curve curve;
 
-  const BlinkingIcon(
-      {super.key,
-      required this.icon,
-      required this.color,
-      required this.duration,
-      required this.curve});
+  const BlinkingIcon({
+    super.key,
+    required this.icon,
+    required this.color,
+    required this.duration,
+    required this.curve,
+  });
 
   @override
   State<BlinkingIcon> createState() => _BlinkingIconState();
@@ -23,8 +24,10 @@ class _BlinkingIconState extends State<BlinkingIcon>
     duration: widget.duration,
     vsync: this,
   )..repeat(reverse: true);
-  late final CurvedAnimation _animation =
-      CurvedAnimation(parent: _controller, curve: widget.curve);
+  late final CurvedAnimation _animation = CurvedAnimation(
+    parent: _controller,
+    curve: widget.curve,
+  );
 
   @override
   void didUpdateWidget(covariant BlinkingIcon oldWidget) {

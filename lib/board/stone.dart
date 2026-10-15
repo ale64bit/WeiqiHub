@@ -9,8 +9,12 @@ class SolidColorStone extends Stone {
   final Gradient? gradient;
   final bool border;
 
-  const SolidColorStone(
-      {super.key, this.color, this.gradient, required this.border});
+  const SolidColorStone({
+    super.key,
+    this.color,
+    this.gradient,
+    required this.border,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +36,6 @@ class ImageStone extends Stone {
 
   @override
   Widget build(BuildContext context) {
-    return Image(
-      image: image,
-      fit: BoxFit.contain,
-    );
+    return Image(image: image, fit: BoxFit.contain);
   }
 }

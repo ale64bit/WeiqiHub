@@ -3,10 +3,7 @@ import 'package:wqhub/parse/gib/gib.dart';
 import 'package:wqhub/parse/sgf/sgf.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
-enum GameRecordType {
-  sgf,
-  gib,
-}
+enum GameRecordType { sgf, gib }
 
 class GameRecord {
   final List<wq.Move> moves;
@@ -76,16 +73,14 @@ class GameRecord {
           final r = int.parse(entry.args[4]);
           final c = int.parse(entry.args[3]);
           if (col == 1 || col == 2) {
-            moves.add(
-                (col: col == 1 ? wq.Color.black : wq.Color.white, p: (r, c)));
+            moves.add((
+              col: col == 1 ? wq.Color.black : wq.Color.white,
+              p: (r, c),
+            ));
           }
       }
     }
-    return GameRecord(
-      moves: moves,
-      type: GameRecordType.gib,
-      rawData: gibData,
-    );
+    return GameRecord(moves: moves, type: GameRecordType.gib, rawData: gibData);
   }
 
   GameRecord({required this.moves, required this.type, required this.rawData});

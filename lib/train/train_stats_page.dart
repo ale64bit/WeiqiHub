@@ -31,9 +31,7 @@ class _TrainStatsPageState extends State<TrainStatsPage> {
       initialIndex: 0,
       length: 4,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(loc.statistics),
-        ),
+        appBar: AppBar(title: Text(loc.statistics)),
         body: <Widget>[
           _CalendarPage(),
           _ChartsPage(),
@@ -56,14 +54,8 @@ class _TrainStatsPageState extends State<TrainStatsPage> {
               icon: Icon(Icons.area_chart),
               label: loc.charts,
             ),
-            NavigationDestination(
-              icon: Icon(Icons.list),
-              label: loc.byRank,
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.hexagon),
-              label: loc.byType,
-            ),
+            NavigationDestination(icon: Icon(Icons.list), label: loc.byRank),
+            NavigationDestination(icon: Icon(Icons.hexagon), label: loc.byType),
           ],
         ),
       ),
@@ -87,10 +79,12 @@ class _TimePeriodTab extends StatefulWidget {
 }
 
 class _TimePeriodTabState extends State<_TimePeriodTab> {
-  late final dailyStatsFut =
-      Future(() => StatsDB().taskDailyStatsSince(widget.since));
-  late final examEntriesFut =
-      Future(() => StatsDB().examsSince(widget.since).reversed);
+  late final dailyStatsFut = Future(
+    () => StatsDB().taskDailyStatsSince(widget.since),
+  );
+  late final examEntriesFut = Future(
+    () => StatsDB().examsSince(widget.since).reversed,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -99,17 +93,19 @@ class _TimePeriodTabState extends State<_TimePeriodTab> {
     final passedIcon = Icon(Icons.check, color: Colors.green);
     final failedIcon = Icon(Icons.close, color: Colors.red);
     final taskDailyStatsText = FutureBuilder(
-        future: dailyStatsFut,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final (correctCount, wrongCount) = snapshot.data!;
-            final totalCount = correctCount + wrongCount;
-            return Text(
-                '$correctCount / $totalCount  (${(100 * correctCount / max(totalCount, 1)).floor()}%)',
-                style: TextTheme.of(context).titleLarge);
-          }
-          return CircularProgressIndicator();
-        });
+      future: dailyStatsFut,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final (correctCount, wrongCount) = snapshot.data!;
+          final totalCount = correctCount + wrongCount;
+          return Text(
+            '$correctCount / $totalCount  (${(100 * correctCount / max(totalCount, 1)).floor()}%)',
+            style: TextTheme.of(context).titleLarge,
+          );
+        }
+        return CircularProgressIndicator();
+      },
+    );
     final examTable = FutureBuilder(
       future: examEntriesFut,
       builder: (context, snapshot) {
@@ -132,8 +128,13 @@ class _TimePeriodTabState extends State<_TimePeriodTab> {
                     DataRow(
                       cells: <DataCell>[
                         DataCell(Text(widget.dateFormat.format(entry.date))),
-                        DataCell(Text(entry.event.toLocalizedString(loc),
-                            softWrap: false, overflow: TextOverflow.fade)),
+                        DataCell(
+                          Text(
+                            entry.event.toLocalizedString(loc),
+                            softWrap: false,
+                            overflow: TextOverflow.fade,
+                          ),
+                        ),
                         DataCell(Text(entry.rankRange.toString())),
                         DataCell(
                           Row(
@@ -142,14 +143,15 @@ class _TimePeriodTabState extends State<_TimePeriodTab> {
                             children: [
                               (entry.passed ? passedIcon : failedIcon),
                               Text(
-                                  '${entry.correctCount} / ${entry.correctCount + entry.wrongCount}'),
+                                '${entry.correctCount} / ${entry.correctCount + entry.wrongCount}',
+                              ),
                             ],
                           ),
                         ),
                         if (!isCompact)
                           DataCell(Text('${entry.duration.inSeconds}s')),
                       ],
-                    )
+                    ),
                 ],
               ),
             ),
@@ -165,9 +167,7 @@ class _TimePeriodTabState extends State<_TimePeriodTab> {
         Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: taskDailyStatsText,
-            ),
+            child: Center(child: taskDailyStatsText),
           ),
         ),
         examTable,
@@ -205,7 +205,7 @@ class _ByRankPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               for (final rank in gradingExamRanks)
-                _RankTotalIndicator(rank: rank)
+                _RankTotalIndicator(rank: rank),
             ],
           ),
         ),
@@ -237,8 +237,10 @@ class _ByTypePage extends StatelessWidget {
               fillColor: Colors.blueAccent.withAlpha(20),
               borderColor: Colors.blueAccent.withAlpha(80),
               entryRadius: 0,
-              dataEntries:
-                  List.filled(successRates.length, RadarEntry(value: 100)),
+              dataEntries: List.filled(
+                successRates.length,
+                RadarEntry(value: 100),
+              ),
             ),
           ],
           getTitle: (index, angle) {
@@ -254,8 +256,10 @@ class _ByTypePage extends StatelessWidget {
           tickCount: 1,
           ticksTextStyle: TextStyle(color: Colors.transparent),
           tickBorderData: const BorderSide(color: Colors.transparent),
-          gridBorderData:
-              BorderSide(color: Colors.blueAccent.withAlpha(80), width: 1),
+          gridBorderData: BorderSide(
+            color: Colors.blueAccent.withAlpha(80),
+            width: 1,
+          ),
         ),
       ),
     );
@@ -289,17 +293,20 @@ class _CalendarPage extends StatelessWidget {
             child: TabBarView(
               children: [
                 _TimePeriodTab(
-                    dateLabel: loc.statsTimeColumn,
-                    dateFormat: _onlyTime,
-                    since: today),
+                  dateLabel: loc.statsTimeColumn,
+                  dateFormat: _onlyTime,
+                  since: today,
+                ),
                 _TimePeriodTab(
-                    dateLabel: loc.statsDateColumn,
-                    dateFormat: _onlyDate,
-                    since: thisWeek),
+                  dateLabel: loc.statsDateColumn,
+                  dateFormat: _onlyDate,
+                  since: thisWeek,
+                ),
                 _TimePeriodTab(
-                    dateLabel: loc.statsDateColumn,
-                    dateFormat: _onlyDate,
-                    since: thisMonth),
+                  dateLabel: loc.statsDateColumn,
+                  dateFormat: _onlyDate,
+                  since: thisMonth,
+                ),
               ],
             ),
           ),
@@ -333,8 +340,11 @@ class _ChartsPageState extends State<_ChartsPage> {
 
   void computeChartData() {
     // Load exam data
-    final entries =
-        StatsDB().recentExams(_examType, _rankRange, _maxExamPoints);
+    final entries = StatsDB().recentExams(
+      _examType,
+      _rankRange,
+      _maxExamPoints,
+    );
 
     final ma = _MovingAverageAccumulator(size: 10);
     var x = 0;
@@ -350,8 +360,9 @@ class _ChartsPageState extends State<_ChartsPage> {
       // Moving avg.
       _maSpots.add(FlSpot(x.toDouble(), ma.add(y)));
       // Solve time
-      _solveTimeSpots
-          .add(FlSpot(x.toDouble(), e.duration.inSeconds.toDouble()));
+      _solveTimeSpots.add(
+        FlSpot(x.toDouble(), e.duration.inSeconds.toDouble()),
+      );
       _maxSolveTime = max(_maxSolveTime, e.duration.inSeconds);
       x++;
     }
@@ -365,9 +376,7 @@ class _ChartsPageState extends State<_ChartsPage> {
     );
     final examPassRateChart = LineChart(
       LineChartData(
-        gridData: FlGridData(
-          show: true,
-        ),
+        gridData: FlGridData(show: true),
         titlesData: FlTitlesData(
           show: true,
           leftTitles: AxisTitles(
@@ -415,17 +424,12 @@ class _ChartsPageState extends State<_ChartsPage> {
     );
     final examSolveTimeChart = LineChart(
       LineChartData(
-        gridData: FlGridData(
-          show: true,
-        ),
+        gridData: FlGridData(show: true),
         titlesData: FlTitlesData(
           show: true,
           leftTitles: AxisTitles(
             axisNameWidget: Text('${loc.statsDurationColumn} (${loc.seconds})'),
-            sideTitles: SideTitles(
-              reservedSize: 40,
-              showTitles: true,
-            ),
+            sideTitles: SideTitles(reservedSize: 40, showTitles: true),
           ),
           rightTitles: noTitles,
           topTitles: noTitles,
@@ -473,7 +477,7 @@ class _ChartsPageState extends State<_ChartsPage> {
                           for (final type in [
                             ExamType.grading,
                             ExamType.endgame,
-                            ExamType.custom
+                            ExamType.custom,
                           ])
                             DropdownMenuItem(
                               value: type,

@@ -30,16 +30,18 @@ class GameTreeNode<T> {
 }
 
 class GameTree<T> {
-  GameTree(int size,
-      {this.initialStones = const IMapOfSetsConst(IMapConst({}))})
-      : _board = BoardState(size: size, initialStones: initialStones),
-        _cur = GameTreeNode(
-            move: null,
-            moveNumber: 0,
-            captureCountBlack: 0,
-            captureCountWhite: 0,
-            diff: const IListConst([]),
-            parent: null);
+  GameTree(
+    int size, {
+    this.initialStones = const IMapOfSetsConst(IMapConst({})),
+  }) : _board = BoardState(size: size, initialStones: initialStones),
+       _cur = GameTreeNode(
+         move: null,
+         moveNumber: 0,
+         captureCountBlack: 0,
+         captureCountWhite: 0,
+         diff: const IListConst([]),
+         parent: null,
+       );
 
   final BoardState _board;
   final IMapOfSets<wq.Color, wq.Point> initialStones;
@@ -111,14 +113,15 @@ class GameTree<T> {
     return moves.reversedView;
   }
 
-  String sgf(
-      {String? rules,
-      double? komi,
-      String? blackNick,
-      Rank? blackRank,
-      String? whiteNick,
-      Rank? whiteRank,
-      String? result}) {
+  String sgf({
+    String? rules,
+    double? komi,
+    String? blackNick,
+    Rank? blackRank,
+    String? whiteNick,
+    Rank? whiteRank,
+    String? result,
+  }) {
     final buf = StringBuffer('(;GM[1]FF[4]');
     buf.write('AP[wqhub]');
     buf.write('SZ[${_board.size}]');

@@ -24,12 +24,8 @@ class CountingResultBottomSheet extends StatelessWidget {
       child: Row(
         spacing: 8,
         children: [
-          SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Text('${winner.toString()}+ $scoreLead'),
-          ),
+          SizedBox(width: 8),
+          Expanded(child: Text('${winner.toString()}+ $scoreLead')),
           FilledButton(onPressed: onAccept, child: Text(loc.resultAccept)),
           FilledButton(onPressed: onReject, child: Text(loc.resultReject)),
         ],

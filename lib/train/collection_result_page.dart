@@ -46,8 +46,8 @@ class _CollectionResultPageState
     final loc = AppLocalizations.of(context)!;
     final correctCount =
         widget.taskCollection.taskCount - widget.failedTasks.length;
-    final successRate =
-        (100 * correctCount / widget.taskCollection.taskCount).toInt();
+    final successRate = (100 * correctCount / widget.taskCollection.taskCount)
+        .toInt();
     final passed = successRate >= 80;
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +70,8 @@ class _CollectionResultPageState
               },
               title: Text(passed ? loc.trainingPassed : loc.trainingFailed),
               subtitle: Text(
-                  '$correctCount / ${widget.taskCollection.taskCount} ($successRate%)'),
+                '$correctCount / ${widget.taskCollection.taskCount} ($successRate%)',
+              ),
               trailing: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +82,8 @@ class _CollectionResultPageState
                     style: TextTheme.of(context).headlineSmall,
                   ),
                   Text(
-                      '${loc.sSeconds((widget.totalTime.inSeconds / widget.taskCollection.taskCount).round())} ${loc.perTask}')
+                    '${loc.sSeconds((widget.totalTime.inSeconds / widget.taskCollection.taskCount).round())} ${loc.perTask}',
+                  ),
                 ],
               ),
             ),
@@ -102,10 +104,8 @@ class _CollectionResultPageState
               },
             ),
             itemCount: widget.failedTasks.length,
-            itemBuilder: (context, index) => TaskPreviewTile(
-              task: widget.failedTasks[index],
-              solved: false,
-            ),
+            itemBuilder: (context, index) =>
+                TaskPreviewTile(task: widget.failedTasks[index], solved: false),
           ),
         ),
       ),

@@ -49,8 +49,9 @@ class VariationTreeIterator {
 
   wq.Point genMove() {
     assert(tree!.children.isNotEmpty);
-    return tree!.children.keys
-        .elementAt(Random().nextInt(tree!.children.length));
+    return tree!.children.keys.elementAt(
+      Random().nextInt(tree!.children.length),
+    );
   }
 
   List<(wq.Point, VariationStatus)> continuations() =>

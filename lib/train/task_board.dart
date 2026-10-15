@@ -48,10 +48,7 @@ class TaskBoard extends StatelessWidget {
 
     final boardSettings = BoardSettings(
       size: task.boardSize,
-      subBoard: SubBoard(
-        topLeft: task.topLeft,
-        size: task.subBoardSize,
-      ),
+      subBoard: SubBoard(topLeft: task.topLeft, size: task.subBoardSize),
       theme: context.settings.boardTheme,
       edgeLine: context.settings.edgeLine,
       border: border,
@@ -60,7 +57,8 @@ class TaskBoard extends StatelessWidget {
 
     final board = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -77,8 +75,9 @@ class TaskBoard extends StatelessWidget {
     return Dismissible(
       key: ValueKey(task.ref.id),
       resizeDuration: null,
-      direction:
-          dismissable ? DismissDirection.endToStart : DismissDirection.none,
+      direction: dismissable
+          ? DismissDirection.endToStart
+          : DismissDirection.none,
       onDismissed: (_) => onDismissed(),
       child: Center(child: board),
     );

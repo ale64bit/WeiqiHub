@@ -4,15 +4,11 @@ import 'package:wqhub/board/board_annotation.dart';
 import 'package:wqhub/wq/game_tree.dart';
 import 'package:wqhub/wq/wq.dart' as wq;
 
-enum AnnotationMode {
-  none,
-  mainline,
-  variation,
-}
+enum AnnotationMode { none, mainline, variation }
 
 typedef _AnnotationDiff = ({
   IMap<wq.Point, BoardAnnotation> added,
-  IMap<wq.Point, BoardAnnotation> removed
+  IMap<wq.Point, BoardAnnotation> removed,
 });
 
 class AnnotatedGameTree<T> extends GameTree<T> {
@@ -24,9 +20,9 @@ class AnnotatedGameTree<T> extends GameTree<T> {
   });
 
   final BoardAnnotation Function(GameTreeNode<T>)
-      lastMoveMainlineAnnotationFunc;
+  lastMoveMainlineAnnotationFunc;
   final BoardAnnotation Function(GameTreeNode<T>, int)
-      lastMoveVariationAnnotationFunc;
+  lastMoveVariationAnnotationFunc;
   var _annotations = IMap<wq.Point, BoardAnnotation>();
   final List<_AnnotationDiff> _variationStack = [];
 
@@ -40,12 +36,11 @@ class AnnotatedGameTree<T> extends GameTree<T> {
   }
 
   static BoardAnnotation defaultLastMoveVariationAnnotation(
-      GameTreeNode node, int variationMoveNumber) {
+    GameTreeNode node,
+    int variationMoveNumber,
+  ) {
     final (:col, :p) = node.move!;
-    return VariationAnnotation(
-      moveNumber: variationMoveNumber,
-      turn: col,
-    );
+    return VariationAnnotation(moveNumber: variationMoveNumber, turn: col);
   }
 
   GameTreeNode<T>? moveAnnotated(wq.Move mv, {required AnnotationMode mode}) {
@@ -67,12 +62,14 @@ class AnnotatedGameTree<T> extends GameTree<T> {
         _annotations = _annotations.add(p, lastMove);
       case AnnotationMode.variation:
         // Compute annotation diff
-        final lastMove =
-            lastMoveVariationAnnotationFunc(node, _variationStack.length + 1);
+        final lastMove = lastMoveVariationAnnotationFunc(
+          node,
+          _variationStack.length + 1,
+        );
         var added = IMap<wq.Point, BoardAnnotation>({p: lastMove});
         var removed = IMap.fromEntries([
           for (final p in node.diff)
-            if (_annotations.containsKey(p)) MapEntry(p, _annotations.get(p)!)
+            if (_annotations.containsKey(p)) MapEntry(p, _annotations.get(p)!),
         ]);
         if (prevNode.move != null) {
           // Remove last move annotation
@@ -104,10 +101,12 @@ class AnnotatedGameTree<T> extends GameTree<T> {
     final nextNode = curNode.next;
     if (nextNode == null) return null;
     if (nextNode.move == null) return null;
-    return moveAnnotated(nextNode.move!,
-        mode: _variationStack.isEmpty
-            ? AnnotationMode.mainline
-            : AnnotationMode.variation);
+    return moveAnnotated(
+      nextNode.move!,
+      mode: _variationStack.isEmpty
+          ? AnnotationMode.mainline
+          : AnnotationMode.variation,
+    );
   }
 
   @override
@@ -130,8 +129,10 @@ class AnnotatedGameTree<T> extends GameTree<T> {
     } else {
       // Variation mode
       final diff = _variationStack.removeLast();
-      _annotations = _applyAnnotationDiff(
-          annotations, (added: diff.removed, removed: diff.added));
+      _annotations = _applyAnnotationDiff(annotations, (
+        added: diff.removed,
+        removed: diff.added,
+      ));
       if (prevNode.move != null && node.next != prevNode) {
         node.prune(prevNode.move!);
       }
@@ -141,7 +142,9 @@ class AnnotatedGameTree<T> extends GameTree<T> {
   }
 
   IMap<wq.Point, BoardAnnotation> _applyAnnotationDiff(
-      IMap<wq.Point, BoardAnnotation> annotations, _AnnotationDiff diff) {
+    IMap<wq.Point, BoardAnnotation> annotations,
+    _AnnotationDiff diff,
+  ) {
     for (final p in diff.removed.keys) {
       annotations = annotations.remove(p);
     }

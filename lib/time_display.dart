@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wqhub/audio/audio_controller.dart';
 import 'package:wqhub/game_client/time_state.dart';
 
-enum TickMode {
-  increase,
-  decrease,
-}
+enum TickMode { increase, decrease }
 
 class TimeDisplay extends StatefulWidget {
   final int tickId;
@@ -19,16 +16,17 @@ class TimeDisplay extends StatefulWidget {
   final TickMode tickMode;
   final Function()? onTimeout;
 
-  const TimeDisplay(
-      {super.key,
-      this.tickId = 0,
-      required this.timeState,
-      required this.warningDuration,
-      required this.enabled,
-      required this.tickerEnabled,
-      required this.voiceCountdown,
-      this.tickMode = TickMode.decrease,
-      this.onTimeout});
+  const TimeDisplay({
+    super.key,
+    this.tickId = 0,
+    required this.timeState,
+    required this.warningDuration,
+    required this.enabled,
+    required this.tickerEnabled,
+    required this.voiceCountdown,
+    this.tickMode = TickMode.decrease,
+    this.onTimeout,
+  });
 
   @override
   State<TimeDisplay> createState() => _TimeDisplayState();
@@ -76,7 +74,8 @@ class _TimeDisplayState extends State<TimeDisplay> {
     final textStyle = TextTheme.of(context).headlineLarge?.copyWith(
       fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
     );
-    final isMaintime = (widget.timeState.mainTimeLeft > Duration.zero) ||
+    final isMaintime =
+        (widget.timeState.mainTimeLeft > Duration.zero) ||
         (widget.timeState.periodCount == 0);
     final hh = _formatUnit(_timeLeft.inHours);
     final mm = _formatUnit(_timeLeft.inMinutes.remainder(60));
@@ -91,19 +90,20 @@ class _TimeDisplayState extends State<TimeDisplay> {
               if (hh != '00') Text(':', style: textStyle),
               _UnitContainer(value: mm, color: containerColor),
               Text(':', style: textStyle),
-              _UnitContainer(value: ss, color: containerColor)
+              _UnitContainer(value: ss, color: containerColor),
             ]
           : <Widget>[
               // Overtime
               _UnitContainer(
-                  value: '${widget.timeState.periodCount}x',
-                  color: containerColor),
+                value: '${widget.timeState.periodCount}x',
+                color: containerColor,
+              ),
               Text(':', style: textStyle),
               if (hh != '00') _UnitContainer(value: hh, color: containerColor),
               if (hh != '00') Text(':', style: textStyle),
               if (mm != '00') _UnitContainer(value: mm, color: containerColor),
               if (mm != '00') Text(':', style: textStyle),
-              _UnitContainer(value: ss, color: containerColor)
+              _UnitContainer(value: ss, color: containerColor),
             ],
     );
   }

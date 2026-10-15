@@ -55,8 +55,9 @@ class GameplayBar extends StatelessWidget {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed:
-                      features.automaticCounting ? onAutomaticCounting : null,
+                  onPressed: features.automaticCounting
+                      ? onAutomaticCounting
+                      : null,
                   label: Text(loc.autoCounting),
                   icon: Icon(Icons.calculate),
                 ),

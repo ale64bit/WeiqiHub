@@ -23,13 +23,14 @@ class ServerFeatures {
 
   @override
   int get hashCode => Object.hash(
-      manualCounting,
-      automaticCounting,
-      aiReferee,
-      aiRefereeMinMoveCount,
-      forcedCounting,
-      forcedCountingMinMoveCount,
-      localTimeControl);
+    manualCounting,
+    automaticCounting,
+    aiReferee,
+    aiRefereeMinMoveCount,
+    forcedCounting,
+    forcedCountingMinMoveCount,
+    localTimeControl,
+  );
 
   @override
   bool operator ==(Object other) {

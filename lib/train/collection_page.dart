@@ -23,20 +23,22 @@ class CollectionRouteArguments {
   final TaskSource taskSource;
   final int initialTask;
 
-  const CollectionRouteArguments(
-      {required this.taskCollection,
-      required this.taskSource,
-      required this.initialTask});
+  const CollectionRouteArguments({
+    required this.taskCollection,
+    required this.taskSource,
+    required this.initialTask,
+  });
 }
 
 class CollectionPage extends StatefulWidget {
   static const routeName = '/train/collection';
 
-  const CollectionPage(
-      {super.key,
-      required this.taskCollection,
-      required this.taskSource,
-      required this.initialTask});
+  const CollectionPage({
+    super.key,
+    required this.taskCollection,
+    required this.taskSource,
+    required this.initialTask,
+  });
 
   final TaskCollection taskCollection;
   final TaskSource taskSource;
@@ -80,8 +82,9 @@ class _CollectionPageState extends State<CollectionPage>
       onDismissed: onNextTask,
     );
 
-    final taskRank =
-        solveStatus != null ? widget.taskSource.task.ref.rank.toString() : '?';
+    final taskRank = solveStatus != null
+        ? widget.taskSource.task.ref.rank.toString()
+        : '?';
     final taskTitle =
         '[$taskRank] ${widget.taskSource.task.ref.type.toLocalizedString(loc)}';
 
@@ -132,7 +135,8 @@ class _CollectionPageState extends State<CollectionPage>
       return Scaffold(
         appBar: AppBar(
           leading: Center(
-              child: Text('$_taskNumber/${widget.taskCollection.taskCount}')),
+            child: Text('$_taskNumber/${widget.taskCollection.taskCount}'),
+          ),
           title: Row(
             spacing: 4,
             children: <Widget>[
@@ -148,10 +152,7 @@ class _CollectionPageState extends State<CollectionPage>
             ],
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.cancel),
-              onPressed: _onExit,
-            ),
+            IconButton(icon: Icon(Icons.cancel), onPressed: _onExit),
           ],
         ),
         body: boardArea,
@@ -181,8 +182,10 @@ class _CollectionPageState extends State<CollectionPage>
   @override
   void onSolveStatus(VariationStatus status) {
     _stopwatch.stop();
-    StatsDB()
-        .addTaskAttempt(currentTask.ref, status == VariationStatus.correct);
+    StatsDB().addTaskAttempt(
+      currentTask.ref,
+      status == VariationStatus.correct,
+    );
     if (status == VariationStatus.correct) {
       context.stats.incrementTotalPassCount(currentTask.ref.rank);
       StatsDB().updateCollectionActiveSession(
@@ -206,15 +209,19 @@ class _CollectionPageState extends State<CollectionPage>
 
   void _onExit() {
     if (!solveStatusNotified) {
-      StatsDB().updateCollectionActiveSession(widget.taskCollection.id,
-          durationDelta: _stopwatch.elapsed);
+      StatsDB().updateCollectionActiveSession(
+        widget.taskCollection.id,
+        durationDelta: _stopwatch.elapsed,
+      );
     }
     Navigator.pop(context);
   }
 
   void onNextTask() {
-    if (widget.taskSource
-        .next(solveStatus ?? VariationStatus.wrong, _stopwatch.elapsed)) {
+    if (widget.taskSource.next(
+      solveStatus ?? VariationStatus.wrong,
+      _stopwatch.elapsed,
+    )) {
       _taskNumber++;
       solveStatus = null;
       setState(() {
@@ -228,10 +235,12 @@ class _CollectionPageState extends State<CollectionPage>
   }
 
   void _finishSession() {
-    final activeSession =
-        StatsDB().collectionActiveSession(widget.taskCollection.id)!;
-    final failedTasks =
-        StatsDB().collectionActiveSessionMistakes(widget.taskCollection.id);
+    final activeSession = StatsDB().collectionActiveSession(
+      widget.taskCollection.id,
+    )!;
+    final failedTasks = StatsDB().collectionActiveSessionMistakes(
+      widget.taskCollection.id,
+    );
     final curResult = CollectionStatEntry(
       id: widget.taskCollection.id,
       correctCount: activeSession.correctCount,
@@ -240,7 +249,8 @@ class _CollectionPageState extends State<CollectionPage>
       completed: DateTime.now(),
     );
     final bestResult = StatsDB().collectionStat(widget.taskCollection.id);
-    final isNewBest = (bestResult == null) ||
+    final isNewBest =
+        (bestResult == null) ||
         (curResult.correctCount *
                 (bestResult.correctCount + bestResult.wrongCount) >
             bestResult.correctCount *
@@ -308,7 +318,9 @@ class _SideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final widgetSize = MediaQuery.sizeOf(context);
     final sidebarSize = min(
-        widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
+      widgetSize.longestSide - widgetSize.shortestSide,
+      widgetSize.width / 3,
+    );
     return SizedBox(
       width: sidebarSize,
       child: Container(
@@ -319,14 +331,12 @@ class _SideBar extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child: Text(
-                  '$taskNumber/$taskCount',
-                  textAlign: TextAlign.center,
-                )),
-                IconButton(
-                  icon: Icon(Icons.cancel),
-                  onPressed: onExit,
+                  child: Text(
+                    '$taskNumber/$taskCount',
+                    textAlign: TextAlign.center,
+                  ),
                 ),
+                IconButton(icon: Icon(Icons.cancel), onPressed: onExit),
               ],
             ),
             Row(

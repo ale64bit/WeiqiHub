@@ -65,7 +65,8 @@ void _testFileType({
         expect(
           actual,
           equals(expected),
-          reason: 'Snapshot mismatch for $filename\n'
+          reason:
+              'Snapshot mismatch for $filename\n'
               'To update: dart run test/game_record_snapshot_tests/generate_snapshots.dart',
         );
       });
@@ -80,8 +81,10 @@ Future<String> _loadSnapshot(String filePath) async {
   if (!await file.exists()) {
     // If snapshot doesn't exist, create it for the first time
     // This helps with initial test creation
-    throw TestFailure('Snapshot file not found: ${file.path}\n'
-        'Run: dart run test/game_record_snapshot_tests/generate_snapshots.dart');
+    throw TestFailure(
+      'Snapshot file not found: ${file.path}\n'
+      'Run: dart run test/game_record_snapshot_tests/generate_snapshots.dart',
+    );
   }
 
   return await file.readAsString();

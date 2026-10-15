@@ -20,9 +20,9 @@ class NodeLoss {
 }
 
 double loss(wq.Color turn, double from, double to) => switch (turn) {
-      wq.Color.black => to - from,
-      wq.Color.white => from - to,
-    };
+  wq.Color.black => to - from,
+  wq.Color.white => from - to,
+};
 
 NodeLoss? nodeLoss(GameTreeNode<KataGoResponse> node) {
   if (node.move == null) return null;
@@ -42,10 +42,16 @@ NodeLoss? nodeLoss(GameTreeNode<KataGoResponse> node) {
   // Otherwise, try to compute it from current node root rootInfo
   if (node.metadata == null) return null;
   return NodeLoss(
-    pointLoss:
-        loss(col, md.rootInfo.scoreLead, node.metadata!.rootInfo.scoreLead),
-    winrateLoss:
-        loss(col, md.rootInfo.winrate, node.metadata!.rootInfo.winrate),
+    pointLoss: loss(
+      col,
+      md.rootInfo.scoreLead,
+      node.metadata!.rootInfo.scoreLead,
+    ),
+    winrateLoss: loss(
+      col,
+      md.rootInfo.winrate,
+      node.metadata!.rootInfo.winrate,
+    ),
   );
 }
 

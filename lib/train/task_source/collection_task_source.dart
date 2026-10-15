@@ -11,7 +11,7 @@ final class CollectionTaskSource extends TaskSource {
   var _cur = 0;
 
   CollectionTaskSource(TaskCollection collection, {required int offset})
-      : _tasks = collection.allTasks().skip(offset).toIList() {
+    : _tasks = collection.allTasks().skip(offset).toIList() {
     var ref = _tasks[0];
     _task = TaskDB().getTaskByRef(ref)!;
   }

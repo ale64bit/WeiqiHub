@@ -5,7 +5,7 @@ enum AnalysisProvider {
   aiSensei;
 
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        AnalysisProvider.aiSensei => loc.aiSensei,
-        AnalysisProvider.kifubara => loc.kifubara,
-      };
+    AnalysisProvider.aiSensei => loc.aiSensei,
+    AnalysisProvider.kifubara => loc.kifubara,
+  };
 }

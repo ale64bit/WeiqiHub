@@ -8,18 +8,21 @@ class AutomatchPresetListTile extends StatelessWidget {
   final ValueNotifier<IMap<String, AutomatchPresetStats>> stats;
   final Function() onTap;
 
-  const AutomatchPresetListTile(
-      {super.key,
-      required this.preset,
-      required this.stats,
-      required this.onTap});
+  const AutomatchPresetListTile({
+    super.key,
+    required this.preset,
+    required this.stats,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
-    final title = Text(preset.timeControl.mainTime.inMinutes == 0
-        ? '${loc.sSeconds(preset.timeControl.mainTime.inSeconds)} ${loc.pxsByoyomi(preset.timeControl.periodCount, preset.timeControl.timePerPeriod.inSeconds)}'
-        : '${loc.mMinutes(preset.timeControl.mainTime.inMinutes)} ${loc.pxsByoyomi(preset.timeControl.periodCount, preset.timeControl.timePerPeriod.inSeconds)}');
+    final title = Text(
+      preset.timeControl.mainTime.inMinutes == 0
+          ? '${loc.sSeconds(preset.timeControl.mainTime.inSeconds)} ${loc.pxsByoyomi(preset.timeControl.periodCount, preset.timeControl.timePerPeriod.inSeconds)}'
+          : '${loc.mMinutes(preset.timeControl.mainTime.inMinutes)} ${loc.pxsByoyomi(preset.timeControl.periodCount, preset.timeControl.timePerPeriod.inSeconds)}',
+    );
 
     return ListTile(
       leading: Text(loc.nxnBoardSize(preset.boardSize)),

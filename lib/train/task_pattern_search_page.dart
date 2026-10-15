@@ -40,11 +40,12 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
       stoneShadows: context.settings.stoneShadows,
     );
     final annotations = IMap({
-      for (final p in _empty) p: CircleAnnotation(color: Colors.blueAccent)
+      for (final p in _empty) p: CircleAnnotation(color: Colors.blueAccent),
     });
     final board = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -59,18 +60,9 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
     );
     final boardSizeSegmentedButton = SegmentedButton(
       segments: <ButtonSegment<int>>[
-        ButtonSegment<int>(
-          value: 9,
-          label: Text(loc.nxnBoardSize(9)),
-        ),
-        ButtonSegment<int>(
-          value: 13,
-          label: Text(loc.nxnBoardSize(13)),
-        ),
-        ButtonSegment<int>(
-          value: 19,
-          label: Text(loc.nxnBoardSize(19)),
-        ),
+        ButtonSegment<int>(value: 9, label: Text(loc.nxnBoardSize(9))),
+        ButtonSegment<int>(value: 13, label: Text(loc.nxnBoardSize(13))),
+        ButtonSegment<int>(value: 19, label: Text(loc.nxnBoardSize(19))),
       ],
       selected: <int>{_boardSize},
       onSelectionChanged: (Set<int> newSelection) {
@@ -83,18 +75,9 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
     );
     final turnSegmentedButton = SegmentedButton(
       segments: <ButtonSegment<wq.Color?>>[
-        ButtonSegment<wq.Color?>(
-          value: wq.Color.black,
-          label: Text(loc.black),
-        ),
-        ButtonSegment<wq.Color?>(
-          value: wq.Color.white,
-          label: Text(loc.white),
-        ),
-        ButtonSegment<wq.Color?>(
-          value: null,
-          label: Text(loc.empty),
-        ),
+        ButtonSegment<wq.Color?>(value: wq.Color.black, label: Text(loc.black)),
+        ButtonSegment<wq.Color?>(value: wq.Color.white, label: Text(loc.white)),
+        ButtonSegment<wq.Color?>(value: null, label: Text(loc.empty)),
       ],
       selected: <wq.Color?>{_turn},
       onSelectionChanged: (Set<wq.Color?> newSelection) {
@@ -159,15 +142,16 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
                             onSelected: (bool selected) {
                               setState(() {
                                 if (selected) {
-                                  _selectedTaskTypes =
-                                      _selectedTaskTypes.add(taskType);
+                                  _selectedTaskTypes = _selectedTaskTypes.add(
+                                    taskType,
+                                  );
                                 } else {
-                                  _selectedTaskTypes =
-                                      _selectedTaskTypes.remove(taskType);
+                                  _selectedTaskTypes = _selectedTaskTypes
+                                      .remove(taskType);
                                 }
                               });
                             },
-                          )
+                          ),
                       ],
                     ),
                   ],
@@ -201,7 +185,8 @@ class _TaskPatternSearchPageState extends State<TaskPatternSearchPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: const Text(
-                                'Invalid task search settings. Please fix the errors.'),
+                              'Invalid task search settings. Please fix the errors.',
+                            ),
                             showCloseIcon: true,
                           ),
                         );

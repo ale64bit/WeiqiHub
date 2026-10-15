@@ -13,8 +13,10 @@ void main() {
       final clientToServer = StreamController<dynamic>();
 
       // Create a StreamChannel using the controllers
-      final mockChannel =
-          StreamChannel(serverToClient.stream, clientToServer.sink);
+      final mockChannel = StreamChannel(
+        serverToClient.stream,
+        clientToServer.sink,
+      );
 
       // Create the manager with custom channel factory
       final manager = OGSWebSocketManager(
@@ -58,8 +60,10 @@ void main() {
       final clientToServer = StreamController<dynamic>();
 
       // Create a StreamChannel using the controllers
-      final mockChannel =
-          StreamChannel(serverToClient.stream, clientToServer.sink);
+      final mockChannel = StreamChannel(
+        serverToClient.stream,
+        clientToServer.sink,
+      );
 
       // Create the manager with custom channel factory
       final manager = OGSWebSocketManager(

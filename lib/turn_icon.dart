@@ -9,12 +9,11 @@ class TurnIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        shape: BoxShape.circle,
+      decoration: BoxDecoration(color: Colors.grey, shape: BoxShape.circle),
+      child: Icon(
+        Icons.circle,
+        color: color == wq.Color.black ? Colors.black : Colors.white,
       ),
-      child: Icon(Icons.circle,
-          color: color == wq.Color.black ? Colors.black : Colors.white),
     );
   }
 }

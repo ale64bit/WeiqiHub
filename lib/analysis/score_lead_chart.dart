@@ -9,11 +9,12 @@ class ScoreLeadChart extends StatelessWidget {
   final List<FlSpot> scoreLead;
   final Function(int) onTapMove;
 
-  const ScoreLeadChart(
-      {super.key,
-      required this.currentNode,
-      required this.scoreLead,
-      required this.onTapMove});
+  const ScoreLeadChart({
+    super.key,
+    required this.currentNode,
+    required this.scoreLead,
+    required this.onTapMove,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,7 @@ class ScoreLeadChart extends StatelessWidget {
     }
     return LineChart(
       LineChartData(
-        gridData: FlGridData(
-          show: true,
-        ),
+        gridData: FlGridData(show: true),
         titlesData: FlTitlesData(
           show: true,
           leftTitles: AxisTitles(
@@ -89,12 +88,13 @@ class ScoreLeadChart extends StatelessWidget {
         maxY: 1.2 * maxScoreLead,
         extraLinesData: ExtraLinesData(
           horizontalLines: [
-            HorizontalLine(y: 0, color: Colors.green.withAlpha(150))
+            HorizontalLine(y: 0, color: Colors.green.withAlpha(150)),
           ],
           verticalLines: [
             VerticalLine(
-                x: currentNode.moveNumber.toDouble(),
-                color: Colors.amber.withAlpha(100))
+              x: currentNode.moveNumber.toDouble(),
+              color: Colors.amber.withAlpha(100),
+            ),
           ],
         ),
       ),

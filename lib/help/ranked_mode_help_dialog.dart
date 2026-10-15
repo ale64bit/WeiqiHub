@@ -20,10 +20,7 @@ class _RankedModeHelpDialogState extends State<RankedModeHelpDialog> {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 8.0,
-        children: [
-          const Icon(Icons.help),
-          Text(loc.help),
-        ],
+        children: [const Icon(Icons.help), Text(loc.help)],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -31,12 +28,13 @@ class _RankedModeHelpDialogState extends State<RankedModeHelpDialog> {
           Text(loc.helpDialogRankedMode),
           SizedBox(height: 16.0),
           CheckboxListTile(
-              title: Text(loc.dontShowAgain),
-              value: !context.settings.showRankedModeHelp,
-              onChanged: (value) {
-                context.settings.showRankedModeHelp = !value!;
-                setState(() {});
-              }),
+            title: Text(loc.dontShowAgain),
+            value: !context.settings.showRankedModeHelp,
+            onChanged: (value) {
+              context.settings.showRankedModeHelp = !value!;
+              setState(() {});
+            },
+          ),
         ],
       ),
       actions: <Widget>[
@@ -48,8 +46,10 @@ class _RankedModeHelpDialogState extends State<RankedModeHelpDialog> {
               RankedModePage.routeName,
               arguments: RankedModeRouteArguments(
                 taskSource: BlackToPlaySource(
-                  source: RankedModeTaskSource(context.stats.rankedModeRank,
-                      context.settings.randomizeTaskOrientation),
+                  source: RankedModeTaskSource(
+                    context.stats.rankedModeRank,
+                    context.settings.randomizeTaskOrientation,
+                  ),
                   blackToPlay: context.settings.alwaysBlackToPlay,
                 ),
               ),

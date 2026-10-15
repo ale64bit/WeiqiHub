@@ -20,7 +20,8 @@ class ServerCard extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.videogame_asset),
               title: Text(
-                  '${gameClient.serverInfo.name(loc)} (${gameClient.serverInfo.nativeName})'),
+                '${gameClient.serverInfo.name(loc)} (${gameClient.serverInfo.nativeName})',
+              ),
               subtitle: Text(gameClient.serverInfo.description(loc)),
             ),
           ],

@@ -18,42 +18,50 @@ Future<void> main() async {
   if (kDebugMode) {
     Logger.root.level = Level.ALL; // defaults to Level.INFO
     Logger.root.onRecord.listen((record) {
-      log('${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}');
+      log(
+        '${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}',
+      );
     });
   } else if (kReleaseMode) {
     Logger.root.level = Level.INFO; // defaults to Level.INFO
     Logger.root.onRecord.listen((record) {
-      log('${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}');
+      log(
+        '${record.level.name}: ${record.time}: [${record.loggerName}] ${record.message}',
+      );
     });
   }
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-    final sharedPreferences = await SharedPreferencesWithCache.create(
-        cacheOptions: const SharedPreferencesWithCacheOptions());
-    final settings = Settings(sharedPreferences);
+      final sharedPreferences = await SharedPreferencesWithCache.create(
+        cacheOptions: const SharedPreferencesWithCacheOptions(),
+      );
+      final settings = Settings(sharedPreferences);
 
-    if (settings.fullscreen) {
-      await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-    }
+      if (settings.fullscreen) {
+        await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+      }
 
-    // Initialize singletons
-    await Future.wait(<Future>[
-      AudioController.init(settings),
-      TaskDB.init(),
-      StatsDB.init(),
-    ]);
+      // Initialize singletons
+      await Future.wait(<Future>[
+        AudioController.init(settings),
+        TaskDB.init(),
+        StatsDB.init(),
+      ]);
 
-    // Apply version patches
-    applyVersionPatch(settings);
+      // Apply version patches
+      applyVersionPatch(settings);
 
-    runApp(
-      SharedPreferencesInheritedWidget(
-        sharedPreferences: sharedPreferences,
-        child: const WeiqiHubApp(),
-      ),
-    );
-  }, (err, trace) {
-    log('unhandled: $err', stackTrace: trace);
-  });
+      runApp(
+        SharedPreferencesInheritedWidget(
+          sharedPreferences: sharedPreferences,
+          child: const WeiqiHubApp(),
+        ),
+      );
+    },
+    (err, trace) {
+      log('unhandled: $err', stackTrace: trace);
+    },
+  );
 }

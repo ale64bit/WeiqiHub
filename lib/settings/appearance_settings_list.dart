@@ -9,26 +9,29 @@ import 'package:wqhub/settings/shared_preferences_inherited_widget.dart';
 
 extension on PlayerRankVisibility {
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        PlayerRankVisibility.visible => loc.rankVisibilityVisible,
-        PlayerRankVisibility.hideRank => loc.rankVisibilityHideRank,
-        PlayerRankVisibility.focusMode => loc.rankVisibilityFocusMode,
-      };
+    PlayerRankVisibility.visible => loc.rankVisibilityVisible,
+    PlayerRankVisibility.hideRank => loc.rankVisibilityHideRank,
+    PlayerRankVisibility.focusMode => loc.rankVisibilityFocusMode,
+  };
 }
 
 extension on ThemeMode {
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        ThemeMode.system => loc.system,
-        ThemeMode.light => loc.light,
-        ThemeMode.dark => loc.dark,
-      };
+    ThemeMode.system => loc.system,
+    ThemeMode.light => loc.light,
+    ThemeMode.dark => loc.dark,
+  };
 }
 
 class AppearanceSettingsList extends StatelessWidget {
   final Function() onChanged;
   final Function() onAppThemeChanged;
 
-  const AppearanceSettingsList(
-      {super.key, required this.onChanged, required this.onAppThemeChanged});
+  const AppearanceSettingsList({
+    super.key,
+    required this.onChanged,
+    required this.onAppThemeChanged,
+  });
 
   @override
   Widget build(BuildContext context) {

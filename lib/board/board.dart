@@ -70,8 +70,10 @@ class _BoardState extends State<Board> {
       key: const ValueKey('board-bg'),
       dimension: widget.size,
       child: CustomPaint(
-        foregroundPainter:
-            BoardLines(size: widget.size, settings: widget.settings),
+        foregroundPainter: BoardLines(
+          size: widget.size,
+          settings: widget.settings,
+        ),
         child: widget.settings.theme.background,
       ),
     );
@@ -80,10 +82,7 @@ class _BoardState extends State<Board> {
         gradient: RadialGradient(
           center: Alignment(0.05, 0.05),
           radius: 0.85,
-          colors: <Color>[
-            Colors.black,
-            Colors.transparent,
-          ],
+          colors: <Color>[Colors.black, Colors.transparent],
           stops: <double>[0.3, 0.5],
         ),
       ),
@@ -132,10 +131,11 @@ class _BoardState extends State<Board> {
           point: lastHoverEmptyPoint!,
           child: Container(
             decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: widget.turn == wq.Color.black
-                    ? const Color.fromRGBO(0, 0, 0, 0.5)
-                    : const Color.fromRGBO(255, 255, 255, 0.5)),
+              shape: BoxShape.circle,
+              color: widget.turn == wq.Color.black
+                  ? const Color.fromRGBO(0, 0, 0, 0.5)
+                  : const Color.fromRGBO(255, 255, 255, 0.5),
+            ),
           ),
         ),
       if (widget.turn != null && confirmPoint != null)
@@ -146,10 +146,11 @@ class _BoardState extends State<Board> {
           point: confirmPoint!,
           child: Container(
             decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: widget.turn == wq.Color.black
-                    ? const Color.fromRGBO(0, 0, 0, 0.5)
-                    : const Color.fromRGBO(255, 255, 255, 0.5)),
+              shape: BoxShape.circle,
+              color: widget.turn == wq.Color.black
+                  ? const Color.fromRGBO(0, 0, 0, 0.5)
+                  : const Color.fromRGBO(255, 255, 255, 0.5),
+            ),
           ),
         ),
     ];
@@ -159,10 +160,7 @@ class _BoardState extends State<Board> {
       child: Stack(
         alignment: Alignment.center,
         clipBehavior: Clip.none,
-        children: [
-          background,
-          ...objects,
-        ],
+        children: [background, ...objects],
       ),
     );
     if (widget.settings.interactive) {
@@ -170,10 +168,7 @@ class _BoardState extends State<Board> {
         cursor: widget.cursor,
         onExit: _onPointerExit,
         onHover: _onPointerHover,
-        child: GestureDetector(
-          onTapDown: _onTapDown,
-          child: board,
-        ),
+        child: GestureDetector(onTapDown: _onTapDown, child: board),
       );
     }
 
@@ -186,41 +181,55 @@ class _BoardState extends State<Board> {
           borderRadius: BorderRadius.circular(10),
           color: widget.settings.border!.color,
         ),
-        child: Stack(alignment: Alignment.center, children: [
-          if (widget.settings.border!.rowCoordinates != null)
-            ..._rowCoords(widget.settings.border!.rowCoordinates!,
-                widget.settings.border!.size, widget.size),
-          if (widget.settings.border!.columnCoordinates != null)
-            ..._columnCoords(widget.settings.border!.columnCoordinates!,
-                widget.size, widget.settings.border!.size),
-          board,
-        ]),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            if (widget.settings.border!.rowCoordinates != null)
+              ..._rowCoords(
+                widget.settings.border!.rowCoordinates!,
+                widget.settings.border!.size,
+                widget.size,
+              ),
+            if (widget.settings.border!.columnCoordinates != null)
+              ..._columnCoords(
+                widget.settings.border!.columnCoordinates!,
+                widget.size,
+                widget.settings.border!.size,
+              ),
+            board,
+          ],
+        ),
       );
     }
 
     return board;
   }
 
-  List<Widget> _coordLabelWidgets(CoordinateStyle coordStyle, int fullSize,
-          int visibleSize, int offset) =>
-      coordStyle
-          .labelsFor(fullSize, visibleSize, offset)
-          .map(
-            (label) => Expanded(
-              child: Center(
-                child: Text(
-                  label,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          )
-          .toList(growable: false);
+  List<Widget> _coordLabelWidgets(
+    CoordinateStyle coordStyle,
+    int fullSize,
+    int visibleSize,
+    int offset,
+  ) => coordStyle
+      .labelsFor(fullSize, visibleSize, offset)
+      .map(
+        (label) => Expanded(
+          child: Center(child: Text(label, textAlign: TextAlign.center)),
+        ),
+      )
+      .toList(growable: false);
 
   List<Widget> _rowCoords(
-      CoordinateStyle coordStyle, double width, double height) {
-    final children = _coordLabelWidgets(coordStyle, widget.settings.size,
-        widget.settings.visibleSize, widget.settings.subBoard?.topLeft.$1 ?? 0);
+    CoordinateStyle coordStyle,
+    double width,
+    double height,
+  ) {
+    final children = _coordLabelWidgets(
+      coordStyle,
+      widget.settings.size,
+      widget.settings.visibleSize,
+      widget.settings.subBoard?.topLeft.$1 ?? 0,
+    );
     return [
       Align(
         alignment: Alignment.centerLeft,
@@ -242,9 +251,16 @@ class _BoardState extends State<Board> {
   }
 
   List<Widget> _columnCoords(
-      CoordinateStyle coordStyle, double width, double height) {
-    final children = _coordLabelWidgets(coordStyle, widget.settings.size,
-        widget.settings.visibleSize, widget.settings.subBoard?.topLeft.$2 ?? 0);
+    CoordinateStyle coordStyle,
+    double width,
+    double height,
+  ) {
+    final children = _coordLabelWidgets(
+      coordStyle,
+      widget.settings.size,
+      widget.settings.visibleSize,
+      widget.settings.subBoard?.topLeft.$2 ?? 0,
+    );
     return [
       Align(
         alignment: Alignment.topCenter,
@@ -356,10 +372,7 @@ class _BoardColumnCoordinates extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Row(
-        textDirection: TextDirection.ltr,
-        children: children,
-      ),
+      child: Row(textDirection: TextDirection.ltr, children: children),
     );
   }
 }
@@ -380,10 +393,7 @@ class _BoardRowCoordinates extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Column(
-        textDirection: TextDirection.ltr,
-        children: children,
-      ),
+      child: Column(textDirection: TextDirection.ltr, children: children),
     );
   }
 }

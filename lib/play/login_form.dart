@@ -11,13 +11,14 @@ class LoginForm extends StatefulWidget {
   final bool enabled;
   final Function(String, String) onSubmit;
 
-  const LoginForm(
-      {super.key,
-      this.username,
-      this.password,
-      this.registerUrl,
-      required this.enabled,
-      required this.onSubmit});
+  const LoginForm({
+    super.key,
+    this.username,
+    this.password,
+    this.registerUrl,
+    required this.enabled,
+    required this.onSubmit,
+  });
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -96,8 +97,10 @@ class _LoginFormState extends State<LoginForm> {
                         child: ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              widget.onSubmit(_usernameController.text,
-                                  _passwordController.text);
+                              widget.onSubmit(
+                                _usernameController.text,
+                                _passwordController.text,
+                              );
                             }
                           },
                           child: Text(loc.login),

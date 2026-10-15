@@ -4,16 +4,19 @@ import 'package:wqhub/wq/wq.dart' as wq;
 class MoveDiff {}
 
 class BoardState {
-  BoardState(
-      {required this.size,
-      IMapOfSets<wq.Color, wq.Point> initialStones =
-          const IMapOfSetsConst(IMapConst({}))})
-      : _state = List.generate(size, (_) => List.filled(size, null),
-            growable: false),
-        _tag =
-            List.generate(size, (_) => List.filled(size, 0), growable: false),
-        _traversalTag = 0,
-        _curHash = 0 {
+  BoardState({
+    required this.size,
+    IMapOfSets<wq.Color, wq.Point> initialStones = const IMapOfSetsConst(
+      IMapConst({}),
+    ),
+  }) : _state = List.generate(
+         size,
+         (_) => List.filled(size, null),
+         growable: false,
+       ),
+       _tag = List.generate(size, (_) => List.filled(size, 0), growable: false),
+       _traversalTag = 0,
+       _curHash = 0 {
     for (final e in initialStones.entries) {
       for (final (r, c) in e.value) {
         _state[r][c] = e.key;
@@ -281,19 +284,8 @@ class BoardState {
     }
   }
 
-  static final _delta = const [
-    (-1, 0),
-    (1, 0),
-    (0, -1),
-    (0, 1),
-  ];
-  static final _deltaAndSelf = const [
-    (0, 0),
-    (-1, 0),
-    (1, 0),
-    (0, -1),
-    (0, 1),
-  ];
+  static final _delta = const [(-1, 0), (1, 0), (0, -1), (0, 1)];
+  static final _deltaAndSelf = const [(0, 0), (-1, 0), (1, 0), (0, -1), (0, 1)];
 
   static final _zobrist = const [
     [
@@ -315,7 +307,7 @@ class BoardState {
       [0x2ffb8a37c5b49a7a, 0xc3446a6d062aa980],
       [0xe5f357c56983e93d, 0xc54a1a2ee9331b1d],
       [0x2ffdd1a4ff71162, 0x2266e09d756887fd],
-      [0xd270d5cf02daa13a, 0x2b31a13fc7532542]
+      [0xd270d5cf02daa13a, 0x2b31a13fc7532542],
     ],
     [
       [0x254ab01887d475df, 0xfb7b7f7b90cad6b6],
@@ -336,7 +328,7 @@ class BoardState {
       [0x4de9ec7854ba932f, 0x7bf7f3cb2c6e14b1],
       [0x10d909e908d0f745, 0x41b3b3535570e28d],
       [0x800c282ded7a0d5d, 0x3245b0795cd79d22],
-      [0x3149e5b211a41c64, 0x34422aacea576472]
+      [0x3149e5b211a41c64, 0x34422aacea576472],
     ],
     [
       [0xd2e1012ed1a713dd, 0x6889bb900d5bd832],
@@ -357,7 +349,7 @@ class BoardState {
       [0xb59d0e7d34ab0ea6, 0x44fac28f25998f4d],
       [0x9a82410a5ed1c9fd, 0x287d86729fafbbb9],
       [0x36755d94f48b8672, 0xdf475ffd83ca4dc0],
-      [0x2cfa40fad239e1fd, 0xeb60601cba9bfda0]
+      [0x2cfa40fad239e1fd, 0xeb60601cba9bfda0],
     ],
     [
       [0xde024a4326d973, 0x640d856ef449123d],
@@ -378,7 +370,7 @@ class BoardState {
       [0x20b530f2946edd32, 0xd96f0503a8f91839],
       [0x8c3f4fd2929d69be, 0x5b52cacde6e3071d],
       [0x473f22fe5c273383, 0x3e5a29af05cfc023],
-      [0xec27618eadb84451, 0xab27fc7a5332e457]
+      [0xec27618eadb84451, 0xab27fc7a5332e457],
     ],
     [
       [0x8f92a4bc96e6ef6d, 0xb9881376b317c1f8],
@@ -399,7 +391,7 @@ class BoardState {
       [0x53b9f4dcc0d1ae7a, 0x142e77c92a6de49b],
       [0xd5f9085d490474e0, 0xd543c3a00cf095fa],
       [0x740b6e0204fc17e0, 0x7700a4cdb016ffbd],
-      [0x848b8d59c24af738, 0xebabeadf006bcb52]
+      [0x848b8d59c24af738, 0xebabeadf006bcb52],
     ],
     [
       [0xe1875cf69536cfc1, 0x1c6fcd4d18e77172],
@@ -420,7 +412,7 @@ class BoardState {
       [0x8f40c52a73b4e901, 0xed2c16894ebcdf31],
       [0x485c8dfb10d1a15e, 0xe194c0f9b3db3a6f],
       [0x926900269e1cc7b5, 0xefb7b37ae2fea04d],
-      [0x568f49b9fe57874c, 0xcb0e8d86170f725e]
+      [0x568f49b9fe57874c, 0xcb0e8d86170f725e],
     ],
     [
       [0xbed3ad95688e79f0, 0x4474d72afab0853b],
@@ -441,7 +433,7 @@ class BoardState {
       [0x9f7e2f612a60a9d6, 0xaef2fd4df566f641],
       [0x2e2755fb1208f1e8, 0x48b6dc87c802f0d1],
       [0x71f437776cf335b8, 0x5ce0996bbb459308],
-      [0x8ec6ecc7bb771c79, 0xdf82d18ea6a8caa]
+      [0x8ec6ecc7bb771c79, 0xdf82d18ea6a8caa],
     ],
     [
       [0x20f49acd992f3628, 0x3f64d01c5281e811],
@@ -462,7 +454,7 @@ class BoardState {
       [0xaf85ad38b1b6bba6, 0x61d7175feffce362],
       [0xb73e320ead0ca348, 0x1293b0c82bd3d437],
       [0xe14817b08ae7cd80, 0xc6052bb188a774a1],
-      [0x807128ef30ae2f66, 0xe9f9d66eae2e5014]
+      [0x807128ef30ae2f66, 0xe9f9d66eae2e5014],
     ],
     [
       [0x51981e69f9921e5d, 0x98aece5342a106e5],
@@ -483,7 +475,7 @@ class BoardState {
       [0x38dac90d1b97f48b, 0x2f29ef58630ad496],
       [0x31e890f549e7f0bb, 0x2d42e26cd4472fd7],
       [0x6fb06e8df3a61b2d, 0x2f9649e429881b4d],
-      [0xa8c18e7c52ca6eb5, 0x62b218ee08e095ab]
+      [0xa8c18e7c52ca6eb5, 0x62b218ee08e095ab],
     ],
     [
       [0x427d0332aa40f3e5, 0x5eec287d3431f6e9],
@@ -504,7 +496,7 @@ class BoardState {
       [0x17761f098d29573d, 0x1acdc56e90933b07],
       [0x133a470f1337e9f4, 0xfc61397bdf142122],
       [0xa2d13ccea53fbc46, 0xead4da0622a16afc],
-      [0x5779b0a9666e72b, 0x7d0667d801fbac2d]
+      [0x5779b0a9666e72b, 0x7d0667d801fbac2d],
     ],
     [
       [0x701f8f0c04deadb0, 0xc712a08838418dd5],
@@ -525,7 +517,7 @@ class BoardState {
       [0x19ef043c1c4e3093, 0x8dc6e5996fbf318a],
       [0xf456dff9fa0616bf, 0x16678c8ea6fb79eb],
       [0x4be442738a6e8377, 0xb01496ca9857c1e1],
-      [0x1db284c81e9534cc, 0xc51fb4f7d5a56772]
+      [0x1db284c81e9534cc, 0xc51fb4f7d5a56772],
     ],
     [
       [0x132c518023dea95f, 0x7aa5faecad98ce0d],
@@ -546,7 +538,7 @@ class BoardState {
       [0x409bf5a25512cc9b, 0xa277e221ed219c39],
       [0x169964d50543b20d, 0x9ac958102883e96],
       [0x785d2cf1211c2189, 0x7c21977bc937dda],
-      [0xa1b8977b347f4b5b, 0x504f0bddf4009c11]
+      [0xa1b8977b347f4b5b, 0x504f0bddf4009c11],
     ],
     [
       [0xea4624d57f8c0fd9, 0x4a032cace1b1d5b1],
@@ -567,7 +559,7 @@ class BoardState {
       [0xd15f0c6bbc320df3, 0xc0643806b70ef5d6],
       [0x46fb30c62fc9dc9f, 0x8372a0e1be1d618a],
       [0xf98e5bf6af08eeb5, 0x486814dfab8ae04c],
-      [0xda390e6f1622fa8b, 0xfbaab7d236461409]
+      [0xda390e6f1622fa8b, 0xfbaab7d236461409],
     ],
     [
       [0x8ba3840ff84d88bd, 0x70f83e8bde7f958f],
@@ -588,7 +580,7 @@ class BoardState {
       [0x37f21d2ec3f71d5f, 0xd75ddc67a98e5c7a],
       [0xf87e2efc34f77b40, 0x36f128ce8bd2fe36],
       [0xf2ec690b40830bf0, 0xb66f56338ee662d0],
-      [0xb59ca51299671aeb, 0xa9fdfeae95bb3ffb]
+      [0xb59ca51299671aeb, 0xa9fdfeae95bb3ffb],
     ],
     [
       [0x7196118c66e08c56, 0xaa8d186ab535e8e1],
@@ -609,7 +601,7 @@ class BoardState {
       [0x85639d201327f1be, 0xe7aaf7ecf7466ced],
       [0x73c366ce2e6619e9, 0x587a0a3794498b25],
       [0x4c35bfd8c578cf24, 0x4b4045706b92a36b],
-      [0xa947948749bc0036, 0x58659476abb39a65]
+      [0xa947948749bc0036, 0x58659476abb39a65],
     ],
     [
       [0x82d998f71de869da, 0xee383c8f79d000f],
@@ -630,7 +622,7 @@ class BoardState {
       [0x78f9db34cabc6d2d, 0x800bade2e7708f54],
       [0x1c335661f50febf, 0x195034861e96061],
       [0x9dcbb8dc268add07, 0x10693e8216a10067],
-      [0x59fe2f99f1f01a26, 0x6b377cbcb0d983a1]
+      [0x59fe2f99f1f01a26, 0x6b377cbcb0d983a1],
     ],
     [
       [0x5712abe2a27ed01f, 0x9b6d91d20c56dfa3],
@@ -651,7 +643,7 @@ class BoardState {
       [0xdd4c183413fa8110, 0x1ef3b75ef45dfe4d],
       [0xbd45cb84a59a5bd8, 0xb7590656e07b6bbd],
       [0xd8a9e1017fd98dc5, 0xabb49f6638372529],
-      [0x57193e4d32910a5, 0x9eb3a764b8ff7b09]
+      [0x57193e4d32910a5, 0x9eb3a764b8ff7b09],
     ],
     [
       [0xabaad8847642023a, 0x944c3a16e1014835],
@@ -672,7 +664,7 @@ class BoardState {
       [0x7b29ef529370e653, 0xe88afcbe6e627bb6],
       [0x8ba428b73bcd77b8, 0x10c9fed9bf73867a],
       [0xa244c2aade8a4e88, 0x392f080d6e231a50],
-      [0xabe4ef708cbf7b19, 0x2557ed2f84a193f4]
+      [0xabe4ef708cbf7b19, 0x2557ed2f84a193f4],
     ],
     [
       [0x9d71596e60057503, 0xcbc847ab81cf77ee],
@@ -693,7 +685,7 @@ class BoardState {
       [0xdc0134b4c4197502, 0x4adae0413a05fb7f],
       [0x5b77fa6fd95ef294, 0xf33177244df86a91],
       [0xe57b64a119367278, 0x2df21d034e5b6],
-      [0x583d3ebf096a256f, 0x6b31dc32e03e93fa]
+      [0x583d3ebf096a256f, 0x6b31dc32e03e93fa],
     ],
   ];
 }

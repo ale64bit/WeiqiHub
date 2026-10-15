@@ -17,10 +17,7 @@ class _CollectionsHelpDialogState extends State<CollectionsHelpDialog> {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         spacing: 8.0,
-        children: [
-          const Icon(Icons.help),
-          Text(loc.help),
-        ],
+        children: [const Icon(Icons.help), Text(loc.help)],
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -28,12 +25,13 @@ class _CollectionsHelpDialogState extends State<CollectionsHelpDialog> {
           Text(loc.helpDialogCollections),
           SizedBox(height: 8.0),
           CheckboxListTile(
-              title: Text(loc.dontShowAgain),
-              value: !context.settings.showCollectionsHelp,
-              onChanged: (value) {
-                context.settings.showCollectionsHelp = !value!;
-                setState(() {});
-              }),
+            title: Text(loc.dontShowAgain),
+            value: !context.settings.showCollectionsHelp,
+            onChanged: (value) {
+              context.settings.showCollectionsHelp = !value!;
+              setState(() {});
+            },
+          ),
         ],
       ),
       actions: <Widget>[

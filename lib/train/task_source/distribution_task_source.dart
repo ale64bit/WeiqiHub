@@ -11,8 +11,11 @@ class DistributionTaskSource<T> extends TaskSource {
   DistributionTaskSource({required this.buckets, required this.nextTask});
 
   @override
-  bool next(VariationStatus prevStatus, Duration prevSolveTime,
-      {Function(double p1)? onRankChanged}) {
+  bool next(
+    VariationStatus prevStatus,
+    Duration prevSolveTime, {
+    Function(double p1)? onRankChanged,
+  }) {
     _curTask = _takeTask();
     return true;
   }

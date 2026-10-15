@@ -5,20 +5,8 @@ import 'package:wqhub/wq/wq.dart' as wq;
 
 class BoardLines extends CustomPainter with BoardGeometry {
   static final _starPoints = const {
-    9: [
-      (2, 2),
-      (2, 6),
-      (4, 4),
-      (6, 2),
-      (6, 6),
-    ],
-    13: [
-      (3, 3),
-      (3, 9),
-      (6, 6),
-      (9, 3),
-      (9, 9),
-    ],
+    9: [(2, 2), (2, 6), (4, 4), (6, 2), (6, 6)],
+    13: [(3, 3), (3, 9), (6, 6), (9, 3), (9, 9)],
     19: [
       (3, 3),
       (3, 9),
@@ -32,10 +20,7 @@ class BoardLines extends CustomPainter with BoardGeometry {
     ],
   };
 
-  const BoardLines({
-    required this.size,
-    required this.settings,
-  });
+  const BoardLines({required this.size, required this.settings});
 
   @override
   final double size;
@@ -67,10 +52,16 @@ class BoardLines extends CustomPainter with BoardGeometry {
     for (int i = 1; i < settings.visibleSize - 1; ++i) {
       // Vertical lines
       canvas.drawLine(
-          pointCenter(r0 + 0, c0 + i), pointCenter(r1, c0 + i), linePaint);
+        pointCenter(r0 + 0, c0 + i),
+        pointCenter(r1, c0 + i),
+        linePaint,
+      );
       // Horizontal lines
       canvas.drawLine(
-          pointCenter(r0 + i, c0 + 0), pointCenter(r0 + i, c1), linePaint);
+        pointCenter(r0 + i, c0 + 0),
+        pointCenter(r0 + i, c1),
+        linePaint,
+      );
     }
 
     // Draw board edge line
@@ -79,14 +70,20 @@ class BoardLines extends CustomPainter with BoardGeometry {
       switch (settings.edgeLine) {
         case BoardEdgeLine.single:
           canvas.drawRect(
-              Rect.fromPoints(pointCenter(0, 0),
-                  pointCenter(settings.size - 1, settings.size - 1)),
-              linePaint);
+            Rect.fromPoints(
+              pointCenter(0, 0),
+              pointCenter(settings.size - 1, settings.size - 1),
+            ),
+            linePaint,
+          );
         case BoardEdgeLine.thick:
           canvas.drawRect(
-              Rect.fromPoints(pointCenter(0, 0),
-                  pointCenter(settings.size - 1, settings.size - 1)),
-              thickLinePaint);
+            Rect.fromPoints(
+              pointCenter(0, 0),
+              pointCenter(settings.size - 1, settings.size - 1),
+            ),
+            thickLinePaint,
+          );
       }
     } else {
       // Otherwise, we need to draw each edge line individually
@@ -97,19 +94,31 @@ class BoardLines extends CustomPainter with BoardGeometry {
           linePaint.strokeCap = StrokeCap.butt;
           if (r0 == 0) {
             canvas.drawLine(
-                pointCenter(r0, c0) - dx, pointCenter(r0, c1) + dx, linePaint);
+              pointCenter(r0, c0) - dx,
+              pointCenter(r0, c1) + dx,
+              linePaint,
+            );
           }
           if (r1 == settings.size - 1) {
             canvas.drawLine(
-                pointCenter(r1, c0) - dx, pointCenter(r1, c1) + dx, linePaint);
+              pointCenter(r1, c0) - dx,
+              pointCenter(r1, c1) + dx,
+              linePaint,
+            );
           }
           if (c0 == 0) {
             canvas.drawLine(
-                pointCenter(r0, c0) - dy, pointCenter(r1, c0) + dy, linePaint);
+              pointCenter(r0, c0) - dy,
+              pointCenter(r1, c0) + dy,
+              linePaint,
+            );
           }
           if (c1 == settings.size - 1) {
             canvas.drawLine(
-                pointCenter(r0, c1) - dy, pointCenter(r1, c1) + dy, linePaint);
+              pointCenter(r0, c1) - dy,
+              pointCenter(r1, c1) + dy,
+              linePaint,
+            );
           }
         case BoardEdgeLine.thick:
           final dx = Offset(boardLineWidth, 0);
@@ -117,20 +126,32 @@ class BoardLines extends CustomPainter with BoardGeometry {
           thickLinePaint.strokeWidth = 2 * boardLineWidth;
           thickLinePaint.strokeCap = StrokeCap.butt;
           if (r0 == 0) {
-            canvas.drawLine(pointCenter(r0, c0) - dx, pointCenter(r0, c1) + dx,
-                thickLinePaint);
+            canvas.drawLine(
+              pointCenter(r0, c0) - dx,
+              pointCenter(r0, c1) + dx,
+              thickLinePaint,
+            );
           }
           if (r1 == settings.size - 1) {
-            canvas.drawLine(pointCenter(r1, c0) - dx, pointCenter(r1, c1) + dx,
-                thickLinePaint);
+            canvas.drawLine(
+              pointCenter(r1, c0) - dx,
+              pointCenter(r1, c1) + dx,
+              thickLinePaint,
+            );
           }
           if (c0 == 0) {
-            canvas.drawLine(pointCenter(r0, c0) - dy, pointCenter(r1, c0) + dy,
-                thickLinePaint);
+            canvas.drawLine(
+              pointCenter(r0, c0) - dy,
+              pointCenter(r1, c0) + dy,
+              thickLinePaint,
+            );
           }
           if (c1 == settings.size - 1) {
-            canvas.drawLine(pointCenter(r0, c1) - dy, pointCenter(r1, c1) + dy,
-                thickLinePaint);
+            canvas.drawLine(
+              pointCenter(r0, c1) - dy,
+              pointCenter(r1, c1) + dy,
+              thickLinePaint,
+            );
           }
       }
     }

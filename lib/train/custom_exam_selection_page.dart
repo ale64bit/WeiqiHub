@@ -30,18 +30,24 @@ class CustomExamSelectionPage extends StatefulWidget {
 
 class _CustomExamSelectionPageState
     extends PopAwareState<CustomExamSelectionPage> {
-  final _formKey =
-      GlobalKey<FormState>(debugLabel: 'custom_exam_selection_page');
+  final _formKey = GlobalKey<FormState>(
+    debugLabel: 'custom_exam_selection_page',
+  );
   final _taskCountKey = GlobalKey<FormFieldState<String>>(
-      debugLabel: 'custom_exam_selection_page.task_count');
+    debugLabel: 'custom_exam_selection_page.task_count',
+  );
   final _maxMistakesKey = GlobalKey<FormFieldState<String>>(
-      debugLabel: 'custom_exam_selection_page.max_mistakes');
+    debugLabel: 'custom_exam_selection_page.max_mistakes',
+  );
   final _timePerTaskMinKey = GlobalKey<FormFieldState<String>>(
-      debugLabel: 'custom_exam_selection_page.time_per_task.min');
+    debugLabel: 'custom_exam_selection_page.time_per_task.min',
+  );
   final _timePerTaskSecKey = GlobalKey<FormFieldState<String>>(
-      debugLabel: 'custom_exam_selection_page.time_per_task.sec');
+    debugLabel: 'custom_exam_selection_page.time_per_task.sec',
+  );
   final _rankRangeKey = GlobalKey<FormFieldState<RankRange>>(
-      debugLabel: 'custom_exam_selection_page.rank_range');
+    debugLabel: 'custom_exam_selection_page.rank_range',
+  );
 
   var _taskCount = 10;
   var _maxMistakes = 2;
@@ -66,10 +72,7 @@ class _CustomExamSelectionPageState
     final presetDrawer = NavigationDrawer(
       header: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(
-          loc.presets,
-          style: TextTheme.of(context).titleLarge,
-        ),
+        child: Text(loc.presets, style: TextTheme.of(context).titleLarge),
       ),
       children: [
         for (final e in _presets.presets.entries)
@@ -102,13 +105,16 @@ class _CustomExamSelectionPageState
                 _taskCount = e.value.taskCount;
                 _taskCountKey.currentState?.didChange(_taskCount.toString());
                 _maxMistakes = e.value.maxMistakes;
-                _maxMistakesKey.currentState
-                    ?.didChange(_maxMistakes.toString());
+                _maxMistakesKey.currentState?.didChange(
+                  _maxMistakes.toString(),
+                );
                 _timePerTask = e.value.timePerTask;
-                _timePerTaskMinKey.currentState
-                    ?.didChange(_timePerTask.inMinutes.toString());
-                _timePerTaskSecKey.currentState
-                    ?.didChange((_timePerTask.inSeconds % 60).toString());
+                _timePerTaskMinKey.currentState?.didChange(
+                  _timePerTask.inMinutes.toString(),
+                );
+                _timePerTaskSecKey.currentState?.didChange(
+                  (_timePerTask.inSeconds % 60).toString(),
+                );
                 _rankRange = e.value.rankRange;
                 _rankRangeKey.currentState?.didChange(_rankRange);
 
@@ -125,9 +131,7 @@ class _CustomExamSelectionPageState
       ],
     );
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.customExam),
-      ),
+      appBar: AppBar(title: Text(loc.customExam)),
       endDrawer: presetDrawer,
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -203,8 +207,9 @@ class _CustomExamSelectionPageState
                         labelText: loc.taskSource,
                       ),
                       items: [
-                        for (final value in TaskSourceType.values
-                            .where((t) => t != TaskSourceType.fromTaskTag))
+                        for (final value in TaskSourceType.values.where(
+                          (t) => t != TaskSourceType.fromTaskTag,
+                        ))
                           DropdownMenuItem(
                             value: value,
                             child: Text(value.toLocalizedString(loc)),
@@ -220,33 +225,33 @@ class _CustomExamSelectionPageState
                     ),
                     ...switch (_taskSourceType) {
                       TaskSourceType.fromTaskTypes => <Widget>[
-                          Wrap(
-                            spacing: 4.0,
-                            runSpacing: 4.0,
-                            alignment: WrapAlignment.center,
-                            children: [
-                              for (final taskType in TaskType.values)
-                                FilterChip(
-                                  label: Text(taskType.toLocalizedString(loc)),
-                                  selected: _taskTypes.contains(taskType),
-                                  onSelected: (bool selected) {
-                                    setState(() {
-                                      if (selected) {
-                                        _taskTypes.add(taskType);
-                                      } else {
-                                        _taskTypes.remove(taskType);
-                                      }
-                                    });
-                                  },
-                                )
-                            ],
-                          ),
-                          availableTasksText,
-                        ],
+                        Wrap(
+                          spacing: 4.0,
+                          runSpacing: 4.0,
+                          alignment: WrapAlignment.center,
+                          children: [
+                            for (final taskType in TaskType.values)
+                              FilterChip(
+                                label: Text(taskType.toLocalizedString(loc)),
+                                selected: _taskTypes.contains(taskType),
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    if (selected) {
+                                      _taskTypes.add(taskType);
+                                    } else {
+                                      _taskTypes.remove(taskType);
+                                    }
+                                  });
+                                },
+                              ),
+                          ],
+                        ),
+                        availableTasksText,
+                      ],
                       TaskSourceType.fromTaskTag => throw UnimplementedError(),
                       TaskSourceType.fromMistakes => <Widget>[
-                          availableTasksText,
-                        ],
+                        availableTasksText,
+                      ],
                     },
                     CheckboxListTile(
                       title: Text(loc.collectStats),
@@ -331,7 +336,8 @@ class _CustomExamSelectionPageState
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: const Text(
-                                      'Invalid exam settings. Please fix the errors.'),
+                                    'Invalid exam settings. Please fix the errors.',
+                                  ),
                                   showCloseIcon: true,
                                 ),
                               );
@@ -349,20 +355,21 @@ class _CustomExamSelectionPageState
   }
 
   CustomExamSettings _currentSettings() => CustomExamSettings(
-        taskCount: _taskCount,
-        timePerTask: _timePerTask,
-        rankRange: _rankRange,
-        maxMistakes: _maxMistakes,
-        taskSourceType: _taskSourceType,
-        taskTypes: ISet(_taskTypes),
-        collectStats: _collectStats,
-      );
+    taskCount: _taskCount,
+    timePerTask: _timePerTask,
+    rankRange: _rankRange,
+    maxMistakes: _maxMistakes,
+    taskSourceType: _taskSourceType,
+    taskTypes: ISet(_taskTypes),
+    collectStats: _collectStats,
+  );
 
   int availableTasks() => switch (_taskSourceType) {
-        TaskSourceType.fromTaskTypes =>
-          TaskDB().taskCountByType(_rankRange, _taskTypes),
-        TaskSourceType.fromTaskTag => 0,
-        TaskSourceType.fromMistakes =>
-          StatsDB().countMistakesByRange(_rankRange),
-      };
+    TaskSourceType.fromTaskTypes => TaskDB().taskCountByType(
+      _rankRange,
+      _taskTypes,
+    ),
+    TaskSourceType.fromTaskTag => 0,
+    TaskSourceType.fromMistakes => StatsDB().countMistakesByRange(_rankRange),
+  };
 }

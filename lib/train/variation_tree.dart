@@ -9,9 +9,9 @@ enum VariationStatus {
   wrong;
 
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        VariationStatus.correct => loc.taskCorrect,
-        VariationStatus.wrong => loc.taskWrong,
-      };
+    VariationStatus.correct => loc.taskCorrect,
+    VariationStatus.wrong => loc.taskWrong,
+  };
 }
 
 class VariationTree {
@@ -39,30 +39,34 @@ class VariationTree {
   VariationStatus finalStatus() =>
       status ??
       children.values.fold(
-          VariationStatus.wrong,
-          (cur, t) => t.finalStatus() == VariationStatus.correct
-              ? VariationStatus.correct
-              : cur);
+        VariationStatus.wrong,
+        (cur, t) => t.finalStatus() == VariationStatus.correct
+            ? VariationStatus.correct
+            : cur,
+      );
 
   VariationTree withSymmetry(Symmetry symmetry, int boardSize) {
     if (symmetry == Symmetry.identity) {
       return this;
     }
 
-    final transformedChildren =
-        children.entries.fold<IMap<wq.Point, VariationTree>>(
-      const IMap<wq.Point, VariationTree>.empty(),
-      (acc, entry) {
-        final transformedPoint = symmetry.transformPoint(entry.key, boardSize);
-        final transformedChild = entry.value.withSymmetry(symmetry, boardSize);
-        return acc.add(transformedPoint, transformedChild);
-      },
-    );
+    final transformedChildren = children.entries
+        .fold<IMap<wq.Point, VariationTree>>(
+          const IMap<wq.Point, VariationTree>.empty(),
+          (acc, entry) {
+            final transformedPoint = symmetry.transformPoint(
+              entry.key,
+              boardSize,
+            );
+            final transformedChild = entry.value.withSymmetry(
+              symmetry,
+              boardSize,
+            );
+            return acc.add(transformedPoint, transformedChild);
+          },
+        );
 
-    return VariationTree(
-      status: status,
-      children: transformedChildren,
-    );
+    return VariationTree(status: status, children: transformedChildren);
   }
 
   String serialize() {
@@ -78,17 +82,15 @@ class VariationTree {
 
 class _VariationTreeDefinition extends GrammarDefinition<VariationTree> {
   @override
-  Parser<VariationTree> start() => [
-        status(),
-        edges(),
-      ].toChoiceParser().map((obj) {
+  Parser<VariationTree> start() =>
+      [status(), edges()].toChoiceParser().map((obj) {
         if (obj is VariationStatus) {
           return VariationTree(status: obj, children: const IMap.empty());
         } else if (obj is List<(wq.Point, VariationTree)>) {
           return VariationTree(
-              status: null,
-              children:
-                  IMap.fromEntries((obj).map((x) => MapEntry(x.$1, x.$2))));
+            status: null,
+            children: IMap.fromEntries((obj).map((x) => MapEntry(x.$1, x.$2))),
+          );
         }
         throw FormatException('invalid parser result type');
       });
@@ -96,8 +98,9 @@ class _VariationTreeDefinition extends GrammarDefinition<VariationTree> {
   Parser<List<(wq.Point, VariationTree)>> edges() =>
       edge().star().skip(after: char('<')).map((x) => x);
 
-  Parser<(wq.Point, VariationTree)> edge() => (point() & ref0(start))
-      .map((l) => (l[0] as wq.Point, l[1] as VariationTree));
+  Parser<(wq.Point, VariationTree)> edge() => (point() & ref0(start)).map(
+    (l) => (l[0] as wq.Point, l[1] as VariationTree),
+  );
 
   Parser<VariationStatus> status() =>
       [statusCorrect(), statusWrong()].toChoiceParser().map((x) => x);

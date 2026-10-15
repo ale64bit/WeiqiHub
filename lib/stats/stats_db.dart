@@ -18,8 +18,10 @@ class TaskSolveStats {
   final int correctAttempts;
   final int wrongAttempts;
 
-  const TaskSolveStats(
-      {required this.correctAttempts, required this.wrongAttempts});
+  const TaskSolveStats({
+    required this.correctAttempts,
+    required this.wrongAttempts,
+  });
 
   @override
   int get hashCode => Object.hash(correctAttempts, wrongAttempts);
@@ -42,11 +44,11 @@ enum ExamType {
   legacy;
 
   String toLocalizedString(AppLocalizations loc) => switch (this) {
-        ExamType.grading => loc.gradingExam,
-        ExamType.endgame => loc.endgameExam,
-        ExamType.custom => loc.customExam,
-        ExamType.legacy => 'legacy',
-      };
+    ExamType.grading => loc.gradingExam,
+    ExamType.endgame => loc.endgameExam,
+    ExamType.custom => loc.customExam,
+    ExamType.legacy => 'legacy',
+  };
 }
 
 @immutable
@@ -57,12 +59,10 @@ class ExamEvent {
   const ExamEvent({required this.type, this.raw});
 
   ExamEvent.fromJson(Map<String, dynamic> json)
-      : type = ExamType.values[json['type'] as int],
-        raw = null;
+    : type = ExamType.values[json['type'] as int],
+      raw = null;
 
-  Map<String, dynamic> toJson() => {
-        'type': type.index,
-      };
+  Map<String, dynamic> toJson() => {'type': type.index};
 
   @override
   int get hashCode => type.index;
@@ -76,11 +76,11 @@ class ExamEvent {
   }
 
   String toLocalizedString(AppLocalizations loc) => switch (type) {
-        ExamType.grading => loc.gradingExam,
-        ExamType.endgame => loc.endgameExam,
-        ExamType.custom => loc.customExam,
-        ExamType.legacy => raw!,
-      };
+    ExamType.grading => loc.gradingExam,
+    ExamType.endgame => loc.endgameExam,
+    ExamType.custom => loc.customExam,
+    ExamType.legacy => raw!,
+  };
 }
 
 @immutable
@@ -93,18 +93,26 @@ class ExamEntry {
   final bool passed;
   final Duration duration;
 
-  const ExamEntry(
-      {required this.date,
-      required this.event,
-      required this.rankRange,
-      required this.correctCount,
-      required this.wrongCount,
-      required this.passed,
-      required this.duration});
+  const ExamEntry({
+    required this.date,
+    required this.event,
+    required this.rankRange,
+    required this.correctCount,
+    required this.wrongCount,
+    required this.passed,
+    required this.duration,
+  });
 
   @override
   int get hashCode => Object.hash(
-      date, event, rankRange, correctCount, wrongCount, passed, duration);
+    date,
+    event,
+    rankRange,
+    correctCount,
+    wrongCount,
+    passed,
+    duration,
+  );
 
   @override
   bool operator ==(Object other) {
@@ -130,12 +138,13 @@ class CollectionStatEntry {
   final Duration duration;
   final DateTime completed;
 
-  const CollectionStatEntry(
-      {required this.id,
-      required this.correctCount,
-      required this.wrongCount,
-      required this.duration,
-      required this.completed});
+  const CollectionStatEntry({
+    required this.id,
+    required this.correctCount,
+    required this.wrongCount,
+    required this.duration,
+    required this.completed,
+  });
 
   @override
   String toString() =>
@@ -166,11 +175,12 @@ class CollectionActiveSession {
   final int wrongCount;
   final Duration duration;
 
-  const CollectionActiveSession(
-      {required this.id,
-      required this.correctCount,
-      required this.wrongCount,
-      required this.duration});
+  const CollectionActiveSession({
+    required this.id,
+    required this.correctCount,
+    required this.wrongCount,
+    required this.duration,
+  });
 
   @override
   int get hashCode => Object.hash(id, correctCount, wrongCount, duration);
@@ -318,20 +328,20 @@ class StatsDB {
   }
 
   StatsDB._({required Database db})
-      : _db = db,
-        _addTaskAttemptCorrect = db.prepare('''
+    : _db = db,
+      _addTaskAttemptCorrect = db.prepare('''
           INSERT INTO task_stats(rank, type, id, correct_count) VALUES(?, ?, ?, 1)
             ON CONFLICT(rank, type, id) DO UPDATE SET 
               correct_count = correct_count+1,
               latest_attempt = CURRENT_TIMESTAMP;
         ''', persistent: true),
-        _addDailyTaskAttemptCorrect = db.prepare('''
+      _addDailyTaskAttemptCorrect = db.prepare('''
           INSERT INTO task_daily_stats(date, correct_count, wrong_count) 
             VALUES(date('now', 'localtime'), 1, 0)
             ON CONFLICT(date) DO UPDATE SET
               correct_count = correct_count+1;
         ''', persistent: true),
-        _addTaskAttemptWrong = db.prepare('''
+      _addTaskAttemptWrong = db.prepare('''
           INSERT INTO task_stats(rank, type, id, wrong_count) VALUES(?, ?, ?, 1)
             ON CONFLICT(rank, type, id) DO UPDATE SET 
               wrong_count = wrong_count+1,
@@ -339,24 +349,24 @@ class StatsDB {
               latest_wrong_attempt = CURRENT_TIMESTAMP,
               ignore_mistake = 0;
         ''', persistent: true),
-        _addDailyTaskAttemptWrong = db.prepare('''
+      _addDailyTaskAttemptWrong = db.prepare('''
           INSERT INTO task_daily_stats(date, correct_count, wrong_count) 
             VALUES(date('now', 'localtime'), 0, 1)
             ON CONFLICT(date) DO UPDATE SET
               wrong_count = wrong_count+1;
         ''', persistent: true),
-        _ignoreTaskMistake = db.prepare('''
+      _ignoreTaskMistake = db.prepare('''
           UPDATE task_stats
             SET ignore_mistake = 1
             WHERE rank = ? AND type = ? AND id = ?;
         ''', persistent: true),
-        _mistakesByMostRecent = db.prepare('''
+      _mistakesByMostRecent = db.prepare('''
           SELECT rank, type, id, correct_count, wrong_count FROM task_stats 
             WHERE wrong_count>0 AND NOT ignore_mistake
             ORDER BY latest_wrong_attempt DESC
             LIMIT ?;
         ''', persistent: true),
-        _mistakesBySuccessRate = db.prepare('''
+      _mistakesBySuccessRate = db.prepare('''
           SELECT rank, type, id, correct_count, wrong_count FROM task_stats 
             WHERE wrong_count>0 AND NOT ignore_mistake
             ORDER BY 
@@ -364,29 +374,29 @@ class StatsDB {
               wrong_count DESC
             LIMIT ?;
         ''', persistent: true),
-        _countMistakesByRange = db.prepare('''
+      _countMistakesByRange = db.prepare('''
           SELECT count(1) FROM task_stats 
             WHERE (rank BETWEEN ? AND ?) AND (wrong_count>0 AND NOT ignore_mistake);
         ''', persistent: true),
-        _mistakesByRankRange = db.prepare('''
+      _mistakesByRankRange = db.prepare('''
           SELECT rank, type, id FROM task_stats 
             WHERE (rank BETWEEN ? AND ?) AND (wrong_count>0 AND NOT ignore_mistake)
             ORDER BY RANDOM()
             LIMIT ?;
         ''', persistent: true),
-        _collectionStat = db.prepare('''
+      _collectionStat = db.prepare('''
           SELECT id, correct_count, wrong_count, duration_sec, completed FROM collection_stats
             WHERE id = ?;
         ''', persistent: true),
-        _collectionActiveSession = db.prepare('''
+      _collectionActiveSession = db.prepare('''
           SELECT id, correct_count, wrong_count, duration_sec FROM collection_active_sessions
             WHERE id = ?;
         ''', persistent: true),
-        _collectionActiveSessionMistakes = db.prepare('''
+      _collectionActiveSessionMistakes = db.prepare('''
           SELECT rank, type, task_id FROM collection_active_session_mistakes
             WHERE collection_id = ?;
         ''', persistent: true),
-        _updateCollectionActiveSession = db.prepare('''
+      _updateCollectionActiveSession = db.prepare('''
           INSERT INTO collection_active_sessions(id, correct_count, wrong_count, duration_sec) 
             VALUES (?4, ?1, ?2, ?3)
             ON CONFLICT(id) DO UPDATE
@@ -395,11 +405,11 @@ class StatsDB {
                 duration_sec = duration_sec + ?3
             WHERE id = ?4;
         ''', persistent: true),
-        _addCollectionActiveSessionMistake = db.prepare('''
+      _addCollectionActiveSessionMistake = db.prepare('''
           INSERT INTO collection_active_session_mistakes(collection_id, rank, type, task_id) 
             VALUES (?, ?, ?, ?);
         ''', persistent: true),
-        _updateCollectionStat = db.prepare('''
+      _updateCollectionStat = db.prepare('''
           INSERT INTO collection_stats(id, correct_count, wrong_count, duration_sec, completed) 
             VALUES (?1, ?2, ?3, ?4, ?5)
             ON CONFLICT(id) DO UPDATE
@@ -409,7 +419,7 @@ class StatsDB {
                 completed = ?5
             WHERE id = ?1;
         ''', persistent: true),
-        _resetCollectionActiveSession = db.prepareMultiple('''
+      _resetCollectionActiveSession = db.prepareMultiple('''
           INSERT INTO collection_active_sessions
             VALUES(?1, 0, 0, 0)
             ON CONFLICT(id) DO UPDATE
@@ -420,17 +430,17 @@ class StatsDB {
           DELETE FROM collection_active_session_mistakes 
             WHERE collection_id = ?1;
         ''', persistent: true),
-        _deleteCollectionActiveSession = db.prepare('''
+      _deleteCollectionActiveSession = db.prepare('''
           DELETE FROM collection_active_sessions WHERE id = ?;
         ''', persistent: true),
-        _addExamAttempt = db.prepare('''
+      _addExamAttempt = db.prepare('''
           INSERT INTO exams(date, type, from_rank, to_rank, correct_count, wrong_count, passed, duration_sec)
             VALUES (datetime(), ?, ?, ?, ?, ?, ?, ?);
         ''', persistent: true),
-        _examsSince = db.prepare('''
+      _examsSince = db.prepare('''
           SELECT * FROM exams WHERE date >= ?;
         ''', persistent: true),
-        _examsByTypeAndRank = db.prepare('''
+      _examsByTypeAndRank = db.prepare('''
           SELECT * FROM exams 
           WHERE type = ?
             AND ? <= from_rank 
@@ -438,14 +448,14 @@ class StatsDB {
           ORDER BY date DESC
           LIMIT ?;
         ''', persistent: true),
-        _taskDailyStatsSince = db.prepare('''
+      _taskDailyStatsSince = db.prepare('''
           SELECT 
             COALESCE(SUM(correct_count), 0) as total_correct_count, 
             COALESCE(SUM(wrong_count), 0) as total_wrong_count 
           FROM task_daily_stats 
           WHERE date >= ?;
         ''', persistent: true),
-        _taskSuccessRateByType = db.prepare('''
+      _taskSuccessRateByType = db.prepare('''
           SELECT type, SUM(correct_count) AS correct_count, SUM(wrong_count) AS wrong_count 
           FROM task_stats 
           GROUP BY type;
@@ -465,34 +475,41 @@ class StatsDB {
     _ignoreTaskMistake.execute([rank.index, type.index, id]);
   }
 
-  List<(TaskRef, TaskSolveStats)> mistakesByMostRecent(
-      {int maxResults = 1000}) {
+  List<(TaskRef, TaskSolveStats)> mistakesByMostRecent({
+    int maxResults = 1000,
+  }) {
     final resultSet = _mistakesByMostRecent.select([maxResults]);
     return _taskEntriesFromResultSet(resultSet);
   }
 
-  List<(TaskRef, TaskSolveStats)> mistakesBySuccessRate(
-      {int maxResults = 1000}) {
+  List<(TaskRef, TaskSolveStats)> mistakesBySuccessRate({
+    int maxResults = 1000,
+  }) {
     final resultSet = _mistakesBySuccessRate.select([maxResults]);
     return _taskEntriesFromResultSet(resultSet);
   }
 
   int countMistakesByRange(RankRange rankRange) {
-    final result = _countMistakesByRange
-        .select([rankRange.from.index, rankRange.to.index]);
+    final result = _countMistakesByRange.select([
+      rankRange.from.index,
+      rankRange.to.index,
+    ]);
     return result.first.values.first! as int;
   }
 
   List<TaskRef> mistakesByRankRange(RankRange rankRange, int n) {
-    final resultSet = _mistakesByRankRange
-        .select([rankRange.from.index, rankRange.to.index, n]);
+    final resultSet = _mistakesByRankRange.select([
+      rankRange.from.index,
+      rankRange.to.index,
+      n,
+    ]);
     return [
       for (final row in resultSet)
         TaskRef(
           rank: Rank.values[row['rank'] as int],
           type: TaskType.values[row['type'] as int],
           id: row['id'] as int,
-        )
+        ),
     ];
   }
 
@@ -506,21 +523,21 @@ class StatsDB {
   }
 
   List<(TaskRef, TaskSolveStats)> _taskEntriesFromResultSet(
-          ResultSet resultSet) =>
-      [
-        for (final row in resultSet)
-          (
-            TaskRef(
-              rank: Rank.values[row['rank'] as int],
-              type: TaskType.values[row['type'] as int],
-              id: row['id'] as int,
-            ),
-            TaskSolveStats(
-              correctAttempts: row['correct_count'] as int,
-              wrongAttempts: row['wrong_count'] as int,
-            )
-          )
-      ];
+    ResultSet resultSet,
+  ) => [
+    for (final row in resultSet)
+      (
+        TaskRef(
+          rank: Rank.values[row['rank'] as int],
+          type: TaskType.values[row['type'] as int],
+          id: row['id'] as int,
+        ),
+        TaskSolveStats(
+          correctAttempts: row['correct_count'] as int,
+          wrongAttempts: row['wrong_count'] as int,
+        ),
+      ),
+  ];
 
   CollectionStatEntry? collectionStat(int id) {
     final resultSet = _collectionStat.select([id]);
@@ -557,7 +574,7 @@ class StatsDB {
           rank: Rank.values[row['rank'] as int],
           type: TaskType.values[row['type'] as int],
           id: row['task_id'] as int,
-        )
+        ),
     ];
   }
 
@@ -572,17 +589,27 @@ class StatsDB {
   void deleteCollectionActiveSession(int id) =>
       _deleteCollectionActiveSession.execute([id]);
 
-  void updateCollectionActiveSession(int id,
-      {int correctDelta = 0,
-      int wrongDelta = 0,
-      Duration durationDelta = Duration.zero}) {
-    _updateCollectionActiveSession
-        .execute([correctDelta, wrongDelta, durationDelta.inSeconds, id]);
+  void updateCollectionActiveSession(
+    int id, {
+    int correctDelta = 0,
+    int wrongDelta = 0,
+    Duration durationDelta = Duration.zero,
+  }) {
+    _updateCollectionActiveSession.execute([
+      correctDelta,
+      wrongDelta,
+      durationDelta.inSeconds,
+      id,
+    ]);
   }
 
   void addCollectionActiveSessionMistake(int id, TaskRef ref) =>
-      _addCollectionActiveSessionMistake
-          .execute([id, ref.rank.index, ref.type.index, ref.id]);
+      _addCollectionActiveSessionMistake.execute([
+        id,
+        ref.rank.index,
+        ref.type.index,
+        ref.id,
+      ]);
 
   void updateCollectionStat(CollectionStatEntry entry) {
     _updateCollectionStat.execute([
@@ -594,8 +621,14 @@ class StatsDB {
     ]);
   }
 
-  void addExamAttempt(ExamEvent examType, RankRange rankRange, int correctCount,
-      int wrongCount, bool passed, Duration duration) {
+  void addExamAttempt(
+    ExamEvent examType,
+    RankRange rankRange,
+    int correctCount,
+    int wrongCount,
+    bool passed,
+    Duration duration,
+  ) {
     _addExamAttempt.execute([
       jsonEncode(examType),
       rankRange.from.index,
@@ -610,15 +643,20 @@ class StatsDB {
   static final _examDateFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   List<ExamEntry> examsSince(DateTime since) {
-    final resultSet =
-        _examsSince.select([_examDateFormat.format(since.toUtc())]);
+    final resultSet = _examsSince.select([
+      _examDateFormat.format(since.toUtc()),
+    ]);
     return _examEntriesFromResultSet(resultSet);
   }
 
   List<ExamEntry> recentExams(ExamType type, RankRange rankRange, int count) {
     final event = ExamEvent(type: type);
-    final resultSet = _examsByTypeAndRank.select(
-        [jsonEncode(event), rankRange.from.index, rankRange.to.index, count]);
+    final resultSet = _examsByTypeAndRank.select([
+      jsonEncode(event),
+      rankRange.from.index,
+      rankRange.to.index,
+      count,
+    ]);
     return _examEntriesFromResultSet(resultSet);
   }
 
@@ -633,26 +671,29 @@ class StatsDB {
       } catch (e) {
         // should not happen
       }
-      entries.add(ExamEntry(
-        date: _examDateFormat.parseUTC(row['date'] as String).toLocal(),
-        event: event,
-        rankRange: RankRange(
-          from: Rank.values[row['from_rank'] as int],
-          to: Rank.values[row['to_rank'] as int],
+      entries.add(
+        ExamEntry(
+          date: _examDateFormat.parseUTC(row['date'] as String).toLocal(),
+          event: event,
+          rankRange: RankRange(
+            from: Rank.values[row['from_rank'] as int],
+            to: Rank.values[row['to_rank'] as int],
+          ),
+          correctCount: row['correct_count'] as int,
+          wrongCount: row['wrong_count'] as int,
+          passed: (row['passed'] as int) != 0,
+          duration: Duration(seconds: row['duration_sec'] as int),
         ),
-        correctCount: row['correct_count'] as int,
-        wrongCount: row['wrong_count'] as int,
-        passed: (row['passed'] as int) != 0,
-        duration: Duration(seconds: row['duration_sec'] as int),
-      ));
+      );
     }
     return entries;
   }
 
   (int, int) taskDailyStatsSince(DateTime since) {
     final dateFormat = DateFormat('yyyy-MM-dd');
-    final resultSet =
-        _taskDailyStatsSince.select([dateFormat.format(since.toLocal())]);
+    final resultSet = _taskDailyStatsSince.select([
+      dateFormat.format(since.toLocal()),
+    ]);
     for (final row in resultSet) {
       return (
         row['total_correct_count'] as int,

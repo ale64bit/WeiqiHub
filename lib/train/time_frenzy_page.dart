@@ -68,7 +68,9 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
       annotations: continuationAnnotations ?? gameTree.annotations,
       dismissable: false,
       onPointClicked: (p) => onMove(p, wideLayout),
-      onDismissed: () {/* Next task is automatic */},
+      onDismissed: () {
+        /* Next task is automatic */
+      },
     );
 
     final taskTitle =
@@ -142,9 +144,7 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
           ],
         ),
         body: boardArea,
-        bottomNavigationBar: BottomAppBar(
-          child: timeDisplay,
-        ),
+        bottomNavigationBar: BottomAppBar(child: timeDisplay),
       );
     }
   }
@@ -183,13 +183,13 @@ class _TimeFrenzyPageState extends State<TimeFrenzyPage>
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => _ResultDialog(
-        solveCount: _solveCount,
-        maxRank: _maxRank,
-      ),
+      builder: (context) =>
+          _ResultDialog(solveCount: _solveCount, maxRank: _maxRank),
     );
     context.stats.updateTimeFrenzyHighScore(_solveCount);
-    setState(() {/* Stop the timer */});
+    setState(() {
+      /* Stop the timer */
+    });
   }
 }
 
@@ -199,18 +199,21 @@ class _SideBar extends StatelessWidget {
   final wq.Color color;
   final Widget timeDisplay;
 
-  const _SideBar(
-      {required this.taskTitle,
-      required this.taskNumber,
-      required this.color,
-      required this.timeDisplay});
+  const _SideBar({
+    required this.taskTitle,
+    required this.taskNumber,
+    required this.color,
+    required this.timeDisplay,
+  });
 
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final widgetSize = MediaQuery.sizeOf(context);
     final sidebarSize = min(
-        widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
+      widgetSize.longestSide - widgetSize.shortestSide,
+      widgetSize.width / 3,
+    );
     return SizedBox(
       width: sidebarSize,
       child: Container(
@@ -221,10 +224,8 @@ class _SideBar extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child: Text(
-                  '$taskNumber',
-                  textAlign: TextAlign.center,
-                )),
+                  child: Text('$taskNumber', textAlign: TextAlign.center),
+                ),
                 IconButton(
                   icon: Icon(Icons.cancel),
                   onPressed: () {
@@ -234,7 +235,9 @@ class _SideBar extends StatelessWidget {
                         title: loc.confirm,
                         content: loc.msgConfirmStopEvent(loc.timeFrenzy),
                         onYes: () => Navigator.popUntil(
-                            context, (route) => route.isFirst),
+                          context,
+                          (route) => route.isFirst,
+                        ),
                         onNo: () => Navigator.pop(context),
                       ),
                     );
@@ -273,10 +276,7 @@ class _ResultDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            title: Text(loc.tasksSolved),
-            trailing: Text('$solveCount'),
-          ),
+          ListTile(title: Text(loc.tasksSolved), trailing: Text('$solveCount')),
           ListTile(
             title: Text(loc.maxRank),
             trailing: Text(maxRank.toString()),

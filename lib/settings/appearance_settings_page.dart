@@ -43,10 +43,7 @@ class _AppearanceSettingsPageState
         : null;
     final boardSettings = BoardSettings(
       size: 19,
-      subBoard: SubBoard(
-        topLeft: (0, 0),
-        size: 5,
-      ),
+      subBoard: SubBoard(topLeft: (0, 0), size: 5),
       theme: context.settings.boardTheme,
       edgeLine: context.settings.edgeLine,
       border: border,
@@ -54,7 +51,8 @@ class _AppearanceSettingsPageState
     );
     final previewBoard = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -69,25 +67,18 @@ class _AppearanceSettingsPageState
             (1, 1): wq.Color.white,
             (3, 1): wq.Color.white,
           }),
-          annotations: IMap({
-            (2, 1): LastMoveAnnotation(turn: wq.Color.black),
-          }),
+          annotations: IMap({(2, 1): LastMoveAnnotation(turn: wq.Color.black)}),
           confirmTap: false,
         );
       },
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.appearance),
-      ),
+      appBar: AppBar(title: Text(loc.appearance)),
       body: isWindowClassCompact || isWindowClassMedium
           ? Column(
               children: [
-                Container(
-                  padding: EdgeInsets.all(16),
-                  child: previewBoard,
-                ),
+                Container(padding: EdgeInsets.all(16), child: previewBoard),
                 Expanded(
                   child: AppearanceSettingsList(
                     onChanged: () {

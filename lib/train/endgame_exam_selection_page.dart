@@ -43,9 +43,7 @@ class _EndgameExamSelectionPageState
     final loc = AppLocalizations.of(context)!;
     final stats = loadStats();
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.endgameExam),
-      ),
+      appBar: AppBar(title: Text(loc.endgameExam)),
       body: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: 800),
@@ -66,7 +64,8 @@ class _EndgameExamSelectionPageState
                   rankRange: RankRange.single(rank),
                   passCount: stats[rank]?.pass ?? 0,
                   failCount: stats[rank]?.fail ?? 0,
-                  isActive: (rank == Rank.k5) ||
+                  isActive:
+                      (rank == Rank.k5) ||
                       ((stats[Rank.values[max(Rank.k5.index, rank.index - 1)]]
                                   ?.pass ??
                               0) >

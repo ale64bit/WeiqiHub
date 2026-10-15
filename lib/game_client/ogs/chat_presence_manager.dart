@@ -26,8 +26,9 @@ class ChatPresenceManager {
   }) : _webSocketManager = webSocketManager {
     _messageSubscription = _webSocketManager.messages.listen(_handleMessage);
     _webSocketManager.send('chat/join', {'channel': channel});
-    _logger
-        .fine('ChatPresenceManager initialized and joined channel: $channel');
+    _logger.fine(
+      'ChatPresenceManager initialized and joined channel: $channel',
+    );
   }
 
   /// Returns true if the user with the given ID is currently present in the chat.

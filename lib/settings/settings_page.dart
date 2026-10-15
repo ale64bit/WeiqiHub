@@ -23,9 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.settings),
-      ),
+      appBar: AppBar(title: Text(loc.settings)),
       body: ListView(
         children: <ListTile>[
           ListTile(
@@ -36,8 +34,9 @@ class _SettingsPageState extends State<SettingsPage> {
               Navigator.pushNamed(
                 context,
                 AppearanceSettingsPage.routeName,
-                arguments:
-                    SettingsRouteArguments(rebuildApp: widget.rebuildApp),
+                arguments: SettingsRouteArguments(
+                  rebuildApp: widget.rebuildApp,
+                ),
               );
             },
           ),
@@ -65,8 +64,9 @@ class _SettingsPageState extends State<SettingsPage> {
               Navigator.pushNamed(
                 context,
                 LanguagePage.routeName,
-                arguments:
-                    SettingsRouteArguments(rebuildApp: widget.rebuildApp),
+                arguments: SettingsRouteArguments(
+                  rebuildApp: widget.rebuildApp,
+                ),
               );
             },
           ),

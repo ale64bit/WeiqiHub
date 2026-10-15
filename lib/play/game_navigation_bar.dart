@@ -60,16 +60,10 @@ class GameNavigationBar extends StatelessWidget {
               onPressed: () {
                 _onGoPrevMove(1);
               },
-              icon: Transform.flip(
-                flipX: true,
-                child: Icon(Icons.play_arrow),
-              ),
+              icon: Transform.flip(flipX: true, child: Icon(Icons.play_arrow)),
             ),
             if (gameTree.isVariation)
-              IconButton(
-                onPressed: _onGoMainline,
-                icon: Icon(Icons.undo),
-              ),
+              IconButton(onPressed: _onGoMainline, icon: Icon(Icons.undo)),
             if (!gameTree.isVariation)
               ConstrainedBox(
                 constraints: BoxConstraints(minWidth: 24),

@@ -7,9 +7,7 @@ final class ConstTaskSource extends TaskSource {
   final IList<Task> tasks;
   int _cur;
 
-  ConstTaskSource({required this.tasks})
-      : assert(tasks.isNotEmpty),
-        _cur = 0;
+  ConstTaskSource({required this.tasks}) : assert(tasks.isNotEmpty), _cur = 0;
 
   @override
   bool next(prevStatus, prevSolveTime, {Function(double)? onRankChanged}) {

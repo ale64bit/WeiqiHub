@@ -7,8 +7,11 @@ class GameResult {
   final String result;
   final String? description;
 
-  const GameResult(
-      {required this.winner, required this.result, this.description});
+  const GameResult({
+    required this.winner,
+    required this.result,
+    this.description,
+  });
 
   @override
   int get hashCode => Object.hash(winner, result, description);

@@ -18,8 +18,11 @@ final class BlackToPlaySource extends TaskSource {
   double get rank => source.rank;
 
   @override
-  bool next(VariationStatus prevStatus, Duration prevSolveTime,
-      {Function(double)? onRankChanged}) {
+  bool next(
+    VariationStatus prevStatus,
+    Duration prevSolveTime, {
+    Function(double)? onRankChanged,
+  }) {
     if (!source.next(prevStatus, prevSolveTime, onRankChanged: onRankChanged)) {
       return false;
     }

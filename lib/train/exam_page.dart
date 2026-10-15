@@ -137,15 +137,18 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                     final curCount =
                         _taskNumber - (solveStatus == null ? 1 : 0);
                     StatsDB().addExamAttempt(
-                        widget.examEvent,
-                        widget.rankRange,
-                        curCount - _mistakeCount,
-                        _mistakeCount + widget.taskCount - curCount,
-                        false,
-                        _totalTime);
+                      widget.examEvent,
+                      widget.rankRange,
+                      curCount - _mistakeCount,
+                      _mistakeCount + widget.taskCount - curCount,
+                      false,
+                      _totalTime,
+                    );
                   }
                   Navigator.popUntil(
-                      context, ModalRoute.withName(widget.exitRoute));
+                    context,
+                    ModalRoute.withName(widget.exitRoute),
+                  );
                 },
                 onPreviousMove: onPreviousMove,
                 onNextMove: onNextMove,
@@ -189,15 +192,18 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
                         final curCount =
                             _taskNumber - (solveStatus == null ? 1 : 0);
                         StatsDB().addExamAttempt(
-                            widget.examEvent,
-                            widget.rankRange,
-                            curCount - _mistakeCount,
-                            _mistakeCount + widget.taskCount - curCount,
-                            false,
-                            _totalTime);
+                          widget.examEvent,
+                          widget.rankRange,
+                          curCount - _mistakeCount,
+                          _mistakeCount + widget.taskCount - curCount,
+                          false,
+                          _totalTime,
+                        );
                       }
                       Navigator.popUntil(
-                          context, ModalRoute.withName(widget.exitRoute));
+                        context,
+                        ModalRoute.withName(widget.exitRoute),
+                      );
                     },
                     onNo: () {
                       Navigator.pop(context);
@@ -239,8 +245,10 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
     if (status != VariationStatus.correct) _mistakeCount++;
 
     if (widget.collectStats) {
-      StatsDB()
-          .addTaskAttempt(currentTask.ref, status == VariationStatus.correct);
+      StatsDB().addTaskAttempt(
+        currentTask.ref,
+        status == VariationStatus.correct,
+      );
       if (status == VariationStatus.correct) {
         context.stats.incrementTotalPassCount(currentTask.ref.rank);
       } else {
@@ -259,8 +267,14 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
       widget.onFail();
     }
     if (widget.collectStats) {
-      StatsDB().addExamAttempt(widget.examEvent, widget.rankRange,
-          widget.taskCount - _mistakeCount, _mistakeCount, passed, _totalTime);
+      StatsDB().addExamAttempt(
+        widget.examEvent,
+        widget.rankRange,
+        widget.taskCount - _mistakeCount,
+        _mistakeCount,
+        passed,
+        _totalTime,
+      );
     }
     Navigator.pushReplacementNamed(
       context,
@@ -279,7 +293,8 @@ class _ExamPageState extends State<ExamPage> with TaskSolvingStateMixin {
             arguments: widget.redoRouteArguments,
           );
         },
-        onNext: _mistakeCount <= widget.maxMistakes &&
+        onNext:
+            _mistakeCount <= widget.maxMistakes &&
                 widget.nextRouteArguments != null
             ? (context) {
                 Navigator.pushReplacementNamed(
@@ -369,7 +384,9 @@ class _SideBar extends StatelessWidget {
     final loc = AppLocalizations.of(context)!;
     final widgetSize = MediaQuery.sizeOf(context);
     final sidebarSize = min(
-        widgetSize.longestSide - widgetSize.shortestSide, widgetSize.width / 3);
+      widgetSize.longestSide - widgetSize.shortestSide,
+      widgetSize.width / 3,
+    );
     return SizedBox(
       width: sidebarSize,
       child: Container(
@@ -380,10 +397,11 @@ class _SideBar extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    child: Text(
-                  '$taskNumber/$taskCount',
-                  textAlign: TextAlign.center,
-                )),
+                  child: Text(
+                    '$taskNumber/$taskCount',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
                 IconButton(
                   icon: Icon(Icons.cancel),
                   onPressed: () {
@@ -412,9 +430,7 @@ class _SideBar extends StatelessWidget {
             ),
             Expanded(child: Container()),
             (status == null)
-                ? Center(
-                    child: timeDisplay,
-                  )
+                ? Center(child: timeDisplay)
                 : TaskActionBar(
                     upsolveMode: upsolveMode,
                     onShowSolution: onShowSolution,

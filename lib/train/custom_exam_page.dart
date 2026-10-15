@@ -39,21 +39,24 @@ class CustomExamPage extends StatelessWidget {
       onFail: () {},
       baseRoute: routeName,
       exitRoute: CustomExamSelectionPage.routeName,
-      redoRouteArguments: CustomExamRouteArguments(
-        settings: settings,
-      ),
+      redoRouteArguments: CustomExamRouteArguments(settings: settings),
       collectStats: settings.collectStats,
     );
   }
 
   TaskSource createTaskSource(BuildContext context) {
     final taskSource = switch (settings.taskSourceType) {
-      TaskSourceType.fromTaskTypes =>
-        TaskDB().taskSourceByTypes(settings.rankRange, settings.taskTypes!),
+      TaskSourceType.fromTaskTypes => TaskDB().taskSourceByTypes(
+        settings.rankRange,
+        settings.taskTypes!,
+      ),
       TaskSourceType.fromTaskTag => throw UnimplementedError(),
       TaskSourceType.fromMistakes => ConstTaskRefSource(
-          taskRefs: StatsDB()
-              .mistakesByRankRange(settings.rankRange, settings.taskCount)),
+        taskRefs: StatsDB().mistakesByRankRange(
+          settings.rankRange,
+          settings.taskCount,
+        ),
+      ),
     };
     return BlackToPlaySource(
       source: taskSource,

@@ -8,21 +8,24 @@ class TerminateRequest {
   final String terminateId;
   final List<int>? turnNumbers;
 
-  const TerminateRequest(
-      {required this.id, required this.terminateId, this.turnNumbers});
+  const TerminateRequest({
+    required this.id,
+    required this.terminateId,
+    this.turnNumbers,
+  });
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'action': 'terminate',
-        'terminateId': terminateId,
-        if (turnNumbers != null) 'turnNumbers': turnNumbers,
-      };
+    'id': id,
+    'action': 'terminate',
+    'terminateId': terminateId,
+    if (turnNumbers != null) 'turnNumbers': turnNumbers,
+  };
 
   katagopb.TerminateRequest toProto() => katagopb.TerminateRequest(
-        id: id,
-        terminateId: terminateId,
-        turnNumbers: turnNumbers,
-      );
+    id: id,
+    terminateId: terminateId,
+    turnNumbers: turnNumbers,
+  );
 }
 
 class TerminateAllRequest {
@@ -32,15 +35,13 @@ class TerminateAllRequest {
   const TerminateAllRequest({required this.id, this.turnNumbers});
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'action': 'terminate_all',
-        if (turnNumbers != null) 'turnNumbers': turnNumbers,
-      };
+    'id': id,
+    'action': 'terminate_all',
+    if (turnNumbers != null) 'turnNumbers': turnNumbers,
+  };
 
-  katagopb.TerminateAllRequest toProto() => katagopb.TerminateAllRequest(
-        id: id,
-        turnNumbers: turnNumbers,
-      );
+  katagopb.TerminateAllRequest toProto() =>
+      katagopb.TerminateAllRequest(id: id, turnNumbers: turnNumbers);
 }
 
 class VersionResponse {

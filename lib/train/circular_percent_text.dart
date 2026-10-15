@@ -11,10 +11,7 @@ class CircularPercentText extends StatelessWidget {
       alignment: Alignment.center,
       children: <Widget>[
         Text('$value%'),
-        CircularProgressIndicator(
-          value: value / 100,
-          color: valueColor(),
-        ),
+        CircularProgressIndicator(value: value / 100, color: valueColor()),
       ],
     );
   }

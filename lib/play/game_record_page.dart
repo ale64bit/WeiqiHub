@@ -22,8 +22,11 @@ class GameRecordRouteArguments {
 class GameRecordPage extends StatefulWidget {
   static const routeName = '/play/game_record';
 
-  const GameRecordPage(
-      {super.key, required this.summary, required this.record});
+  const GameRecordPage({
+    super.key,
+    required this.summary,
+    required this.record,
+  });
 
   final GameSummary summary;
   final GameRecord record;
@@ -45,7 +48,10 @@ class _GameRecordPageState extends State<GameRecordPage> {
       if (r >= 0) _gameTree.moveAnnotated(mv, mode: AnnotationMode.mainline);
       _turn = mv.col.opposite;
     }
-    if (context.mounted) setState(() {/* update board */});
+    if (context.mounted)
+      setState(() {
+        /* update board */
+      });
   }
 
   @override
@@ -78,7 +84,8 @@ class _GameRecordPageState extends State<GameRecordPage> {
     );
     final board = LayoutBuilder(
       builder: (context, constraints) {
-        final boardSize = constraints.biggest.shortestSide -
+        final boardSize =
+            constraints.biggest.shortestSide -
             2 * (boardSettings.border?.size ?? 0);
         return Board(
           size: boardSize,
@@ -111,9 +118,7 @@ class _GameRecordPageState extends State<GameRecordPage> {
     return Scaffold(
       appBar: wideLayout
           ? null
-          : AppBar(
-              title: Text(widget.summary.result.result),
-            ),
+          : AppBar(title: Text(widget.summary.result.result)),
       body: wideLayout
           ? Row(
               children: <Widget>[
@@ -187,8 +192,10 @@ class _GameRecordPageState extends State<GameRecordPage> {
     if (_turn == null) return;
 
     // First try to apply the move to the tree to check validity
-    final node = _gameTree
-        .moveAnnotated((col: _turn!, p: p), mode: AnnotationMode.variation);
+    final node = _gameTree.moveAnnotated((
+      col: _turn!,
+      p: p,
+    ), mode: AnnotationMode.variation);
     if (node == null) return;
 
     AudioController().playForNode(_gameTree.curNode);
@@ -213,30 +220,31 @@ class _GameInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     return Card(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          loc.gameRecord,
-          textAlign: TextAlign.center,
-          style: TextTheme.of(context).titleLarge,
-        ),
-        Text(
-          '${loc.result}: ${summary.result.result}',
-          textAlign: TextAlign.center,
-        ),
-        // if (game.handicap > 1)
-        //   Text(
-        //     'Handicap: ${game.handicap}',
-        //     textAlign: TextAlign.center,
-        //   ),
-        // if (game.handicap <= 1)
-        //   Text(
-        //     'Komi: ${game.komi}',
-        //     textAlign: TextAlign.center,
-        //   ),
-      ],
-    ));
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            loc.gameRecord,
+            textAlign: TextAlign.center,
+            style: TextTheme.of(context).titleLarge,
+          ),
+          Text(
+            '${loc.result}: ${summary.result.result}',
+            textAlign: TextAlign.center,
+          ),
+          // if (game.handicap > 1)
+          //   Text(
+          //     'Handicap: ${game.handicap}',
+          //     textAlign: TextAlign.center,
+          //   ),
+          // if (game.handicap <= 1)
+          //   Text(
+          //     'Komi: ${game.komi}',
+          //     textAlign: TextAlign.center,
+          //   ),
+        ],
+      ),
+    );
   }
 }

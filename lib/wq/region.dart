@@ -1,8 +1,10 @@
 import 'package:wqhub/wq/wq.dart';
 
-void visitRegion(Point initial,
-    {required bool Function(Point) shouldVisit,
-    required void Function(Point) visit}) {
+void visitRegion(
+  Point initial, {
+  required bool Function(Point) shouldVisit,
+  required void Function(Point) visit,
+}) {
   dfs(Point p) {
     if (shouldVisit(p)) {
       final (r, c) = p;

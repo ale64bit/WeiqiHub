@@ -15,11 +15,12 @@ class TaskPatternSearchResultsRouteArguments {
   final IMap<wq.Point, wq.Color> stones;
   final ISet<wq.Point> empty;
 
-  TaskPatternSearchResultsRouteArguments(
-      {required this.rankRange,
-      required this.taskTypes,
-      required this.stones,
-      required this.empty});
+  TaskPatternSearchResultsRouteArguments({
+    required this.rankRange,
+    required this.taskTypes,
+    required this.stones,
+    required this.empty,
+  });
 }
 
 class TaskPatternSearchResultsPage extends StatefulWidget {
@@ -55,7 +56,11 @@ class _TaskPatternSearchResultsPageState
     super.initState();
     _results = TaskDB()
         .searchTask(
-            widget.rankRange, widget.taskTypes, widget.stones, widget.empty)
+          widget.rankRange,
+          widget.taskTypes,
+          widget.stones,
+          widget.empty,
+        )
         .take(200);
   }
 
@@ -84,7 +89,8 @@ class _TaskPatternSearchResultsPageState
         return Scaffold(
           appBar: AppBar(
             title: Text(
-                _searchComplete ? loc.findTaskResults : loc.findTaskSearching),
+              _searchComplete ? loc.findTaskResults : loc.findTaskSearching,
+            ),
             actions: [
               if (!_searchComplete)
                 Padding(
@@ -107,9 +113,8 @@ class _TaskPatternSearchResultsPageState
                   },
                 ),
                 itemCount: _tasks.length,
-                itemBuilder: (context, index) => TaskPreviewTile(
-                  task: _tasks[index],
-                ),
+                itemBuilder: (context, index) =>
+                    TaskPreviewTile(task: _tasks[index]),
               ),
             ),
           ),
